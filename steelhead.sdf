@@ -1,0 +1,209 @@
+<?xml version="1.0" ?>
+<sdf version='1.11'>
+  <model name='steelhead_urdf'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.0038393809785038252 0.044324365367989609 -0.010251360654948369 1.5708 0 0</pose>
+        <mass>12.391770026056509</mass>
+        <inertia>
+          <ixx>0.14218236334067291</ixx>
+          <ixy>-0.0001543187389148994</ixy>
+          <ixz>0.00048548090696102282</ixz>
+          <iyy>0.24542613078813311</iyy>
+          <iyz>-0.0032337892178579439</iyz>
+          <izz>0.19093421792927209</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/base_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster-1_link_collision_1'>
+        <pose>0.00026684981318999998 -0.084748516609537999 -0.21943183650998399 3.14159265358979 0 -0.0105672952385601</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-1_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster-2_link_collision_2'>
+        <pose>-0.21050310939622099 0.0038660719271790202 0.33236816349001802 3.14159265358979 0 0.78506667355730497</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-2_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster-3_link_collision_3'>
+        <pose>0.21327640201040399 0.0037255933195410201 0.33236816349001902 3.14159265358979 0 -0.78572965323759303</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-3_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster-6_link_collision_4'>
+        <pose>0.0063667000000000003 -0.0044999999999999997 -0.35743000000000003 -3.1415853071795872 -4.2351647362715017e-22 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-6_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster_4_link_collision_5'>
+        <pose>0.32840000000000003 0.00096400999999999995 -0.070169999999999996 -1.5708 -5.5511151231257827e-17 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster_4_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__thruster_5_link_collision_6'>
+        <pose>-0.32565 0 -0.071134000000000003 1.5708 -5.5511151231257827e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster_5_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 1.5708 1.5708 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/base_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.941176474 0.941176474 0.941176474 1</diffuse>
+          <ambient>0.941176474 0.941176474 0.941176474 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster-1_link_visual_1'>
+        <pose>0.00026684981318999998 -0.084748516609537999 -0.21943183650998399 3.14159265358979 0 -0.0105672952385601</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-1_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster-2_link_visual_2'>
+        <pose>-0.21050310939622099 0.0038660719271790202 0.33236816349001802 3.14159265358979 0 0.78506667355730497</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-2_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster-3_link_visual_3'>
+        <pose>0.21327640201040399 0.0037255933195410201 0.33236816349001902 3.14159265358979 0 -0.78572965323759303</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-3_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster-6_link_visual_4'>
+        <pose>0.0063667000000000003 -0.0044999999999999997 -0.35743000000000003 -3.1415853071795872 -4.2351647362715017e-22 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster-6_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster_4_link_visual_5'>
+        <pose>0.32840000000000003 0.00096400999999999995 -0.070169999999999996 -1.5708 -5.5511151231257827e-17 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster_4_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__thruster_5_link_visual_6'>
+        <pose>-0.32565 0 -0.071134000000000003 1.5708 -5.5511151231257827e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://steelhead_urdf/meshes/thruster_5_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <frame name='thruster-1_joint' attached_to='base_link'>
+      <pose>0.00026684981318999998 -0.084748516609537999 -0.21943183650998399 3.14159265358979 0 -0.0105672952385601</pose>
+    </frame>
+    <frame name='thruster-1_link' attached_to='thruster-1_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='thruster-2_joint' attached_to='base_link'>
+      <pose>-0.21050310939622099 0.0038660719271790202 0.33236816349001802 3.14159265358979 0 0.78506667355730497</pose>
+    </frame>
+    <frame name='thruster-2_link' attached_to='thruster-2_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='thruster-3_joint' attached_to='base_link'>
+      <pose>0.21327640201040399 0.0037255933195410201 0.33236816349001902 3.14159265358979 0 -0.78572965323759303</pose>
+    </frame>
+    <frame name='thruster-3_link' attached_to='thruster-3_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='thruster-6_joint' attached_to='base_link'>
+      <pose>0.0063667000000000003 -0.0044999999999999997 -0.35743000000000003 -3.1415853071795872 -4.2351647362715017e-22 1.5708</pose>
+    </frame>
+    <frame name='thruster-6_link' attached_to='thruster-6_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='thruster_4_joint' attached_to='base_link'>
+      <pose>0.32840000000000003 0.00096400999999999995 -0.070169999999999996 -1.5708 -5.5511151231257827e-17 -1.5708</pose>
+    </frame>
+    <frame name='thruster_4_link' attached_to='thruster_4_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='thruster_5_joint' attached_to='base_link'>
+      <pose>-0.32565 0 -0.071134000000000003 1.5708 -5.5511151231257827e-17 1.5708</pose>
+    </frame>
+    <frame name='thruster_5_link' attached_to='thruster_5_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>
