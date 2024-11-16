@@ -1,9 +1,149 @@
 <?xml version="1.0" ?>
 <sdf version='1.11'>
+<world name="underwater_world">
+    <scene>
+      <!-- For turquoise ambient -->
+      <ambient>0.0 1.0 1.0</ambient>
+      <background>0.0 0.7 0.8</background>
+    </scene>
+
+    <physics name="1ms" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
+      <uniform_fluid_density>200</uniform_fluid_density>
+    </plugin>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+<!-- <plugin -->
+ <!-- filename="gz-sim-hydrodynamics-system" -->
+ <!-- name="gz::sim::systems::Hydrodynamics"> -->
   <model name='steelhead_urdf'>
+        <!-- Useful params for controls simplifications-->
+        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingDamping>1.0</scalingDamping>
+        <scalingAddedMass>0.01</scalingAddedMass>
+
+        <!-- Added mass: see p.28 in Berg2012 -->
+        <added_mass>
+          5.579266667 0           0           0         0           0
+          0           15.09083333 0           0         0           0
+          0           0           30.55093333 0         0           0
+          0           0           0           7.2955698 0           0
+          0           0           0           0         15.51297973 0
+          0           0           0           0         0           16.14743877
+        </added_mass>
+        <!-- Linear damping: see p.31 in Berg2012 -->
+        <linear_damping>
+            -0.2229119791 -1.105547605 -0.2472084207 -0.02229119791 -0.1105547605 -0.02472084207
+        </linear_damping>
+        <!-- Non-linear damping: see p.30 in Berg2012 -->
+        <quadratic_damping>
+            -59.75066625 -71.13459739 -67.099009 -5.975066625 -7.113459739 -6.7099009
+        </quadratic_damping>
+    <!-- <fluid_density>1000</fluid_density> -->
+    <pose>0 0 5 -1.5708 0 0</pose>
     <link name='base_link'>
+    <hydrodynamics>
+        <!-- <fluid_density>50</fluid_density> -->
+        <!-- Useful params for controls simplifications-->
+        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingDamping>1.0</scalingDamping>
+        <scalingAddedMass>0.01</scalingAddedMass>
+
+        <!-- Added mass: see p.28 in Berg2012 -->
+        <added_mass>
+          5.579266667 0           0           0         0           0
+          0           15.09083333 0           0         0           0
+          0           0           30.55093333 0         0           0
+          0           0           0           7.2955698 0           0
+          0           0           0           0         15.51297973 0
+          0           0           0           0         0           16.14743877
+        </added_mass>
+        <!-- Linear damping: see p.31 in Berg2012 -->
+        <linear_damping>
+            -0.2229119791 -1.105547605 -0.2472084207 -0.02229119791 -0.1105547605 -0.02472084207
+        </linear_damping>
+        <!-- Non-linear damping: see p.30 in Berg2012 -->
+        <quadratic_damping>
+            -59.75066625 -71.13459739 -67.099009 -5.975066625 -7.113459739 -6.7099009
+        </quadratic_damping>
+        <!-- Useful params for controls simplifications-->
+        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingDamping>1.0</scalingDamping>
+        <scalingAddedMass>0.01</scalingAddedMass>
+
+        <!-- Added mass: see p.28 in Berg2012 -->
+        <added_mass>
+          5.579266667 0           0           0         0           0
+          0           15.09083333 0           0         0           0
+          0           0           30.55093333 0         0           0
+          0           0           0           7.2955698 0           0
+          0           0           0           0         15.51297973 0
+          0           0           0           0         0           16.14743877
+        </added_mass>
+        <!-- Linear damping: see p.31 in Berg2012 -->
+        <linear_damping>
+            -0.2229119791 -1.105547605 -0.2472084207 -0.02229119791 -0.1105547605 -0.02472084207
+        </linear_damping>
+        <!-- Non-linear damping: see p.30 in Berg2012 -->
+        <quadratic_damping>
+            -59.75066625 -71.13459739 -67.099009 -5.975066625 -7.113459739 -6.7099009
+        </quadratic_damping>
+        <!-- Useful params for controls simplifications-->
+        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingDamping>1.0</scalingDamping>
+        <scalingAddedMass>0.01</scalingAddedMass>
+
+        <!-- Added mass: see p.28 in Berg2012 -->
+        <added_mass>
+          5.579266667 0           0           0         0           0
+          0           15.09083333 0           0         0           0
+          0           0           30.55093333 0         0           0
+          0           0           0           7.2955698 0           0
+          0           0           0           0         15.51297973 0
+          0           0           0           0         0           16.14743877
+        </added_mass>
+        <!-- Linear damping: see p.31 in Berg2012 -->
+        <linear_damping>
+            -0.2229119791 -1.105547605 -0.2472084207 -0.02229119791 -0.1105547605 -0.02472084207
+        </linear_damping>
+        <!-- Non-linear damping: see p.30 in Berg2012 -->
+        <quadratic_damping>
+            -59.75066625 -71.13459739 -67.099009 -5.975066625 -7.113459739 -6.7099009
+        </quadratic_damping>
+    </hydrodynamics>
       <inertial>
-        <pose>0.0038393809785038252 0.044324365367989609 5 0 0 0</pose>
+        <!-- <pose>0.0038393809785038252 0.044324365367989609 5 0 0 0</pose> -->
+        <pose>0.0038393809785038252 0.044324365367989609 -0.010251360654948369 0 0 0</pose>
         <mass>12.391770026056509</mass>
         <inertia>
           <ixx>0.14218236334067291</ixx>
@@ -78,7 +218,7 @@
         </geometry>
       </collision>
       <visual name='base_link_visual'>
-        <pose>0 0 5 1.5708 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
@@ -205,5 +345,14 @@
     <frame name='thruster_5_link' attached_to='thruster_5_joint'>
       <pose>0 0 0 0 0 0</pose>
     </frame>
+        <plugin
+      filename="gz-sim-hydrodynamics-system"
+      name="gz::sim::systems::Hydrodynamics">
+    <link_name>base_link</link_name>
+<!-- link name='base_link' -->
+      <!-- <fluid_density>1000</fluid_density> -->
+    </plugin>
   </model>
+<!-- </plugin> -->
+</world>
 </sdf>
