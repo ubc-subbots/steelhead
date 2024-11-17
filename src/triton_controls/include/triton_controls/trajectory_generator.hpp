@@ -17,6 +17,7 @@
 // Trajectory type
 #define TRAJ_START 0
 #define TRAJ_GATE 1
+#define TRAJ_BUOY 2
 
 namespace triton_controls
 {
@@ -68,6 +69,8 @@ namespace triton_controls
          * @param msg triton_interfaces waypoint message with pose and waypoint type
          */
         void waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg);
+
+        rclcpp::Publisher<triton_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
 
         // Publish waypoint 
         rclcpp::Publisher<triton_interfaces::msg::Waypoint>::SharedPtr waypoint_publisher_;
