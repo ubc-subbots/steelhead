@@ -70,6 +70,12 @@ namespace triton_controls
          */
         void waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg);
 
+
+        void approach_left_of_buoy();
+        void rotate_around_buoy();
+        void aim_back_at_start();
+
+
         rclcpp::Publisher<triton_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
 
         // Publish waypoint 
@@ -89,6 +95,9 @@ namespace triton_controls
         std::vector<triton_interfaces::msg::Waypoint> waypoints_; // Destination waypoints in trajectory 
         bool destination_achieved_;                    
         float start_turning_factor_;
+
+        int buoy_state_; // to track the steps in a buoy maneuver
+        geometry_msgs::msg::Point starting_position_; // to store the starting position before the buoy maneuver
 
     };
 

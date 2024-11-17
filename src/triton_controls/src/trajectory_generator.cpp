@@ -3,34 +3,149 @@ using std::placeholders::_1;
 
 namespace triton_controls
 {
+double lateral_offset = 0.0; // Meters to the left (negative for right)
+
+void TrajectoryGenerator::approach_left_of_buoy()
+{
+    auto reply_msg = triton_interfaces::msg::Waypoint();
+
+    // Calculate required yaw to face the buoy
+    double required_yaw = std::atan2(destination_pose_.position.y, destination_pose_.position.x);
+
+    // Extract current orientation
+    tf2::Quaternion current_pose_q;
+    tf2::fromMsg(current_pose_.orientation, current_pose_q);
+    double current_pose_roll, current_pose_pitch, current_pose_yaw;
+    tf2::Matrix3x3(current_pose_q).getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
+
+    // Set new orientation to face the buoy
+    double new_yaw = current_pose_yaw + required_yaw;
+    tf2::Quaternion tf2_quat_destination;
+    tf2_quat_destination.setRPY(0, 0, new_yaw);
+    reply_msg.pose.orientation = tf2::toMsg(tf2_quat_destination);
+
+    // Calculate distance to buoy
+    double distance_x = std::sqrt(
+        std::pow(destination_pose_.position.y, 2) + std::pow(destination_pose_.position.x, 2));
+
+    // Define lateral offset
+    double lateral_offset = 1.0; // Adjust as needed
+
+    // Create destination vector with lateral offset
+    tf2::Vector3 dest_v;
+    dest_v.setX(distance_x + 1); // Forward distance with buffer
+    dest_v.setY(lateral_offset); // Apply lateral offset
+    dest_v.setZ(0);
+
+    // Rotate destination vector to map frame
+    tf2::Vector3 targetForward = tf2::quatRotate(current_pose_q, dest_v);
+
+    // Set waypoint position
+    reply_msg.pose.position.x = current_pose_.position.x + targetForward.getX();
+    reply_msg.pose.position.y = current_pose_.position.y + targetForward.getY();
+    reply_msg.pose.position.z = current_pose_.position.z; // Maintain current depth
+
+    // Set tolerances
+    reply_msg.distance.position.x = 0.5;
+    reply_msg.distance.position.y = 0.5;
+    reply_msg.distance.position.z = 0.5;
+
+    // Set duration and type
+    reply_msg.duration = 5;  // Adjust as needed
+    reply_msg.type = 0;  // STABILIZE
+
+    waypoint_publisher_->publish(reply_msg);
+}
+
+
+void TrajectoryGenerator::rotate_around_buoy()
+{
+    auto reply_msg = triton_interfaces::msg::Waypoint();
+
+    // Calculate required yaw to face the buoy
+    double required_yaw = std::atan2(destination_pose_.position.y, destination_pose_.position.x);
+
+    // Extract current orientation
+    tf2::Quaternion current_pose_q;
+    tf2::fromMsg(current_pose_.orientation, current_pose_q);
+    double current_pose_roll, current_pose_pitch, current_pose_yaw;
+    tf2::Matrix3x3(current_pose_q).getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
+
+    // Set new orientation to face the buoy
+    double new_yaw = current_pose_yaw + required_yaw;
+    tf2::Quaternion tf2_quat_destination;
+    tf2_quat_destination.setRPY(0, 0, new_yaw);
+    reply_msg.pose.orientation = tf2::toMsg(tf2_quat_destination);
+
+    // Calculate distance to buoy
+    double distance_x = std::sqrt(
+        std::pow(destination_pose_.position.y, 2) + std::pow(destination_pose_.position.x, 2));
+
+    // Define lateral offset (negative to move to the right)
+    double lateral_offset = -1.0; // Adjust as needed
+
+    // Create destination vector with lateral offset
+    tf2::Vector3 dest_v;
+    dest_v.setX(distance_x + 1); // Forward distance with buffer
+    dest_v.setY(lateral_offset); // Apply lateral offset
+    dest_v.setZ(0);
+
+    // Rotate destination vector to map frame
+    tf2::Vector3 targetForward = tf2::quatRotate(current_pose_q, dest_v);
+
+    // Set waypoint position
+    reply_msg.pose.position.x = current_pose_.position.x + targetForward.getX();
+    reply_msg.pose.position.y = current_pose_.position.y + targetForward.getY();
+    reply_msg.pose.position.z = current_pose_.position.z; // Maintain current depth
+
+    // Set tolerances
+    reply_msg.distance.position.x = 0.5;
+    reply_msg.distance.position.y = 0.5;
+    reply_msg.distance.position.z = 0.5;
+
+    // Set duration and type
+    reply_msg.duration = 5;  // Adjust as needed
+    reply_msg.type = 0;  // STABILIZE
+
+    waypoint_publisher_->publish(reply_msg);
+}
+
+
+
+void TrajectoryGenerator::aim_back_at_start()
+{
+    auto reply_msg = triton_interfaces::msg::Waypoint();
+
+    // Set waypoint to the starting position
+    reply_msg.pose.position = starting_position_;
+
+    // Calculate orientation to face the starting position
+    double dx = starting_position_.x - current_pose_.position.x;
+    double dy = starting_position_.y - current_pose_.position.y;
+    double yaw_to_start = atan2(dy, dx);
+    tf2::Quaternion waypoint_orientation;
+    waypoint_orientation.setRPY(0, 0, yaw_to_start);
+    reply_msg.pose.orientation = tf2::toMsg(waypoint_orientation);
+
+    // Set tolerances
+    reply_msg.distance.position.x = 0.5;
+    reply_msg.distance.position.y = 0.5;
+    reply_msg.distance.position.z = 0.5;
+
+    // Set duration and type
+    reply_msg.duration = 5;  // Adjust as needed
+    reply_msg.type = 0;  // STABILIZE
+
+    waypoint_publisher_->publish(reply_msg);
+}
+
+
 
   TrajectoryGenerator::TrajectoryGenerator(const rclcpp::NodeOptions &options)
       : Node("trajectory_generator", options),
         type_(TRAJ_START),
-        destination_achieved_(true) // note: this should be false, but in the interest of time, 
-        // this is set to true as a way to make the AUV turn around slowly as if it is in TRAJ_START
-        // mode even though it is in TRAJ_GATE mode.
-        //destination_achieved_ represents whether the AUV has reached its current destination or goal
-
-        //this combo makes the robot spin until it sees the gate, then it starts heading towards the gate
-        // type_(TRAJ_GATE),
-        // destination_achieved_(true)
-
-        //this combo makes the robot just spin in circles
-        // type_(TRAJ_START),
-        // destination_achieved_(true)
-
-        //this combo makes the robot just move straight forward in gate mode
-        // type_(TRAJ_GATE),
-        // destination_achieved_(false)
-
-        //this combo makes the robot turn around without ever changing into the gate mode or approaching the gate
-        //type_(TRAJ_START),
-        //destination_achieved_(false)
-
-        // type_(TRAJ_BUOY),
-        // destination_achieved_(true) // note: currently set to true to make the AUV turn around 
-        // slowly matching whatever the previous devs did 
+        destination_achieved_(true),
+        buoy_state_(0)
   {
 
     //can remove later but this publishes the current mode
@@ -212,8 +327,53 @@ namespace triton_controls
         waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
       }
     }
-
+    else if (type_ == TRAJ_BUOY)
+    {
+        switch (buoy_state_)
+        {
+            case 0:  // Approach the left of the buoy
+                if (!destination_achieved_)
+                {
+                    approach_left_of_buoy();
+                }
+                else
+                {
+                    destination_achieved_ = false;
+                    buoy_state_ = 1;
+                    RCLCPP_INFO(this->get_logger(), "Approached left side of buoy. Proceeding to rotate around.");
+                }
+                break;
+            case 1:  // Rotate around the buoy
+                if (!destination_achieved_)
+                {
+                    rotate_around_buoy();
+                }
+                else
+                {
+                    destination_achieved_ = false;
+                    buoy_state_ = 2;
+                    RCLCPP_INFO(this->get_logger(), "Finished rotating around buoy. Proceeding to aim back at starting position.");
+                }
+                break;
+            case 2:  // Aim back at starting position
+                if (!destination_achieved_)
+                {
+                    aim_back_at_start();
+                }
+                else
+                {
+                    RCLCPP_INFO(this->get_logger(), "Completed buoy maneuver. Returning to TRAJ_START mode.");
+                    type_ = TRAJ_START;
+                    destination_achieved_ = true;
+                    buoy_state_ = 0;
+                }
+                break;
+            default:
+                break;
+        }
+    }
   }
+
 
 
   void TrajectoryGenerator::type_callback(const triton_interfaces::msg::TrajectoryType::SharedPtr msg)
@@ -228,37 +388,70 @@ namespace triton_controls
 
   void TrajectoryGenerator::gate_callback(const triton_interfaces::msg::ObjectOffset::SharedPtr msg)
   {
+      /**
+       * Below is the buoy_callback function implementation that currently lives in gate_callback cause I'm treating a gate like a buoy
+       */
+
       // Check if the detected object is a gate
-      if (msg->class_id == TRAJ_GATE)
-      {
-          // Validate the detected gate position to avoid extreme values
-          if (abs(msg->pose.position.x) < 50 
-              && abs(msg->pose.position.y) < 50
-              && abs(msg->pose.position.z) < 20)
-          {
-              // Update the destination pose with the detected gate position
-              destination_pose_ = msg->pose;
+    if (msg->class_id == TRAJ_GATE)
+    {
+        // Validate the detected gate position to avoid extreme values
+        if (abs(msg->pose.position.x) < 50 
+            && abs(msg->pose.position.y) < 50
+            && abs(msg->pose.position.z) < 20)
+        {
+            // Update the destination pose with the detected gate position
+            destination_pose_ = msg->pose;
 
-              // If currently in TRAJ_START mode, switch to TRAJ_GATE mode
-              if (type_ == TRAJ_START)
-              {
-                  type_ = TRAJ_GATE;
-                  destination_achieved_ = false;
+            // Switch to TRAJ_BUOY mode
+            type_ = TRAJ_BUOY;
+            destination_achieved_ = false;
+            buoy_state_ = 0;  // Reset the buoy state
+            starting_position_ = current_pose_.position;  // Store the starting position
 
-                  RCLCPP_INFO(this->get_logger(), "Gate detected! Switching to TRAJ_GATE mode.");
+            RCLCPP_INFO(this->get_logger(), "Buoy detected! Switching to TRAJ_BUOY mode.");
 
-                  // Publish the updated mode
-                  auto mode_msg = triton_interfaces::msg::TrajectoryType();
-                  mode_msg.type = type_;
-                  current_mode_publisher_->publish(mode_msg);
-              }
-              else if (type_ == TRAJ_GATE)
-              {
-                  // If already in TRAJ_GATE mode, update the destination
-                  destination_achieved_ = false;
-              }
-          }
-      }
+            // Publish the updated mode
+            auto mode_msg = triton_interfaces::msg::TrajectoryType();
+            mode_msg.type = type_;
+            current_mode_publisher_->publish(mode_msg);
+        }
+    }
+
+      /**
+       * Below is the gate_callback function
+       */
+      // Check if the detected object is a gate
+      // if (msg->class_id == TRAJ_GATE)
+      // {
+      //     // Validate the detected gate position to avoid extreme values
+      //     if (abs(msg->pose.position.x) < 50 
+      //         && abs(msg->pose.position.y) < 50
+      //         && abs(msg->pose.position.z) < 20)
+      //     {
+      //         // Update the destination pose with the detected gate position
+      //         destination_pose_ = msg->pose;
+
+      //         // If currently in TRAJ_START mode, switch to TRAJ_GATE mode
+      //         if (type_ == TRAJ_START)
+      //         {
+      //             type_ = TRAJ_GATE;
+      //             destination_achieved_ = false;
+
+      //             RCLCPP_INFO(this->get_logger(), "Gate detected! Switching to TRAJ_GATE mode.");
+
+      //             // Publish the updated mode
+      //             auto mode_msg = triton_interfaces::msg::TrajectoryType();
+      //             mode_msg.type = type_;
+      //             current_mode_publisher_->publish(mode_msg);
+      //         }
+      //         else if (type_ == TRAJ_GATE)
+      //         {
+      //             // If already in TRAJ_GATE mode, update the destination
+      //             destination_achieved_ = false;
+      //         }
+      //     }
+      // }
   }
 
 
@@ -268,7 +461,12 @@ namespace triton_controls
     if (msg->success)
     {
       destination_achieved_ = true;
+
+      if (type_ == TRAJ_BUOY) {
+        RCLCPP_INFO(this->get_logger(), "Waypoint reached in TRAJ_BUOY mode.");
+      } else if (type_ == TRAJ_GATE) {
         RCLCPP_INFO(this->get_logger(), "Waypoint reached in TRAJ_GATE mode.");
+      }
     }
 
   }
