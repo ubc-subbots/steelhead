@@ -71,9 +71,10 @@ namespace triton_controls
         void waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg);
 
 
-        void approach_left_of_buoy();
+        void approach_buoy();
         void rotate_around_buoy();
         void aim_back_at_start();
+        double calculate_distance_to_buoy();
 
 
         rclcpp::Publisher<triton_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
@@ -98,7 +99,7 @@ namespace triton_controls
 
         int buoy_state_; // to track the steps in a buoy maneuver
         geometry_msgs::msg::Point starting_position_; // to store the starting position before the buoy maneuver
-
+        geometry_msgs::msg::Point buoy_position_in_map_; // to store the buoy position in the map frame
     };
 
 } // namespace triton_controls
