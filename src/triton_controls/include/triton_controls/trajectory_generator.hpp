@@ -18,6 +18,10 @@
 #define TRAJ_START 0
 #define TRAJ_GATE 1
 #define TRAJ_BUOY 2
+#define BUOY_UNINITIALIZED -1
+#define BUOY_APPROACH 0
+#define BUOY_ROTATE 1
+#define BUOY_RETURN 2
 
 namespace triton_controls
 {
