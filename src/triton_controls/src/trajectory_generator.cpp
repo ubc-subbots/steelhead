@@ -1,102 +1,86 @@
 #include "triton_controls/trajectory_generator.hpp"
 using std::placeholders::_1;
 
-namespace triton_controls
-{   
+namespace triton_controls {   
 	// GLOBAL VARIABLES
-	double rotational_theta = 0.0; // Initialize theta once
-    double initial_theta = 0.0;
     bool approach_destination_achieved_ = false;
-    bool rotate_destination_achieved_ = false;
-    double radius_for_rotation = 6.0; // Adjusted circle radius_for_rotation in meters
+    double radius_for_rotation = 4.0; // Adjusted circle radius_for_rotation in meters
+    double distance_to_buoy = 999999; //stub large value
     
-
-
+    
     void TrajectoryGenerator::rotate_around_buoy() {
-        double delta_theta = 0.2; // Increment angle in radians
+        int num_waypoints = 12; // Number of waypoints for the circle
+        double radius = radius_for_rotation; // Desired radius for rotation
+        double angle_step = 2 * M_PI / num_waypoints; // Equal angle steps
 
-        // If this is the first call, initialize the starting angle and adjust heading
-        if (rotational_theta == 0.0) {
-            // Calculate the angle from the buoy to the AUV's current position
-            double dx = current_pose_.position.x - buoy_position_in_map_.x;
-            double dy = current_pose_.position.y - buoy_position_in_map_.y;
-            initial_theta = atan2(dy, dx);
+        // Stop residual movement and stabilize
+        auto stop_msg = triton_interfaces::msg::Waypoint();
+        stop_msg.pose.position = current_pose_.position; // Stay in place
+        stop_msg.pose.orientation = current_pose_.orientation; // Keep current orientation
 
-            rotational_theta = 0.0;  // Start angle at 0
+        stop_msg.distance.position.x = 0.1; // Small tolerance
+        stop_msg.distance.position.y = 0.1;
+        stop_msg.distance.position.z = 0.1;
 
-            // Adjust heading for counter-clockwise rotation
-            double required_yaw = initial_theta - M_PI / 2;
+        waypoint_publisher_->publish(stop_msg);
+        rclcpp::sleep_for(std::chrono::milliseconds(1000)); // Stabilize
 
-            // Create the waypoint message to adjust heading
+        // Extract buoy position
+        double buoy_x = buoy_global_position_.x();
+        double buoy_y = buoy_global_position_.y();
+        double buoy_z = buoy_global_position_.z();
+
+        for (int i = 0; i < num_waypoints; ++i) {
+            double angle = i * angle_step;
+
+            // Calculate waypoint positions relative to the buoy
+            double waypoint_x = buoy_global_position_.x() + radius * cos(angle);
+            double waypoint_y = buoy_global_position_.y() + radius * sin(angle);
+            double waypoint_z = buoy_global_position_.z(); // Maintain depth
+
+            // Set waypoint message
             auto reply_msg = triton_interfaces::msg::Waypoint();
-            reply_msg.pose.position = current_pose_.position;
-            tf2::Quaternion tf2_quat_destination;
-            tf2_quat_destination.setRPY(0, 0, required_yaw);
-            reply_msg.pose.orientation = tf2::toMsg(tf2_quat_destination);
+            reply_msg.pose.position.x = waypoint_x;
+            reply_msg.pose.position.y = waypoint_y;
+            reply_msg.pose.position.z = waypoint_z;
+
+            // Orientation to face the buoy
+            double yaw = atan2(buoy_global_position_.y() - waypoint_y,
+                            buoy_global_position_.x() - waypoint_x);
+
+            tf2::Quaternion orientation;
+            orientation.setRPY(0, 0, yaw);
+            reply_msg.pose.orientation = tf2::toMsg(orientation);
 
             // Set tolerances
             reply_msg.distance.position.x = 0.5;
             reply_msg.distance.position.y = 0.5;
             reply_msg.distance.position.z = 0.5;
 
-            // Set duration and type
-            reply_msg.duration = 2.0;
-            reply_msg.type = 1; // PASSTHROUGH
-
+            // Publish waypoint
             waypoint_publisher_->publish(reply_msg);
 
-            // Proceed to generate waypoints in the next iteration
-            return;
+            // Pause briefly for motion
+            rclcpp::sleep_for(std::chrono::milliseconds(1000));
+
+            // Debug logs
+            RCLCPP_INFO(this->get_logger(), "Waypoint %d: (%f, %f, %f) facing buoy (%f, %f) with yaw: %f",
+                        i, waypoint_x, waypoint_y, waypoint_z,
+                        buoy_global_position_.x(), buoy_global_position_.y(), yaw);
         }
 
-        // Update the angle around the buoy
-        rotational_theta -= delta_theta; // Decrement theta for counter-clockwise rotation
-        RCLCPP_INFO(this->get_logger(), "Rotational theta: %f", rotational_theta);
 
-        // Complete rotation after -2 * PI
-        if (rotational_theta <= -2 * M_PI) {
-            rotational_theta = 0.0; // Reset theta
-            buoy_state_ = BUOY_RETURN; // Transition to BUOY_RETURN state
-            RCLCPP_INFO(this->get_logger(), "Completed circling around the buoy. Proceeding to return to starting position.");
-            return;
-        }
+        // After completing the loop, return to start mode
+        buoy_state_ = BUOY_RETURN; // Transition to return state
+    }
 
-        // Buoy's position in the map frame
-        double x_buoy = buoy_position_in_map_.x;
-        double y_buoy = buoy_position_in_map_.y;
 
-        // Calculate current waypoint position along the circle
-        double x_current = x_buoy + radius_for_rotation * cos(initial_theta - rotational_theta);
-        double y_current = y_buoy + radius_for_rotation * sin(initial_theta - rotational_theta);
 
-        // Calculate the next waypoint position along the circle
-        double x_next = x_buoy + radius_for_rotation * cos(initial_theta - rotational_theta - delta_theta);
-        double y_next = y_buoy + radius_for_rotation * sin(initial_theta - rotational_theta - delta_theta);
-
-        // Calculate the required yaw to move along the circle's tangent
-        double required_yaw = atan2(y_next - y_current, x_next - x_current);
-
-        // Create the waypoint message
-        auto reply_msg = triton_interfaces::msg::Waypoint();
-        reply_msg.pose.position.x = x_current;
-        reply_msg.pose.position.y = y_current;
-        reply_msg.pose.position.z = current_pose_.position.z; // Maintain current depth
-
-        // Set the orientation along the circle's tangent
-        tf2::Quaternion tf2_quat_destination;
-        tf2_quat_destination.setRPY(0, 0, required_yaw);
-        reply_msg.pose.orientation = tf2::toMsg(tf2_quat_destination);
-
-        // Set tolerances
-        reply_msg.distance.position.x = 0.5;
-        reply_msg.distance.position.y = 0.5;
-        reply_msg.distance.position.z = 0.5;
-
-        // Set duration and type
-        reply_msg.duration = 2.0;
-        reply_msg.type = 1; // PASSTHROUGH
-
-        waypoint_publisher_->publish(reply_msg);
+    tf2::Vector3 TrajectoryGenerator::get_buoy_global_position() {
+        return tf2::Vector3(
+            current_pose_.position.x + destination_pose_.position.x,
+            current_pose_.position.y + destination_pose_.position.y,
+            current_pose_.position.z + destination_pose_.position.z);
     }
 
 
@@ -216,8 +200,10 @@ namespace triton_controls
         : Node("trajectory_generator", options),
         type_(TRAJ_START),
         destination_achieved_(true),
-        buoy_state_(BUOY_UNINITIALIZED)
-    { 
+        buoy_state_(BUOY_UNINITIALIZED),
+        initial_rot_heading_adjusted_(false),
+        initial_rot_heading_reached_(false)
+        { 
 
         //can remove later but this publishes the current mode
         current_mode_publisher_ = this->create_publisher<triton_interfaces::msg::TrajectoryType>("/triton/controls/trajectory_generator/current_mode", 10);
@@ -250,8 +236,7 @@ namespace triton_controls
         mode_msg.type = type_;
         current_mode_publisher_->publish(mode_msg);
 
-        if (type_ == TRAJ_START) 
-        {
+        if (type_ == TRAJ_START) {
             RCLCPP_INFO(this->get_logger(), "Scanning for targets in TRAJ_START mode.");
             // Turn the AUV around slowly (to search for gate)
             auto reply_msg = triton_interfaces::msg::Waypoint(); // Create a new waypoint message
@@ -291,154 +276,157 @@ namespace triton_controls
 
             waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
         }
-        else if (type_ == TRAJ_GATE) // Check if the mode is TRAJ_GATE
-        {
-            RCLCPP_INFO(this->get_logger(), "Approaching gate in TRAJ_GATE mode.");
-        // TODO: Generate trajectory logic for navigating through a gate
-        if (!destination_achieved_) // If the destination hasn't been reached
-        {
-            auto reply_msg = triton_interfaces::msg::Waypoint(); // Create a new waypoint message
+        else if (type_ == TRAJ_GATE) {// Check if the mode is TRAJ_GATE 
+            
 
-            // Prepare to calculate adjustments for the waypoint
-            // reply_msg is in the map frame, destination_pose_ is in the base frame, and current_pose_ is in the map frame
+            RCLCPP_INFO(this->get_logger(), "Approaching gate in TRAJ_GATE mode. [SHOULD BE DISABLED RIGHT NOW BECAUSE I AM IMPLEMENTING BUOY NAVIGATION]");
+            // TODO: Generate trajectory logic for navigating through a gate
+            if (!destination_achieved_) {// If the destination hasn't been reached
+                auto reply_msg = triton_interfaces::msg::Waypoint(); // Create a new waypoint message
 
-            // If the gate is not directly in front, calculate yaw to turn toward it
-            double required_yaw = std::atan(destination_pose_.position.y / destination_pose_.position.x); // Calculate yaw adjustment
+                // Prepare to calculate adjustments for the waypoint
+                // reply_msg is in the map frame, destination_pose_ is in the base frame, and current_pose_ is in the map frame
 
-            // Extract the current pose's orientation as a quaternion
-            tf2::Quaternion current_pose_q(
-                current_pose_.orientation.x,
-                current_pose_.orientation.y,
-                current_pose_.orientation.z,
-                current_pose_.orientation.w);
-            tf2::Matrix3x3 current_pose_q_m(current_pose_q); // Convert quaternion to a rotation matrix
-            double current_pose_roll, current_pose_pitch, current_pose_yaw; // Variables to store roll, pitch, yaw
-            current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw); // Extract roll, pitch, yaw
+                // If the gate is not directly in front, calculate yaw to turn toward it
+                double required_yaw = std::atan(destination_pose_.position.y / destination_pose_.position.x); // Calculate yaw adjustment
 
-            // Set the new orientation based on the required yaw
-            tf2::Quaternion tf2_quat_destination;
-            tf2_quat_destination.setRPY(current_pose_roll, current_pose_pitch, current_pose_yaw + required_yaw); // Add yaw adjustment
-            reply_msg.pose.orientation.x = tf2_quat_destination.x(); // Set the waypoint orientation (x component)
-            reply_msg.pose.orientation.y = tf2_quat_destination.y(); // Set the waypoint orientation (y component)
-            reply_msg.pose.orientation.z = tf2_quat_destination.z(); // Set the waypoint orientation (z component)
-            reply_msg.pose.orientation.w = tf2_quat_destination.w(); // Set the waypoint orientation (w component)
+                // Extract the current pose's orientation as a quaternion
+                tf2::Quaternion current_pose_q(
+                    current_pose_.orientation.x,
+                    current_pose_.orientation.y,
+                    current_pose_.orientation.z,
+                    current_pose_.orientation.w);
+                tf2::Matrix3x3 current_pose_q_m(current_pose_q); // Convert quaternion to a rotation matrix
+                double current_pose_roll, current_pose_pitch, current_pose_yaw; // Variables to store roll, pitch, yaw
+                current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw); // Extract roll, pitch, yaw
 
-            // Calculate distance to gate and position waypoint accordingly
-            double distance_x = std::sqrt(std::pow(destination_pose_.position.y, 2) + std::pow(destination_pose_.position.x, 2)); // Calculate Euclidean distance
-            tf2::Quaternion current_q; // Create a quaternion for rotation
-            tf2::Vector3 dest_v; // Create a vector for destination
-            dest_v.setX(distance_x + 1); // Set forward distance with buffer
-            dest_v.setY(0); // No lateral offset
-            dest_v.setZ(0); // No vertical offset
-            tf2::fromMsg(current_pose_.orientation, current_q); // Convert current orientation to quaternion
-            tf2::Vector3 targetForward = tf2::quatRotate(current_q, dest_v); // Rotate vector to align with AUV heading
-            reply_msg.pose.position.x = current_pose_.position.x + targetForward.getX(); // Set waypoint position x
-            reply_msg.pose.position.y = current_pose_.position.y + targetForward.getY(); // Set waypoint position y
-            reply_msg.pose.position.z = current_pose_.position.z + destination_pose_.position.z; // Adjust waypoint position z
+                // Set the new orientation based on the required yaw
+                tf2::Quaternion tf2_quat_destination;
+                tf2_quat_destination.setRPY(current_pose_roll, current_pose_pitch, current_pose_yaw + required_yaw); // Add yaw adjustment
+                reply_msg.pose.orientation.x = tf2_quat_destination.x(); // Set the waypoint orientation (x component)
+                reply_msg.pose.orientation.y = tf2_quat_destination.y(); // Set the waypoint orientation (y component)
+                reply_msg.pose.orientation.z = tf2_quat_destination.z(); // Set the waypoint orientation (z component)
+                reply_msg.pose.orientation.w = tf2_quat_destination.w(); // Set the waypoint orientation (w component)
 
-            // Define a fixed distance tolerance
-            tf2::Quaternion tf2_quat_distance;
-            tf2_quat_distance.setRPY(1.57, 1.57, 1.57); // Define rotational distance tolerances
+                // Calculate distance to gate and position waypoint accordingly
+                double distance_x = std::sqrt(std::pow(destination_pose_.position.y, 2) + std::pow(destination_pose_.position.x, 2)); // Calculate Euclidean distance
+                tf2::Quaternion current_q; // Create a quaternion for rotation
+                tf2::Vector3 dest_v; // Create a vector for destination
+                dest_v.setX(distance_x + 1); // Set forward distance with buffer
+                dest_v.setY(0); // No lateral offset
+                dest_v.setZ(0); // No vertical offset
+                tf2::fromMsg(current_pose_.orientation, current_q); // Convert current orientation to quaternion
+                tf2::Vector3 targetForward = tf2::quatRotate(current_q, dest_v); // Rotate vector to align with AUV heading
+                reply_msg.pose.position.x = current_pose_.position.x + targetForward.getX(); // Set waypoint position x
+                reply_msg.pose.position.y = current_pose_.position.y + targetForward.getY(); // Set waypoint position y
+                reply_msg.pose.position.z = current_pose_.position.z + destination_pose_.position.z; // Adjust waypoint position z
 
-            reply_msg.distance.position.x = 0.5; // Set forward tolerance
-            reply_msg.distance.position.y = 4.0; // Set lateral tolerance for gate width
-            reply_msg.distance.position.z = 2.0; // Set vertical tolerance for gate height
-            reply_msg.distance.orientation.x = tf2_quat_distance.x(); // Set orientation distance (x component)
-            reply_msg.distance.orientation.y = tf2_quat_distance.y(); // Set orientation distance (y component)
-            reply_msg.distance.orientation.z = tf2_quat_distance.z(); // Set orientation distance (z component)
-            reply_msg.distance.orientation.w = tf2_quat_distance.w(); // Set orientation distance (w component)
-            reply_msg.type = 1; // PASSTHROUGH type for the waypoint
+                // Define a fixed distance tolerance
+                tf2::Quaternion tf2_quat_distance;
+                tf2_quat_distance.setRPY(1.57, 1.57, 1.57); // Define rotational distance tolerances
 
-            waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
-        }
-        else // If the destination has been achieved or is invalid
-        {
-            RCLCPP_INFO(this->get_logger(), "Destination achieved. Continuing in TRAJ_GATE mode.");
-            // Prevent division by zero in calculations
-            if (destination_pose_.position.x == 0)
-            {
-            destination_pose_.position.x = 0.1; // Assign a small value to prevent division by zero
+                reply_msg.distance.position.x = 0.5; // Set forward tolerance
+                reply_msg.distance.position.y = 4.0; // Set lateral tolerance for gate width
+                reply_msg.distance.position.z = 2.0; // Set vertical tolerance for gate height
+                reply_msg.distance.orientation.x = tf2_quat_distance.x(); // Set orientation distance (x component)
+                reply_msg.distance.orientation.y = tf2_quat_distance.y(); // Set orientation distance (y component)
+                reply_msg.distance.orientation.z = tf2_quat_distance.z(); // Set orientation distance (z component)
+                reply_msg.distance.orientation.w = tf2_quat_distance.w(); // Set orientation distance (w component)
+                reply_msg.type = 1; // PASSTHROUGH type for the waypoint
+
+                waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
             }
+            else // If the destination has been achieved or is invalid
+            {
+                RCLCPP_INFO(this->get_logger(), "Destination achieved. Continuing in TRAJ_GATE mode.");
+                // Prevent division by zero in calculations
+                if (destination_pose_.position.x == 0)
+                {
+                destination_pose_.position.x = 0.1; // Assign a small value to prevent division by zero
+                }
 
-            // Turn the AUV around slowly (to search for gate again)
-            auto reply_msg = triton_interfaces::msg::Waypoint(); // Create a new waypoint message
-            reply_msg.pose = current_pose_; // Use the current pose as the waypoint pose
+                // Turn the AUV around slowly (to search for gate again)
+                auto reply_msg = triton_interfaces::msg::Waypoint(); // Create a new waypoint message
+                reply_msg.pose = current_pose_; // Use the current pose as the waypoint pose
 
-            // Extract the current pose's orientation as a quaternion
-            tf2::Quaternion current_pose_q(
-                current_pose_.orientation.x,
-                current_pose_.orientation.y,
-                current_pose_.orientation.z,
-                current_pose_.orientation.w);
-            tf2::Matrix3x3 current_pose_q_m(current_pose_q); // Convert quaternion to a rotation matrix
-            double current_pose_roll, current_pose_pitch, current_pose_yaw; // Variables to store roll, pitch, yaw
-            current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw); // Extract roll, pitch, yaw
+                // Extract the current pose's orientation as a quaternion
+                tf2::Quaternion current_pose_q(
+                    current_pose_.orientation.x,
+                    current_pose_.orientation.y,
+                    current_pose_.orientation.z,
+                    current_pose_.orientation.w);
+                tf2::Matrix3x3 current_pose_q_m(current_pose_q); // Convert quaternion to a rotation matrix
+                double current_pose_roll, current_pose_pitch, current_pose_yaw; // Variables to store roll, pitch, yaw
+                current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw); // Extract roll, pitch, yaw
 
-            // Set some small yaw offset to rotate slowly
-            tf2::Quaternion tf2_quat_dest;
-            tf2_quat_dest.setRPY(0.001, 0.001, current_pose_yaw - 0.50); // Adjust yaw for a slow rotation
-            reply_msg.pose.orientation.x = tf2_quat_dest.x(); // Set the waypoint orientation (x component)
-            reply_msg.pose.orientation.y = tf2_quat_dest.y(); // Set the waypoint orientation (y component)
-            reply_msg.pose.orientation.z = tf2_quat_dest.z(); // Set the waypoint orientation (z component)
-            reply_msg.pose.orientation.w = tf2_quat_dest.w(); // Set the waypoint orientation (w component)
+                // Set some small yaw offset to rotate slowly
+                tf2::Quaternion tf2_quat_dest;
+                tf2_quat_dest.setRPY(0.001, 0.001, current_pose_yaw - 0.50); // Adjust yaw for a slow rotation
+                reply_msg.pose.orientation.x = tf2_quat_dest.x(); // Set the waypoint orientation (x component)
+                reply_msg.pose.orientation.y = tf2_quat_dest.y(); // Set the waypoint orientation (y component)
+                reply_msg.pose.orientation.z = tf2_quat_dest.z(); // Set the waypoint orientation (z component)
+                reply_msg.pose.orientation.w = tf2_quat_dest.w(); // Set the waypoint orientation (w component)
 
-            // Set small forward movement distance
-            tf2::Quaternion tf2_quat_distance;
-            tf2_quat_distance.setRPY(0.05, 0.05, 0.1); // Add small positional offset
+                // Set small forward movement distance
+                tf2::Quaternion tf2_quat_distance;
+                tf2_quat_distance.setRPY(0.05, 0.05, 0.1); // Add small positional offset
 
-            reply_msg.distance.position.x = 0.2; // Set forward distance (x-axis)
-            reply_msg.distance.position.y = 0.2; // Set lateral distance (y-axis)
-            reply_msg.distance.position.z = 0.2; // Set vertical distance (z-axis)
-            reply_msg.distance.orientation.x = tf2_quat_distance.x(); // Set orientation distance (x component)
-            reply_msg.distance.orientation.y = tf2_quat_distance.y(); // Set orientation distance (y component)
-            reply_msg.distance.orientation.z = tf2_quat_distance.z(); // Set orientation distance (z component)
-            reply_msg.distance.orientation.w = tf2_quat_distance.w(); // Set orientation distance (w component)
-            reply_msg.duration = 2; // Set duration for this waypoint
-            reply_msg.type = 0; // STABILIZE type for the waypoint
+                reply_msg.distance.position.x = 0.2; // Set forward distance (x-axis)
+                reply_msg.distance.position.y = 0.2; // Set lateral distance (y-axis)
+                reply_msg.distance.position.z = 0.2; // Set vertical distance (z-axis)
+                reply_msg.distance.orientation.x = tf2_quat_distance.x(); // Set orientation distance (x component)
+                reply_msg.distance.orientation.y = tf2_quat_distance.y(); // Set orientation distance (y component)
+                reply_msg.distance.orientation.z = tf2_quat_distance.z(); // Set orientation distance (z component)
+                reply_msg.distance.orientation.w = tf2_quat_distance.w(); // Set orientation distance (w component)
+                reply_msg.duration = 2; // Set duration for this waypoint
+                reply_msg.type = 0; // STABILIZE type for the waypoint
 
-            waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
-        }
+                waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
+            }
         }
         else if (type_ == TRAJ_BUOY) {
             // RCLCPP_INFO(this->get_logger(), "Attempting buoy maneuver in TRAJ_BUOY mode.");
             switch (buoy_state_)
             {
                 case BUOY_APPROACH:  // Approach the buoy
-                    if (!approach_destination_achieved_) {
-                        approach_buoy();
-                        
-                        // Calculate distance to buoy
-                        double distance_to_buoy = calculate_distance_to_buoy();
-                        RCLCPP_INFO(this->get_logger(), "Distance to buoy is estimated at %f meters.", distance_to_buoy);
+                    approach_buoy();
+                    
+                    // Calculate distance to buoy
+                    distance_to_buoy = calculate_distance_to_buoy();
+                    RCLCPP_INFO(this->get_logger(), "Distance to buoy is estimated at %f meters.", distance_to_buoy);
 
 
-                        // Check if close enough to initiate rotation
-                        
-                        if (distance_to_buoy <= radius_for_rotation) // when within radius_for_rotation meter(s) of buoy, start rotation process
-                        {
-                            destination_achieved_ = true;
-                            RCLCPP_INFO(this->get_logger(), "Reached proximity to buoy. Proceeding to rotate around.");
-                        }
-                    }
-                    else {
-                        approach_destination_achieved_ = false;
+                    // Check if close enough to initiate rotation
+                    
+                    if (distance_to_buoy <= radius_for_rotation) // when within radius_for_rotation meter(s) of buoy, start rotation process
+                    {
                         buoy_state_ = BUOY_ROTATE;
-                        rotational_theta = 0.0;  // Reset rotational theta
                         RCLCPP_INFO(this->get_logger(), "Approached the buoy. Proceeding to rotate around.");
                         
+                        destination_achieved_ = false; // Reset destination achieved
+                        
+
+                        buoy_global_position_ = get_buoy_global_position();
+
+                        RCLCPP_INFO(this->get_logger(), "Buoy Global Position: (%f, %f, %f)",
+                        buoy_global_position_.x(),
+                        buoy_global_position_.y(),
+                        buoy_global_position_.z());
                     }
+                    
                     break;
                 case BUOY_ROTATE:  // Rotate around the buoy	
                     rotate_around_buoy();
+                    buoy_state_ = BUOY_RETURN;
                     break;
                 case BUOY_RETURN:  // Aim back at starting position
-                    if (!rotate_destination_achieved_) {
+                    if (!destination_achieved_) {
                         aim_back_at_start();
                     }
                     else {
                         RCLCPP_INFO(this->get_logger(), "Completed buoy maneuver. Returning to TRAJ_START mode.");
-                        type_ = TRAJ_START;
-                        rotate_destination_achieved_ = false;
+                        // type_ = TRAJ_START;
+                        destination_achieved_ = false;
                         buoy_state_ = BUOY_UNINITIALIZED;
                     }
                     break;
@@ -453,10 +441,12 @@ namespace triton_controls
 
 	void TrajectoryGenerator::type_callback(const triton_interfaces::msg::TrajectoryType::SharedPtr msg) {
 
-        type_ = msg->type;
-        destination_achieved_ = false;
+        if (!(buoy_state_ == BUOY_ROTATE) && !(type_ == TRAJ_BUOY)) {
+            type_ = msg->type;
+            destination_achieved_ = false;
 
-        RCLCPP_INFO(this->get_logger(), "Trajectory Type updated. ");
+            RCLCPP_INFO(this->get_logger(), "Trajectory Type updated. ");
+        }
 
     }
 
@@ -466,47 +456,35 @@ namespace triton_controls
          */
 
         // Check if the detected object is a gate (change to buoy later)
-        if (msg->class_id == TRAJ_GATE)
+        if (msg->class_id == TRAJ_GATE )
         {
-            // Validate the detected gate position to avoid extreme values
+
+            // Validate the detected buoy position to avoid extreme values
             if (abs(msg->pose.position.x) < 50 
                 && abs(msg->pose.position.y) < 50
-                && abs(msg->pose.position.z) < 20)
-            {
-                // Update the destination pose with the detected gate position
+                && abs(msg->pose.position.z) < 20) {
+                // Update the destination pose with the detected buoy position
                 destination_pose_ = msg->pose;
 
-                buoy_position_in_map_ = msg->pose.position;
-
-                // Update the buoy position only if not in BUOY_ROTATE state
-                if (type_ != TRAJ_BUOY || (type_ == TRAJ_BUOY && buoy_state_ == BUOY_APPROACH)) //MAY NEED TO ALSO DO THIS FOR BUOY_RETURN
-                {
-                    // Calculate and store buoy's position in the map frame
-                    // buoy_position_in_map_.x = current_pose_.position.x + msg->pose.position.x;
-                    // buoy_position_in_map_.y = current_pose_.position.y + msg->pose.position.y;
-                    // buoy_position_in_map_.z = current_pose_.position.z + msg->pose.position.z;
-
-                    //calculate and store buoy's position in the map frame assuming it's already in the map frame
-                    buoy_position_in_map_.x = msg->pose.position.x;
-                    buoy_position_in_map_.y = msg->pose.position.y;
-                    buoy_position_in_map_.z = msg->pose.position.z;
-                }
-
-                if (type_ != TRAJ_BUOY)
-                {
+                // this also implies we only know our position if we can detect a gate
+                buoy_position_in_map_.x = msg->pose.position.x;
+                buoy_position_in_map_.y = msg->pose.position.y;
+                buoy_position_in_map_.z = msg->pose.position.z;
+                
+                
+                if (type_ != TRAJ_BUOY || buoy_state_ == BUOY_UNINITIALIZED) {
                     // Switch to TRAJ_BUOY mode
                     type_ = TRAJ_BUOY;
                     destination_achieved_ = false;
                     buoy_state_ = BUOY_APPROACH;  // Reset the buoy state
                     starting_position_ = current_pose_.position;  // Store the starting position
 
-                    RCLCPP_INFO(this->get_logger(), "Buoy detected! Switching to TRAJ_BUOY mode.");
-                }
-                else if (type_ == TRAJ_BUOY && buoy_state_ == BUOY_APPROACH)
-                {
-                    // Update the destination pose if still approaching
-                    destination_achieved_ = false;
-                }
+                    RCLCPP_INFO(this->get_logger(), "Buoy detected! Switching to TRAJ_BUOY mode and beginning approach.");
+                } 
+                // else if (type_ == TRAJ_BUOY && buoy_state_ == BUOY_APPROACH) {
+                //     // Update the destination pose if still approaching
+                //     destination_achieved_ = false;
+                // }
 
                 // Publish the updated mode
                 auto mode_msg = triton_interfaces::msg::TrajectoryType();
@@ -551,28 +529,37 @@ namespace triton_controls
       // }
   }
 
-
     void TrajectoryGenerator::waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg) {
-        if (msg->success) {
-            if (type_ == TRAJ_BUOY) {
-                switch (buoy_state_) {
-                    case BUOY_APPROACH:
-                        approach_destination_achieved_ = true;
-                        RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_APPROACH state.");
-                        break;
-                    case BUOY_ROTATE:
-                        // Do not set destination_achieved_ to true here
-                        // Instead, rely on rotational_theta in rotate_around_buoy()
-                        RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_ROTATE state.");
-                        break;
-                    case BUOY_RETURN:
-                        rotate_destination_achieved_ = true;
-                        RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_RETURN state.");
-                        break;
-                }
-            }
-        }
-    } 
+        RCLCPP_INFO(this->get_logger(), "IN WAYPOINT CALLBACK type: %d buoy_state: %d initial_rot_heading_reached_: %d", type_, buoy_state_,initial_rot_heading_reached_);
+        // if (msg->success) {
+        //         RCLCPP_INFO(this->get_logger(), "TEST1");
+        //     if (type_ == TRAJ_BUOY) {
+        //         RCLCPP_INFO(this->get_logger(), "TEST2");
+
+        //         switch (buoy_state_) {
+        //             case BUOY_APPROACH:
+        //                 RCLCPP_INFO(this->get_logger(), "TEST3");
+        //                 approach_destination_achieved_ = true;
+        //                 RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_APPROACH state.");
+        //                 break;
+        //             case BUOY_ROTATE:
+        //                 // RCLCPP_INFO(this->get_logger(), "BUOY_ROTATE_STATE");
+        //                 // if (!initial_rot_heading_reached_) {
+        //                 //     initial_rot_heading_reached_ = true;
+        //                 //     RCLCPP_INFO(this->get_logger(), "Initial heading adjustment completed. Starting rotation.");
+        //                 // } else {
+        //                 //     RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_ROTATE state.");
+        //                 // }
+        //                 break;
+        //             case BUOY_RETURN:
+        //                 rotate_destination_achieved_ = true;
+        //                 RCLCPP_INFO(this->get_logger(), "Waypoint reached in BUOY_RETURN state.");
+        //                 break;
+        //         }
+        //     }
+        // }
+    }
+
     
 }// namespace triton_controls
 

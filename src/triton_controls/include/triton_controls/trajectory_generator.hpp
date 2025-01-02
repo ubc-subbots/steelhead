@@ -79,6 +79,7 @@ namespace triton_controls
         void rotate_around_buoy();
         void aim_back_at_start();
         double calculate_distance_to_buoy();
+        tf2::Vector3 get_buoy_global_position();
 
 
         rclcpp::Publisher<triton_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
@@ -104,6 +105,10 @@ namespace triton_controls
         int buoy_state_; // to track the steps in a buoy maneuver
         geometry_msgs::msg::Point starting_position_; // to store the starting position before the buoy maneuver
         geometry_msgs::msg::Point buoy_position_in_map_; // to store the buoy position in the map frame
+        bool initial_rot_heading_adjusted_;
+        bool initial_rot_heading_reached_;
+        tf2::Vector3 buoy_global_position_;
+
     };
 
 } // namespace triton_controls
