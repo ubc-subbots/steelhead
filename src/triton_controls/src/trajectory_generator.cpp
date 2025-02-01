@@ -3,11 +3,11 @@ using std::placeholders::_1;
 
 namespace triton_controls {   
 	// GLOBAL VARIABLES
-    bool approach_destination_achieved_ = false;
-    double radius_for_rotation = 4.0; // Adjusted circle radius_for_rotation in meters
-    double distance_to_buoy = 999999; //stub large value
+    bool approach_destination_achieved_ = false; // whether we have successfully closed the distance to the buoy
+    double radius_for_rotation = 3.0; // the destired radius of rotation (doubles as approach distance)
+    double distance_to_buoy = 999999; // estimated distance to the buy
     
-    
+    // we hardcode a global path around the buoy based on the last time we estimated our position from the buoy before entering the rotation state
     void TrajectoryGenerator::rotate_around_buoy() {
         int num_waypoints = 12; // Number of waypoints for the circle
         double radius = radius_for_rotation; // Desired radius for rotation
@@ -23,7 +23,7 @@ namespace triton_controls {
         stop_msg.distance.position.z = 0.1;
 
         waypoint_publisher_->publish(stop_msg);
-        rclcpp::sleep_for(std::chrono::milliseconds(1000)); // Stabilize
+        rclcpp::sleep_for(std::chrono::milliseconds(1000)); // time to stabilize
 
         // Extract buoy position
         double buoy_x = buoy_global_position_.x();
@@ -44,7 +44,8 @@ namespace triton_controls {
             reply_msg.pose.position.y = waypoint_y;
             reply_msg.pose.position.z = waypoint_z;
 
-            // Orientation to face the buoy
+            // Orientation to face the buoy **can possibly remove this if we are hardcoding the path***
+            // If we don't really care about the orientation to face the buoy can do a different yaw
             double yaw = atan2(buoy_global_position_.y() - waypoint_y,
                             buoy_global_position_.x() - waypoint_x);
 
@@ -70,43 +71,79 @@ namespace triton_controls {
         }
 
 
-        // After completing the loop, return to start mode
+        // After completing the loop, return to start position (change to buoy return state)
         buoy_state_ = BUOY_RETURN; // Transition to return state
     }
 
 
 
     tf2::Vector3 TrajectoryGenerator::get_buoy_global_position() {
-        return tf2::Vector3(
-            current_pose_.position.x + destination_pose_.position.x,
-            current_pose_.position.y + destination_pose_.position.y,
-            current_pose_.position.z + destination_pose_.position.z);
+        // 1. Convert the AUV's current quaternion to a tf2::Quaternion
+        tf2::Quaternion current_q;
+        tf2::fromMsg(current_pose_.orientation, current_q);
+
+        // 2. The buoy offset in the AUV’s local frame
+        tf2::Vector3 local_offset(
+            destination_pose_.position.x,
+            destination_pose_.position.y,
+            destination_pose_.position.z
+        );
+
+        // 3. Rotate local_offset by current_q to get the buoy offset in the GLOBAL frame
+        tf2::Vector3 global_offset = tf2::quatRotate(current_q, local_offset);
+
+        // 4. Now add that global offset to the AUV’s current global position
+        tf2::Vector3 buoy_global_pos(
+            current_pose_.position.x + global_offset.x(),
+            current_pose_.position.y + global_offset.y(),
+            current_pose_.position.z + global_offset.z()
+        );
+
+        return buoy_global_pos;
     }
 
 
 
+
     double TrajectoryGenerator::calculate_distance_to_buoy() {
-        if (destination_pose_.position.x == 0 && destination_pose_.position.y == 0 && destination_pose_.position.z == 0)
+        // If no destination set
+        if (destination_pose_.position.x == 0 && 
+            destination_pose_.position.y == 0 && 
+            destination_pose_.position.z == 0) 
         {
-            // No destination set
-            return -1;
+            return -1.0;
         }
-        // Buoy position in map frame (assuming destination_pose_ is in the AUV's frame)
+
+        // Convert AUV's current orientation to tf2
+        tf2::Quaternion current_q;
+        tf2::fromMsg(current_pose_.orientation, current_q);
+
+        // The buoy offset in the AUV’s local (base) frame
+        tf2::Vector3 local_offset(
+            destination_pose_.position.x,
+            destination_pose_.position.y,
+            destination_pose_.position.z
+        );
+
+        // Rotate local_offset by current_q to get the offset in the global/map frame
+        tf2::Vector3 global_offset = tf2::quatRotate(current_q, local_offset);
+
+        // Add that global offset to the AUV's global position
         tf2::Vector3 buoy_position_in_map(
-            current_pose_.position.x + destination_pose_.position.x,
-            current_pose_.position.y + destination_pose_.position.y,
-            current_pose_.position.z + destination_pose_.position.z);
+            current_pose_.position.x + global_offset.x(),
+            current_pose_.position.y + global_offset.y(),
+            current_pose_.position.z + global_offset.z()
+        );
 
         // Current AUV position in map frame
         tf2::Vector3 auv_position(
             current_pose_.position.x,
             current_pose_.position.y,
-            current_pose_.position.z);
+            current_pose_.position.z
+        );
 
-        // Compute distance
-        double distance = buoy_position_in_map.distance(auv_position);
-
-        return distance;
+        // Return the distance
+        return buoy_position_in_map.distance(auv_position);
     }
 
 
@@ -406,7 +443,7 @@ namespace triton_controls {
                         destination_achieved_ = false; // Reset destination achieved
                         
 
-                        buoy_global_position_ = get_buoy_global_position();
+                        buoy_global_position_ = get_buoy_global_position() + calculate_distance_to_buoy();
 
                         RCLCPP_INFO(this->get_logger(), "Buoy Global Position: (%f, %f, %f)",
                         buoy_global_position_.x(),

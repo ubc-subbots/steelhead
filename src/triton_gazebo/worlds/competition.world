@@ -26,6 +26,8 @@
       <uri>model://triton_auv</uri>
       <pose>0 0 1 0 0 0</pose>
     </include>
+
+
     <grid>0</grid>
   </world>
 </sdf>
