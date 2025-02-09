@@ -76,7 +76,7 @@ namespace triton_controls {
     }
 
 
-
+    //TODO: Fix this to correctly estimate global position
     tf2::Vector3 TrajectoryGenerator::get_buoy_global_position() {
         // 1. Convert the AUV's current quaternion to a tf2::Quaternion
         tf2::Quaternion current_q;
@@ -103,8 +103,6 @@ namespace triton_controls {
     }
 
 
-
-
     double TrajectoryGenerator::calculate_distance_to_buoy() {
         // If no destination set
         if (destination_pose_.position.x == 0 && 
@@ -129,10 +127,15 @@ namespace triton_controls {
         tf2::Vector3 global_offset = tf2::quatRotate(current_q, local_offset);
 
         // Add that global offset to the AUV's global position
+        // tf2::Vector3 buoy_position_in_map(
+        //     current_pose_.position.x + global_offset.x(),
+        //     current_pose_.position.y + global_offset.y(),
+        //     current_pose_.position.z + global_offset.z()
+        // );
         tf2::Vector3 buoy_position_in_map(
-            current_pose_.position.x + global_offset.x(),
-            current_pose_.position.y + global_offset.y(),
-            current_pose_.position.z + global_offset.z()
+            current_pose_.position.x,
+            current_pose_.position.y,
+            current_pose_.position.z
         );
 
         // Current AUV position in map frame
@@ -225,7 +228,7 @@ namespace triton_controls {
         reply_msg.distance.position.z = 0.5;
 
         // Set duration and type
-        reply_msg.duration = 5;  // Adjust as needed
+        reply_msg.duration = 5;  
         reply_msg.type = 0;  // STABILIZE
 
         waypoint_publisher_->publish(reply_msg);
@@ -268,7 +271,7 @@ namespace triton_controls {
 
     void TrajectoryGenerator::state_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
-        current_pose_ = msg->pose.pose;
+        current_pose_ = msg->pose.pose; // imu data being used
         auto mode_msg = triton_interfaces::msg::TrajectoryType();
         mode_msg.type = type_;
         current_mode_publisher_->publish(mode_msg);
@@ -443,7 +446,7 @@ namespace triton_controls {
                         destination_achieved_ = false; // Reset destination achieved
                         
 
-                        buoy_global_position_ = get_buoy_global_position() + calculate_distance_to_buoy();
+                        buoy_global_position_ = get_buoy_global_position(); // gets wrong position
 
                         RCLCPP_INFO(this->get_logger(), "Buoy Global Position: (%f, %f, %f)",
                         buoy_global_position_.x(),
@@ -458,7 +461,7 @@ namespace triton_controls {
                     break;
                 case BUOY_RETURN:  // Aim back at starting position
                     if (!destination_achieved_) {
-                        aim_back_at_start();
+                        aim_back_at_start(); // continuously sets waypoints towards the starting location
                     }
                     else {
                         RCLCPP_INFO(this->get_logger(), "Completed buoy maneuver. Returning to TRAJ_START mode.");
@@ -531,7 +534,7 @@ namespace triton_controls {
         }
 
       /**
-       * Below is the gate_callback function
+       * Below is the original gate_callback function that is temporarily removed
        */
       // Check if the detected object is a gate
       // if (msg->class_id == TRAJ_GATE)
@@ -611,4 +614,3 @@ int main(int argc, char * argv[]) {
   } // during testing sometimes throws error
   return 0;
 }
-
