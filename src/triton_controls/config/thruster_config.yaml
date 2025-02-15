@@ -1,20 +1,19 @@
 /triton/controls/thrust_allocator:
   ros__parameters:
-  # Old values are commented, we should think about remodelling the Gazebo Sim to match
-  #
-  #       # Thrusters will follow the following naming convention: 
+      # Thrusters will follow the following naming convention: 
 
-      #               ___      Thruster 1
-      #    Thruster 3 ___________|__|________
-      #                 |                    |
-      #                 |        -x          |
-      #            Thruster 5 |||            |_
-      #                 |     |||___+y       |_) AUV front 
-      #                 |     +z             |
-      #                 |   (pointing up)    |
-      #               __|____________________|   
-      #    Thruster 4 ___        |  |        
-      #                        Thruster 2
+#                           __
+#                          |  |           ___
+#                      ____|__|__________|___| Thruster 2 (angled)
+#                      |                 |
+#                 _____|       +y        |
+#             ___|╭───╮       |          |_
+#Thruster 1  |___|│ 3 │       |___+x     |_) AUV front 
+#                |╰───╯       +z         |
+#                 ‾‾‾‾‾|  (pointing up)  |
+#                      |_________________|___
+#                          |  |          |___| Thruster 4 (angled)
+#                          |__|
 
     num_thrusters: 6
     bits_per_thruster: 5
