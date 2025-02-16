@@ -26,23 +26,25 @@
       contrib: 
         x: 1.0
         y: 0.0
-      lx: -0.5
-      ly: -0.5
-    t3: # changed
-      contrib: 
-        x: 1.0
-        y: 0.0
-      lx: -0.5
-      ly: 0.5
-    t1: # changed
-      contrib:
-        z: 1.0
-      lx: 0.0
-      ly: 0.5
-    t2: # changed
-      contrib: 
-        z: 1.0
-      ly: -0.5
-    t5: # changed
-      contrib:
-        y: -1.0
+      # lx: -0.5
+      # ly: -0.5
+      lx: 0
+      ly: 0
+    # t3: # changed
+    #   contrib: 
+    #     x: 1.0
+    #     y: 0.0
+    #   lx: -0.5
+    #   ly: 0.5
+    # t1: # changed
+    #   contrib:
+    #     z: 1.0
+    #   lx: 0.0
+    #   ly: 0.5
+    # t2: # changed
+    #   contrib: 
+    #     z: 1.0
+    #   ly: -0.5
+    # t5: # changed
+    #   contrib:
+    #     y: -1.0
