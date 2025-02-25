@@ -4,7 +4,7 @@
     <link name='frame'>
 
       <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
-      <!-- Edited for Steelhead Mini Aug 9 2024-->
+      <!-- Edited for Steelhead Aug 9 2024-->
       <inertial>
         <mass>29.4835</mass>
         <inertia>
