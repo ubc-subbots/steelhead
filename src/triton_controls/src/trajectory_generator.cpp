@@ -166,6 +166,11 @@ namespace triton_controls {
             current_pose_.position.y + global_offset.y(),
             current_pose_.position.z + global_offset.z()
         );
+        tf2::Vector3 auv_position(
+            current_pose_.position.x,
+            current_pose_.position.y,
+            current_pose_.position.z
+        );
 
         // Return the distance
         // Compute 2D distance (ignore z component)
@@ -435,7 +440,7 @@ namespace triton_controls {
 
                     // Check if close enough to initiate rotation
                     
-                    if (distance_to_buoy + 2  <= radius_for_rotation) // when within radius_for_rotation meter(s) of buoy, start rotation process
+                    if (distance_to_buoy  <= radius_for_rotation / 2) // when within radius_for_rotation meter(s) of buoy, start rotation process
                     {
                         buoy_state_ = BUOY_ROTATE;
                         RCLCPP_INFO(this->get_logger(), "Approached the buoy. Proceeding to rotate around.");
