@@ -86,6 +86,9 @@ namespace triton_controls
         std::vector<double> x_contribs_;
         std::vector<double> y_contribs_;
         std::vector<double> z_contribs_;
+        std::vector<double> x_help_;
+        std::vector<double> y_help_;
+        std::vector<double> z_help_;
     };
     
 } // namespace triton_controls
