@@ -1,6 +1,8 @@
 #ifndef TRITON_CONTROL__TRAJECTORY_GENERATOR
 #define TRITON_CONTROL__TRAJECTORY_GENERATOR
 
+
+
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/pose_with_covariance.hpp"
@@ -14,9 +16,16 @@
 #include "triton_interfaces/msg/trajectory_type.hpp"
 #include <math.h>
 
+
 // Trajectory type
 #define TRAJ_START 0
 #define TRAJ_GATE 1
+#define TRAJ_BUOY 2
+#define BUOY_UNINITIALIZED -1
+#define BUOY_APPROACH 0
+#define BUOY_ROTATE 1
+#define BUOY_RETURN 2
+
 
 namespace triton_controls
 {
@@ -35,6 +44,7 @@ namespace triton_controls
         explicit TrajectoryGenerator(const rclcpp::NodeOptions & options);
 
     private:
+
 
          /** State message callback
          * 
@@ -69,6 +79,13 @@ namespace triton_controls
          */
         void waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg);
 
+
+        void approach_buoy();
+        void rotate_around_buoy();
+        void aim_back_at_start();
+        double calculate_distance_to_buoy();
+        tf2::Vector3 get_buoy_global_position(); 
+
         // Publish waypoint 
         rclcpp::Publisher<triton_interfaces::msg::Waypoint>::SharedPtr waypoint_publisher_;
         // Current state of AUV
@@ -83,9 +100,16 @@ namespace triton_controls
         uint8_t type_;
         geometry_msgs::msg::Pose current_pose_;     // AUV current pose
         geometry_msgs::msg::Pose destination_pose_;     
+
         std::vector<triton_interfaces::msg::Waypoint> waypoints_; // Destination waypoints in trajectory 
         bool destination_achieved_;                    
         float start_turning_factor_;
+
+        uint8_t buoy_state_; // to track the steps in a buoy maneuver
+        geometry_msgs::msg::Point starting_position_; // to store the starting position before the buoy maneuver
+        geometry_msgs::msg::Point buoy_position_in_map_; // to store the buoy position in the map frame
+        tf2::Vector3 buoy_global_position_;
+        bool starting_position_set_;
 
     };
 
