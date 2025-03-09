@@ -3,17 +3,17 @@
       # Thrusters will follow the following naming convention: 
 
 #                            __
-#                           |  |Thruster 6 ___
-#                       ____|__|__________|___| Thruster 2 (angled)
+#                           |  |Thruster 4 ___
+#                       ____|__|__________|___| Thruster 3 (angled)
 #                       |                 |
 #                  _____|       +y        |
 #              ___|╭───╮       |          |_
-# Thruster 1  |___|│ 3 │       |___+x     |_) AUV front 
+# Thruster 6  |___|│ 5 │       |___+x     |_) AUV front 
 #                 |╰───╯       +z         |
 #                  ‾‾‾‾‾|  (pointing up)  |
 #                       |_________________|___
-#                           |  |          |___| Thruster 4 (angled)
-#                           |__|Thruster 5
+#                           |  |          |___| Thruster 2 (angled)
+#                           |__|Thruster 1
 
     num_thrusters: 6
     bits_per_thruster: 5
@@ -21,43 +21,48 @@
     max_rev: 2.92 # kgf
     t1:
       contrib:
-        y: -1.0
-      lx: -0.455 
-      ly: 0.0
-      lz: 0.0
-    t2:
-      contrib:
-        y: 0.7071
-        z: -0.7071
-      help:
-        x: -0.0275
-      lx: 0.23
-      ly: 0.2145
-      lz: -0.0085
-    t3:
-      contrib:
-        z: -1.0
-      lx: -0.319431
-      ly: 0.0
-      lz: 0.08
-    t4:
-      contrib:
-        y: -0.7071
-        z: -0.7071
-      help:
-        x: -0.0275
-      lx: 0.23  
-      ly: -0.2145
-      lz: -0.0085
-    t5:
-      contrib:
         x: -1.0
       lx: -0.175
       ly: -0.3275
       lz: 0.0
-    t6:
+    t2:
+      contrib:
+        y: -0.7071
+        z: -0.7071
+      help:
+        x: -0.028
+      lx: 0.23  
+      ly: -0.2145
+      lz: -0.0085
+    t3:
+      contrib:
+        y: 0.7071
+        z: -0.7071
+      help:
+        x: -0.028
+      lx: 0.23
+      ly: 0.2145
+      lz: -0.0085
+    t4:
       contrib:
         x: -1.0
       lx: -0.175
       ly: 0.3275
       lz: 0.0
+    t5:
+      contrib:
+        z: -1.0
+      lx: -0.319431
+      ly: 0.0
+      lz: 0.08
+    t6:
+      contrib:
+        y: -1.0
+      lx: -0.455 
+      ly: 0.0
+      lz: 0.0
+    
+
+    
+    
+    

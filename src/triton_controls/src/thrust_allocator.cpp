@@ -109,13 +109,13 @@ namespace triton_controls
       std::vector<double> thrust;
       uint32_t signal = 0;
 
-
       for (int i = 0; i < num_thrusters_ ; i++)
       {
         double thruster_thrust = thrust_mat.at<double>(i,0);
         thrust.push_back(thruster_thrust);
 
         uint32_t t_level = forceToLevel(thruster_thrust);
+        std::cout << "thruster " << i << " " << t_level << std::endl;
         uint32_t t_bits = t_level << (bits_per_thruster_ * i);
         // std::cout << "thruster " << i << " " << thruster_thrust << " " << t_bits  << " " << (t_bits >> bits_per_thruster_ * i) << std::endl;
         signal |= t_bits;
@@ -123,7 +123,6 @@ namespace triton_controls
       // TEMP FIX: PLEASE CHANGE ME LATER
       // so that the teensy can distinguish between rubbish and real data
       signal |= 0b10101010000000000000000000000000;
-
 
       auto forces_msg = std_msgs::msg::Float64MultiArray();
       forces_msg.data = thrust;
