@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'key_publisher = triton_teleop.key_publisher:main',
             'keyboard_teleop = triton_teleop.keyboard_teleop:main',
+            'ssh_keyboard_teleop = triton_teleop.ssh_keyboard_teleop:main',
             'sim_thrust_mapper = triton_teleop.sim_thrust_mapper:main',
         ],
     },
