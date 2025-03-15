@@ -13,7 +13,7 @@
 #                  ‾‾‾‾‾|  (pointing up)  |
 #                       |_________________|___
 #                           |  |          |___| Thruster 4 (angled)
-#                           |__|Thruster 5
+#                           |__|Thruster 5                      
 
     num_thrusters: 6
     bits_per_thruster: 5
@@ -27,7 +27,7 @@
       lz: 0.0
     t2:
       contrib:
-        y: 0.7071
+        y: 0.7091
         z: -0.7071
       help:
         x: -0.0275
@@ -57,7 +57,7 @@
       lz: 0.0
     t6:
       contrib:
-        x: -1.0
+        x: -0.995
       lx: -0.175
       ly: 0.3275
       lz: 0.0
