@@ -26,6 +26,14 @@
 #define BUOY_ROTATE 1
 #define BUOY_RETURN 2
 
+enum class State {
+    IDLE,
+    APPROACH_GATE,
+    ROTATE_AROUND_CENTER,
+    RETURN_TO_START,
+    ERROR
+};
+
 
 namespace triton_controls
 {
@@ -79,8 +87,16 @@ namespace triton_controls
          */
         void waypoint_callback(const triton_interfaces::msg::Waypoint::SharedPtr msg);
 
+        void spin_for_gate_detect(const geometry_msgs::msg::Pose msg);
 
-        void approach_buoy();
+        
+        bool rotationComplete(const geometry_msgs::msg::Pose msg);
+
+
+        void move_diagonal_for_circular_motion(const geometry_msgs::msg::Pose msg);
+
+
+        void approach_gate();
         void rotate_around_buoy();
         void aim_back_at_start();
         double calculate_distance_to_buoy();
@@ -97,7 +113,10 @@ namespace triton_controls
         // Current Waypoint
         rclcpp::Subscription<triton_interfaces::msg::Waypoint>::SharedPtr waypoint_subscription_;
 
+
         uint8_t type_;
+        State current_state_ = State::IDLE;
+
         geometry_msgs::msg::Pose current_pose_;     // AUV current pose
         geometry_msgs::msg::Pose destination_pose_;     
 
@@ -110,6 +129,7 @@ namespace triton_controls
         geometry_msgs::msg::Point buoy_position_in_map_; // to store the buoy position in the map frame
         tf2::Vector3 buoy_global_position_;
         bool starting_position_set_;
+        double initial_yaw;
 
     };
 
