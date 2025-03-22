@@ -1,6 +1,10 @@
-# Triton AUV
+# Steelhead AUV
 
-This repository contains the ROS2 system for the UBC SubBots Triton AUV. It is meant be launched in Ubuntu 20.04 on the Jetson TX2 on board the Triton AUV.
+This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
+
+## DISCLAIMER
+
+This repository was copied over from the Triton repository, so many elements are still named after that fact. Efforts are ongoing to replace all the names.
 
 # Contents
 
@@ -13,7 +17,7 @@ This repository contains the ROS2 system for the UBC SubBots Triton AUV. It is m
 ## Setup
 To get started, first clone this repo to your computer running Ubuntu 20.04 into whatever directory you choose as such
 
-    git clone https://github.com/ubc-subbots/triton.git
+    git clone https://github.com/ubc-subbots/steelhead.git
 
 ### Gazebo Installation
 To install Gazebo, it is as simple as running the following command
@@ -87,7 +91,7 @@ To finish the setup, edit your `.bashrc` file to source the global and local set
 Navigate to the bottom of the file and add the following three lines, be sure to set `<PATH_TO_TRITON>` to whatever it is on your machine
 
     source /opt/ros/foxy/setup.bash                     # global setup script
-    source <PATH_TO_TRITON>/triton/install/setup.bash   # local setup script
+    source <PATH_TO_STEELHEAD>/steelhead/install/setup.bash   # local setup script
     export RCUTILS_COLORIZED_OUTPUT=1
     
 The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the pipeline as such
