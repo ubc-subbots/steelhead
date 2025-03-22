@@ -79,7 +79,6 @@ namespace triton_controls {
         // Define a fixed distance tolerance
         tf2::Quaternion tf2_quat_distance;
         tf2_quat_distance.setRPY(1.57, 1.57, 1.57); // Define rotational distance tolerances
-
         reply_msg.distance.position.x = 0.5; // Set forward tolerance
         reply_msg.distance.position.y = 4.0; // Set lateral tolerance for gate width
         reply_msg.distance.position.z = 2.0; // Set vertical tolerance for gate height
@@ -88,9 +87,7 @@ namespace triton_controls {
         reply_msg.distance.orientation.z = tf2_quat_distance.z(); // Set orientation distance (z component)
         reply_msg.distance.orientation.w = tf2_quat_distance.w(); // Set orientation distance (w component)
         reply_msg.type = 1; // PASSTHROUGH type for the waypoint
-
         waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
-
     }
 
     void TrajectoryGenerator::aim_back_at_start() {
@@ -126,9 +123,9 @@ namespace triton_controls {
 
         // 2. The buoy offset in the AUV’s local frame
         tf2::Vector3 local_offset(
-            3,
+            -13,
             0,
-            0
+            1
         );
 
         // 3. Rotate local_offset by current_q to get the buoy offset in the GLOBAL frame
@@ -140,75 +137,107 @@ namespace triton_controls {
             current_pose_.position.y + global_offset.y(),
             current_pose_.position.z + global_offset.z()
         );
-
-        return buoy_global_pos;
+        return local_offset;
     }
 
     void TrajectoryGenerator::rotate_around_buoy() {
-        int num_waypoints = 12; // Number of waypoints for the circle
-        double radius = radius_for_rotation; // Desired radius for rotation
-        double angle_step = 2 * M_PI / num_waypoints; // Equal angle steps
+    int num_waypoints = 12; // Number of waypoints for the circle
+    double radius = radius_for_rotation; // Desired radius for rotation
+    double angle_step = 2 * M_PI / num_waypoints; // Equal angle steps
+    double offset_distance = 3.0; // Distance of imaginary point from current pose
 
-        // Stop residual movement and stabilize
-        auto stop_msg = triton_interfaces::msg::Waypoint();
-        stop_msg.pose.position = current_pose_.position; // Stay in place
-        stop_msg.pose.orientation = current_pose_.orientation; // Keep current orientation
+    // Get current yaw
+    tf2::Quaternion current_q(
+        current_pose_.orientation.x,
+        current_pose_.orientation.y,
+        current_pose_.orientation.z,
+        current_pose_.orientation.w);
+    tf2::Matrix3x3 m(current_q);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
 
-        stop_msg.distance.position.x = 0.1; // Small tolerance
-        stop_msg.distance.position.y = 0.1;
-        stop_msg.distance.position.z = 0.1;
+    // Compute the new center of rotation (3 meters in front)
+    double center_x = current_pose_.position.x + offset_distance * cos(yaw);
+    double center_y = current_pose_.position.y + offset_distance * sin(yaw);
+    double center_z = current_pose_.position.z; // Maintain depth
 
-        waypoint_publisher_->publish(stop_msg);
-        rclcpp::sleep_for(std::chrono::milliseconds(1000)); // time to stabilize
+    // Stabilize first
+    auto stop_msg = triton_interfaces::msg::Waypoint();
+    stop_msg.pose = current_pose_;  // Keep the current position
+    stop_msg.pose.orientation = current_pose_.orientation;
+    waypoint_publisher_->publish(stop_msg);
+    rclcpp::sleep_for(std::chrono::milliseconds(1000)); // Time to stabilize
 
-        // Extract buoy position
-        double buoy_x = buoy_global_position_.x();
-        double buoy_y = buoy_global_position_.y();
-        double buoy_z = buoy_global_position_.z();
+    // Generate circular waypoints around the new center
+    for (int i = 0; i < num_waypoints; ++i) {
+        double angle = i * angle_step;
 
-        for (int i = 0; i < num_waypoints; ++i) {
-            double angle = i * angle_step;
+        // Calculate waypoint positions relative to the new center
+        double waypoint_x = center_x + radius * cos(angle);
+        double waypoint_y = center_y + radius * sin(angle);
+        double waypoint_z = center_z; // Maintain depth
 
-            // Calculate waypoint positions relative to the buoy
-            double waypoint_x = buoy_global_position_.x() + radius * cos(angle);
-            double waypoint_y = buoy_global_position_.y() + radius * sin(angle);
-            double waypoint_z = buoy_global_position_.z(); // Maintain depth
+        // Set waypoint message
+        auto reply_msg = triton_interfaces::msg::Waypoint();
+        reply_msg.pose.position.x = waypoint_x;
+        reply_msg.pose.position.y = waypoint_y;
+        reply_msg.pose.position.z = waypoint_z;
 
-            // Set waypoint message
-            auto reply_msg = triton_interfaces::msg::Waypoint();
-            reply_msg.pose.position.x = waypoint_x;
-            reply_msg.pose.position.y = waypoint_y;
-            reply_msg.pose.position.z = waypoint_z;
+        // Face toward the center of rotation
+        double new_yaw = atan2(center_y - waypoint_y, center_x - waypoint_x);
+        tf2::Quaternion orientation;
+        orientation.setRPY(0, 0, new_yaw);
+        reply_msg.pose.orientation = tf2::toMsg(orientation);
 
-            // Orientation to face the buoy **can possibly remove this if we are hardcoding the path***
-            // If we don't really care about the orientation to face the buoy can do a different yaw
-            double yaw = atan2(buoy_global_position_.y() - waypoint_y,
-                            buoy_global_position_.x() - waypoint_x);
+        // Set tolerances
+        reply_msg.distance.position.x = 0.5;
+        reply_msg.distance.position.y = 0.5;
 
-            tf2::Quaternion orientation;
-            orientation.setRPY(0, 0, yaw);
-            reply_msg.pose.orientation = tf2::toMsg(orientation);
+        // Publish waypoint
+        waypoint_publisher_->publish(reply_msg);
+        rclcpp::sleep_for(std::chrono::milliseconds(10000)); // Wait for movement
 
-            // Set tolerances
-            reply_msg.distance.position.x = 0.5;
-            reply_msg.distance.position.y = 0.5;
-            reply_msg.distance.position.z = 0.5;
+        // Debug logs
+        RCLCPP_INFO(this->get_logger(), "Waypoint %d: (%f, %f, %f) facing center (%f, %f) with yaw: %f",
+                    i, waypoint_x, waypoint_y, waypoint_z, center_x, center_y, new_yaw);
+    }
 
-            // Publish waypoint
-            waypoint_publisher_->publish(reply_msg);
-
-            // Pause briefly for motion
-            rclcpp::sleep_for(std::chrono::milliseconds(1000));
-
-            // Debug logs
-            RCLCPP_INFO(this->get_logger(), "Waypoint %d: (%f, %f, %f) facing buoy (%f, %f) with yaw: %f",
-                        i, waypoint_x, waypoint_y, waypoint_z,
-                        buoy_global_position_.x(), buoy_global_position_.y(), yaw);
-        }
+    // After completing the loop, return to start position
+    current_state_ = State::RETURN_TO_START; // Transition to return state
+}
 
 
-        // After completing the loop, return to start position (change to buoy return state)
-        current_state_ = State::RETURN_TO_START; // Transition to return state
+    void TrajectoryGenerator:: stabilize_and_prepare_rot() {
+                // Stop residual movement and stabilize
+        // tf2::Quaternion current_q(
+        //     current_pose_.orientation.x,
+        //     current_pose_.orientation.y,
+        //     current_pose_.orientation.z,
+        //     current_pose_.orientation.w);
+
+        // tf2::Matrix3x3 m(current_q);
+        // double roll, pitch, yaw;
+        // m.getRPY(roll, pitch, yaw);
+
+        // // Create a quaternion with roll and pitch set to 0, but keep the yaw
+        // tf2::Quaternion level_q;
+        // level_q.setRPY(0, 0, yaw);
+
+        // // Create the stop message
+        // auto stop_msg = triton_interfaces::msg::Waypoint();
+        // stop_msg.pose = current_pose_;  // Keep the current position
+
+        // stop_msg.pose.orientation.x = level_q.x();
+        // stop_msg.pose.orientation.y = level_q.y();
+        // stop_msg.pose.orientation.z = level_q.z();
+        // stop_msg.pose.orientation.w = level_q.w();
+
+        // // Publish the stop command
+        // waypoint_publisher_->publish(stop_msg);
+        // rclcpp::sleep_for(std::chrono::milliseconds(3000));
+        // stop_msg.pose.position.z = 1;  // Keep the current position
+        // waypoint_publisher_->publish(stop_msg);
+        // rclcpp::sleep_for(std::chrono::milliseconds(3000));        I
     }
 
     void TrajectoryGenerator::spin_for_gate_detect(const geometry_msgs::msg::Pose msg) {
@@ -252,22 +281,7 @@ namespace triton_controls {
         waypoint_publisher_->publish(reply_msg); // Publish the waypoint message
     }
 
-    bool TrajectoryGenerator::rotationComplete(const geometry_msgs::msg::Pose msg) {
-          // Extract the current yaw
-          tf2::Quaternion current_q(msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w);
-          tf2::Matrix3x3 current_q_m(current_q);
-          double current_yaw;
-          double dummy_roll, dummy_pitch;  // Declare variables to hold unused values
-          current_q_m.getRPY(dummy_roll, dummy_pitch, current_yaw);
-
-          // Stop if we complete the circle
-          if (std::abs(current_yaw - initial_yaw) < 0.1) { // Adjust tolerance as needed
-              RCLCPP_INFO(this->get_logger(), "Completed full circle, stopping.");
-              return true;
-          }
-          return false;
-
-    }
+    
 
     void TrajectoryGenerator::state_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
@@ -286,6 +300,10 @@ namespace triton_controls {
           case State::ROTATE_AROUND_CENTER:
               // moveOneMeter();
               // RCLCPP_INFO(this->get_logger(), "rotating to start");
+                // need to stabilize (yaw/roll/pitcch should be level)
+                // need to be at depth 1
+                // then go straight for 2 meters
+                // stabilize_and_prepare_rot();
               rotate_around_buoy();
               break;
           

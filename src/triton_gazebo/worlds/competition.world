@@ -2,9 +2,9 @@
 <sdf version="1.7">
   <world name="default">
     <physics type="ode">
-      <max_step_size>0.005</max_step_size>  <!-- Smaller step size for better stability -->
-      <real_time_factor>50</real_time_factor>  <!-- Run 50x faster than real time -->
-      <real_time_update_rate>1000</real_time_update_rate>  <!-- High update rate for smoothness -->
+      <max_step_size>0.005</max_step_size>  
+      <real_time_factor>50</real_time_factor>  
+      <real_time_update_rate>500</real_time_update_rate>  
     </physics>
     <gravity>0 0 -9.81</gravity>
     <fluid_density>1000.00</fluid_density>

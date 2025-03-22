@@ -101,6 +101,8 @@ namespace triton_controls
         void aim_back_at_start();
         double calculate_distance_to_buoy();
         tf2::Vector3 get_buoy_global_position(); 
+        void stabilize_and_prepare_rot();
+
 
         // Publish waypoint 
         rclcpp::Publisher<triton_interfaces::msg::Waypoint>::SharedPtr waypoint_publisher_;

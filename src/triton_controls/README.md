@@ -35,14 +35,11 @@ To run the Trajectory Generator node, run
     ### Published Topics
     - `controls/output_forces` (`std_msgs/msg/Float64MultiArray.msg`) : Forces corresponding to each thruster
     - `controls/signals` (`std_msgs/msg/Float64MultiArray.msg`): PWM signals corresponding to each thruster
-    ### Parameters 
+    ### Parameters (defined in thruster_config.yaml)
     - `num_thrusters` (`int32`): The number of thrusters in the configuration
-    - `ti.contrib.x` (`float32`): The x-axis contribution of thruster `i`
-    - `ti.contrib.y` (`float32`): The y-axis contribution of thruster `i`
-    - `ti.contrib.z` (`float32`): The z-axis contribution of thruster `i`
-    - `ti.lx` (`float32`): The x-length of thruster `i` from the AUV's centre of mass
-    - `ti.ly` (`float32`): The y-length of thruster `i` from the AUV's centre of mass
-    - `ti.lz` (`float32`): The z-length of thruster `i` from the AUV's centre of mass
+    - `ti.contrib.x/y/z` (`float32`): The x/y/z-axis contribution of thruster `i`
+    - `ti.lx/ly/lz` (`float32`): The x/y/z-length of thruster `i` from the AUV's centre of mass
+    - `ti.help.x/y/z` (`float32`): How much thruster `i` spins when given an x/y/z force (used for irregular thruster placements)
     ### Notes
     - In the config file, you MUST define the thrusters `t1,...,tn` in the config file where `n = num_thrusters`. See the config file for examples of this configuration
     - You can currently only configure up to **6** thrusters.
@@ -97,3 +94,4 @@ To run the Trajectory Generator node, run
 
 - Logan Fillo (logan.fillo@gmail.com)
 - Jared Chan (jaredchan42@gmail.com)
+- Dorson Tang (dorsontang123@gmail.com)

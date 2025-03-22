@@ -71,6 +71,7 @@ void GateDetector::detect(const sensor_msgs::msg::Image & msg)
   std::vector<std::vector<cv::Point>> hulls = convexHulls(segmented, detection.rows*detection.cols, 0);
   boundGateUsingPoles(hulls, detection);
 
+
   if (debug_)
   {
     debugPublish(detection, debug_detection_publisher_);
@@ -294,7 +295,7 @@ std::vector<Point> GateDetector::createGateContour(std::vector<Point> hull_point
   gate_pose_.pose.orientation.y = tf2_quat_gate.y();
   gate_pose_.pose.orientation.z = tf2_quat_gate.z();
   gate_pose_.pose.orientation.w = tf2_quat_gate.w();
-
+  // RCLCPP_INFO(this->get_logger(), "GATE PUBLISHED");
   gate_pose_publisher_->publish(gate_pose_);
 
   if (debug_)

@@ -26,6 +26,13 @@ To run the state estimation node with teleoperated simulation of the AUV and RVi
 
 It launches the `triton_auv.world` in Gazebo with `triton_auv/model.sdf`.
 
+### Teleop Launch
+To run just the necessities for teleop Gazebop simulation, run
+
+        ros2 launch triton_gazebo barebones_teleop_launch.py
+
+This will launch the Gazebo simulation using competition.world and triton_auv, the thruster allocator, and keyboard teleop.
+
 ### Waypoint Marker and PID Controller
 To run the waypoint marker test
 
