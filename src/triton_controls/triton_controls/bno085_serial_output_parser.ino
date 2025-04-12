@@ -4,12 +4,6 @@ added bno publisher to CMAKELISTS.txt
 plug in imu
 make sure .ino file is uploaded / serial monitor is showing imu is giving that output
 joel@joel-B450-AORUS-ELITE:~/Documents/code/steelhead/src/triton_controls/triton_controls$ python3 bno085_imu_publisher.py
-[INFO] [1743215928.937207549] [bno085_imu_publisher]: Opening /dev/ttyACM0 at 115200 baud...
-[WARN] [1743215944.094689383] [bno085_imu_publisher]: Not enough tokens in line: 3.00,149.93,1.40,-1.22,-0.02,0.00
-[WARN] [1743215944.098389822] [bno085_imu_publisher]: Not enough tokens in line: ,0.00
-[WARN] [1743215944.156549419] [bno085_imu_publisher]: Failed to parse float from line: 3.00,149.93,1.40,-1.22,-0.02,0.00,
-[WARN] [1743215944.161138633] [bno085_imu_publisher]: Not enough tokens in line: -0.04
-[WARN] [1743215944.265024669] [bno085_imu_publisher]: Not enough tokens in line: 3.00,149.93,1.40,-1.22,-0.02,-0.04
 */
 
 // This file has been modified from the official adafruit demo files and simply publishes yaw, pitch, roll, and acceleration in x, y, z direction to serial output
