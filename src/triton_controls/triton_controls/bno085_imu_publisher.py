@@ -11,14 +11,9 @@ class Bno085ImuPublisher(Node):
     def __init__(self):
         super().__init__('bno085_imu_publisher')
 
-        # If you want these to be configurable, do:
-        # self.declare_parameter('port', '/dev/ttyACM0')
-        # self.declare_parameter('baud', 115200)
-        # port = self.get_parameter('port').value
-        # baud = self.get_parameter('baud').value
 
         port = '/dev/ttyACM0'
-        baud = 115200
+        baud = 115200 
 
         self.get_logger().info(f'Opening {port} at {baud} baud...')
         try:
