@@ -40,9 +40,9 @@ Now Gazebo is succesfully installed!
 ### OpenCV Installation
 First, make sure you have all the dependencies installed for building and running OpenCV
 
-    sudo apt-get install build-essential # compiler
-    sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev # required
-    sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev # optional
+    sudo apt-get install build-essential -y # compiler
+    sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev -y # required
+    sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev -y # optional
 
 Then download the OpenCV 4.5.3 source and create a build folder to navigate to as such
 
@@ -73,7 +73,7 @@ Source the global ROS2 setup script in the terminal
   
 Next, install rosdep as such
  
-    sudo apt install python3-rosdep2
+    sudo apt install python3-rosdep2 -y
     rosdep update --include-eol #(Foxy is now at end of life)
   
 Then, from the folder `triton`, resolve any dependency issues using the following command
