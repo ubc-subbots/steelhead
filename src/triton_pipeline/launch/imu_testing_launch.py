@@ -20,7 +20,7 @@ def generate_launch_description():
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_controls'), 'triton_controls', 'bno085_imu_publisher.py')
+            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'imu_launch.py')
         )
     )
 
