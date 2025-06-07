@@ -151,6 +151,7 @@ install(PROGRAMS
   triton_controls/waypoint_marker_tester.py
   triton_controls/predetermined_route.py
   triton_controls/predetermined_thrust.py
+  triton_controls/bno085_imu_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
