@@ -12,12 +12,6 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    pid_controller = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'imu_launch.py')
-        )
-    )
-
     trajectory_generator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             get_package_share_directory('triton_controls') + '/launch/trajectory_generator_launch.py'
@@ -38,7 +32,6 @@ def generate_launch_description():
     #ld.add_action(pipeline_container)
     # ld.add_action(micro_ros_agent)
     ld.add_action(state_estimator)
-    ld.add_action(pid_controller)
     ld.add_action(trajectory_generator) # we use key publisher instead
     #ld.add_action(record)
 
