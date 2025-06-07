@@ -23,7 +23,7 @@ class Bno085ImuPublisher(Node):
             # Optionally rclpy.shutdown() or raise an exception
             raise
 
-        self.publisher_ = self.create_publisher(Imu, 'imu/data', 10)
+        self.publisher_ = self.create_publisher(Imu, '/triton/drivers/imu/out', 10)
         # Timer: read and publish at ~100 Hz
         self.timer_ = self.create_timer(0.01, self.timer_callback)
 
