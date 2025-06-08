@@ -24,16 +24,15 @@ def generate_launch_description():
         )
     )
 
+    imu_tf = Node(package = "tf2_ros", 
+                       executable = "static_transform_publisher",
+                       # arguments = "0 0 0 0 1.57079 0 imu_link base_link".split(" "))
+                       arguments = "0 0 0 0 0 0 imu_link base_link".split(" "))
 
-    # state and transform publisher?
 
-    #ld.add_action(pipeline_manager)
-    #ld.add_action(pipeline_sequence_manager)
-    #ld.add_action(pipeline_container)
-    # ld.add_action(micro_ros_agent)
     ld.add_action(state_estimator)
-    ld.add_action(trajectory_generator) # we use key publisher instead
-    #ld.add_action(record)
+    ld.add_action(trajectory_generator) 
+    ld.add_action(imu_tf)
 
 
     return ld
