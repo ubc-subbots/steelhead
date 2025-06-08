@@ -27,7 +27,7 @@ def generate_launch_description():
     imu_tf = Node(package = "tf2_ros", 
                        executable = "static_transform_publisher",
                        # arguments = "0 0 0 0 1.57079 0 imu_link base_link".split(" "))
-                       arguments = "0 0 0 0 0 0 imu_link base_link".split(" "))
+                       arguments = "0 0 0 0 0 0 base_link imu_link".split(" "))
 
 
     ld.add_action(state_estimator)
