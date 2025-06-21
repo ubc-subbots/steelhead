@@ -268,7 +268,7 @@ namespace triton_controls {
 
     void TrajectoryGenerator::state_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
-        current_pose_ = msg->pose.pose; // imu data being used
+        current_pose_ = msg->pose.pose; // imu data
         auto mode_msg = triton_interfaces::msg::TrajectoryType();
         mode_msg.type = type_;
         current_mode_publisher_->publish(mode_msg);

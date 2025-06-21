@@ -90,6 +90,13 @@ To run the Trajectory Generator node, run
         - More specifically, it gets the AUV to turn towards the gate and move forward, as well as manage the depth
         - TODO: make an actual trajectory
 
+- `bno085_imu_publisher` : A Python node for launching the BNO085 IMU on Steelhead
+
+    ### Published Topics 
+    - `/triton/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
+    ### Notes 
+    - The publish topic is temporary, and should not have the triton/drivers namespace, which should be assigned in the launch file instead.
+
 ## Contributors
 
 - Logan Fillo (logan.fillo@gmail.com)
