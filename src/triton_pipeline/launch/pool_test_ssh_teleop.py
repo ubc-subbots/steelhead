@@ -52,6 +52,6 @@ def generate_launch_description():
 
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
-    ld.add_action(keyboard_teleop)
+    ld.add_action(ssh_teleop)
     
     return ld
