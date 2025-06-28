@@ -44,14 +44,16 @@ def generate_launch_description():
         ]
     )
 
-    ssh_teleop = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_teleop'), 'launch', 'ssh_teleop_launch.py')
-        )
-    )
+    # ssh_teleop = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('triton_teleop'), 'launch', 'ssh_teleop_launch.py')
+    #     )
+    # )
+
+    # RUN ros2 run triton_teleop ssh_keyboard_teleop INSTEAD
 
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
-    ld.add_action(ssh_teleop)
+    # ld.add_action(ssh_teleop)
     
     return ld
