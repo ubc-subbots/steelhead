@@ -24,6 +24,12 @@ def generate_launch_description():
         )
     )
 
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'state_publisher_launch.py')
+        )
+    )
+
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             get_package_share_directory('triton_controls') + '/launch/imu_launch.py'
@@ -32,7 +38,8 @@ def generate_launch_description():
 
 
     ld.add_action(state_estimator)
-    ld.add_action(trajectory_generator) 
+    ld.add_action(state_publisher)
+    # ld.add_action(trajectory_generator) 
     ld.add_action(imu)
 
 
