@@ -11,7 +11,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     pkg_share = get_package_share_directory('triton_gazebo')
-    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'triton_auv', 'model.sdf')
+    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'triton_auv', 'model.urdf')
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
     rsp_params = {'robot_description': robot_desc}
@@ -32,6 +32,6 @@ def generate_launch_description():
     )
 
     ld.add_action(state_publisher)
-    # ld.add_action(transform_publisher)
+    ld.add_action(transform_publisher)
 
     return ld
