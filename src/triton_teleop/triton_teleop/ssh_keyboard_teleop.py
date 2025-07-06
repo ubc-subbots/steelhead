@@ -69,26 +69,6 @@ class KeyboardTeleop(Node):
         @param key: They character of the key released
         """
         msg = Wrench()
-        if key == "up":
-            msg.torque.x = 0.0
-        elif key == "down":
-            msg.torque.x = 0.0
-        elif key == "left":
-            msg.torque.z = 0.0
-        elif key == "right":
-            msg.torque.z = 0.0
-        elif key == 'w':
-            msg.force.x = 0.0
-        elif key == 's':
-            msg.force.x = 0.0
-        elif key == 'a':
-            msg.force.y = 0.0
-        elif key == 'd':
-            msg.force.y = 0.0
-        elif key == 'q':
-            msg.force.z = 0.0
-        elif key == 'z':
-            msg.force.z = 0.0
         self.force_pub.publish(msg)
 
 
