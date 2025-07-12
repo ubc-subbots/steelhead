@@ -4,7 +4,7 @@ This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It i
 
 ## DISCLAIMER
 
-This repository was copied over from the Triton repository, so many elements are still named after that fact. Efforts are ongoing to replace all the names.
+This repository was copied over from the Triton repository, so many elements are still named after that fact.
 
 # Contents
 
@@ -40,9 +40,9 @@ Now Gazebo is succesfully installed!
 ### OpenCV Installation
 First, make sure you have all the dependencies installed for building and running OpenCV
 
-    sudo apt-get install build-essential # compiler
-    sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev # required
-    sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev # optional
+    sudo apt-get install build-essential -y # compiler
+    sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev -y # required
+    sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev -y # optional
 
 Then download the OpenCV 4.5.3 source and create a build folder to navigate to as such
 
@@ -73,10 +73,10 @@ Source the global ROS2 setup script in the terminal
   
 Next, install rosdep as such
  
-    sudo apt install python3-rosdep2
+    sudo apt install python3-rosdep2 -y
     rosdep update --include-eol #(Foxy is now at end of life)
   
-Then, from the folder `triton`, resolve any dependency issues using the following command
+Then, from the folder `steelhead`, resolve any dependency issues using the following command
  
     rosdep install -i --from-path src --rosdistro foxy -y
   
@@ -88,7 +88,7 @@ To finish the setup, edit your `.bashrc` file to source the global and local set
  
     nano ~/.bashrc
     
-Navigate to the bottom of the file and add the following three lines, be sure to set `<PATH_TO_TRITON>` to whatever it is on your machine
+Navigate to the bottom of the file and add the following three lines, be sure to set `<PATH_TO_STEELHEAD>` to whatever it is on your machine
 
     source /opt/ros/foxy/setup.bash                     # global setup script
     source <PATH_TO_STEELHEAD>/steelhead/install/setup.bash   # local setup script
@@ -96,7 +96,8 @@ Navigate to the bottom of the file and add the following three lines, be sure to
     
 The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the pipeline as such
 
-    ros2 launch triton_pipeline pipeline_launch.py sequence:=example_sequence.yaml
+    ros2 launch 
+    _pipeline pipeline_launch.py sequence:=example_sequence.yaml
    
 If this command executes successfully, you are ready to develop!
 
@@ -105,8 +106,8 @@ To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md
     
 ## Tips
 Here are some tips to be aware of when developing on this repository and when developing in ROS2 in general
-- Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `triton`)
+- Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `steelhead`)
 - After creating any new component nodes, you must either source the local setup script or simply open up a new terminal for them to show up under the command `ros2 component types` and be usable by the pipeline.
 - Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communcation channels.
-- If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `triton` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
+- If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `steelhead` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
 - For non-ROS2 dependencies, check [here](https://github.com/ros/rosdistro/tree/master/rosdep) to see the available system dependencies that can be used with `rosdep`.
