@@ -10,8 +10,8 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    pkg_share = get_package_share_directory('triton_gazebo')
-    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'triton_auv', 'model.urdf')
+    pkg_share = get_package_share_directory('triton_controls')
+    sdf_file =  os.path.join(pkg_share, 'models', 'triton_auv', 'model.urdf')
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
     rsp_params = {'robot_description': robot_desc}
