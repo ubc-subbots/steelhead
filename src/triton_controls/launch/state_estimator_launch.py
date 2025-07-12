@@ -22,7 +22,7 @@ def generate_launch_description():
         package='robot_localization',
         executable='ukf_node',
         output='screen',
-        parameters=[config, {'use_sim_time': True}]
+        parameters=[config, {'use_sim_time': False}]
     )
 
     ld.add_action(state_estimator)
