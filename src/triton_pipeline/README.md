@@ -11,8 +11,6 @@ To define a pipeline type, follow the syntax given in `example.yaml` in the `con
 
 Where `<SEQUENCE_CONFIG_FILE>` is the name of a yaml file in the `config` folder of `triton_pipeline` which contains the `pipeline_sequence_manager` parameters (e.g see `triton_example` for a concrete example of using the pipeline).
 
-
-
 ## Nodes
 
 - `pipeline_manager` : A standalone node used to manage a component container to use it as a pipeline.
