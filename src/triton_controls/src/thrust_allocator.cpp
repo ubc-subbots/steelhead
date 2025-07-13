@@ -78,7 +78,7 @@ namespace triton_controls
       }
 
       RCLCPP_INFO(this->get_logger(), "Allocation Matrix:");
-      std::cout << pinv_alloc_ << std::endl;
+      // std::cout << pinv_alloc_ << std::endl;
 
       forces_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
         "output_forces", 10);
@@ -115,7 +115,7 @@ namespace triton_controls
         thrust.push_back(thruster_thrust);
 
         uint32_t t_level = forceToLevel(thruster_thrust);
-        std::cout << "thruster " << i << " " << t_level << std::endl;
+        // std::cout << "thruster " << i << " " << t_level << std::endl;
         uint32_t t_bits = t_level << (bits_per_thruster_ * i);
         // std::cout << "thruster " << i << " " << thruster_thrust << " " << t_bits  << " " << (t_bits >> bits_per_thruster_ * i) << std::endl;
         signal |= t_bits;
