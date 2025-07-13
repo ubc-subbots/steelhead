@@ -32,7 +32,7 @@ def generate_launch_description():
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('triton_controls') + '/launch/imu_launch.py'
+            get_package_share_directory('triton_controls') + '/launch/imu_publisher_launch.py'
         )
     )
 

@@ -15,7 +15,7 @@ def generate_launch_description():
         namespace='/camera1',
         parameters=[
             os.path.join(
-                get_package_share_directory('triton_pipeline'),
+                get_package_share_directory('triton_bringup'),
                 'config',
                 'camera1.yaml')
         ],
@@ -32,7 +32,7 @@ def generate_launch_description():
         namespace='/camera2',
         parameters=[
             os.path.join(
-                get_package_share_directory('triton_pipeline'),
+                get_package_share_directory('triton_bringup'),
                 'config',
                 'camera2.yaml')
         ],

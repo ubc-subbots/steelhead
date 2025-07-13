@@ -55,6 +55,4 @@ def generate_launch_description():
     ld.add_action(thrust_allocator)
     ld.add_action(hardcoded_thrusters)
     
-
-
     return ld
