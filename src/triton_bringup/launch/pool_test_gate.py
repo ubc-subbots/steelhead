@@ -29,13 +29,13 @@ def generate_launch_description():
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_bringup'), 'launch', 'imu_launch.py')
+            os.path.join(get_package_share_directory('triton_bringup'), 'imu_launch.py')
         )
     )
 
     cameras = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_bringup'), 'launch', 'cameras_launch.py')
+            os.path.join(get_package_share_directory('triton_bringup'), 'cameras_launch.py')
         )
     )
 
