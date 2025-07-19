@@ -20,7 +20,7 @@ def generate_launch_description():
                 'camera1.yaml')
         ],
         remappings=[
-            ('/camera1/image_raw', '/triton/drivers/front_camera/image_raw')
+            ('/camera1/image_raw', '/triton/drivers/bottom_camera/image_raw')
         ]
     )
 
@@ -37,7 +37,7 @@ def generate_launch_description():
                 'camera2.yaml')
         ],
         remappings=[
-            ('/camera2/image_raw', '/triton/drivers/bottom_camera/image_raw')
+            ('/camera2/image_raw', '/triton/drivers/front_camera/image_raw')
         ]
     )
 
