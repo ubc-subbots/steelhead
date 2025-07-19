@@ -21,7 +21,10 @@ def generate_launch_description():
         package='triton_controls',
         executable='thrust_allocator',
         output='screen',
-        parameters=[config]
+        parameters=[config],
+        remappings=[
+            ('/triton/controls/signals', '/motor_control')
+        ]
     )
 
     ld.add_action(thrust_allocator)

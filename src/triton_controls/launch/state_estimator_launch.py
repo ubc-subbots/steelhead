@@ -13,7 +13,7 @@ def generate_launch_description():
     config = os.path.join(
         get_package_share_directory('triton_controls'),
         'config',
-        'state_estimator_config_GT_only.yaml'
+        'state_estimator_config_IMU_only.yaml'
     )
 
     state_estimator = Node(
@@ -22,7 +22,7 @@ def generate_launch_description():
         package='robot_localization',
         executable='ukf_node',
         output='screen',
-        parameters=[config, {'use_sim_time': True}]
+        parameters=[config, {'use_sim_time': False}]
     )
 
     ld.add_action(state_estimator)

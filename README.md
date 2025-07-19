@@ -76,7 +76,7 @@ Next, install rosdep as such
     sudo apt install python3-rosdep2 -y
     rosdep update --include-eol #(Foxy is now at end of life)
   
-Then, from the folder `triton`, resolve any dependency issues using the following command
+Then, from the folder `steelhead`, resolve any dependency issues using the following command
  
     rosdep install -i --from-path src --rosdistro foxy -y
   
@@ -96,7 +96,8 @@ Navigate to the bottom of the file and add the following three lines, be sure to
     
 The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the pipeline as such
 
-    ros2 launch triton_pipeline pipeline_launch.py sequence:=example_sequence.yaml
+    ros2 launch 
+    _pipeline pipeline_launch.py sequence:=example_sequence.yaml
    
 If this command executes successfully, you are ready to develop!
 

@@ -142,6 +142,11 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/test
 )
 
+install(DIRECTORY
+  models
+  DESTINATION share/${PROJECT_NAME}
+)
+
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 
@@ -151,6 +156,7 @@ install(PROGRAMS
   triton_controls/waypoint_marker_tester.py
   triton_controls/predetermined_route.py
   triton_controls/predetermined_thrust.py
+  triton_controls/bno085_imu_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="steelhead_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.00395046849323071 0.0499072286696635 -0.0102290259693298"
+        rpy="0 0 0" />
+      <mass
+        value="11.2703688048829" />
+      <inertia
+        ixx="0.060252345626549"
+        ixy="2.1256907295524E-06"
+        ixz="-3.72440264216632E-06"
+        iyy="0.111348207760062"
+        iyz="0.00107999853531635"
+        izz="0.127878964636527" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="thruster-1_link">
+    <inertial>
+      <origin
+        xyz="-4.89081546103422E-07 -0.00413616182974776 0.000574355557575706"
+        rpy="0 0 0" />
+      <mass
+        value="0.186902211484853" />
+      <inertia
+        ixx="0.000162753956656037"
+        ixy="-2.92272870142361E-09"
+        ixz="-1.85814585445412E-09"
+        iyy="0.000180444513108018"
+        iyz="-6.88949524169078E-07"
+        izz="0.000158198380408318" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster-1_joint"
+    type="fixed">
+    <origin
+      xyz="0.00026684981319 -0.084748516609538 -0.219431836509984"
+      rpy="3.14159265358979 0 -0.0105672952385601" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster-1_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="thruster-2_link">
+    <inertial>
+      <origin
+        xyz="-4.338686397376E-07 -0.0041360510074997 0.000574375711597741"
+        rpy="0 0 0" />
+      <mass
+        value="0.186899504815562" />
+      <inertia
+        ixx="0.0001627514234258"
+        ixy="-2.82568504025534E-09"
+        ixz="-1.68279041179492E-09"
+        iyy="0.00018044157763586"
+        iyz="-6.88855048599947E-07"
+        izz="0.000158196991457279" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster-2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.210503109396221 0.00386607192717902 0.332368163490018"
+      rpy="3.14159265358979 0 0.785066673557305" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster-2_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="thruster-3_link">
+    <inertial>
+      <origin
+        xyz="-4.33848231506939E-07 -0.00413605099529665 0.000574375715362785"
+        rpy="0 0 0" />
+      <mass
+        value="0.186899504873199" />
+      <inertia
+        ixx="0.000162751425676453"
+        ixy="-2.82797964763055E-09"
+        ixz="-1.68281476856945E-09"
+        iyy="0.000180441578299036"
+        iyz="-6.88854971106012E-07"
+        izz="0.000158196994569752" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster-3_joint"
+    type="fixed">
+    <origin
+      xyz="0.213276402010404 0.00372559331954102 0.332368163490019"
+      rpy="3.14159265358979 0 -0.785729653237593" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster-3_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="thruster_4_link">
+    <inertial>
+      <origin
+        xyz="-4.8478E-07 0.0041362 -0.00057436"
+        rpy="0 0 0" />
+      <mass
+        value="0.1869" />
+      <inertia
+        ixx="0.00016275"
+        ixy="2.9228E-09"
+        ixz="1.8618E-09"
+        iyy="0.00018044"
+        iyz="-6.8894E-07"
+        izz="0.0001582" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster_4_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster_4_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster_4_joint"
+    type="fixed">
+    <origin
+      xyz="0.3284 0.00096401 -0.07017"
+      rpy="-1.5708 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_4_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="thruster_5_link">
+    <inertial>
+      <origin
+        xyz="-4.8478E-07 -0.0041362 0.00057436"
+        rpy="0 0 0" />
+      <mass
+        value="0.1869" />
+      <inertia
+        ixx="0.00016275"
+        ixy="-2.9218E-09"
+        ixz="-1.8618E-09"
+        iyy="0.00018044"
+        iyz="-6.8894E-07"
+        izz="0.0001582" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster_5_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster_5_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster_5_joint"
+    type="fixed">
+    <origin
+      xyz="-0.32565 0 -0.071134"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_5_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="thruster-6_link">
+    <inertial>
+      <origin
+        xyz="-4.8478E-07 0.0041362 -0.00057436"
+        rpy="0 0 0" />
+      <mass
+        value="0.1869" />
+      <inertia
+        ixx="0.00016275"
+        ixy="2.9229E-09"
+        ixz="1.8617E-09"
+        iyy="0.00018044"
+        iyz="-6.8894E-07"
+        izz="0.0001582" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-6_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://steelhead_urdf/meshes/thruster-6_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thruster-6_joint"
+    type="fixed">
+    <origin
+      xyz="0.0063667 -0.0045 -0.35743"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster-6_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0.25 0" rpy="0 0 0"/> 
+  </joint>
+</robot>

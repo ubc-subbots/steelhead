@@ -12,7 +12,10 @@ namespace triton_controls
     z_lens_ (MAX_THRUSTERS, 0),
     x_contribs_ (MAX_THRUSTERS, 0),
     y_contribs_ (MAX_THRUSTERS, 0),
-    z_contribs_ (MAX_THRUSTERS, 0)
+    z_contribs_ (MAX_THRUSTERS, 0),
+    x_help_ (MAX_THRUSTERS, 0),
+    y_help_ (MAX_THRUSTERS, 0),
+    z_help_ (MAX_THRUSTERS, 0)
   {
       this->declare_parameter<int>("num_thrusters", num_thrusters_);
 
@@ -43,6 +46,9 @@ namespace triton_controls
         this->declare_parameter(names[i]+".lx", x_lens_[i]);
         this->declare_parameter(names[i]+".ly", y_lens_[i]);
         this->declare_parameter(names[i]+".lz", z_lens_[i]);
+        this->declare_parameter(names[i]+".help.x", x_help_[i]);
+        this->declare_parameter(names[i]+".help.y", y_help_[i]);
+        this->declare_parameter(names[i]+".help.z", z_help_[i]);
 
         this->get_parameter(names[i]+".contrib.x", x_contribs_[i]);
         this->get_parameter(names[i]+".contrib.y", y_contribs_[i]);
@@ -50,6 +56,9 @@ namespace triton_controls
         this->get_parameter(names[i]+".lx", x_lens_[i]);
         this->get_parameter(names[i]+".ly", y_lens_[i]);
         this->get_parameter(names[i]+".lz", z_lens_[i]);
+        this->get_parameter(names[i]+".help.x", x_help_[i]);
+        this->get_parameter(names[i]+".help.y", y_help_[i]);
+        this->get_parameter(names[i]+".help.z", z_help_[i]);
       } 
 
       std::vector<std::vector<double>> alloc_vec =  createAllocMat();
@@ -58,11 +67,18 @@ namespace triton_controls
       for (int i = 0; i < alloc_mat.rows; i++)
         for (int j = 0; j < alloc_mat.cols; j++)
           alloc_mat.at<double>(i,j) = alloc_vec[i][j];
-      
-      RCLCPP_INFO(this->get_logger(), "Allocation Matrix:");
-      std::cout << alloc_mat << std::endl;
 
       cv::invert(alloc_mat, pinv_alloc_, cv::DECOMP_SVD);
+
+      // asssign helper values to allocation matrix. currently, the "help" configurations are arbitrary numbers
+      for (int i = 0; i < num_thrusters_; i++){
+        pinv_alloc_.at<double>(i,0) += x_help_[i];
+        pinv_alloc_.at<double>(i,1) += y_help_[i];
+        pinv_alloc_.at<double>(i,2) += z_help_[i];
+      }
+
+      RCLCPP_INFO(this->get_logger(), "Allocation Matrix:");
+      // std::cout << pinv_alloc_ << std::endl;
 
       forces_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
         "output_forces", 10);
@@ -92,12 +108,14 @@ namespace triton_controls
 
       std::vector<double> thrust;
       uint32_t signal = 0;
+
       for (int i = 0; i < num_thrusters_ ; i++)
       {
         double thruster_thrust = thrust_mat.at<double>(i,0);
         thrust.push_back(thruster_thrust);
 
         uint32_t t_level = forceToLevel(thruster_thrust);
+        // std::cout << "thruster " << i << " " << t_level << std::endl;
         uint32_t t_bits = t_level << (bits_per_thruster_ * i);
         // std::cout << "thruster " << i << " " << thruster_thrust << " " << t_bits  << " " << (t_bits >> bits_per_thruster_ * i) << std::endl;
         signal |= t_bits;
@@ -105,7 +123,6 @@ namespace triton_controls
       // TEMP FIX: PLEASE CHANGE ME LATER
       // so that the teensy can distinguish between rubbish and real data
       signal |= 0b10101010000000000000000000000000;
-
 
       auto forces_msg = std_msgs::msg::Float64MultiArray();
       forces_msg.data = thrust;

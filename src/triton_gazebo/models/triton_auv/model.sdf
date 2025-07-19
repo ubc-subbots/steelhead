@@ -6,19 +6,19 @@
       Triton AUV components
 
       Thrusters will follow the following naming convention: 
-
-                             Thruster 6
-         Thruster 2 / /________|__|________\ \ Thruster 3
-                   / /|                    |\ \
-                      |        +y          |
-                      |       |            |_
-                      |       |___+x       |_) AUV front 
-                      |     +z             |
-                      |   (pointing up)    |
-                   \ \|____________________|/ /
-         Thruster 1 \ \        |  |        / / Thruster 4
-                             Thruster 5
-
+                            __
+                           |  |Thruster 4 ___
+                       ____|__|__________|___| Thruster 3 (angled)
+                       |                 |
+                  _____|       +y        |
+              ___|╭───╮       |          |_
+ Thruster 6  |___|│ 5 │       |___+x     |_) AUV front 
+                 |╰───╯       +z         |
+                  ‾‾‾‾‾|  (pointing up)  |
+                       |_________________|___
+                           |  |          |___| Thruster 2 (angled)
+                           |__|Thruster 1
+ 
     -->
 
     <!-- Frame -->
@@ -28,42 +28,56 @@
       <name>frame</name>
     </include>
 
-    <!-- Thrusters -->
+    <!-- Thrusters (center of the auv in the y direction is offset by ~0.0625, so each y symmetrical thruster accounts for that)-->
+
+    <!-- Right Midsection -->
     <include>
       <uri>model://triton_thruster</uri>
-      <pose>-0.3776091 -0.357124 0.2136902 0 1.5707 2.35619</pose>
+      <pose>-0.075 -0.39 0 -1.57 -1.57 1.57</pose>
       <name>thruster1</name>
     </include>
 
+    <!-- Angled Front Right-->
     <include>
       <uri>model://triton_thruster</uri>
-      <pose>-0.3776091 0.026924 0.2136902 0 -1.5707 0.785398</pose>
+      <pose>0.33 -0.28 -0.0085 0 -2.355 1.57</pose>
       <name>thruster2</name>
     </include>
 
+    <!-- Angled Front Left-->
     <include>
       <uri>model://triton_thruster</uri>
-      <pose>0.0474091 -0.357124 0.2136902 0 -1.5707 -2.35619</pose>
-      <name>thruster4</name>
-    </include>
-
-    <include>
-      <uri>model://triton_thruster</uri>
-      <pose>0.0474091 0.026924 0.2136902 0 1.5707 -0.785398</pose>
+      <pose>0.33 0.152 -0.0085 0 2.355 1.57</pose>
       <name>thruster3</name>
     </include>
 
+    <!-- Left Midsection -->
     <include>
       <uri>model://triton_thruster</uri>
-      <pose>-0.14965425999999998 -0.38172644 0.33146492 3.1415 3.1415 0</pose>
+      <pose>-0.075 0.265 0 -1.57 1.57 1.57</pose>
+      <name>thruster4</name>
+    </include>
+    
+    <!-- Vertical -->
+    <include>
+      <uri>model://triton_thruster</uri>
+      <pose>-0.219431 -0.0625 0.08 0 3.14 1.57</pose>
       <name>thruster5</name>
     </include>
 
+    <!-- Back Horizontal-->
     <include>
       <uri>model://triton_thruster</uri>
-      <pose>-0.14965425999999998 0.05152644 0.33146492 3.1415 3.1415 3.1415</pose>
+      <pose>-0.355 -0.07 0 1.57 1.57 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <name>thruster6</name>
     </include>
+
+
+
+
+
+
 
     <!--
 
@@ -76,9 +90,8 @@
 
     <base_link>frame::frame</base_link>
     <neutrally_buoyant>1</neutrally_buoyant>
-    <volume>0.0209673336007</volume>
-    <center_of_buoyancy>-0.14826	-0.1687	0.2339</center_of_buoyancy>
-        <!-- <pose>-0.14826 -0.1687 0.19368 0 -0 0</pose> -->
+    <volume>0.00340702866633</volume>
+    <center_of_buoyancy>0.1 -0.062 -0.00878</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
