@@ -2,10 +2,12 @@
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot
-  name="steelhead_urdf">
-  <link
-    name="base_link">
+<robot name="steelhead_urdf" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- Include the claw macro INSIDE the robot tag -->
+  <xacro:include filename="$(find steelhead_claw)/urdf/claw.urdf.xacro"/>
+  
+  <link name="base_link">
     <inertial>
       <origin
         xyz="0.00395046849323071 0.0499072286696635 -0.0102290259693298"
@@ -44,8 +46,9 @@
       </geometry>
     </collision>
   </link>
-  <link
-    name="thruster-1_link">
+  
+  <!-- All your existing thruster links and joints... -->
+  <link name="thruster-1_link">
     <inertial>
       <origin
         xyz="-4.89081546103422E-07 -0.00413616182974776 0.000574355557575706"
@@ -97,8 +100,8 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="thruster-2_link">
+  
+  <link name="thruster-2_link">
     <inertial>
       <origin
         xyz="-4.338686397376E-07 -0.0041360510074997 0.000574375711597741"
@@ -150,8 +153,8 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="thruster-3_link">
+  
+  <link name="thruster-3_link">
     <inertial>
       <origin
         xyz="-4.33848231506939E-07 -0.00413605099529665 0.000574375715362785"
@@ -203,8 +206,8 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="thruster_4_link">
+  
+  <link name="thruster_4_link">
     <inertial>
       <origin
         xyz="-4.8478E-07 0.0041362 -0.00057436"
@@ -256,8 +259,8 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="thruster_5_link">
+  
+  <link name="thruster_5_link">
     <inertial>
       <origin
         xyz="-4.8478E-07 -0.0041362 0.00057436"
@@ -309,8 +312,8 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="thruster-6_link">
+  
+  <link name="thruster-6_link">
     <inertial>
       <origin
         xyz="-4.8478E-07 0.0041362 -0.00057436"
@@ -362,10 +365,15 @@
     <axis
       xyz="0 0 0" />
   </joint>
+  
   <link name="imu_link"/>
   <joint name="imu_joint" type="fixed">
     <parent link="base_link"/>
     <child link="imu_link"/>
     <origin xyz="0 0.25 0" rpy="0 0 0"/> 
   </joint>
+  
+  <!-- ADD THE CLAW HERE - at the end, inside the robot tag -->
+  <xacro:claw parent="base_link" xyz="0.4 0 -0.1" rpy="0 0 0"/>
+  
 </robot>
