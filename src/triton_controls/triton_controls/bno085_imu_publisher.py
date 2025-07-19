@@ -12,7 +12,7 @@ class Bno085ImuPublisher(Node):
         super().__init__('bno085_imu_publisher')
 
 
-        port = '/dev/ttyACM0'
+        port = '/dev/imu'
         baud = 115200 
 
         self.get_logger().info(f'Opening {port} at {baud} baud...')
