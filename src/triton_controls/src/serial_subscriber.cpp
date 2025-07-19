@@ -1,4 +1,4 @@
-#define TEENSY_PORT "/dev/ttyACM0"
+#define TEENSY_PORT "/dev/teensy"
 #include "triton_controls/serial_subscriber.hpp"
 #include <termios.h>
 #include <fcntl.h>
