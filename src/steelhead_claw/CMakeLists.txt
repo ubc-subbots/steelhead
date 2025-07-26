@@ -27,6 +27,13 @@ ament_target_dependencies(claw_hardware_interface
   std_msgs
 )
 
+add_executable(claw_teleop src/claw_teleop.cpp)
+ament_target_dependencies(claw_teleop 
+  rclcpp 
+  std_msgs 
+  std_srvs
+)
+
 # Build Gazebo plugin
 add_library(gazebo_claw_plugin SHARED src/gazebo_claw_plugin.cpp)
 ament_target_dependencies(gazebo_claw_plugin 
@@ -40,6 +47,7 @@ ament_target_dependencies(gazebo_claw_plugin
 install(TARGETS
   claw_controller
   claw_hardware_interface
+  claw_teleop
   DESTINATION lib/${PROJECT_NAME}
 )
 

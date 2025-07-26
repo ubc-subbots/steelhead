@@ -4,7 +4,7 @@
   <name>steelhead_claw</name>
   <version>0.0.0</version>
   <description>Claw control package for Steelhead AUV</description>
-  <maintainer email="garchakri@gmail.ca">UBC SubBots</maintainer>
+  <maintainer email="garchakri@gmail.ca">UBC Subots</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
