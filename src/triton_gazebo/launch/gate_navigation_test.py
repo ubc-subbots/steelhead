@@ -52,7 +52,7 @@ def generate_launch_description():
     config = os.path.join(
         get_package_share_directory('triton_controls'),
         'config',
-        'state_estimator_config_GT_only.yaml'
+        'state_estimator_config_IMU_only.yaml'
     )
 
     state_estimator = Node(
@@ -64,10 +64,25 @@ def generate_launch_description():
         parameters=[config, {'use_sim_time': True}]
     )
 
-    state_publisher = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'state_publisher_launch.py')
-        )
+    pkg_share = get_package_share_directory('triton_controls')
+    sdf_file =  os.path.join(pkg_share, 'models', 'triton_auv', 'model.urdf')
+    with open(sdf_file, 'r') as infp:
+        robot_desc = infp.read()
+    rsp_params = {'robot_description': robot_desc}
+
+    state_publisher = Node(
+        package='robot_state_publisher', 
+        executable='robot_state_publisher',
+        output='screen', 
+        parameters=[rsp_params, {'use_sim_time': True}]
+    )
+
+    transform_publisher = Node(
+        package='triton_controls',
+        executable='auv_transform_publisher.py',
+        name='auv_transform_publisher',
+        output='screen', 
+        parameters=[rsp_params, {'use_sim_time': True}]
     )
 
     thrust_allocator = IncludeLaunchDescription(
@@ -94,6 +109,13 @@ def generate_launch_description():
         )
     )
 
+    # TODO For imu only state estimation, we're getting an error 
+    static_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0', '0', '0', '0', 'frame', 'base_link'],
+    )
+
     ld.add_action(gazebo)
     # ld.add_action(rviz)
     ld.add_action(thrust_allocator)
@@ -105,5 +127,6 @@ def generate_launch_description():
     # ld.add_action(waypoint_marker_tester)
     ld.add_action(pid_controller)
     ld.add_action(trajectory_generator)
+    ld.add_action(static_tf)
 
     return ld
