@@ -1,20 +1,48 @@
-Launch the full system:
+# Steelhead Claw Simulation Guide
 
-bash# Launch Gazebo + AUV + Controls + Claw
+## Launch Options
+
+### Full System (Recommended)
+```bash
 ros2 launch steelhead_claw steelhead_with_claw.launch.py
+```
 
-# Or use your existing barebones launch + claw separately:
-# Terminal 1:
+### Separate Components
+```bash
+# Terminal 1 - Base AUV
 ros2 launch triton_gazebo barebones_teleop_launch.py
 
-# Terminal 2:
+# Terminal 2 - Claw System
 ros2 launch steelhead_claw claw_only.launch.py
+```
 
-Test the claw:
+### WSL/Display Issues
+If Gazebo GUI won't open, add `gui:=false`:
+```bash
+ros2 launch steelhead_claw steelhead_with_claw.launch.py gui:=false
+```
 
-bash# Service calls:
+## Claw Control
+
+### Service Commands
+```bash
+# Open claw
 ros2 service call /steelhead/claw/open std_srvs/srv/SetBool "{data: true}"
-ros2 service call /steelhead/claw/close std_srvs/srv/SetBool "{data: true}"
 
-# Or use the teleop for keyboard control:
+# Close claw
+ros2 service call /steelhead/claw/close std_srvs/srv/SetBool "{data: true}"
+```
+
+### Keyboard Control
+```bash
 ros2 run steelhead_claw claw_teleop
+```
+
+## Monitoring
+```bash
+# Check nodes are running
+ros2 node list
+
+# Monitor claw state
+ros2 topic echo /steelhead/claw/state
+```
