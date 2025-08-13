@@ -46,6 +46,28 @@ target_include_directories(waypoint_marker PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(qualifying_task
+  src/qualifying_task.cpp
+)
+target_include_directories(qualifying_task PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+ament_target_dependencies(
+  qualifying_task
+  "rclcpp"
+  "rclcpp_components"
+  "tf2"
+  "triton_interfaces"
+  "geometry_msgs"
+  "sensor_msgs"
+  "nav_msgs"
+)
+install(TARGETS qualifying_task
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 add_executable(trajectory_generator
   src/trajectory_generator.cpp
 )
@@ -106,6 +128,7 @@ rclcpp_components_register_nodes(triton_controls "triton_controls::ThrustAllocat
 rclcpp_components_register_nodes(triton_controls "triton_controls::WaypointMarker")
 rclcpp_components_register_nodes(triton_controls "triton_controls::SerialSubscriber")
 rclcpp_components_register_nodes(triton_controls "triton_controls::TrajectoryGenerator")
+rclcpp_components_register_nodes(triton_controls "triton_controls::QualifyingTask")
 
 target_compile_definitions(triton_controls
   PRIVATE "triton_controls_CPP_BUILDING_DLL"

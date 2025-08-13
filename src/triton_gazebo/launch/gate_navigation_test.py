@@ -103,9 +103,9 @@ def generate_launch_description():
         )
     )
 
-    trajectory_generator = IncludeLaunchDescription(
+    qualifying_task = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('triton_controls') + '/launch/trajectory_generator_launch.py'
+            get_package_share_directory('triton_controls') + '/launch/qualifying_task_launch.py'
         )
     )
 
@@ -126,7 +126,7 @@ def generate_launch_description():
     ld.add_action(waypoint_marker)
     # ld.add_action(waypoint_marker_tester)
     ld.add_action(pid_controller)
-    ld.add_action(trajectory_generator)
+    ld.add_action(qualifying_task)
     ld.add_action(static_tf)
 
     return ld

@@ -6,7 +6,7 @@ from std_msgs.msg import String
 from std_msgs.msg import String, Int32, UInt32
 from geometry_msgs.msg import Wrench, Vector3
 
-DEFAULT_EFFORT = 15.0 #vroom
+DEFAULT_EFFORT = 3.0 #vroom
 
 STATIONARY = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0),
@@ -51,24 +51,56 @@ thrusts = [
     # we start by waiting 5 secs for the other nodes like the serial subscriber to be started
     {
         'direction': STATIONARY,
-        'duration': 5,
+        'duration': 3,
     },
     # change the below
     {
-        'direction': STATIONARY,
-        'duration': 5,
+        'direction': FORWARD,
+        'duration': 2,
     },
     {
-        'direction': FORWARD,
-        'duration': 5,
+        'direction': STATIONARY,
+        'duration': 2,
     },
     {
         'direction': BACKWARD,
-        'duration': 5,
+        'duration': 2,
     },
     {
-        'direction': RIGHT_SWAY,
-        'duration': 3,
+        'direction': STATIONARY,
+        'duration': 2,
+    },
+    {
+        'direction': RIGHT_TURN,
+        'duration': 2,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 2,
+    },
+    {
+        'direction': LEFT_TURN,
+        'duration': 2,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 2,
+    },
+    {
+        'direction': UPWARD,
+        'duration': 2,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 2,
+    },
+    {
+        'direction': DOWNWARD,
+        'duration': 2,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 2,
     },
 ]
 
