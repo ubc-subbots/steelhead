@@ -4,7 +4,7 @@ using std::placeholders::_1;
 namespace triton_controls {   
     // GLOBAL VARIABLES
     bool approach_destination_achieved_ = false; // whether we have successfully closed the distance to the buoy
-    double radius_for_rotation = 3.0; // the destired radius of rotation (doubles as approach distance)
+    double radius_for_rotation = 3.0; // the destired radius of rotation (doubles as approach distance). This code roughly works when the gate is further away. but during comp it was literally 3 meters away so make sure to modify the competition.world file if you are using this code
     double distance_to_buoy = 999999; // estimated distance to the buy
     
         /* Constructor */

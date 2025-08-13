@@ -94,7 +94,7 @@
     <center_of_buoyancy>0.1 -0.062 -0.00878</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
-        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingBuoyancy>1.0</scalingBuoyancy>
         <scalingDamping>1.0</scalingDamping>
         <scalingAddedMass>0.01</scalingAddedMass>
 

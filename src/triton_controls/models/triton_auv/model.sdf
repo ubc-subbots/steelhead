@@ -91,10 +91,12 @@
     <base_link>frame::frame</base_link>
     <neutrally_buoyant>1</neutrally_buoyant>
     <volume>0.00340702866633</volume>
-    <center_of_buoyancy>0.1 -0.062 -0.00878</center_of_buoyancy>
+    <center_of_buoyancy>0.00395 0.0499 0.02</center_of_buoyancy>  <!-- Raise the center of buoyancy up to account for the added mass (AI generated idk why but it seems to work a bit better. feel free to change) -->
+    <!--     <center_of_buoyancy>0.1 -0.062 -0.00878</center_of_buoyancy>
+ old line -->
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
-        <scalingBuoyancy>0.93</scalingBuoyancy>
+        <scalingBuoyancy>1.0</scalingBuoyancy>  <!-- greater than 1 to make positively buoyant -->
         <scalingDamping>1.0</scalingDamping>
         <scalingAddedMass>0.01</scalingAddedMass>
 
