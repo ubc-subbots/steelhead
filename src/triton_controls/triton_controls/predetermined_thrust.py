@@ -114,6 +114,10 @@ thrusts = [
         'levels': FORWARD,
         'duration': 10,
     },
+    {
+        'levels': STATIONARY,
+        'duration': 30,
+    },
     # they can be custom, too
 ]
 
