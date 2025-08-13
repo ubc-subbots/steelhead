@@ -91,9 +91,9 @@ FORWARD = {
 # }
 DOWNWARD = {
     "1": 0,
-    "2": 0,
+    "2": -DEFAULT_EFFORT,
     "3": -DEFAULT_EFFORT,
-    "4": -DEFAULT_EFFORT,
+    "4": 0,
     "5": -DEFAULT_EFFORT,
 }
 
@@ -104,23 +104,15 @@ thrusts = [
     # we start by waiting 5 secs for the other nodes like the serial subscriber to be started
     {
         'levels': STATIONARY,
-        'duration': 5,
-    },
-    {
-        'levels': FORWARD,
-        'duration': 3,
-    },
-    {
-        'levels': STATIONARY,
-        'duration': 5,
+        'duration': 30,
     },
     {
         'levels': DOWNWARD,
         'duration': 3,
     },
     {
-        'levels': STATIONARY,
-        'duration': 5,
+        'levels': FORWARD,
+        'duration': 10,
     },
     # they can be custom, too
 ]
