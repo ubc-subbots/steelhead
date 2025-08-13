@@ -27,7 +27,7 @@ def encode_msg(thruster_power_level):
 
     return (t6_bits | t5_bits | t4_bits | t3_bits | t2_bits | t1_bits)
 
-DEFAULT_EFFORT = 1 #vroom
+DEFAULT_EFFORT = 15 #vroom
 
 # from -16 to 15 inclusive
 # 0 is stationary
