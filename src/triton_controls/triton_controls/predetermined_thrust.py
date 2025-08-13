@@ -162,6 +162,8 @@ class PredeterminedThrust(Node):
             self.current_index += 1
             msg = UInt32()
             msg.data = encode_msg(thrusts[self.current_index]['levels'])
+            msg.data |= 0b10000000000000000000000000000000;
+            print("{0:b}".format(msg.data))
             self.publisher_.publish(msg)
             self.last_time = self.get_clock().now()
 
