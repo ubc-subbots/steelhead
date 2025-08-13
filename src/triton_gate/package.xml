@@ -8,6 +8,7 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <depend>cv_bridge</depend>
   <depend>triton_vision_utils</depend>
@@ -15,6 +16,12 @@
   <depend>image_transport</depend>
   <depend>triton_interfaces</depend>
   <depend>tf2</depend>
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  
+  <exec_depend>python3-opencv</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
 
 
   <test_depend>ament_lint_auto</test_depend>

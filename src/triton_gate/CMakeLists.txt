@@ -17,6 +17,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(cv_bridge REQUIRED)
@@ -59,6 +60,15 @@ install(TARGETS
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+)
+
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+
+# Install Python scripts
+install(PROGRAMS
+  scripts/yolo_gate_detector.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY
