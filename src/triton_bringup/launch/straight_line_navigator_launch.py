@@ -50,7 +50,7 @@ def generate_launch_description():
     ta_config = os.path.join(
         get_package_share_directory('triton_controls'),
         'config',
-        'thruster_config_triton_mini.yaml'
+        'thruster_config.yaml'
     )
 
     # Thrust allocator for motor control
