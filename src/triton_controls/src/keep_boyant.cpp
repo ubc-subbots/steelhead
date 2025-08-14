@@ -9,7 +9,10 @@ namespace triton_controls {
     bool stopped = false;
     rclcpp::Time start_time;
     double delay_seconds = 5.0;      // Delay before starting
-    double run_seconds = 10.0;       // Duration to run before stopping
+    double run_seconds = 15.0;       // Duration to run before stopping
+
+    int checkEveryNClocks = 20;
+    int counter = 0;
 
     /* Constructor */
     KeepBoyant::KeepBoyant(const rclcpp::NodeOptions &options)
@@ -47,14 +50,21 @@ namespace triton_controls {
 
         // Run for run_seconds, then stop
         if (!stopped && (now - start_time).seconds() < run_seconds) {
-            geometry_msgs::msg::Wrench replyMsg;
-            replyMsg.force.x = 15;
+            if (counter > checkEveryNClocks) {
+                geometry_msgs::msg::Wrench replyMsg;
+                replyMsg.force.x = 15;
 
-            replyMsg.torque.x = (msg->orientation.x > initialOrientation.x) ? -1 : 1;
-            replyMsg.torque.y = (msg->orientation.y > initialOrientation.y) ? -1 : 1;
-            replyMsg.torque.z = (msg->orientation.z > initialOrientation.z) ? -1 : 1;
+                replyMsg.torque.x = (msg->orientation.x > initialOrientation.x) ? -1 : 1;
+                replyMsg.torque.y = (msg->orientation.y > initialOrientation.y) ? -1 : 1;
+                replyMsg.torque.z = (msg->orientation.z > initialOrientation.z) ? -1 : 1;
 
-            pub_->publish(replyMsg);
+                counter = 0;
+
+                pub_->publish(replyMsg);   
+            } else {
+                counter++;
+            }
+           
         } else if (!stopped) {
             // Send zero wrench and stop
             geometry_msgs::msg::Wrench stopMsg;
