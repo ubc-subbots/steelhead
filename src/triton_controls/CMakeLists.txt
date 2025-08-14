@@ -70,10 +70,10 @@ target_include_directories(straight_line_navigator PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-add_executable(keep_boyant
-  src/keep_boyant.cpp
+add_executable(keep_buoyant
+  src/keep_buoyant.cpp
 )
-target_include_directories(keep_boyant PUBLIC
+target_include_directories(keep_buoyant PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -149,7 +149,7 @@ install(TARGETS straight_line_navigator
 )
 
 ament_target_dependencies(
-  keep_boyant
+  keep_buoyant
   "rclcpp"
   "rclcpp_components"
   "tf2"
@@ -158,7 +158,7 @@ ament_target_dependencies(
   "sensor_msgs"
   "nav_msgs"
 )
-install(TARGETS keep_boyant
+install(TARGETS keep_buoyant
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -170,7 +170,7 @@ add_library(triton_controls SHARED
 )
 
 rclcpp_components_register_nodes(triton_controls "triton_controls::ThrustAllocator")
-rclcpp_components_register_nodes(triton_controls "triton_controls::KeepBoyant")
+rclcpp_components_register_nodes(triton_controls "triton_controls::KeepBuoyant")
 rclcpp_components_register_nodes(triton_controls "triton_controls::WaypointMarker")
 rclcpp_components_register_nodes(triton_controls "triton_controls::SerialSubscriber")
 rclcpp_components_register_nodes(triton_controls "triton_controls::TrajectoryGenerator")

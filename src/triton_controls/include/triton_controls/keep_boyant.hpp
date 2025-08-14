@@ -1,5 +1,5 @@
-#ifndef TRITON_CONTROL__KEEP_BOYANT
-#define TRITON_CONTROL__KEEP_BOYANT
+#ifndef TRITON_CONTROL__KEEP_BUOYANT
+#define TRITON_CONTROL__KEEP_BUOYANT
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"

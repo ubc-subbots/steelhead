@@ -1,4 +1,4 @@
-#include "triton_controls/keep_boyant.hpp"
+#include "triton_controls/keep_buoyant.hpp"
 using std::placeholders::_1;
 
 namespace triton_controls {   
@@ -31,22 +31,23 @@ namespace triton_controls {
         if (!set) {
             initialOrientation = msg->orientation;
             set = true;
-            start_time = now;
+            start_time = now;  // Track when we first got IMU data (start of delay)
         }
 
         // Wait for delay before starting
         if (!started && (now - start_time).seconds() < delay_seconds) {
-            return;
+            return;  // Using start_time as initialization timestamp
         }
 
         if (!started) {
             started = true;
-            start_time = now;
+            start_time = now;  // RESET: Now tracks when active control begins
             RCLCPP_INFO(this->get_logger(), "Starting buoyancy control after delay.");
         }
 
         // Run for run_seconds, then stop
         if (!stopped && (now - start_time).seconds() < run_seconds) {
+            // Using start_time as maneuver start timestamp
             geometry_msgs::msg::Wrench replyMsg;
             replyMsg.force.x = 15;
 

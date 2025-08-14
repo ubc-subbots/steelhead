@@ -46,7 +46,7 @@ def generate_launch_description():
 
     hardcoded_thrusters = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'keep_boyant_launch.py')
+            os.path.join(get_package_share_directory('triton_controls'), 'launch', 'keep_buoyant_launch.py')
         )
     )
 
