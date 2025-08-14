@@ -52,7 +52,7 @@ namespace triton_controls {
         if (!stopped && (now - start_time).seconds() < run_seconds) {
             if (counter > checkEveryNClocks) {
                 geometry_msgs::msg::Wrench replyMsg;
-                replyMsg.force.x = 15;
+                replyMsg.force.x = 10;
                 replyMsg.force.z = -1;
 
                 replyMsg.torque.x = (msg->orientation.x > initialOrientation.x) ? -1 : 1;
