@@ -49,8 +49,16 @@ def generate_launch_description():
             os.path.join(get_package_share_directory('triton_controls'), 'launch', 'keep_boyant_launch.py')
         )
     )
+
+    imu = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('triton_bringup'), 'imu_launch.py')
+        )
+    )
+
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
     ld.add_action(hardcoded_thrusters)
+    ld.add_action(imu)
     
     return ld
