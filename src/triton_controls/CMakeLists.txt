@@ -98,6 +98,18 @@ install(TARGETS waypoint_marker
   DESTINATION lib/${PROJECT_NAME}
 )
 
+add_executable(direct_imu_controller src/direct_imu_controller.cpp)
+ament_target_dependencies(
+  direct_imu_controller
+  "rclcpp"
+  "sensor_msgs"
+  "geometry_msgs"
+  "tf2"
+)
+install(TARGETS direct_imu_controller
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_target_dependencies(
   trajectory_generator
   "rclcpp"
