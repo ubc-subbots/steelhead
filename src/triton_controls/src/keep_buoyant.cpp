@@ -12,7 +12,7 @@ namespace triton_controls {
           kp_roll_(2.0), kp_pitch_(2.0), kp_yaw_(1.0)
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
-            "/triton/drivers/imu/out", 10, std::bind(&KeepBoyant::state_callback, this, _1));
+            "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
         pub_ = create_publisher<geometry_msgs::msg::Wrench>(
             "/triton/controls/input_forces",
             10);

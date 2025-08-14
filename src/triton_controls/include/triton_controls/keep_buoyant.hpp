@@ -55,12 +55,12 @@ namespace triton_controls
         bool initial_orientation_set_ = false;
         rclcpp::Time start_time_;
         rclcpp::Time control_start_time_;
-        int sample_count_;
         
-        // Control parameters
+        // Control parameters (order matches constructor initialization)
         double delay_seconds_;
         double run_seconds_;
         double averaging_duration_;
+        int sample_count_;
         double kp_roll_;
         double kp_pitch_;
         double kp_yaw_;

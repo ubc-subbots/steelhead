@@ -7,14 +7,14 @@ import os
 
 def generate_launch_description():
     """
-    Simple launch file that includes the full straight line navigator simulation
+    Simple launch file that includes the keep buoyant navigator simulation
     """
     ld = LaunchDescription()
 
-    # Include the full simulation launch from triton_gazebo
+    # Include the full simulation to keep buyant launch from triton_gazebo
     straight_line_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_gazebo'), 'launch', 'straight_line_navigator_sim_launch.py')
+            os.path.join(get_package_share_directory('triton_gazebo'), 'launch', 'keep_buoyant_launch.py')
         )
     )
 
