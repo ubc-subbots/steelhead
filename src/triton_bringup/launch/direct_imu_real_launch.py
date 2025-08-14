@@ -27,7 +27,7 @@ def generate_launch_description():
     # IMU launch for compass and orientation data
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('triton_bringup'), 'launch', 'imu_launch.py')
+            os.path.join(os.path.dirname(__file__), 'imu_launch.py')
         )
     )
 
