@@ -20,7 +20,7 @@
 namespace triton_controls
 {
 
-    class KeepBoyant : public rclcpp::Node
+    class KeepBuoyant : public rclcpp::Node
     {
 
     public:
@@ -32,7 +32,7 @@ namespace triton_controls
          * 
          * @param options ros2 node options.
          */
-        explicit KeepBoyant(const rclcpp::NodeOptions & options);
+        explicit KeepBuoyant(const rclcpp::NodeOptions & options);
 
     private:
 
@@ -45,12 +45,31 @@ namespace triton_controls
         void state_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
 
         rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr state_subscription_;
+        
+        // Control state variables
+        geometry_msgs::msg::Quaternion initial_orientation_;
+        geometry_msgs::msg::Quaternion accumulated_orientation_;
+        bool set_;
+        bool started_;
+        bool stopped_;
+        bool initial_orientation_set_ = false;
+        rclcpp::Time start_time_;
+        rclcpp::Time control_start_time_;
+        int sample_count_;
+        
+        // Control parameters
+        double delay_seconds_;
+        double run_seconds_;
+        double averaging_duration_;
+        double kp_roll_;
+        double kp_pitch_;
+        double kp_yaw_;
 
     };
 
 } // namespace triton_controls
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(triton_controls::KeepBoyant)
+RCLCPP_COMPONENTS_REGISTER_NODE(triton_controls::KeepBuoyant)
 
 #endif  //TRITON_CONTROL__TRAJECTORY_GENERATOR
