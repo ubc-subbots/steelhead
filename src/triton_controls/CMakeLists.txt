@@ -62,6 +62,14 @@ target_include_directories(simple_gate_navigator PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(straight_line_navigator
+  src/straight_line_navigator.cpp
+)
+target_include_directories(straight_line_navigator PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 ament_target_dependencies(
   thrust_allocator
   "rclcpp"
@@ -118,10 +126,25 @@ install(TARGETS simple_gate_navigator
   DESTINATION lib/${PROJECT_NAME}
 )
 
+ament_target_dependencies(
+  straight_line_navigator
+  "rclcpp"
+  "rclcpp_components"
+  "tf2"
+  "triton_interfaces"
+  "geometry_msgs"
+  "sensor_msgs"
+  "nav_msgs"
+)
+install(TARGETS straight_line_navigator
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 add_library(triton_controls SHARED
-  src/thrust_allocator.cpp
+  # src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
   src/serial_subscriber
+  # src/straight_line_navigator.cpp
 )
 
 rclcpp_components_register_nodes(triton_controls "triton_controls::ThrustAllocator")
@@ -129,6 +152,7 @@ rclcpp_components_register_nodes(triton_controls "triton_controls::WaypointMarke
 rclcpp_components_register_nodes(triton_controls "triton_controls::SerialSubscriber")
 rclcpp_components_register_nodes(triton_controls "triton_controls::TrajectoryGenerator")
 rclcpp_components_register_nodes(triton_controls "triton_controls::SimpleGateNavigator")
+rclcpp_components_register_nodes(triton_controls "triton_controls::StraightLineNavigator")
 
 target_compile_definitions(triton_controls
   PRIVATE "triton_controls_CPP_BUILDING_DLL"

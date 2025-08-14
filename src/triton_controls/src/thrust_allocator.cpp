@@ -122,7 +122,7 @@ namespace triton_controls
       }
       // TEMP FIX: PLEASE CHANGE ME LATER
       // so that the teensy can distinguish between rubbish and real data
-      signal |= 0b10101010000000000000000000000000;
+      signal |= 0b10000000000000000000000000000000;
 
       auto forces_msg = std_msgs::msg::Float64MultiArray();
       forces_msg.data = thrust;
