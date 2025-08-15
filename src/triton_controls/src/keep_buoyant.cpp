@@ -7,12 +7,12 @@ namespace triton_controls {
     KeepBuoyant::KeepBuoyant(const rclcpp::NodeOptions &options)
         : Node("keep_buoyant", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(5.0), dive_seconds_(12.0), 
+          delay_seconds_(5.0), dive_seconds_(5.0), 
           forward1_seconds_(3.0), flip_seconds_(4.0), 
           stabilize_seconds_(3.0), forward2_seconds_(8.0),
           initial_orientation_set_(false),
         //   change the strength of the correcting force by changing the numbers below
-          kp_roll_(0.0), kp_pitch_(5.0), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
+          kp_roll_(0.0), kp_pitch_(0.0), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
@@ -58,7 +58,7 @@ namespace triton_controls {
         // Phase 1: Dive down for dive_seconds
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.z = -15.0;  // Strong downward thrust to dive
+            control_msg.force.z = -25.0;  // Strong downward thrust to dive
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
@@ -124,7 +124,7 @@ namespace triton_controls {
             }
             
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.x = 15.0;  // Forward thrust
+            control_msg.force.x = 10.0;  // Forward thrust
 
             // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
