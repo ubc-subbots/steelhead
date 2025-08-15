@@ -86,7 +86,7 @@ namespace triton_controls {
         if (!stopped_ && control_elapsed < run_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
             control_msg.force.x = 5.0;  // Forward thrust (from -15 to 15 bc we have a 5 bit binary)
-            control_msg.force.z = -0.05; // Small downward force to stay underwater (~10% of forward thrust)
+            control_msg.force.z = -2.5; // Small downward force to stay underwater (~10% of forward thrust)
 
             // Convert quaternions to Euler angles for proper comparison
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
