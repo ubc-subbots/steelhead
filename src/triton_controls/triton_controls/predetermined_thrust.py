@@ -28,6 +28,14 @@ LEFT_TURN = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0),
     torque=Vector3(x=0.0, y=0.0, z=DEFAULT_EFFORT)
 )
+RIGHT_ROLL = Wrench(
+    force=Vector3(x=0.0, y=0.0, z=0.0),
+    torque=Vector3(x=3.0, y=0.0, z=0.0)
+)
+LEFT_ROLL = Wrench(
+    force=Vector3(x=0.0, y=0.0, z=0.0),
+    torque=Vector3(x=-3.0, y=0.0, z=0.0)
+)
 RIGHT_SWAY = Wrench(
     force=Vector3(x=0.0, y=-DEFAULT_EFFORT, z=0.0),
     torque=Vector3(x=0.0, y=0.0, z=0.0)
@@ -44,6 +52,14 @@ DOWNWARD = Wrench(
     force=Vector3(x=0.0, y=0.0, z=-DEFAULT_EFFORT),
     torque=Vector3(x=0.0, y=0.0, z=0.0)
 )
+UP_PITCH = Wrench(
+    force=Vector3(x=0.0, y=0.0, z=0.0),
+    torque=Vector3(x=0.0, y=-3.0, z=0.0)
+)
+DOWN_PITCH = Wrench(
+    force=Vector3(x=0.0, y=0.0, z=0.0),
+    torque=Vector3(x=0.0, y=3.0, z=0.0)
+)
 
 # direction of each step
 # duration is seconds
@@ -55,21 +71,17 @@ thrusts = [
     },
     # change the below
     {
-        'direction': STATIONARY,
-        'duration': 5,
+        'direction': DOWNWARD,
+        'duration': 7,
     },
     {
         'direction': FORWARD,
-        'duration': 5,
+        'duration': 15,
     },
     {
-        'direction': BACKWARD,
-        'duration': 5,
-    },
-    {
-        'direction': RIGHT_SWAY,
-        'duration': 3,
-    },
+        'direction': STATIONARY,
+        'duration': 30,
+    }
 ]
 
 
