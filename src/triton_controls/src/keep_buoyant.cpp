@@ -12,7 +12,7 @@ namespace triton_controls {
           stabilize_seconds_(3.0), forward2_seconds_(8.0),
           initial_orientation_set_(false),
         //   change the strength of the correcting force by changing the numbers below
-          kp_roll_(0.0), kp_pitch_(0.0), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
+          kp_roll_(2.0), kp_pitch_(2.0), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
