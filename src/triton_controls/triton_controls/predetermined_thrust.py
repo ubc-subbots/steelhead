@@ -72,22 +72,11 @@ thrusts = [
     # change the below
     {
         'direction': DOWNWARD,
-        'duration': 3,
+        'duration': 7,
     },
     {
         'direction': FORWARD,
-        'duration': 3,
-    },
-    {
-        'direction': UP_PITCH,
-        'duration': 2,
-    },
-    {
-        'direction': Wrench(
-            force=Vector3(x=DEFAULT_EFFORT, y=0.0, z=0.0),
-            torque=Vector3(x=3.0, y=0.0, z=0.0)
-        ),
-        'duration': 5,
+        'duration': 15,
     },
     {
         'direction': STATIONARY,
