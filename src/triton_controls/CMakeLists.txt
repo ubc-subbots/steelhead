@@ -78,6 +78,14 @@ target_include_directories(keep_buoyant PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(hover_underwater
+  src/hover_underwater.cpp
+)
+target_include_directories(hover_underwater PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 ament_target_dependencies(
   thrust_allocator
   "rclcpp"
@@ -162,6 +170,20 @@ install(TARGETS keep_buoyant
   DESTINATION lib/${PROJECT_NAME}
 )
 
+ament_target_dependencies(
+  hover_underwater
+  "rclcpp"
+  "rclcpp_components"
+  "tf2"
+  "triton_interfaces"
+  "geometry_msgs"
+  "sensor_msgs"
+  "nav_msgs"
+)
+install(TARGETS hover_underwater
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 add_library(triton_controls SHARED
   # src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
@@ -171,6 +193,7 @@ add_library(triton_controls SHARED
 
 rclcpp_components_register_nodes(triton_controls "triton_controls::ThrustAllocator")
 rclcpp_components_register_nodes(triton_controls "triton_controls::KeepBuoyant")
+rclcpp_components_register_nodes(triton_controls "triton_controls::HoverUnderwater")
 rclcpp_components_register_nodes(triton_controls "triton_controls::WaypointMarker")
 rclcpp_components_register_nodes(triton_controls "triton_controls::SerialSubscriber")
 rclcpp_components_register_nodes(triton_controls "triton_controls::TrajectoryGenerator")
