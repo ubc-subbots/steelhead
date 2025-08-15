@@ -7,9 +7,10 @@ namespace triton_controls {
     KeepBuoyant::KeepBuoyant(const rclcpp::NodeOptions &options)
         : Node("trajectory_generator", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(5.0), run_seconds_(10.0),
+          delay_seconds_(5.0), run_seconds_(15.0),
           averaging_duration_(1.0), sample_count_(0),
-          kp_roll_(0.3), kp_pitch_(0.3), kp_yaw_(0.2)
+        //   change the strength of the correcting force by changing the numbers below
+          kp_roll_(0.0), kp_pitch_(0.0), kp_yaw_(0.0) // the default values that are weak are like 0.3, 0.3, and 0.2 (bc yaw is super easy). 
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
@@ -84,7 +85,7 @@ namespace triton_controls {
         // Run for run_seconds, then stop
         if (!stopped_ && control_elapsed < run_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.x = 15.0;  // Forward thrust
+            control_msg.force.x = 5.0;  // Forward thrust (from -15 to 15 bc we have a 5 bit binary)
 
             // Convert quaternions to Euler angles for proper comparison
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
