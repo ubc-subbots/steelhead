@@ -7,10 +7,10 @@ namespace triton_controls {
     KeepBuoyant::KeepBuoyant(const rclcpp::NodeOptions &options)
         : Node("trajectory_generator", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(5.0), run_seconds_(15.0),
-          averaging_duration_(1.0), sample_count_(0),
+          delay_seconds_(5.0), run_seconds_(8.0),
+          averaging_duration_(1.0), dive_seconds_(1.5), sample_count_(0),
         //   change the strength of the correcting force by changing the numbers below
-          kp_roll_(0.0), kp_pitch_(0.0), kp_yaw_(0.0) // the default values that are weak are like 0.3, 0.3, and 0.2 (bc yaw is super easy). 
+          kp_roll_(0.0), kp_pitch_(1.5), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
@@ -77,13 +77,24 @@ namespace triton_controls {
         if (!started_) {
             started_ = true;
             control_start_time_ = now;  // Track when active control begins
-            RCLCPP_INFO(this->get_logger(), "Starting buoyancy control after delay.");
+            RCLCPP_INFO(this->get_logger(), "Starting dive phase for %.1f seconds.", dive_seconds_);
         }
 
         double control_elapsed = (now - control_start_time_).seconds();
 
-        // Run for run_seconds, then stop
-        if (!stopped_ && control_elapsed < run_seconds_) {
+        // Phase 1: Dive down for dive_seconds
+        if (!stopped_ && control_elapsed < dive_seconds_) {
+            geometry_msgs::msg::Wrench control_msg;
+            control_msg.force.z = -5.0;  // Strong downward thrust to dive
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
+            pub_->publish(control_msg);
+        }
+        // Phase 2: Forward motion with pitch control for remaining time
+        else if (!stopped_ && control_elapsed < (dive_seconds_ + run_seconds_)) {
+            if (control_elapsed == dive_seconds_ || (control_elapsed > dive_seconds_ && control_elapsed < dive_seconds_ + 0.1)) {
+                RCLCPP_INFO(this->get_logger(), "Starting forward motion phase.");
+            }
+            
             geometry_msgs::msg::Wrench control_msg;
             control_msg.force.x = 5.0;  // Forward thrust (from -15 to 15 bc we have a 5 bit binary)
             control_msg.force.z = -2.5; // Small downward force to stay underwater (~10% of forward thrust)
@@ -125,7 +136,7 @@ namespace triton_controls {
             geometry_msgs::msg::Wrench stop_msg;
             pub_->publish(stop_msg);
             stopped_ = true;
-            RCLCPP_INFO(this->get_logger(), "Stopping buoyancy control after run time.");
+            RCLCPP_INFO(this->get_logger(), "Stopping buoyancy control after dive + run time.");
         }
     }
 }

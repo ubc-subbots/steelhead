@@ -60,6 +60,7 @@ namespace triton_controls
         double delay_seconds_;
         double run_seconds_;
         double averaging_duration_;
+        double dive_seconds_;
         int sample_count_;
         double kp_roll_;
         double kp_pitch_;
