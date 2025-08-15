@@ -5,12 +5,14 @@ namespace triton_controls {
 
     /* Constructor */
     KeepBuoyant::KeepBuoyant(const rclcpp::NodeOptions &options)
-        : Node("trajectory_generator", options),
+        : Node("keep_buoyant", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(5.0), run_seconds_(8.0),
-          averaging_duration_(1.0), dive_seconds_(6), sample_count_(0),
+          delay_seconds_(5.0), dive_seconds_(12.0), 
+          forward1_seconds_(3.0), flip_seconds_(4.0), 
+          stabilize_seconds_(3.0), forward2_seconds_(8.0),
+          initial_orientation_set_(false),
         //   change the strength of the correcting force by changing the numbers below
-          kp_roll_(0.0), kp_pitch_(1.5), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
+          kp_roll_(0.0), kp_pitch_(5.0), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
@@ -18,11 +20,6 @@ namespace triton_controls {
             "/triton/controls/input_forces",
             10);
 
-        // Initialize accumulated orientation
-        accumulated_orientation_.x = 0.0;
-        accumulated_orientation_.y = 0.0;
-        accumulated_orientation_.z = 0.0;
-        accumulated_orientation_.w = 0.0;
 
         RCLCPP_INFO(this->get_logger(), "Keep Buoyant successfully started!");
     }
@@ -38,35 +35,11 @@ namespace triton_controls {
 
         double elapsed_time = (now - start_time_).seconds();
 
-        // Average orientations during the first second for better initial heading
-        if (elapsed_time < averaging_duration_) {
-            accumulated_orientation_.x += msg->orientation.x;
-            accumulated_orientation_.y += msg->orientation.y;
-            accumulated_orientation_.z += msg->orientation.z;
-            accumulated_orientation_.w += msg->orientation.w;
-            sample_count_++;
-            return;
-        }
-
-        // Finalize initial orientation average
-        if (sample_count_ > 0 && elapsed_time >= averaging_duration_ && !initial_orientation_set_) {
-            initial_orientation_.x = accumulated_orientation_.x / sample_count_;
-            initial_orientation_.y = accumulated_orientation_.y / sample_count_;
-            initial_orientation_.z = accumulated_orientation_.z / sample_count_;
-            initial_orientation_.w = accumulated_orientation_.w / sample_count_;
-            
-            // Normalize the quaternion
-            double norm = sqrt(initial_orientation_.x * initial_orientation_.x +
-                             initial_orientation_.y * initial_orientation_.y +
-                             initial_orientation_.z * initial_orientation_.z +
-                             initial_orientation_.w * initial_orientation_.w);
-            initial_orientation_.x /= norm;
-            initial_orientation_.y /= norm;
-            initial_orientation_.z /= norm;
-            initial_orientation_.w /= norm;
-            
+        // Set initial orientation from first reading
+        if (!initial_orientation_set_) {
+            initial_orientation_ = tf2::Quaternion(msg->orientation.x, msg->orientation.y, msg->orientation.z, msg->orientation.w);
             initial_orientation_set_ = true;
-            RCLCPP_INFO(this->get_logger(), "Initial orientation averaged from %d samples", sample_count_);
+            RCLCPP_INFO(this->get_logger(), "Initial orientation set from first IMU reading");
         }
 
         // Wait for delay before starting
@@ -85,60 +58,104 @@ namespace triton_controls {
         // Phase 1: Dive down for dive_seconds
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.z = -8.0;  // Strong downward thrust to dive
+            control_msg.force.z = -15.0;  // Strong downward thrust to dive
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
-        // Phase 2: Forward motion with pitch control for remaining time
-        else if (!stopped_ && control_elapsed < (dive_seconds_ + run_seconds_)) {
-            if (control_elapsed == dive_seconds_ || (control_elapsed > dive_seconds_ && control_elapsed < dive_seconds_ + 0.1)) {
-                RCLCPP_INFO(this->get_logger(), "Starting forward motion phase.");
+        // Phase 2: Forward motion for 3 seconds
+        else if (!stopped_ && control_elapsed < (dive_seconds_ + forward1_seconds_)) {
+            if (control_elapsed >= dive_seconds_ && control_elapsed < dive_seconds_ + 0.1) {
+                RCLCPP_INFO(this->get_logger(), "Starting first forward motion phase for %.1f seconds.", forward1_seconds_);
             }
             
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.x = 5.0;  // Forward thrust (from -15 to 15 bc we have a 5 bit binary)
-            control_msg.force.z = -2.5; // Small downward force to stay underwater (~10% of forward thrust)
+            control_msg.force.x = 15.0;  // Forward thrust
 
-            // Convert quaternions to Euler angles for proper comparison
+            // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
                                        msg->orientation.z, msg->orientation.w);
-            tf2::Quaternion initial_quat(initial_orientation_.x, initial_orientation_.y,
-                                       initial_orientation_.z, initial_orientation_.w);
             
-            // Get current Euler angles
-            tf2::Matrix3x3 current_matrix(current_quat);
-            double current_roll, current_pitch, current_yaw;
-            current_matrix.getRPY(current_roll, current_pitch, current_yaw);
+            // Compute quaternion error: q_error = q_initial^-1 * q_current
+            tf2::Quaternion q_error = initial_orientation_.inverse() * current_quat;
             
-            // Get initial Euler angles
-            tf2::Matrix3x3 initial_matrix(initial_quat);
-            double initial_roll, initial_pitch, initial_yaw;
-            initial_matrix.getRPY(initial_roll, initial_pitch, initial_yaw);
+            // Extract rotation axis and angle from error quaternion
+            tf2::Vector3 error_axis = tf2::Vector3(q_error.x(), q_error.y(), q_error.z());
+            double error_angle = 2.0 * atan2(error_axis.length(), q_error.w());
             
-            // Calculate angle differences
-            double roll_error = current_roll - initial_roll;
-            double pitch_error = current_pitch - initial_pitch;
-            double yaw_error = current_yaw - initial_yaw;
+            if (error_axis.length() > 1e-6) {
+                error_axis = error_axis.normalized() * error_angle;
+            }
             
-            // Normalize angles to [-pi, pi]
-            roll_error = atan2(sin(roll_error), cos(roll_error));
-            pitch_error = atan2(sin(pitch_error), cos(pitch_error));
-            yaw_error = atan2(sin(yaw_error), cos(yaw_error));
-            
-            // Proportional control for smooth correction
-            control_msg.torque.x = -kp_roll_ * roll_error;   // Roll correction
-            control_msg.torque.y = -kp_pitch_ * pitch_error; // Pitch correction
-            control_msg.torque.z = -kp_yaw_ * yaw_error;     // Yaw correction
+            control_msg.torque.x = -kp_roll_ * error_axis.x();
+            control_msg.torque.y = -kp_pitch_ * error_axis.y();
+            control_msg.torque.z = -kp_yaw_ * error_axis.z();
 
             pub_->publish(control_msg);
-        } else if (!stopped_) {
+        }
+        // Phase 3: Front flip for 4 seconds
+        else if (!stopped_ && control_elapsed < (dive_seconds_ + forward1_seconds_ + flip_seconds_)) {
+            if (control_elapsed >= (dive_seconds_ + forward1_seconds_) && 
+                control_elapsed < (dive_seconds_ + forward1_seconds_ + 0.1)) {
+                RCLCPP_INFO(this->get_logger(), "Starting front flip for %.1f seconds.", flip_seconds_);
+            }
+            
+            geometry_msgs::msg::Wrench control_msg;
+            control_msg.torque.y = 15.0;  // Torque in Y for front flip
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Front flipping... %.1f seconds remaining", 
+                               (dive_seconds_ + forward1_seconds_ + flip_seconds_) - control_elapsed);
+            pub_->publish(control_msg);
+        }
+        // Phase 4: Stabilize for 3 seconds
+        else if (!stopped_ && control_elapsed < (dive_seconds_ + forward1_seconds_ + flip_seconds_ + stabilize_seconds_)) {
+            if (control_elapsed >= (dive_seconds_ + forward1_seconds_ + flip_seconds_) && 
+                control_elapsed < (dive_seconds_ + forward1_seconds_ + flip_seconds_ + 0.1)) {
+                RCLCPP_INFO(this->get_logger(), "Starting stabilization for %.1f seconds.", stabilize_seconds_);
+            }
+            
+            geometry_msgs::msg::Wrench control_msg;
+            // All forces and torques are zero for stabilization
+            pub_->publish(control_msg);
+        }
+        // Phase 5: Final forward motion for 8 seconds
+        else if (!stopped_ && control_elapsed < (dive_seconds_ + forward1_seconds_ + flip_seconds_ + stabilize_seconds_ + forward2_seconds_)) {
+            if (control_elapsed >= (dive_seconds_ + forward1_seconds_ + flip_seconds_ + stabilize_seconds_) && 
+                control_elapsed < (dive_seconds_ + forward1_seconds_ + flip_seconds_ + stabilize_seconds_ + 0.1)) {
+                RCLCPP_INFO(this->get_logger(), "Starting final forward motion for %.1f seconds.", forward2_seconds_);
+            }
+            
+            geometry_msgs::msg::Wrench control_msg;
+            control_msg.force.x = 15.0;  // Forward thrust
+
+            // Apply corrective forces using direct quaternion error computation
+            tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
+                                       msg->orientation.z, msg->orientation.w);
+            
+            // Compute quaternion error: q_error = q_initial^-1 * q_current
+            tf2::Quaternion q_error = initial_orientation_.inverse() * current_quat;
+            
+            // Extract rotation axis and angle from error quaternion
+            tf2::Vector3 error_axis = tf2::Vector3(q_error.x(), q_error.y(), q_error.z());
+            double error_angle = 2.0 * atan2(error_axis.length(), q_error.w());
+            
+            if (error_axis.length() > 1e-6) {
+                error_axis = error_axis.normalized() * error_angle;
+            }
+            
+            control_msg.torque.x = -kp_roll_ * error_axis.x();
+            control_msg.torque.y = -kp_pitch_ * error_axis.y();
+            control_msg.torque.z = -kp_yaw_ * error_axis.z();
+
+            pub_->publish(control_msg);
+        } 
+        else if (!stopped_) {
             // Send zero wrench and stop
             geometry_msgs::msg::Wrench stop_msg;
             pub_->publish(stop_msg);
             stopped_ = true;
-            RCLCPP_INFO(this->get_logger(), "Stopping buoyancy control after dive + run time.");
+            RCLCPP_INFO(this->get_logger(), "Sequence complete - stopping all control.");
         }
     }
+    
 }
 
 int main(int argc, char * argv[]) {
@@ -148,8 +165,8 @@ int main(int argc, char * argv[]) {
     rclcpp::spin(std::make_shared<triton_controls::KeepBuoyant>(options));
     rclcpp::shutdown();
   } catch (rclcpp::exceptions::RCLError const&){
-    // RCLCPP_INFO(this->get_logger(), "Error thrown in main");
-  } // during testing sometimes throws error
+    // Error thrown during testing sometimes
+  }
   return 0;
 }
 

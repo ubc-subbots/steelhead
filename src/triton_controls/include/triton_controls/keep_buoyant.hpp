@@ -43,12 +43,12 @@ namespace triton_controls
          * @param msg geometry pose message with position and orientation
          */
         void state_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
+        
 
         rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr state_subscription_;
         
         // Control state variables
-        geometry_msgs::msg::Quaternion initial_orientation_;
-        geometry_msgs::msg::Quaternion accumulated_orientation_;
+        tf2::Quaternion initial_orientation_;
         bool set_;
         bool started_;
         bool stopped_;
@@ -58,10 +58,11 @@ namespace triton_controls
         
         // Control parameters (order matches constructor initialization)
         double delay_seconds_;
-        double run_seconds_;
-        double averaging_duration_;
         double dive_seconds_;
-        int sample_count_;
+        double forward1_seconds_;
+        double flip_seconds_;
+        double stabilize_seconds_;
+        double forward2_seconds_;
         double kp_roll_;
         double kp_pitch_;
         double kp_yaw_;
@@ -73,4 +74,4 @@ namespace triton_controls
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(triton_controls::KeepBuoyant)
 
-#endif  //TRITON_CONTROL__TRAJECTORY_GENERATOR
+#endif  //TRITON_CONTROL__KEEP_BUOYANT
