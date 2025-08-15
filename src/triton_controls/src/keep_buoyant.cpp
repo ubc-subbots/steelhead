@@ -8,7 +8,7 @@ namespace triton_controls {
         : Node("trajectory_generator", options),
           set_(false), started_(false), stopped_(false),
           delay_seconds_(5.0), run_seconds_(8.0),
-          averaging_duration_(1.0), dive_seconds_(1.5), sample_count_(0),
+          averaging_duration_(1.0), dive_seconds_(6), sample_count_(0),
         //   change the strength of the correcting force by changing the numbers below
           kp_roll_(0.0), kp_pitch_(1.5), kp_yaw_(0.0) // Enable gentle pitch control to prevent up/down oscillations 
         { 
@@ -85,7 +85,7 @@ namespace triton_controls {
         // Phase 1: Dive down for dive_seconds
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.z = -5.0;  // Strong downward thrust to dive
+            control_msg.force.z = -8.0;  // Strong downward thrust to dive
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
@@ -152,3 +152,4 @@ int main(int argc, char * argv[]) {
   } // during testing sometimes throws error
   return 0;
 }
+
