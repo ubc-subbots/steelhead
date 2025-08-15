@@ -9,7 +9,7 @@ namespace triton_controls {
           set_(false), started_(false), stopped_(false),
           delay_seconds_(5.0), run_seconds_(10.0),
           averaging_duration_(1.0), sample_count_(0),
-          kp_roll_(2.0), kp_pitch_(2.0), kp_yaw_(1.0)
+          kp_roll_(0.3), kp_pitch_(0.3), kp_yaw_(0.2)
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&KeepBuoyant::state_callback, this, _1));
