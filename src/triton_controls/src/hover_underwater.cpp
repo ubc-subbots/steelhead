@@ -7,10 +7,10 @@ namespace triton_controls {
     HoverUnderwater::HoverUnderwater(const rclcpp::NodeOptions &options)
         : Node("hover_underwater", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(1.0), dive_seconds_(0.0), 
-          hover_seconds_(15.0), surface_seconds_(1.0),
+          delay_seconds_(1.0), dive_seconds_(5.0), 
+          hover_seconds_(20.0), surface_seconds_(1.0),
           initial_orientation_set_(false),
-          kp_roll_(0.0), kp_pitch_(0.1), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
+          kp_roll_(0.0), kp_pitch_(6.0), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&HoverUnderwater::state_callback, this, _1));
@@ -68,7 +68,7 @@ namespace triton_controls {
             geometry_msgs::msg::Wrench control_msg;
             
             // Constant light downward thrust during hovering
-            control_msg.force.z = -5.0;
+            control_msg.force.z = -9.0;
 
             // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
@@ -86,7 +86,7 @@ namespace triton_controls {
             }
             
             control_msg.torque.x = -kp_roll_ * error_axis.x();
-            control_msg.torque.y = -kp_pitch_ * error_axis.y();
+            control_msg.torque.y = kp_pitch_ * error_axis.y();
             control_msg.torque.z = -kp_yaw_ * error_axis.z();
 
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Hovering stable... %.1f seconds remaining", (dive_seconds_ + hover_seconds_) - control_elapsed);
