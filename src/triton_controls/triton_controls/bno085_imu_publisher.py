@@ -37,14 +37,14 @@ class Bno085ImuPublisher(Node):
             tokens = line.split(',')
             # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
             if len(tokens) < 7:
-                self.get_logger().warn(f'Not enough tokens in line: {line}')
+                # self.get_logger().warn(f'Not enough tokens in line: {line}')
                 return
 
             try:
                 # parse floats
                 status = float(tokens[0])  # we might not use it, but let's parse
                 if status != 3:
-                    self.get_logger().warn(f'Status is not 3: {status}. Skipping this message.')
+                    # self.get_logger().warn(f'Status is not 3: {status}. Skipping this message.')
                     return
                 yaw_deg = float(tokens[1])
                 pitch_deg = float(tokens[2])
