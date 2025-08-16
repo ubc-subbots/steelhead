@@ -122,26 +122,26 @@ thrusts = [
         'direction': STATIONARY,
         'duration': 3,
     },
-    {
-        'direction': FORWARD,
-        'duration': 3,
-    },
-    {
-        'direction': STATIONARY,
-        'duration': 3,
-    },
-    {
-        'direction': FORWARD,
-        'duration': 3,
-    },
-    {
-        'direction': STATIONARY,
-        'duration': 3,
-    },
-    {
-        'direction': FORWARD,
-        'duration': 3,
-    },
+    # {
+    #     'direction': FORWARD,
+    #     'duration': 3,
+    # },
+    # {
+    #     'direction': STATIONARY,
+    #     'duration': 3,
+    # },
+    # {
+    #     'direction': FORWARD,
+    #     'duration': 3,
+    # },
+    # {
+    #     'direction': STATIONARY,
+    #     'duration': 3,
+    # },
+    # {
+    #     'direction': FORWARD,
+    #     'duration': 3,
+    # },
     # send a stop command after we are done
     {
         'direction': STATIONARY,
