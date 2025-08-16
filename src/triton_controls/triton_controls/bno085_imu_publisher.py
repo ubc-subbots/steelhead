@@ -28,64 +28,69 @@ class Bno085ImuPublisher(Node):
         self.timer_ = self.create_timer(0.01, self.timer_callback)
 
     def timer_callback(self):
-        # Attempt to read one line from serial
-        line = self.ser.readline().decode('utf-8').strip()
-        if not line:
-            return  # no data
-
-        tokens = line.split(',')
-        # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
-        if len(tokens) < 7:
-            self.get_logger().warn(f'Not enough tokens in line: {line}')
-            return
-
         try:
-            # parse floats
-            status = float(tokens[0])  # we might not use it, but let's parse
-            yaw_deg = float(tokens[1])
-            pitch_deg = float(tokens[2])
-            roll_deg = float(tokens[3])
-            ax = float(tokens[4])
-            ay = float(tokens[5])
-            az = float(tokens[6])
+            # Attempt to read one line from serial
+            line = self.ser.readline().decode('utf-8').strip()
+            if not line:
+                return  # no data
 
-            # Convert yaw/pitch/roll in degrees to quaternion (Z->Y->X)
-            yaw_rad   = math.radians(yaw_deg)
-            pitch_rad = math.radians(pitch_deg)
-            roll_rad  = math.radians(roll_deg)
+            tokens = line.split(',')
+            # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
+            if len(tokens) < 7:
+                self.get_logger().warn(f'Not enough tokens in line: {line}')
+                return
 
-            cy = math.cos(yaw_rad * 0.5)
-            sy = math.sin(yaw_rad * 0.5)
-            cp = math.cos(pitch_rad * 0.5)
-            sp = math.sin(pitch_rad * 0.5)
-            cr = math.cos(roll_rad * 0.5)
-            sr = math.sin(roll_rad * 0.5)
+            try:
+                # parse floats
+                status = float(tokens[0])  # we might not use it, but let's parse
+                yaw_deg = float(tokens[1])
+                pitch_deg = float(tokens[2])
+                roll_deg = float(tokens[3])
+                ax = float(tokens[4])
+                ay = float(tokens[5])
+                az = float(tokens[6])
 
-            qw = cr * cp * cy + sr * sp * sy
-            qx = sr * cp * cy - cr * sp * sy
-            qy = cr * sp * cy + sr * cp * sy
-            qz = cr * cp * sy - sr * sp * cy
+                # Convert yaw/pitch/roll in degrees to quaternion (Z->Y->X)
+                yaw_rad   = math.radians(yaw_deg)
+                pitch_rad = math.radians(pitch_deg)
+                roll_rad  = math.radians(roll_deg)
 
-            # Construct and publish IMU message
-            msg = Imu()
-            msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = 'imu_link'
+                cy = math.cos(yaw_rad * 0.5)
+                sy = math.sin(yaw_rad * 0.5)
+                cp = math.cos(pitch_rad * 0.5)
+                sp = math.sin(pitch_rad * 0.5)
+                cr = math.cos(roll_rad * 0.5)
+                sr = math.sin(roll_rad * 0.5)
 
-            msg.orientation.w = qw
-            msg.orientation.x = qx
-            msg.orientation.y = qy
-            msg.orientation.z = qz
+                qw = cr * cp * cy + sr * sp * sy
+                qx = sr * cp * cy - cr * sp * sy
+                qy = cr * sp * cy + sr * cp * sy
+                qz = cr * cp * sy - sr * sp * cy
 
-            msg.linear_acceleration.x = ax
-            msg.linear_acceleration.y = ay
-            msg.linear_acceleration.z = az
+                # Construct and publish IMU message
+                msg = Imu()
+                msg.header.stamp = self.get_clock().now().to_msg()
+                msg.header.frame_id = 'imu_link'
 
-            # We are not using angular_velocity in this example
+                msg.orientation.w = qw
+                msg.orientation.x = qx
+                msg.orientation.y = qy
+                msg.orientation.z = qz
 
-            self.publisher_.publish(msg)
+                msg.linear_acceleration.x = ax
+                msg.linear_acceleration.y = ay
+                msg.linear_acceleration.z = az
 
-        except ValueError:
-            self.get_logger().warn(f'Failed to parse float from line: {line}')
+                # We are not using angular_velocity in this example
+
+                self.publisher_.publish(msg)
+
+            except ValueError:
+                self.get_logger().warn(f'Failed to parse float from line: {line}')
+
+        except (serial.SerialException, UnicodeDecodeError) as e:
+            self.get_logger().warn(f'Serial read error: {e}')
+            return
 
 
 def main(args=None):
