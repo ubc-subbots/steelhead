@@ -1,4 +1,4 @@
-#include "triton_controls/hover_underwater.hpp"
+include "triton_controls/hover_underwater.hpp"
 using std::placeholders::_1;
 
 namespace triton_controls {
@@ -7,10 +7,10 @@ namespace triton_controls {
     HoverUnderwater::HoverUnderwater(const rclcpp::NodeOptions &options)
         : Node("hover_underwater", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(5.0), dive_seconds_(4.0), 
-          hover_seconds_(15.0), surface_seconds_(3.0),
+          delay_seconds_(1.0), dive_seconds_(0.0), 
+          hover_seconds_(8.0), surface_seconds_(1.0),
           initial_orientation_set_(false),
-          kp_roll_(3.0), kp_pitch_(3.0), kp_yaw_(2.0)
+          kp_roll_(0.0), kp_pitch_(0.2), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&HoverUnderwater::state_callback, this, _1));
@@ -55,7 +55,7 @@ namespace triton_controls {
         // Phase 1: Dive down for 4 seconds
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
-            control_msg.force.z = -25.0;
+            control_msg.force.z = -30.0;
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
@@ -66,6 +66,9 @@ namespace triton_controls {
             }
             
             geometry_msgs::msg::Wrench control_msg;
+            
+            // Constant light downward thrust during hovering
+            control_msg.force.z = -5.0;
 
             // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
