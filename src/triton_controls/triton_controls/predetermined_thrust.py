@@ -99,6 +99,14 @@ thrusts = [
         'duration': 3,
     },
     {
+        'direction': DOWN_PITCH,
+        'duration': 3,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 3,
+    },
+    {
         'direction': FORWARD,
         'duration': 5,
     },
