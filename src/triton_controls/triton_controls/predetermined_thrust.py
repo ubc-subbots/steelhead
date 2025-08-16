@@ -28,22 +28,22 @@ LEFT_TURN = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0),
     torque=Vector3(x=0.0, y=0.0, z=DEFAULT_EFFORT)
 )
-RIGHT_ROLL = Wrench(
-    force=Vector3(x=0.0, y=0.0, z=0.0),
-    torque=Vector3(x=3.0, y=0.0, z=0.0)
-)
-LEFT_ROLL = Wrench(
-    force=Vector3(x=0.0, y=0.0, z=0.0),
-    torque=Vector3(x=-3.0, y=0.0, z=0.0)
-)
-RIGHT_SWAY = Wrench(
-    force=Vector3(x=0.0, y=-DEFAULT_EFFORT, z=0.0),
-    torque=Vector3(x=0.0, y=0.0, z=0.0)
-)
-LEFT_SWAY = Wrench(
-    force=Vector3(x=0.0, y=DEFAULT_EFFORT, z=0.0),
-    torque=Vector3(x=0.0, y=0.0, z=0.0)
-)
+# RIGHT_ROLL = Wrench(
+#     force=Vector3(x=0.0, y=0.0, z=0.0),
+#     torque=Vector3(x=3.0, y=0.0, z=0.0)
+# )
+# LEFT_ROLL = Wrench(
+#     force=Vector3(x=0.0, y=0.0, z=0.0),
+#     torque=Vector3(x=-3.0, y=0.0, z=0.0)
+# )
+# RIGHT_SWAY = Wrench(
+#     force=Vector3(x=0.0, y=-DEFAULT_EFFORT, z=0.0),
+#     torque=Vector3(x=0.0, y=0.0, z=0.0)
+# )
+# LEFT_SWAY = Wrench(
+#     force=Vector3(x=0.0, y=DEFAULT_EFFORT, z=0.0),
+#     torque=Vector3(x=0.0, y=0.0, z=0.0)
+# )
 UPWARD = Wrench(
     force=Vector3(x=0.0, y=0.0, z=DEFAULT_EFFORT),
     torque=Vector3(x=0.0, y=0.0, z=0.0)
@@ -54,11 +54,11 @@ DOWNWARD = Wrench(
 )
 UP_PITCH = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0),
-    torque=Vector3(x=0.0, y=-3.0, z=0.0)
+    torque=Vector3(x=0.0, y=-DEFAULT_EFFORT, z=0.0)
 )
 DOWN_PITCH = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0),
-    torque=Vector3(x=0.0, y=3.0, z=0.0)
+    torque=Vector3(x=0.0, y=DEFAULT_EFFORT, z=0.0)
 )
 
 # direction of each step
@@ -72,12 +72,37 @@ thrusts = [
     # change the below
     {
         'direction': DOWNWARD,
-        'duration': 7,
+        'duration': 4,
     },
     {
         'direction': FORWARD,
-        'duration': 15,
+        'duration': 3,
     },
+    {
+        'direction': STATIONARY,
+        'duration': 3,
+    },
+    {
+        'direction': FORWARD,
+        'duration': 2,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 3,
+    },
+    {
+        'direction': DOWN_PITCH,
+        'duration': 3,
+    },
+    {
+        'direction': STATIONARY,
+        'duration': 3,
+    },
+    {
+        'direction': FORWARD,
+        'duration': 5,
+    },
+    # send a stop command after we are done
     {
         'direction': STATIONARY,
         'duration': 30,
