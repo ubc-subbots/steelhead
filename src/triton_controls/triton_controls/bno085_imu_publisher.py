@@ -43,6 +43,9 @@ class Bno085ImuPublisher(Node):
             try:
                 # parse floats
                 status = float(tokens[0])  # we might not use it, but let's parse
+                if status != 3:
+                    self.get_logger().warn(f'Status is not 3: {status}. Skipping this message.')
+                    return
                 yaw_deg = float(tokens[1])
                 pitch_deg = float(tokens[2])
                 roll_deg = float(tokens[3])

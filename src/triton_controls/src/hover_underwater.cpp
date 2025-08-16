@@ -1,4 +1,4 @@
-include "triton_controls/hover_underwater.hpp"
+#include "triton_controls/hover_underwater.hpp"
 using std::placeholders::_1;
 
 namespace triton_controls {
@@ -8,9 +8,9 @@ namespace triton_controls {
         : Node("hover_underwater", options),
           set_(false), started_(false), stopped_(false),
           delay_seconds_(1.0), dive_seconds_(0.0), 
-          hover_seconds_(8.0), surface_seconds_(1.0),
+          hover_seconds_(15.0), surface_seconds_(1.0),
           initial_orientation_set_(false),
-          kp_roll_(0.0), kp_pitch_(0.2), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
+          kp_roll_(0.0), kp_pitch_(0.1), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&HoverUnderwater::state_callback, this, _1));
