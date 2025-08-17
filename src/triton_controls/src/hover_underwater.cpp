@@ -7,10 +7,10 @@ namespace triton_controls {
     HoverUnderwater::HoverUnderwater(const rclcpp::NodeOptions &options)
         : Node("hover_underwater", options),
           set_(false), started_(false), stopped_(false),
-          delay_seconds_(1.0), dive_seconds_(5.0), 
-          hover_seconds_(20.0), surface_seconds_(1.0),
+          delay_seconds_(1.0), dive_seconds_(0.0), 
+          hover_seconds_(30.0), surface_seconds_(3.0),
           initial_orientation_set_(false),
-          kp_roll_(0.0), kp_pitch_(6.0), kp_yaw_(0.0) // roll can't work with this design, pitch might, yaw might not be worth
+          kp_roll_(0.0), kp_pitch_(6.0), kp_yaw_(0.1) // roll can't work with this design, pitch needs to be higher because it's at the same time applying downard force, yaw might not be worth
         { 
         state_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>(
             "/triton/drivers/imu/out", 10, std::bind(&HoverUnderwater::state_callback, this, _1));
@@ -51,7 +51,7 @@ namespace triton_controls {
         }
 
         double control_elapsed = (now - control_start_time_).seconds();
-
+// NOTE: KEEP IN MIND THIS HAS NO IMU CORRECTIVE FORCES
         // Phase 1: Dive down for 4 seconds
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
@@ -59,6 +59,8 @@ namespace triton_controls {
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
+
+// NOTE: THIS WORKS REALLY WELL PHASE 2 is best
         // Phase 2: Hover underwater with stabilization for 15 seconds
         else if (!stopped_ && control_elapsed < (dive_seconds_ + hover_seconds_)) {
             if (control_elapsed >= dive_seconds_ && control_elapsed < dive_seconds_ + 0.1) {
@@ -68,7 +70,7 @@ namespace triton_controls {
             geometry_msgs::msg::Wrench control_msg;
             
             // Constant light downward thrust during hovering
-            control_msg.force.z = -9.0;
+            control_msg.force.z = -7.0; //adjust this if going down too much during hovering
 
             // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
@@ -85,13 +87,15 @@ namespace triton_controls {
                 error_axis = error_axis.normalized() * error_angle;
             }
             
-            control_msg.torque.x = -kp_roll_ * error_axis.x();
+            control_msg.torque.x = kp_roll_ * error_axis.x();
             control_msg.torque.y = kp_pitch_ * error_axis.y();
-            control_msg.torque.z = -kp_yaw_ * error_axis.z();
+            control_msg.torque.z = kp_yaw_ * error_axis.z();
 
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Hovering stable... %.1f seconds remaining", (dive_seconds_ + hover_seconds_) - control_elapsed);
             pub_->publish(control_msg);
         }
+//NOTE: PHASE 3 is really sus and should be replaced with the vectors from phase 2
+
         // Phase 3: Light upward thrust for 3 seconds to begin surfacing
         else if (!stopped_ && control_elapsed < (dive_seconds_ + hover_seconds_ + surface_seconds_)) {
             if (control_elapsed >= (dive_seconds_ + hover_seconds_) && 
