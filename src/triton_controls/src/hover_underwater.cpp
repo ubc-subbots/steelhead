@@ -2,6 +2,8 @@
 using std::placeholders::_1;
 
 namespace triton_controls {
+//this version of the file was written right before the robot broke so it's not tested. but would like to test at the next pool test.
+//tldr: added imu stabilization to the going down and going up phases
 
     /* Constructor */
     HoverUnderwater::HoverUnderwater(const rclcpp::NodeOptions &options)
@@ -51,11 +53,30 @@ namespace triton_controls {
         }
 
         double control_elapsed = (now - control_start_time_).seconds();
-// NOTE: KEEP IN MIND THIS HAS NO IMU CORRECTIVE FORCES
-        // Phase 1: Dive down for 4 seconds
+        // Phase 1: Dive down with IMU stabilization
         if (!stopped_ && control_elapsed < dive_seconds_) {
             geometry_msgs::msg::Wrench control_msg;
             control_msg.force.z = -30.0;
+            
+            // Apply corrective forces using direct quaternion error computation
+            tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
+                                       msg->orientation.z, msg->orientation.w);
+            
+            // Compute quaternion error: q_error = q_initial^-1 * q_current
+            tf2::Quaternion q_error = initial_orientation_.inverse() * current_quat;
+            
+            // Extract rotation axis and angle from error quaternion
+            tf2::Vector3 error_axis = tf2::Vector3(q_error.x(), q_error.y(), q_error.z());
+            double error_angle = 2.0 * atan2(error_axis.length(), q_error.w());
+            
+            if (error_axis.length() > 1e-6) {
+                error_axis = error_axis.normalized() * error_angle;
+            }
+            
+            control_msg.torque.x = kp_roll_ * error_axis.x();
+            control_msg.torque.y = kp_pitch_ * error_axis.y();
+            control_msg.torque.z = kp_yaw_ * error_axis.z();
+            
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Diving... %.1f seconds remaining", dive_seconds_ - control_elapsed);
             pub_->publish(control_msg);
         }
@@ -94,9 +115,7 @@ namespace triton_controls {
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Hovering stable... %.1f seconds remaining", (dive_seconds_ + hover_seconds_) - control_elapsed);
             pub_->publish(control_msg);
         }
-//NOTE: PHASE 3 is really sus and should be replaced with the vectors from phase 2
-
-        // Phase 3: Light upward thrust for 3 seconds to begin surfacing
+        // Phase 3: Light upward thrust with stabilization for 3 seconds to begin surfacing
         else if (!stopped_ && control_elapsed < (dive_seconds_ + hover_seconds_ + surface_seconds_)) {
             if (control_elapsed >= (dive_seconds_ + hover_seconds_) && 
                 control_elapsed < (dive_seconds_ + hover_seconds_ + 0.1)) {
@@ -106,7 +125,7 @@ namespace triton_controls {
             geometry_msgs::msg::Wrench control_msg;
             control_msg.force.z = 4.0;
 
-            // Continue stabilization during surface assist
+            // Apply corrective forces using direct quaternion error computation
             tf2::Quaternion current_quat(msg->orientation.x, msg->orientation.y, 
                                        msg->orientation.z, msg->orientation.w);
             
@@ -119,9 +138,9 @@ namespace triton_controls {
                 error_axis = error_axis.normalized() * error_angle;
             }
             
-            control_msg.torque.x = -kp_roll_ * error_axis.x();
-            control_msg.torque.y = -kp_pitch_ * error_axis.y();
-            control_msg.torque.z = -kp_yaw_ * error_axis.z();
+            control_msg.torque.x = kp_roll_ * error_axis.x();
+            control_msg.torque.y = kp_pitch_ * error_axis.y();
+            control_msg.torque.z = kp_yaw_ * error_axis.z();
 
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Surface assist... %.1f seconds remaining", 
                                (dive_seconds_ + hover_seconds_ + surface_seconds_) - control_elapsed);
