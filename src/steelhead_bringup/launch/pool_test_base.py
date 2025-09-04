@@ -82,7 +82,7 @@ def generate_launch_description():
     ta_config = os.path.join(
         get_package_share_directory('steelhead_controls'),
         'config',
-        'thruster_config_steelhead_mini.yaml'
+        'thruster_config_steelhead.yaml'
     )
 
     thrust_allocator = Node(
