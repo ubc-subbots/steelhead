@@ -9,9 +9,9 @@ services:
       - "/dev:/dev"
     network_mode: "host"
   ros: 
-    image: ubcsubbots/triton:latest
+    image: ubcsubbots/steelhead:latest
     privileged: true
-    command: ros2 launch triton_pipeline pipeline_launch.py sequence:=example_sequence.yaml
+    command: ros2 launch steelhead_pipeline pipeline_launch.py sequence:=example_sequence.yaml
     volumes:
       - "/dev:/dev"
     network_mode: "host"

@@ -4,7 +4,7 @@ This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It i
 
 ## DISCLAIMER
 
-This repository was copied over from the Triton repository, so many elements are still named after that fact.
+This repository was copied over from the Steelhead repository, so many elements are still named after that fact.
 
 # Contents
 
