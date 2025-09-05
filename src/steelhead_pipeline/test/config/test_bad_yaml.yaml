@@ -1,0 +1,11 @@
+pipeline_manager
+  ros__parameters:
+    pipeline:
+      components:
+        - example::ComponentOne
+      pkg_names: 
+        - steelhead_example
+      namespace: /steelhead/example
+      remap_rules:
+        - /steelhead/example/component_two/in:=/steelhead/example/component_one/out
+    use_sim_time: false

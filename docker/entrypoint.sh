@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # source local install
-source /subbots/triton/install/setup.bash
+source /subbots/steelhead/install/setup.bash
 
 # then run cmd 
 exec "$@"

@@ -1,0 +1,13 @@
+/steelhead/pipeline_manager:
+  ros__parameters:
+    pipeline:
+      components:
+        - steelhead_object_recognition::ObjectRecognizer
+      pkg_names: 
+        - steelhead_object_recognition
+      param_files:
+        - tiny_yolov4_pipeline.yaml
+      namespace: /steelhead
+      remap_rules:
+        - /steelhead/object_recognizer/in:=/steelhead/drivers/front_camera/image_raw
+    use_sim_time: false

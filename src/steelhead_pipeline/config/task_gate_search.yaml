@@ -1,0 +1,11 @@
+/steelhead/pipeline_manager:
+  ros__parameters:
+    pipeline:
+      components:
+        - steelhead_gate::GateDetector
+      pkg_names: 
+        - steelhead_gate
+      param_files:
+        - ''
+      namespace: /steelhead
+    use_sim_time: false
