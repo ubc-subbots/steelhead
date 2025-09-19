@@ -1,4 +1,4 @@
-#ifndef TRITON_CONTROL__SERIAL_SUBSCRIBER 
+#ifndef STEELHEAD_CONTROL__SERIAL_SUBSCRIBER 
 #include "std_msgs/msg/u_int32.hpp"
 
 #include "rclcpp/rclcpp.hpp"
@@ -28,4 +28,4 @@ namespace steelhead_controls
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::SerialSubscriber)
 
-#endif  //TRITON_CONTROL__SERIAL_SUBSCRIBER
+#endif  //STEELHEAD_CONTROL__SERIAL_SUBSCRIBER

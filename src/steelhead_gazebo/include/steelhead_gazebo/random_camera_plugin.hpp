@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__RANDOM_CAMERA_PLUGIN
-#define TRITON_GAZEBO__RANDOM_CAMERA_PLUGIN
+#ifndef STEELHEAD_GAZEBO__RANDOM_CAMERA_PLUGIN
+#define STEELHEAD_GAZEBO__RANDOM_CAMERA_PLUGIN
 
 #include <sdf/sdf.hh>
 #include <gazebo/common/UpdateInfo.hh>

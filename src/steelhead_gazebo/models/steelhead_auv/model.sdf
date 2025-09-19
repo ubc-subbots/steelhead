@@ -90,8 +90,8 @@
 
     <base_link>frame::frame</base_link>
     <neutrally_buoyant>1</neutrally_buoyant>
-    <volume>0.00340702866633</volume>
-    <center_of_buoyancy>0.1 -0.062 -0.00878</center_of_buoyancy>
+    <volume>0.01334</volume>
+<center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>

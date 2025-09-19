@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__CAMERA_ORBIT_PLUGIN
-#define TRITON_GAZEBO__CAMERA_ORBIT_PLUGIN
+#ifndef STEELHEAD_GAZEBO__CAMERA_ORBIT_PLUGIN
+#define STEELHEAD_GAZEBO__CAMERA_ORBIT_PLUGIN
 
 #include <sdf/sdf.hh>
 #include <gazebo/common/UpdateInfo.hh>

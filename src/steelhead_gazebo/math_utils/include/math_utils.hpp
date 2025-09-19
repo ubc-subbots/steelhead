@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__MATH_UTILS
-#define TRITON_GAZEBO__MATH_UTILS
+#ifndef STEELHEAD_GAZEBO__MATH_UTILS
+#define STEELHEAD_GAZEBO__MATH_UTILS
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
@@ -55,4 +55,4 @@ namespace steelhead_gazebo
 
 }
 
-#endif // TRITON_GAZEBO__MATH_UTILS
+#endif // STEELHEAD_GAZEBO__MATH_UTILS

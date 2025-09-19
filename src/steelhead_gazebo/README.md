@@ -62,7 +62,7 @@ This runs the Gazebo world `uc_gendata.world`, runs the underwater camera node w
 
 Currently, the generated images are not always well-suited for training, and may not be rendered properly due to timing mismatches between the Gazebo render, the underwater camera node, and the bounding box node. Some manual cleaning (removing incorrect images) will need to be done to obtain a good dataset.
 
-Data is saved to a folder in the share directory, ie. `<PATH_TO_TRITON>/install/steelhead_gazebo/share/steelhead_gazebo/data`.
+Data is saved to a folder in the share directory, ie. `<PATH_TO_STEELHEAD>/install/steelhead_gazebo/share/steelhead_gazebo/data`.
 If you get an error that the executable cannot be found, make sure `steelhead_gazebo/bounding_box_image_saver.py` has executable permissions (ie. `chmod +x bounding_box_image_saver.py`).
 
 ### Training Yolo v3 Model

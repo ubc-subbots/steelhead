@@ -1,5 +1,5 @@
-#ifndef TRITON_GATE__POLE_FEATURIZER
-#define TRITON_GATE__POLE_FEATURIZER
+#ifndef STEELHEAD_GATE__POLE_FEATURIZER
+#define STEELHEAD_GATE__POLE_FEATURIZER
 
 #include <unistd.h>
 
@@ -91,4 +91,4 @@ public:
 
 }  // namespace steelhead_gate
 
-#endif  // TRITON_GATE__POLE_FEATURIZER
+#endif  // STEELHEAD_GATE__POLE_FEATURIZER

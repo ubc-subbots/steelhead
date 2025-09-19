@@ -1,5 +1,5 @@
-#ifndef TRITON_VISION_UTILS__OBJECT_DETECTOR
-#define TRITON_VISION_UTILS__OBJECT_DETECTOR
+#ifndef STEELHEAD_VISION_UTILS__OBJECT_DETECTOR
+#define STEELHEAD_VISION_UTILS__OBJECT_DETECTOR
 
 #include <opencv2/opencv.hpp>
 #include <string>
@@ -89,4 +89,4 @@ private:
 
 }  // namespace steelhead_vision_utils
 
-#endif  // TRITON_VISION_UTILS__OBJECT_DETECTOR
+#endif  // STEELHEAD_VISION_UTILS__OBJECT_DETECTOR

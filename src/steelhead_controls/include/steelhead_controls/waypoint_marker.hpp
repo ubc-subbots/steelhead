@@ -1,5 +1,5 @@
-#ifndef TRITON_CONTROL__WAYPOINT_MARKER
-#define TRITON_CONTROL__WAYPOINT_MARKER
+#ifndef STEELHEAD_CONTROL__WAYPOINT_MARKER
+#define STEELHEAD_CONTROL__WAYPOINT_MARKER
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -74,4 +74,4 @@ namespace steelhead_controls
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::WaypointMarker)
 
-#endif  //TRITON_CONTROL__WAYPOINT_MARKER
+#endif  //STEELHEAD_CONTROL__WAYPOINT_MARKER

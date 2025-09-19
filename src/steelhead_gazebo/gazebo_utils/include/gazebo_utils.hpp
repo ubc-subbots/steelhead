@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__GAZEBO_UTILS
-#define TRITON_GAZEBO__GAZEBO_UTILS
+#ifndef STEELHEAD_GAZEBO__GAZEBO_UTILS
+#define STEELHEAD_GAZEBO__GAZEBO_UTILS
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
@@ -63,4 +63,4 @@ namespace steelhead_gazebo
 
 }
 
-#endif // TRITON_GAZEBO__GAZEBO_UTILS
+#endif // STEELHEAD_GAZEBO__GAZEBO_UTILS

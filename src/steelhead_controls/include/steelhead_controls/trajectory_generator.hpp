@@ -1,5 +1,5 @@
-#ifndef TRITON_CONTROL__TRAJECTORY_GENERATOR
-#define TRITON_CONTROL__TRAJECTORY_GENERATOR
+#ifndef STEELHEAD_CONTROL__TRAJECTORY_GENERATOR
+#define STEELHEAD_CONTROL__TRAJECTORY_GENERATOR
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"
@@ -116,4 +116,4 @@ namespace steelhead_controls
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::TrajectoryGenerator)
 
-#endif  //TRITON_CONTROL__TRAJECTORY_GENERATOR
+#endif  //STEELHEAD_CONTROL__TRAJECTORY_GENERATOR

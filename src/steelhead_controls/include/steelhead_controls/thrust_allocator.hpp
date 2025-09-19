@@ -1,5 +1,5 @@
-#ifndef TRITON_CONTROL__THRUST_ALLOCATOR
-#define TRITON_CONTROL__THRUST_ALLOCATOR
+#ifndef STEELHEAD_CONTROL__THRUST_ALLOCATOR
+#define STEELHEAD_CONTROL__THRUST_ALLOCATOR
 
 #include <math.h>
 #include <utility>
@@ -96,4 +96,4 @@ namespace steelhead_controls
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::ThrustAllocator)
 
-#endif  //TRITON_CONTROL__THRUST_ALLOCATOR
+#endif  //STEELHEAD_CONTROL__THRUST_ALLOCATOR

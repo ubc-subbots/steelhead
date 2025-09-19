@@ -1,7 +1,7 @@
 # steelhead_object_recognition
 ## Description
 
-This package contains a ROS2 node that can use a YOLOv3 or YOLOv4 network to detect and classify objects within an image. Note that based on the config file passed to the object recognition node, it might take a while for the node to start for the first time because it will download the appropriate config and weight files to the path `<PATH_TO_TRITON>/steelhead/install/steelhead_object_recognition/share/steelhead_object_recognition`. These files tend to be quite large but they should only have to be downloaded once provided you do not delete the `install` folder.
+This package contains a ROS2 node that can use a YOLOv3 or YOLOv4 network to detect and classify objects within an image. Note that based on the config file passed to the object recognition node, it might take a while for the node to start for the first time because it will download the appropriate config and weight files to the path `<PATH_TO_STEELHEAD>/steelhead/install/steelhead_object_recognition/share/steelhead_object_recognition`. These files tend to be quite large but they should only have to be downloaded once provided you do not delete the `install` folder.
 
 ## Usage
 

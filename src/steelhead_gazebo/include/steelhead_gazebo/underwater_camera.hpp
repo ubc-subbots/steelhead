@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__UNDERWATER_CAMERA
-#define TRITON_GAZEBO__UNDERWATER_CAMERA
+#ifndef STEELHEAD_GAZEBO__UNDERWATER_CAMERA
+#define STEELHEAD_GAZEBO__UNDERWATER_CAMERA
 
 #include <memory>
 #include <eigen3/Eigen/Core>
@@ -120,4 +120,4 @@ namespace steelhead_gazebo
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_gazebo::UnderwaterCamera)
 
-#endif  //TRITON_GAZEBO__UNDERWATER_CAMERA
+#endif  //STEELHEAD_GAZEBO__UNDERWATER_CAMERA

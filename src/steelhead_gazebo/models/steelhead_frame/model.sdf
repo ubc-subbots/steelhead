@@ -6,7 +6,7 @@
       <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
       <!-- Edited for Steelhead Aug 9 2024-->
       <inertial>
-        <mass>29.4835</mass>
+        <mass>13.7</mass>
         <inertia>
           <ixx> 0.548853532</ixx>
           <ixy> 0.000990367</ixy>
@@ -15,7 +15,7 @@
           <iyz> 0.045963196</iyz>
           <izz> 1.077000000</izz>
         </inertia>
-        <pose>0.1 -0.062 -0.00878 0 -0 0</pose>
+         <pose>0.1 -0.062 -0.00878 0 0 0</pose>
       </inertial>
 
       <!-- Visual Data -->
