@@ -75,8 +75,12 @@ Next, install rosdep as such
   
 Then, from the folder `steelhead`, resolve any dependency issues using the following command
  
-        rosdep install -i --from-path src --rosdistro foxy -y
+        rosdep install -i --from-path src --rosdistro foxy -y -r
   
+Some packages may fail, so just manually install them with 
+
+    sudo apt install <PACKAGE_NAME>
+
 From the same folder, build all the packages using the following command
 
     colcon build
@@ -112,6 +116,6 @@ Here are some tips to be aware of when developing on this repository and when de
 If you'd like, add these aliases to the bottom of your .bashrc
 
 ```
-alias build=colcon build && source install/setup.bash # clean build
-alias clean=rm -r build install log # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
+alias build='colcon build && source install/setup.bash # clean build'
+alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
 ```
