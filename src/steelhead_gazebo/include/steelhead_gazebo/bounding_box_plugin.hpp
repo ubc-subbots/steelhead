@@ -1,5 +1,5 @@
-#ifndef TRITON_GAZEBO__BOUNDING_BOX_PLUGIN
-#define TRITON_GAZEBO__BOUNDING_BOX_PLUGIN
+#ifndef STEELHEAD_GAZEBO__BOUNDING_BOX_PLUGIN
+#define STEELHEAD_GAZEBO__BOUNDING_BOX_PLUGIN
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/sensors/CameraSensor.hh>

@@ -1,3 +1,5 @@
+# THIS WAS FOR TRITON AND MAY BE OUTDATED FOR STEELHEAD
+
 ## Docker
 
 We use `docker-compose` to orchestrate the `micro-ros` agent contianer with our custom built `steelhead` container. This Docker system can be launched on the TX2 and still be able to communicate with various devices as the `/dev` directory is mounted to every container.
@@ -14,7 +16,7 @@ To develop with micro-ros on a Teensy 4.0 (i.e be able to compile and upload Ard
 
 ### Building
 
-There is no need to build manually, on every push to master, the image `ubcsubbots/steelhead:latest` on `dockerhub` is updated. The credentials used are stored in Github secrets and have to belong to a member of the `ubcsubbots` organization on `dockerhub`.
+There is no need to build manually, on every push to main, the image `ubcsubbots/steelhead:latest` on `dockerhub` is updated. The credentials used are stored in Github secrets and have to belong to a member of the `ubcsubbots` organization on `dockerhub`.
 
 ### Usage
 To launch the entire docker system, run the following command in this directory. Note that for this to work, you need to have the micro-controller connected to the host on `/dev/ttyACM0`.

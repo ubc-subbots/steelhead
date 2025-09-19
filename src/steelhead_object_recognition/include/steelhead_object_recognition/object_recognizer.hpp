@@ -1,5 +1,5 @@
-#ifndef TRITON_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
-#define TRITON_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#ifndef STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#define STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
 
 #include "rclcpp/rclcpp.hpp"
 #include "image_transport/image_transport.hpp"
@@ -85,4 +85,4 @@ namespace steelhead_object_recognition
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_object_recognition::ObjectRecognizer)
 
-#endif  //TRITON_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#endif  //STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER

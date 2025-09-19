@@ -1,5 +1,5 @@
-#ifndef TRITON_EXAMPLE__COMPONENT_TWO
-#define TRITON_EXAMPLE__COMPONENT_TWO
+#ifndef STEELHEAD_EXAMPLE__COMPONENT_TWO
+#define STEELHEAD_EXAMPLE__COMPONENT_TWO
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -71,4 +71,4 @@ namespace steelhead_example
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_example::ComponentTwo)
 
-#endif  //TRITON_EXAMPLE__COMPONENT_TWO
+#endif  //STEELHEAD_EXAMPLE__COMPONENT_TWO

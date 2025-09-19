@@ -1,5 +1,5 @@
-#ifndef TRITON_PID_CONTROLLER__
-#define TRITON_PID_CONTROLLER__
+#ifndef STEELHEAD_PID_CONTROLLER__
+#define STEELHEAD_PID_CONTROLLER__
 #pragma once
 
 #include <string>

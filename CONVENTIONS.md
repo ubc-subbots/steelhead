@@ -126,7 +126,7 @@ The C++ programming conventions we use are loosely based off the [ROS C++ Style 
 - Members should be organized **Functions, Constants, Variables**
 - Leave **2** lines between functions and classes
 - If the C++ file exists in `steelhead_<PACKAGE_NAME>`, then the classes/functions should be namespaced using **<PACKAGE_NAME>**. 
-- If the file `example_file.hpp` exists in `steelhead_<PACKAGE_NAME>`, it's should have a definition **TRITON_<PACKAGE_NAME>__EXAMPLE_FILE**
+- If the file `example_file.hpp` exists in `steelhead_<PACKAGE_NAME>`, it's should have a definition **STEELHEAD_<PACKAGE_NAME>__EXAMPLE_FILE**
 - Includes should be organized **Standard, Third-Party, Application**
 - Includes should be in the `.hpp` as much as possible
 - Brackets (ie. `{` and `}`) should start on a new line
@@ -136,8 +136,8 @@ Here is an example `.hpp` and `.cpp` file in the package `steelhead_example` dis
 
 ```
 // example_file.hpp
-#ifndef TRITON_EXAMPLE__EXAMPLE_FILE
-#define TRITON_EXAMPLE__EXAMPLE_FILE
+#ifndef STEELHEAD_EXAMPLE__EXAMPLE_FILE
+#define STEELHEAD_EXAMPLE__EXAMPLE_FILE
 
 #include <some_standard_library>
 #include <another_standard_library>
@@ -203,7 +203,7 @@ namespace example
 
 } // namespace example
 
-#endif  //TRITON_EXAMPLE__EXAMPLE_FILE
+#endif  //STEELHEAD_EXAMPLE__EXAMPLE_FILE
 ```
 
 ```

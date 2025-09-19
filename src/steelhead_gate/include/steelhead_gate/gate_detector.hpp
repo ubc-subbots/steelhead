@@ -1,5 +1,5 @@
-#ifndef TRITON_GATE__GATE_DETECTOR
-#define TRITON_GATE__GATE_DETECTOR
+#ifndef STEELHEAD_GATE__GATE_DETECTOR
+#define STEELHEAD_GATE__GATE_DETECTOR
 
 #include <opencv2/opencv.hpp>
 
@@ -95,4 +95,4 @@ private:
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_gate::GateDetector)
 
-#endif  // TRITON_GATE__GATE_DETECTOR
+#endif  // STEELHEAD_GATE__GATE_DETECTOR
