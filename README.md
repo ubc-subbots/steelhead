@@ -116,6 +116,6 @@ Here are some tips to be aware of when developing on this repository and when de
 If you'd like, add these aliases to the bottom of your .bashrc
 
 ```
-alias build='colcon build && source install/setup.bash # clean build'
+alias build='colcon build && source install/setup.bash' # clean build
 alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
 ```
