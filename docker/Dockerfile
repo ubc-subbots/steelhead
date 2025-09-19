@@ -1,6 +1,6 @@
 FROM ros:foxy
 
-# setup triton
+# setup steelhead
 RUN mkdir -p /subbots
 COPY build.sh /subbots
 WORKDIR /subbots

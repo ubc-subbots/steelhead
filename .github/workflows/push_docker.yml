@@ -1,4 +1,4 @@
-name: Build and push triton Docker image
+name: Build and push steelhead Docker image
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
 
-      - name: Check out ubc-subbots/triton
+      - name: Check out ubc-subbots/steelhead
         uses: actions/checkout@v2
 
       - name: Log in to Docker Hub
@@ -23,4 +23,4 @@ jobs:
         with:
           context: ./docker
           push: true
-          tags: ubcsubbots/triton:latest
+          tags: ubcsubbots/steelhead:latest

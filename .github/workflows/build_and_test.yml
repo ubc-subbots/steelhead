@@ -8,7 +8,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-24.04
     container:
-      image: hashaam1217/subbots_triton_testing:1.0.1
+      image: hashaam1217/subbots_steelhead_testing:1.0.1
     steps:
       - name: Ensure Permissions
         run: |
@@ -46,7 +46,7 @@ jobs:
           echo "/usr/local/cuda/lib64" >> $GITHUB_PATH
           echo "/usr/local/cuda/bin" >> $GITHUB_PATH
 
-      - name: Check out ubc-subbots/triton
+      - name: Check out ubc-subbots/steelhead
         uses: actions/checkout@v3  # Update to the latest version.
 
       - name: Install deps with rosdep

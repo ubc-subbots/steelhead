@@ -4,7 +4,7 @@ This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It i
 
 ## DISCLAIMER
 
-This repository was copied over from the Triton repository, so many elements are still named after that fact.
+This repository was copied over from the Triton repository, so there still may be remnents of Triton or Triton Mini.
 
 # Contents
 
@@ -14,20 +14,15 @@ This repository was copied over from the Triton repository, so many elements are
     - [ROS2 Dependencies](#ros2-dependencies)
 - [Contributing](#contributing)
 - [Tips](#tips)
+
 ## Setup
+This guide already assumes you have already followed the guide for installing Ubuntu, ROS2, and Gazebo [here](https://github.com/ubc-subbots/software-start-here).
+
 To get started, first clone this repo to your computer running Ubuntu 20.04 into whatever directory you choose as such
 
     git clone https://github.com/ubc-subbots/steelhead.git
 
-### Gazebo Installation
-To install Gazebo, it is as simple as running the following command
-
-    curl -sSL http://get.gazebosim.org | sh
-
-To verify it was succesfully installed, run the following command
-
-    gazebo --version
-
+### Gazebo Ssourcing
 Next, we need to add the setup script to our `.bashrc` so that it is sourced on every new terminal, open up `~/.bashrc` in a text editor or in nano as such
 
     nano ~/.bashrc
@@ -36,7 +31,8 @@ Append the following line to the bottom of the file
 
     source /usr/share/gazebo/setup.sh
 
-Now Gazebo is succesfully installed!
+Now Gazebo is succesfully sourced on setup.
+
 ### OpenCV Installation
 First, make sure you have all the dependencies installed for building and running OpenCV
 
@@ -66,6 +62,7 @@ After the make command finishes successfully, install OpenCV as such
     sudo make install
 
 OpenCV is now succesfully installed!
+
 ### ROS2 Dependencies
 Source the global ROS2 setup script in the terminal
 
@@ -73,13 +70,17 @@ Source the global ROS2 setup script in the terminal
   
 Next, install rosdep as such
  
-    sudo apt install python3-rosdep2 -y
+    sudo apt install python3-rosdep2 -y --allow-unauthenticated 
     rosdep update --include-eol #(Foxy is now at end of life)
   
 Then, from the folder `steelhead`, resolve any dependency issues using the following command
  
-    rosdep install -i --from-path src --rosdistro foxy -y
+        rosdep install -i --from-path src --rosdistro foxy -y -r
   
+Some packages may fail, so just manually install them with 
+
+    sudo apt install <PACKAGE_NAME>
+
 From the same folder, build all the packages using the following command
 
     colcon build
@@ -94,10 +95,9 @@ Navigate to the bottom of the file and add the following three lines, be sure to
     source <PATH_TO_STEELHEAD>/steelhead/install/setup.bash   # local setup script
     export RCUTILS_COLORIZED_OUTPUT=1
     
-The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the pipeline as such
+The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the Gazebo sim by launching
 
-    ros2 launch 
-    _pipeline pipeline_launch.py sequence:=example_sequence.yaml
+    ros2 launch steelhead_bringup barebones_gazebo_launch.py
    
 If this command executes successfully, you are ready to develop!
 
@@ -111,3 +111,11 @@ Here are some tips to be aware of when developing on this repository and when de
 - Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communcation channels.
 - If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `steelhead` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
 - For non-ROS2 dependencies, check [here](https://github.com/ros/rosdistro/tree/master/rosdep) to see the available system dependencies that can be used with `rosdep`.
+
+## Useful Shortcuts
+If you'd like, add these aliases to the bottom of your .bashrc
+
+```
+alias build='colcon build && source install/setup.bash # clean build'
+alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
+```
