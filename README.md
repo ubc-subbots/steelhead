@@ -1,10 +1,10 @@
 # Steelhead AUV
 
-This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
+This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
 
 ## DISCLAIMER
 
-This repository was copied over from the Triton repository, so there still may be remnents of Triton or Triton Mini.
+This repository was copied over from the Triton repository, so there still may be remnants of Triton or Triton Mini.
 
 # Contents
 
@@ -18,12 +18,12 @@ This repository was copied over from the Triton repository, so there still may b
 ## Setup
 This guide already assumes you have already followed the guide for installing Ubuntu, ROS2, and Gazebo [here](https://github.com/ubc-subbots/software-start-here).
 
-To get started, first clone this repo to your computer running Ubuntu 20.04 into whatever directory you choose as such
+To get started, first clone this repo to your computer running Ubuntu 20.04 into whatever directory you choose by running
 
     git clone https://github.com/ubc-subbots/steelhead.git
 
-### Gazebo Ssourcing
-Next, we need to add the setup script to our `.bashrc` so that it is sourced on every new terminal, open up `~/.bashrc` in a text editor or in nano as such
+### Gazebo Sourcing
+Next, we need to add the setup script to our `.bashrc` so that it is sourced on every new terminal. Open up `~/.bashrc` in a text editor or in nano as such
 
     nano ~/.bashrc
 
@@ -31,7 +31,7 @@ Append the following line to the bottom of the file
 
     source /usr/share/gazebo/setup.sh
 
-Now Gazebo is succesfully sourced on setup.
+Now Gazebo is successfully sourced on setup.
 
 ### OpenCV Installation
 First, make sure you have all the dependencies installed for building and running OpenCV
@@ -53,15 +53,15 @@ Next configure CMake for the build as such
 
     cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
 
-Still from the build folder, make the project using parallel jobs, this will take a while
+Still from the build folder, make the project using parallel jobs; this will take a while
 
     make -j7 # runs 7 jobs in parallel
 
-After the make command finishes successfully, install OpenCV as such
+After the make command finishes successfully, install OpenCV as such. This will also take a bit, so grab some fresh air and go for a walk
 
     sudo make install
 
-OpenCV is now succesfully installed!
+OpenCV is now successfully installed!
 
 ### ROS2 Dependencies
 Source the global ROS2 setup script in the terminal
@@ -85,11 +85,11 @@ From the same folder, build all the packages using the following command
 
     colcon build
   
-To finish the setup, edit your `.bashrc` file to source the global and local setup scripts whenever you open up a new terminal, this can be done using a text editor or by using `nano` as such
+To finish the setup, edit your `.bashrc` file to source the global and local setup scripts whenever you open up a new terminal; this can be done using a text editor or by using `nano` as such
  
     nano ~/.bashrc
     
-Navigate to the bottom of the file and add the following three lines, be sure to set `<PATH_TO_STEELHEAD>` to whatever it is on your machine
+Navigate to the bottom of the file and add the following three lines; be sure to set `<PATH_TO_STEELHEAD>` to whatever it is on your machine
 
     source /opt/ros/foxy/setup.bash                     # global setup script
     source <PATH_TO_STEELHEAD>/steelhead/install/setup.bash   # local setup script
@@ -108,7 +108,7 @@ To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md
 Here are some tips to be aware of when developing on this repository and when developing in ROS2 in general
 - Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `steelhead`)
 - After creating any new component nodes, you must either source the local setup script or simply open up a new terminal for them to show up under the command `ros2 component types` and be usable by the pipeline.
-- Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communcation channels.
+- Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communication channels.
 - If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `steelhead` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
 - For non-ROS2 dependencies, check [here](https://github.com/ros/rosdistro/tree/master/rosdep) to see the available system dependencies that can be used with `rosdep`.
 
