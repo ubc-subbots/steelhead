@@ -1,1 +1,104 @@
-<mxfile host="app.diagrams.net" modified="2021-10-22T05:23:43.308Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" etag="OPxq2JKpJDQMVSQYFaUC" version="15.5.2" type="device"><diagram id="kFXfFQFpcm2u4Fk9cAop" name="Page-1">3VrbcqM4EP0aV+08xMUd/Bg72dmtSnZTlczOzqMCsq0aQIyQJ/Z8/QokcZGwQxLA2by4UEsI6XT3UXfLM3uV7D8TkG1vcQTjmWVE+5l9NbOshe2x30Jw4ALXcbhgQ1DERWYtuEe/oBAaQrpDEcxbAynGMUVZWxjiNIUhbckAIfipPWyN4/ZXM7CBmuA+BLEu/YoiuuXSwPJr+R8Qbbbyy6a34D0JkIPFTvItiPBTQ2Rfz+wVwZjyp2S/gnGBncSFv/f7kd5qYQSmtM8LkRFeIevrX3v/5sf6i+1Zu3B9IRb7E8Q7sWGxWHqQCBC8SyNYTGLO7OXTFlF4n4Gw6H1iKmeyLU1i0Q1IKHTospaYHBIK90dXbVZYMBuCOIGUHNgQ8YIjVyTsxw4EnE+1NqyFkG2bmnCFEAgL2FRz1yCxB4HTCzDzRsPMHgYzuXMJmeHqkNkdkNnGWJCZo0HmDWVmTgsz0+wws8DrMDNnLMxsDbMbzHgJ/QIU4XRmeTFbwvKRsKcNLVHwQFLgxH/1AXc4h2zC65yiRMzxFh0Mgbrddm7H1C3VNLqcezRLdTTUbzHHyriHaY5JrgP725+3X2YW+55xBTO2bjn009kB9hUmsDvw7SLPxVjwuhq8/6D8OXhvcYrZ1+4pJJA9GCuQQALeHbrO2dH1NXQrUBWo2KZpG4+cEvwdrnCMCZOkOGUjl2sUx4qIMdAmZc2QgQSZfFlAiBgxXYqOBEVR8ZlOBdQqMiY767zOo24kFQSaCu5QBmPEsPuwOnCsthK6Ds9JlSC/39DCCqcM3PgDe0KfSHlaLehR3990y5A6xfUPkEUvcgA/VG8g+P5+z1S3L+uPlo+Y1jFrjwuwzwyX6/SI8brscrwYz9RD65qkjYdDBrss8zOgZTfImTWuljt8qFvsCdJwPp+f3zwdRyFjpyOTcafFuytj5viumaG28PJ+7LDsuMjLHO+SDTDtbF93VjqB882sqP0kBT4FTDzFgTzFgboWn1AZn0eQwpAyrVjGhqs1ZrlVEed/ku+wnfLFyexK0StMo8uivlQcADHIcxS2Vdnmd7hH9N/ieW65ovmt0XW1bzYOssGc+NB8q2h/E/OXjfq9siVf5IuFkVbaUoyIbQjvSAhP6E4UiCggG0hP6fikURpzw28n2JbOAl1GKWUExkw9P9v76TJUsYQ7jErDEt/3PCVMNBVb5ziIt6xGEU2ZyDfbE1UnqpyIA3ViIjkQr9c5bI0pfavC7g3upqcBg7pbuWzpahsMYr4rpktwyIpdju5Dge81nMicG4bZ15EC32x6EjNMw33Gm4qp7iBBTC9FmFePUIUDup0sdT/ndotut5vGq/xA8SrrlV4V2IpX+f28ajCP0bO2rvraW072wSuWgRKHWr3PeVVLw53zPW4TXujyleO2nfY5lx3QE73/gyfaShnEDV7piWoS6SzsST3RGvns2pWHVlmvNSJAQVU0Tx/z7qo5SkV0KCvv/U83Zn434BHGChP0LhsQyHYFHsv5CqsuD9dSD+5y5l6d4hFxHSpenlWXkE0POOHDR1nnwpjbTtAO5exBTNjqnHT8aEkiM67FhWXJujI6o7QqkXrwZGSK3OM1qce7J94jx+Q0xOuoIZAaufQlXtd+JpYam3j1Yt1lSHeAfujbgz5B1KQ1U3n8drBRnoFUMkJDNXoFdUt2OQM353WpW5CibBcXo7ngAZMMRjhvsk1zbk3bU1ewgsWRbKAZ2ZodWlGDnuG0ohcMB+Jks8nIFT+/jJOtCUm5b17KM6qzJaZKucdUb1x7J6ZKuUf7t8fYrKzflw8anOCMRSVlEEI7WOHjRbfckU9Ft8xWvJbK5T9C3hre+u1Zg/YEI8a3+j9a3hF3+RNyV+9S9lm5K1Au053XpvJqbOOoQcvY3DXyrU/OrLbkgiQBaZSXHFb8yPDngzOZc5LJjLnpKTxmDmKeSpoi757fwmOsWf8Lmg+v/0puX/8H</diagram></mxfile>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0" version="28.2.5">
+  <diagram id="kFXfFQFpcm2u4Fk9cAop" name="Page-1">
+    <mxGraphModel dx="815" dy="433" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d0cDi2WNx7LqfU362ucf-9" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=5;" parent="1" vertex="1">
+          <mxGeometry x="422" y="380" width="290" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-6" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=3;" parent="1" vertex="1">
+          <mxGeometry x="50" y="305" width="230" height="235" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-1" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;" parent="1" vertex="1">
+          <mxGeometry x="424" y="110" width="286" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-3" value="Localization&lt;br&gt;&amp;amp;&lt;br&gt;Pose Estimation" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="432" y="415" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-4" value="Motion Sensors&lt;br&gt;(IMU, Depth Sensor)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="335" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-5" value="Vision Sensors&lt;br&gt;(Cameras)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="435" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-7" value="Sensors" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="50" y="305" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-8" value="Pipeline" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="420" y="110" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-10" value="Controls" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="422" y="380" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-12" value="Controller" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="542" y="415" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-13" value="Pipeline Types&lt;br&gt;(Gate Task,Buoy Task, etc...)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="440" y="140" width="250" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-16" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g compare pose estimate&lt;br&gt;with detected gate location)&lt;/font&gt;" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-9" target="d0cDi2WNx7LqfU362ucf-1" edge="1">
+          <mxGeometry x="0.074" y="25" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="660" y="310" as="sourcePoint" />
+            <mxPoint x="710" y="260" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-17" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g set pose goal as waypoint)&lt;/font&gt;" style="endArrow=classic;html=1;rounded=0;exitX=0.876;exitY=1.001;exitDx=0;exitDy=0;entryX=0.871;entryY=0.005;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-1" target="d0cDi2WNx7LqfU362ucf-9" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="320" as="sourcePoint" />
+            <mxPoint x="830" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-18" value="&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;" parent="1" vertex="1">
+          <mxGeometry x="870" y="240" width="250" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-19" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-6" target="d0cDi2WNx7LqfU362ucf-9" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="580" as="sourcePoint" />
+            <mxPoint x="422" y="493" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-27" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g use IMU data&amp;nbsp;&lt;br&gt;in localization)&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d0cDi2WNx7LqfU362ucf-19" vertex="1" connectable="0">
+          <mxGeometry x="-0.3484" y="3" relative="1" as="geometry">
+            <mxPoint x="24" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-20" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g use camera data in gate detection)&lt;/font&gt;" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-6" target="d0cDi2WNx7LqfU362ucf-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="370" as="sourcePoint" />
+            <mxPoint x="530" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-21" value="Actuators" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="870" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-22" value="&lt;span&gt;Actuators&lt;br&gt;(Thrusters, Manipulator, Torpedos)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="890" y="270" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-23" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-1" target="d0cDi2WNx7LqfU362ucf-18" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="760" y="190" as="sourcePoint" />
+            <mxPoint x="810" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-25" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g operate torpedos)&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d0cDi2WNx7LqfU362ucf-23" vertex="1" connectable="0">
+          <mxGeometry x="-0.2196" y="-4" relative="1" as="geometry">
+            <mxPoint x="27" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-24" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="d0cDi2WNx7LqfU362ucf-9" target="d0cDi2WNx7LqfU362ucf-18" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="820" y="480" as="sourcePoint" />
+            <mxPoint x="870" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d0cDi2WNx7LqfU362ucf-26" value="&lt;font style=&quot;font-size: 13px&quot;&gt;(e.g send commands to thrusters)&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d0cDi2WNx7LqfU362ucf-24" vertex="1" connectable="0">
+          <mxGeometry x="0.166" y="-1" relative="1" as="geometry">
+            <mxPoint x="30" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
