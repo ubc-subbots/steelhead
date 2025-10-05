@@ -14,8 +14,13 @@ jobs:
   build:
     strategy:
       matrix:
-        arch: [linux/amd64, linux/arm64]
-    runs-on: ubuntu-latest
+        include:
+          - platform: linux/amd64         # x86 path
+            runner: ubuntu-latest
+          - platform: linux/arm64         # native Arm path
+            runner: ubuntu-24.04-arm     # or ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+
     steps:
       - uses: actions/checkout@v4
 
