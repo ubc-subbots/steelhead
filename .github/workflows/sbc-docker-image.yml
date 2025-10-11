@@ -18,7 +18,7 @@ jobs:
           - platform: linux/amd64         # x86 path
             runner: ubuntu-latest
           - platform: linux/arm64         # native Arm path
-            runner: ubuntu-24.04-arm     # or ubuntu-24.04-arm
+            runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
 
     steps:
