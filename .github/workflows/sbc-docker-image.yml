@@ -2,7 +2,11 @@ name: Build SBC Docker Image
 
 on:
   push:
-#    branches: [main]          # just build
+    branches: [main]          # just build
+    paths-ignore:
+      - '**/assets'
+      - '**/docker'
+      - '**.md'
     tags:     ['v*']          # build + publish
   workflow_dispatch:
 
@@ -16,8 +20,10 @@ jobs:
       matrix:
         include:
           - platform: linux/amd64         # x86 path
+            arch: amd64
             runner: ubuntu-latest
           - platform: linux/arm64         # native Arm path
+            arch: arm64
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
 
@@ -41,16 +47,16 @@ jobs:
           file: ./docker-sbc/Dockerfile
           platforms: ${{ matrix.platform }}
           push: ${{ startsWith(github.ref, 'refs/tags/') }}   # false on main, true on tag
-          tags: ${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ matrix.platform }}
+          tags: ${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ matrix.arch }}
 
       - name: Export digest
-        run: echo "${{ steps.docker.outputs.digest }}" > digest-${{ matrix.platform }}.txt
+        run: echo "${{ steps.docker.outputs.digest }}" > digest-${{ matrix.arch }}.txt
         if: startsWith(github.ref,'refs/tags/')
       - uses: actions/upload-artifact@v4
         if: startsWith(github.ref,'refs/tags/')
         with:
-          name: digest-${{ matrix.platform }}
-          path: digest-${{ matrix.platform }}.txt
+          name: digest-${{ matrix.arch }}
+          path: digest-${{ matrix.arch }}.txt
 
   manifest:
     if: startsWith(github.ref, 'refs/tags/')          # run only for tags
@@ -73,5 +79,5 @@ jobs:
           docker buildx imagetools create \
             --tag $IMAGE_NAME:latest \
             --tag $IMAGE_NAME:${{ github.ref_name }} \
-            $(cat digest-linux/amd64.txt) \
-            $(cat digest-linux/arm64.txt)
+            $(cat digest-amd64.txt) \
+            $(cat digest-arm64.txt)
