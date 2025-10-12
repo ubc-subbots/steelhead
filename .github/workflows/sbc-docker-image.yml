@@ -2,7 +2,7 @@ name: Build SBC Docker Image
 
 on:
   push:
-    branches: [main]          # just build
+#    branches: [main]          # just build
     tags:     ['v*']          # build + publish
   workflow_dispatch:
 
