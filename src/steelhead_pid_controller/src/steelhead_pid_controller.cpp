@@ -17,17 +17,17 @@ namespace steelhead_pid_controller
   //  pid_pos_.load("pid_controller/pid_pos.yaml");
 
     last_time_ = std::chrono::high_resolution_clock::now();
-    auto control_loop_time = 5ms;
+    auto control_loop_time = 5ms; 
     control_loop_timer_ = create_wall_timer(control_loop_time, 
       std::bind(&PidController::control_loop, this));
 
     // ROS2 setup
-    sub_ = create_subscription<geometry_msgs::msg::Pose>(
+    sub_ = create_subscription<geometry_msgs::msg::Pose>( // subcribes to get the position
         "/steelhead/controls/input_pose",
         10,
         std::bind(&PidController::pose_update, this, _1));
 
-    pub_ = create_publisher<geometry_msgs::msg::Wrench>(
+    pub_ = create_publisher<geometry_msgs::msg::Wrench>( // publishes the forces that the PID controller outputs
         "/steelhead/controls/input_forces",
         10);
 
@@ -66,7 +66,7 @@ namespace steelhead_pid_controller
     pid_force_x.load(x_p, x_i, x_d);
     pid_force_y.load(y_p, y_i, y_d);
     pid_force_z.load(z_p, z_i, z_d);
-    pid_yaw.load(yaw_p, yaw_i, yaw_d);
+    pid_yaw.load(yaw_p, yaw_i, yaw_d); // this loads the PID parameters
 
     RCLCPP_INFO(this->get_logger(), "PID Controller successfully started!");
   }
@@ -77,28 +77,28 @@ namespace steelhead_pid_controller
 
   void PidController::pose_update(const geometry_msgs::msg::Pose::SharedPtr msg)
   {
-    cur_pose = msg;
+    cur_pose = msg; // msg from subscription is stored in cur_pose
   }
 
   void PidController::control_loop()
   {
-    if (!cur_pose)
+    if (!cur_pose) // if no pose has been received yet, do nothing
     {
       return;
     }
 
     auto now = std::chrono::high_resolution_clock::now();
     float dt = 
-      std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6;
+      std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6; // dt is the amount of time since the last control loop
 
-    tf2::Quaternion current_pose_q(
+    tf2::Quaternion current_pose_q( // extracts the different position components from cur_pose
       cur_pose->orientation.x,
       cur_pose->orientation.y,
       cur_pose->orientation.z,
       cur_pose->orientation.w);
-    tf2::Matrix3x3 current_pose_q_m(current_pose_q);
-    double current_pose_roll, current_pose_pitch, current_pose_yaw;
-    current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
+    tf2::Matrix3x3 current_pose_q_m(current_pose_q); // makes a matrix from the quaternion
+    double current_pose_roll, current_pose_pitch, current_pose_yaw;`
+    current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw); // converst the matrix to roll, pitch, yaw
 
     float cur_yaw = 0;
     if (!std::isnan(current_pose_yaw)) 
@@ -114,7 +114,7 @@ namespace steelhead_pid_controller
     float forceX = pid_force_x.update(pos_x_error, dt);
     float forceY = pid_force_y.update(pos_y_error, dt);
     float forceZ = pid_force_z.update(pos_z_error, dt);
-    float torqueZ = pid_yaw.update(yaw_error, dt);
+    float torqueZ = pid_yaw.update(yaw_error, dt); // the update function runs the PID algorithm and returns the controller output (a number)
 
     last_time_ = std::chrono::high_resolution_clock::now();
 
@@ -125,9 +125,12 @@ namespace steelhead_pid_controller
     wrenchOut.torque.x = 0;
     wrenchOut.torque.y = 0;
     wrenchOut.torque.z = torqueZ;
-    pub_->publish(wrenchOut);
+    pub_->publish(wrenchOut); // publishes the forces calculated 
   }
 }  // namespace steelhead_pid_controller
+
+// the forces get read by the thrust alloactor and converted into levels to control the thrusters
+
 
 int main(int argc, char **argv)
 {
