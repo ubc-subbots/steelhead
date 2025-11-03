@@ -4,7 +4,7 @@ MAINTAINER Fei Kuan for UBC Subbots - kuan@iatfei.com
 # IMPORTANT!!!! Before running rosdep or colcon commands, you must source the ros2 installation in the same RUN command. 
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove
-RUN apt-get install -y apt-utils bash-completion python3-pip nano htop less byobu ros-perception ros-foxy-robot-localization ros-foxy-angles ros-foxy-imu-tools ros-foxy-usb-cam libboost-filesystem-dev
+RUN apt-get install -y apt-utils bash-completion python3-pip nano htop less byobu ros-perception ros-foxy-robot-localization ros-foxy-angles ros-foxy-imu-tools ros-foxy-usb-cam ros-foxy-rosbridge-suite libboost-filesystem-dev
 
 # Download and build ros2 packages
 WORKDIR /opt/ros/foxy
