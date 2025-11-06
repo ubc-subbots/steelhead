@@ -38,6 +38,24 @@ namespace steelhead_controls
                 std::placeholders::_1,
                 std::placeholders::_2));
 
+      this->declare_parameter("actuators_names", std::vector<std::string>{});
+      this->declare_parameter("actuators_pins", std::vector<long int>{});
+      std::vector<std::string> nameList;
+      std::vector<long int> pinList;
+      this->get_parameter("actuators_names", nameList);
+      this->get_parameter("actuators_pins", pinList);
+
+      if (nameList.size() != pinList.size())
+        RCLCPP_ERROR(this->get_logger(), "Actuators config file has mismatching name and pin lengths!");
+
+      for (size_t i = 0; i < nameList.size(); i++)
+        nameToPin[nameList[i]] = pinList[i];
+
+      // for (auto pair: nameToPin)  {
+      //   RCLCPP_INFO(this->get_logger(), pair.first);
+      //   RCLCPP_INFO(this->get_logger(), std::to_string(pair.second));
+      // }
+
       RCLCPP_INFO(this->get_logger(), "Actuators command server succesfully started!");
     } else {
       RCLCPP_ERROR(this->get_logger(), "Actuators command server could not connect to arduino! Can the computer recognize the port?");
@@ -50,7 +68,7 @@ namespace steelhead_controls
 
   void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
           std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
-            if (write(fd_, &request->input, 4) == -1) {
+            if (write(fd_, &nameToPin[request->input], 4) == -1) {
               response->succeeded = false;
             } else {
               response->succeeded = true;
@@ -66,7 +84,7 @@ int main(int argc, char **argv) {
         rclcpp::NodeOptions());
 
     rclcpp::spin(actuators_command_node);
-
+    
     rclcpp::shutdown();
     return 0;
 }
