@@ -5,6 +5,7 @@ This package contains the nodes related to the control system.
 
 ## Usage
 
+### Thrust Allocation
 To launch the `thrust_allocator` node, use the following command
 
     ros2 launch steelhead_controls thrust_allocator_launch.py
@@ -96,6 +97,10 @@ To run the Trajectory Generator node, run
     - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
     ### Notes 
     - The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
+
+## Services
+
+- `actuators_command`
 
 ## Contributors
 

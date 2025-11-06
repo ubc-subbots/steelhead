@@ -1,0 +1,5 @@
+/steelhead/controls/actuators_command:
+  ros__parameters:
+    # This file describes the mappings of keywords to the output pin on the actuators microcontroller
+    claw: 12
+    torpedo: 123
