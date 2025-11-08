@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Wrench
+from steelhead_interfaces.srv import ActuatorsCommand
 from pynput import keyboard
 
 
@@ -23,7 +24,19 @@ class KeyboardTeleop(Node):
 
         self._start()
 
+        self.cli = self.create_client(ActuatorsCommand, '/steelhead/controls/actuators_command')
+        if not self.cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning('Actuators service is not running.')
+        self.req = ActuatorsCommand.Request()
+
         self.get_logger().info('Keyboard teleop succesfully started!')
+
+    def send_request(self, input):
+        request = ActuatorsCommand.Request()
+        request.input = input
+        
+        self.future = self.cli.call_async(request)
+
 
     def _start(self):
         """
@@ -63,6 +76,10 @@ class KeyboardTeleop(Node):
                 msg.force.z = self.force_mags[2]
             elif key.char == 'z':
                 msg.force.z = -self.force_mags[2]
+            elif key.char == 'o':
+                self.send_request("claw")
+            elif key.char == 'p':
+                self.send_request("torpedo")
         self.force_pub.publish(msg)
 
     def _on_release(self, key):

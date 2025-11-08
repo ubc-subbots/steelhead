@@ -7,7 +7,7 @@ This package is for teleoperation (i.e manual control) of the AUV.
 
 To launch the keyboard teleoperation simulation of the AUV, use the following command
 
-    ros2 launch steelhead_bringup teleop_sim_bringup_launch.py
+    ros2 launch steelhead_bringup barebones_gazebo_launch.py
 
 This will open up Gazebo and allow you to control the AUV with a keyboard, below are the key controls 
 
@@ -16,6 +16,8 @@ This will open up Gazebo and allow you to control the AUV with a keyboard, below
 <kbd>Q</kbd>/<kbd>Z</kbd> : Up/Down (Z-Axis)  Up/Down (Z-Axis)  
 <kbd>←</kbd>/<kbd>→</kbd> : Rotate Left/Rotate Right (Around Z-Axis)   
 <kbd>↑</kbd>/<kbd>↓</kbd> : Rotate Left/Rotate Right (Around X-Axis)
+<kbd>o</kbd> : Toggle Claw
+<kbd>p</kbd> : Toggle Torpedoes
 
 ### Another control scheme
 
@@ -41,6 +43,9 @@ where 'T/B/M' stand for 'Top', 'Bottom', and 'Middle', and 'L/R' stand for 'Left
 - `keyboard_teleop` : A standalone node which listens on keyboard events and publishes forces corresponding to these events
     ### Published Topics
     - `/steelhead/controls/input_forces` (`geometry_msgs/msg/Wrench.msg`) : The wrench message which acts upon the body of the AUV
+
+    ### Notes
+    - This node will try to connect to the actuators service, but will not fail if it is not connected. It will instead display a warning message, but for simulation and non actuators purposes, this is fine.
 
 - `sim_thrust_mapper` : A standalone node which takes in input from the thrust allocator and multiplexes it to the gazebo driver topic for each simulated thruster
 

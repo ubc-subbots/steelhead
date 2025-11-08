@@ -68,11 +68,20 @@ namespace steelhead_controls
 
   void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
           std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
+            if (nameToPin.find(request->input) == nameToPin.end()) {
+              RCLCPP_ERROR(this->get_logger(), request->input + " is not configured in steelhead_controls actuators_config.yaml!");
+              return;
+            }
+
+            std::string returnMessage = "Writing " + request->input + " on pin " + std::to_string(nameToPin[request->input]) + " was ";
             if (write(fd_, &nameToPin[request->input], 4) == -1) {
               response->succeeded = false;
+              returnMessage+="unsuccessful";
             } else {
               response->succeeded = true;
+              returnMessage+="successful";
             }
+            RCLCPP_INFO(this->get_logger(), returnMessage);
           }
 
 } // namespace steelhead_controls

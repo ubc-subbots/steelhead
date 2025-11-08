@@ -20,13 +20,10 @@ def generate_launch_description():
         namespace='/steelhead/controls',
         package='steelhead_controls',
         executable='actuators_command',
-        # output='screen',
+        output='screen',
         parameters=[config],
-        # remappings=[
-        #     ('/steelhead/controls/signals', '/motor_control')
-        # ]
     )
-
+    
     ld.add_action(actuators_command)
 
     return ld
