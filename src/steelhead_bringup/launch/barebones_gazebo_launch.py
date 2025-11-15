@@ -28,8 +28,15 @@ def generate_launch_description():
         )
     )
 
+    actuators_simulation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'actuators_simulation_launch.py')
+        )
+    )
+
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
+    ld.add_action(actuators_simulation)
 
     return ld

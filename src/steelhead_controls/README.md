@@ -106,6 +106,7 @@ To run the Trajectory Generator node, run
 
     ### Notes
     - To utilize this service, remember to start it up using `actuators_command_server_launch.py`.
+    - This system relies on an arduino connected to `/dev/ttyACM0` with a baud rate of 9600.
     - The service will respond with the status of whether or not writing the serial communication was successful or not.
     - Right now, we don't know the state of the actuators and can only send a toggle to the pin.
 

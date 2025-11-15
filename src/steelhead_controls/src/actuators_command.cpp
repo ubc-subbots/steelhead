@@ -13,6 +13,7 @@ namespace steelhead_controls
   {
     fd_ = open(ARDUINO_PORT, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd_ != -1) {
+      // sets up connections to arduino
       struct termios tty;
       tcgetattr (fd_, &tty);
       cfsetospeed (&tty, B115200);
@@ -38,6 +39,7 @@ namespace steelhead_controls
                 std::placeholders::_1,
                 std::placeholders::_2));
 
+      // sets up map defined in actuators_config.yaml
       this->declare_parameter("actuators_names", std::vector<std::string>{});
       this->declare_parameter("actuators_pins", std::vector<long int>{});
       std::vector<std::string> nameList;
@@ -50,11 +52,6 @@ namespace steelhead_controls
 
       for (size_t i = 0; i < nameList.size(); i++)
         nameToPin[nameList[i]] = pinList[i];
-
-      // for (auto pair: nameToPin)  {
-      //   RCLCPP_INFO(this->get_logger(), pair.first);
-      //   RCLCPP_INFO(this->get_logger(), std::to_string(pair.second));
-      // }
 
       RCLCPP_INFO(this->get_logger(), "Actuators command server succesfully started!");
     } else {
