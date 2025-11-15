@@ -5,6 +5,7 @@ This package contains the nodes related to the control system.
 
 ## Usage
 
+### Thrust Allocation
 To launch the `thrust_allocator` node, use the following command
 
     ros2 launch steelhead_controls thrust_allocator_launch.py
@@ -96,6 +97,18 @@ To run the Trajectory Generator node, run
     - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
     ### Notes 
     - The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
+
+## Services
+
+- `actuators_command` : A service for communicating with the actuators enclosure. Utilizes a map configured in `actuators_config.yaml` from keyword to Arduino pin.
+    ### Serviced Topics
+    - `actuators_command` (`string`) : Actuator command.
+
+    ### Notes
+    - To utilize this service, remember to start it up using `actuators_command_server_launch.py`.
+    - This system relies on an arduino connected to `/dev/ttyACM0` with a baud rate of 9600.
+    - The service will respond with the status of whether or not writing the serial communication was successful or not.
+    - Right now, we don't know the state of the actuators and can only send a toggle to the pin.
 
 ## Contributors
 

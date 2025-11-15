@@ -24,6 +24,7 @@ find_package(gazebo_ros_pkgs REQUIRED)
 find_package(gazebo REQUIRED)
 find_package(gazebo_dev REQUIRED)
 find_package(gazebo_ros REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -195,6 +196,26 @@ ament_target_dependencies(hydrodynamics_plugin
 )
 ament_export_libraries(hydrodynamics_plugin)
 target_link_libraries(hydrodynamics_plugin ${GAZEBO_LIBRARIES})
+
+add_executable(actuators_command_simulation
+  src/actuators_command_simulation.cpp
+)
+target_include_directories(actuators_command_simulation PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+ament_target_dependencies(
+  actuators_command_simulation
+  "rclcpp"
+  "rclcpp_components"
+  "steelhead_interfaces"
+  "gazebo_msgs"
+)
+
+install(TARGETS actuators_command_simulation
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 install(TARGETS
   hydrodynamics_plugin

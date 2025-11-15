@@ -54,6 +54,14 @@ target_include_directories(trajectory_generator PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(actuators_command
+  src/actuators_command.cpp
+)
+target_include_directories(actuators_command PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 ament_target_dependencies(
   thrust_allocator
   "rclcpp"
@@ -95,6 +103,17 @@ ament_target_dependencies(
 install(TARGETS trajectory_generator
   DESTINATION lib/${PROJECT_NAME}
 )
+
+ament_target_dependencies(
+  actuators_command
+  "rclcpp"
+  "rclcpp_components"
+  "steelhead_interfaces"
+)
+install(TARGETS actuators_command
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp

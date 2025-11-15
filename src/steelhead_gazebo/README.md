@@ -102,6 +102,15 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
 - `camera_orbit_plugin`: A Gazebo plugin which rotates the camera around a specified object for data collection (not recommended as training data). Attach this to a camera in a .world file to use.
 
 - `random_camera_plugin`: A Gazebo plugin which randomly moves the camera around for data collection (currently no guarantee the object is in view). Attach this to a camera in a .world file to use.
+
+## Services 
+- `actuators_command_simulation` : A service for simulation actuators commands in Gazebo. Should run parallel to actuators_command in steelhead_simulation and accept the same inputs.
+    ### Serviced Topics
+    - `actuators_command` (`string`) : Actuator command.
+
+    ### Notes
+    - To utilize this service, remember to start it up using `actuators_simulation_launch.py` whenever you want to simulate the actuators in Gazebo.
+    - The service will respond with the status of whether or not writing the serial communication was successful or not.
      
 ## Worlds
 

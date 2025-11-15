@@ -1,8 +1,7 @@
 import os
 
 from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
@@ -29,8 +28,15 @@ def generate_launch_description():
         )
     )
 
+    actuators_simulation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'actuators_simulation_launch.py')
+        )
+    )
+
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
+    ld.add_action(actuators_simulation)
 
     return ld

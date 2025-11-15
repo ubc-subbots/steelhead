@@ -18,6 +18,7 @@ This package provides no executables. See ROS2 tutorials (such as [this](https:/
 ### Services
 - `ConfigurePipeline` Service used to configure the pipeline with a certain pipeline type
 - `ObjectDetection` Service used to detect objects in a given image
+- `ActuatorsCommand` Service used to control actuators (claw, torpedo, etc.) 
 
 ## Contributors
 
