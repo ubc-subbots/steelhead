@@ -1,4 +1,4 @@
-#define ARDUINO_PORT "/dev/teensy"
+#define ARDUINO_PORT "/dev/ttyACM0"
 #include "steelhead_controls/actuators_command.hpp"
 #include <termios.h>
 #include <fcntl.h>

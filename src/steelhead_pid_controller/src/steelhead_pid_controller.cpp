@@ -22,12 +22,12 @@ namespace steelhead_pid_controller
       std::bind(&PidController::control_loop, this));
 
     // ROS2 setup
-    sub_ = create_subscription<geometry_msgs::msg::Pose>(
+    sub_ = create_subscription<geometry_msgs::msg::Pose>( // creates a subscriber to the input pose topic
         "/steelhead/controls/input_pose",
         10,
         std::bind(&PidController::pose_update, this, _1));
 
-    pub_ = create_publisher<geometry_msgs::msg::Wrench>(
+    pub_ = create_publisher<geometry_msgs::msg::Wrench>( // creates a publisher to the input forces topic
         "/steelhead/controls/input_forces",
         10);
 
@@ -66,7 +66,7 @@ namespace steelhead_pid_controller
     pid_force_x.load(x_p, x_i, x_d);
     pid_force_y.load(y_p, y_i, y_d);
     pid_force_z.load(z_p, z_i, z_d);
-    pid_yaw.load(yaw_p, yaw_i, yaw_d);
+    pid_yaw.load(yaw_p, yaw_i, yaw_d); // load the PID parameters into each PID object
 
     RCLCPP_INFO(this->get_logger(), "PID Controller successfully started!");
   }
@@ -77,19 +77,18 @@ namespace steelhead_pid_controller
 
   void PidController::pose_update(const geometry_msgs::msg::Pose::SharedPtr msg)
   {
-    cur_pose = msg;
+    cur_pose = msg; // get the msg from the input pose topic
   }
 
   void PidController::control_loop()
   {
-    if (!cur_pose)
+    if (!cur_pose) // if no pose received, do nothing
     {
       return;
     }
 
-    auto now = std::chrono::high_resolution_clock::now();
-    float dt = 
-      std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6;
+    auto now = std::chrono::high_resolution_clock::now(); // get the current time
+    float dt = std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6; // how much time passed since last update (sec)
 
     tf2::Quaternion current_pose_q(
       cur_pose->orientation.x,
@@ -101,22 +100,22 @@ namespace steelhead_pid_controller
     current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
 
     float cur_yaw = 0;
-    if (!std::isnan(current_pose_yaw)) 
+    if (!std::isnan(current_pose_yaw))  // check if current_pose_yaw is a number
     {
       cur_yaw = -current_pose_yaw; // TODO: why negative
     }
 
-    float yaw_error = cur_yaw;
+    float yaw_error = cur_yaw; // get the error values for this loop
     float pos_x_error = cur_pose->position.x;
     float pos_y_error = cur_pose->position.y;
     float pos_z_error = cur_pose->position.z;
 
-    float forceX = pid_force_x.update(pos_x_error, dt);
+    float forceX = pid_force_x.update(pos_x_error, dt); // call the PID alogorithm to update the forces
     float forceY = pid_force_y.update(pos_y_error, dt);
     float forceZ = pid_force_z.update(pos_z_error, dt);
     float torqueZ = pid_yaw.update(yaw_error, dt);
 
-    last_time_ = std::chrono::high_resolution_clock::now();
+    last_time_ = std::chrono::high_resolution_clock::now(); // save the time that we completed this loop
 
     geometry_msgs::msg::Wrench wrenchOut;
     wrenchOut.force.x = forceX;
@@ -125,7 +124,7 @@ namespace steelhead_pid_controller
     wrenchOut.torque.x = 0;
     wrenchOut.torque.y = 0;
     wrenchOut.torque.z = torqueZ;
-    pub_->publish(wrenchOut);
+    pub_->publish(wrenchOut); // send wrenchOut to the input forces topic
   }
 }  // namespace steelhead_pid_controller
 
