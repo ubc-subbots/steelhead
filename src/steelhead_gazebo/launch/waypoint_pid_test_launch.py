@@ -10,6 +10,13 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     ld = LaunchDescription()
 
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
+        ),
+        launch_arguments={'world': 'steelhead_auv.world'}.items()
+    )
+
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
@@ -36,13 +43,6 @@ def generate_launch_description():
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
     rsp_params = {'robot_description': robot_desc}
-
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
-        ),
-        launch_arguments={'world': 'steelhead_auv.world'}.items()
-    )
 
 
     rviz_config_file = os.path.join(
