@@ -34,25 +34,28 @@ private:
     void pose_update(const geometry_msgs::msg::Pose::SharedPtr msg);
     struct PID
     {
-        void load(float p, float i, float d)
-        {
-            Kp = p;
-            Ki = i;
-            Kd = d;
-        }
-
+        float K = 0;
         float Kp = 0;
         float Ki = 0;
         float Kd = 0;
         float sum_error = 0;
         float last_error = 0;
+
+        void load(float k, float p, float i, float d)
+        {
+            K = k;
+            Kp = p;
+            Ki = i;
+            Kd = d;
+        }
+
         float update(float error, float dt)
         {
             float diff_error = error - last_error;
             sum_error += error * dt;
             float ret = Kp * error + Ki * sum_error + Kd * diff_error / dt;
             last_error = error;
-            return ret;
+            return K * ret;
         }
     };
 
