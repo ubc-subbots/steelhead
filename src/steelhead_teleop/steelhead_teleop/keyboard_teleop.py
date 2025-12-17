@@ -8,6 +8,7 @@ class KeyboardTeleop(Node):
     """
     Keyboard teleop controller
     """
+    
 
     def __init__(self):
         super().__init__('keyboard_teleop')
@@ -25,6 +26,7 @@ class KeyboardTeleop(Node):
 
         self.get_logger().info('Keyboard teleop succesfully started!')
 
+
     def _start(self):
         """
         Sets up the keyboard listeners
@@ -34,6 +36,7 @@ class KeyboardTeleop(Node):
             on_release=self._on_release
         )
         self.listener.start()
+
 
     def _on_press(self, key):
         """
@@ -64,6 +67,7 @@ class KeyboardTeleop(Node):
             elif key.char == 'z':
                 msg.force.z = -self.force_mags[2]
         self.force_pub.publish(msg)
+
 
     def _on_release(self, key):
         """
