@@ -1,0 +1,11 @@
+/steelhead/controls/actuators_command:
+  ros__parameters:
+    # This file describes the mappings of keywords to the output pin on the actuators microcontroller. Two lists must be equal!
+    actuators_names: [
+      "claw",
+      "torpedo"
+    ]
+    actuators_pins: [
+      12,
+      21
+    ]

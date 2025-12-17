@@ -38,8 +38,6 @@ namespace steelhead_gazebo
         {
             std::string thruster_name = model_name + "::thruster" + std::to_string(i) + "::thruster";
             this->thruster.push_back(_model->GetLink(thruster_name));
-
-            RCLCPP_INFO(this->node->get_logger(), this->thruster[i-1]->GetName());
         }
     
         this->updateConnection_ = gazebo::event::Events::ConnectWorldUpdateBegin(
