@@ -44,7 +44,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://steelhead_frame/meshes/steelhead_frame.stl</uri>
+            <uri>model://steelhead_frame/meshes/steelhead_frame_collision.stl</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
