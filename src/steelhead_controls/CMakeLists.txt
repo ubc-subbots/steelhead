@@ -62,6 +62,16 @@ target_include_directories(actuators_command PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(odom_to_pose
+  src/odom_to_pose.cpp
+)
+
+target_include_directories(odom_to_pose PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+
 ament_target_dependencies(
   thrust_allocator
   "rclcpp"
@@ -69,6 +79,7 @@ ament_target_dependencies(
   "Eigen3"
   "steelhead_interfaces"
   "geometry_msgs"
+  "nav_msgs"
   "sensor_msgs"
   "OpenCV"
 )
@@ -114,6 +125,17 @@ install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
 
+ament_target_dependencies(
+  odom_to_pose
+  "rclcpp"
+  "rclcpp_components"
+  "steelhead_interfaces"
+  "geometry_msgs"
+  "nav_msgs"
+)
+install(TARGETS actuators_command
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
@@ -165,6 +187,7 @@ install(DIRECTORY
   models
   DESTINATION share/${PROJECT_NAME}
 )
+
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})

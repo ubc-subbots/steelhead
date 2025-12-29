@@ -16,6 +16,12 @@ def generate_launch_description():
         ),
         launch_arguments={'world': 'steelhead_auv.world'}.items()
     )
+    
+    odom_to_pose = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'odom_to_pose_launch.py')
+        )
+    )
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -106,5 +112,6 @@ def generate_launch_description():
     ld.add_action(waypoint_marker)
     ld.add_action(waypoint_marker_tester)
     ld.add_action(pid_controller)
+    ld.add_action(odom_to_pose)
 
     return ld
