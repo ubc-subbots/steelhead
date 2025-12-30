@@ -133,7 +133,7 @@ ament_target_dependencies(
   "geometry_msgs"
   "nav_msgs"
 )
-install(TARGETS actuators_command
+install(TARGETS odom_to_pose
   DESTINATION lib/${PROJECT_NAME}
 )
 

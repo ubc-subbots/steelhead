@@ -77,7 +77,7 @@ target_poses = [
             'position': {
                 'x': 5.0,
                 'y': 0.0,
-                'z': 5.0
+                'z': 5.0,
             },
             'orientation_rpy': {
                 'r': 0,

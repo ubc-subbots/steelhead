@@ -33,48 +33,41 @@ namespace steelhead_pid_controller
 
     RCLCPP_INFO(this->get_logger(), "PID Controller starting!");
 
-    float x_K, x_p, x_i, x_d;
-    float y_K, y_p, y_i, y_d;
-    float z_K, z_p, z_i, z_d;
-    float yaw_K, yaw_p, yaw_i, yaw_d;
-    this->declare_parameter("force_x_K", x_K);
+    float x_p, x_i, x_d;
+    float y_p, y_i, y_d;
+    float z_p, z_i, z_d;
+    float yaw_p, yaw_i, yaw_d;
+
     this->declare_parameter("force_x_p", x_p);
     this->declare_parameter("force_x_i", x_i);
     this->declare_parameter("force_x_d", x_d);
-    this->declare_parameter("force_y_K", y_K);
     this->declare_parameter("force_y_p", y_p);
     this->declare_parameter("force_y_i", y_i);
     this->declare_parameter("force_y_d", y_d);
-    this->declare_parameter("force_z_K", z_K);
     this->declare_parameter("force_z_p", z_p);
     this->declare_parameter("force_z_i", z_i);
     this->declare_parameter("force_z_d", z_d);
-    this->declare_parameter("force_yaw_K", yaw_K);
     this->declare_parameter("force_yaw_p", yaw_p);
     this->declare_parameter("force_yaw_i", yaw_i);
     this->declare_parameter("force_yaw_d", yaw_d);
     
-    this->get_parameter("force_x_K", x_K);
     this->get_parameter("force_x_p", x_p);
     this->get_parameter("force_x_i", x_i);
     this->get_parameter("force_x_d", x_d);
-    this->get_parameter("force_y_K", y_K);
     this->get_parameter("force_y_p", y_p);
     this->get_parameter("force_y_i", y_i);
     this->get_parameter("force_y_d", y_d);
-    this->get_parameter("force_z_K", z_K);
     this->get_parameter("force_z_p", z_p);
     this->get_parameter("force_z_i", z_i);
     this->get_parameter("force_z_d", z_d);
-    this->get_parameter("force_yaw_K", yaw_K);
     this->get_parameter("force_yaw_p", yaw_p);
     this->get_parameter("force_yaw_i", yaw_i);
     this->get_parameter("force_yaw_d", yaw_d);
     
-    pid_force_x.load(x_K, x_p, x_i, x_d);
-    pid_force_y.load(y_K, y_p, y_i, y_d);
-    pid_force_z.load(z_K, z_p, z_i, z_d);
-    pid_yaw.load(yaw_K, yaw_p, yaw_i, yaw_d); // load the PID parameters into each PID object
+    pid_force_x.load(x_p, x_i, x_d);
+    pid_force_y.load(y_p, y_i, y_d);
+    pid_force_z.load(z_p, z_i, z_d);
+    pid_yaw.load(yaw_p, yaw_i, yaw_d); // load the PID parameters into each PID object
 
     RCLCPP_INFO(this->get_logger(), "PID Controller successfully started!");
   }
