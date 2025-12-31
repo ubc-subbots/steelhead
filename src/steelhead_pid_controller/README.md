@@ -28,3 +28,19 @@ You can change the P-, I-, and D-values in `config/pid_X.yaml`, where `X` is eit
         - `Kp` (`float32`): The P of PID
         - `Ki` (`float32`): The I of PID
         - `Kd` (`float32`): The D of PID
+
+## Simulating
+
+To simulate run this command to open Gazebo simulation and necessary nodes:
+    
+    ros2 launch steelhead_gazebo waypoint_pid_test_launch.py
+
+To publish a waypoint for the robot to go to run this command:
+
+    ros2 topic pub -1 /steelhead/controls/waypoint_marker_tester/start std_msgs/msg/String "{data: 1}"
+
+The 1 in the "{data: 1}" corresponds to the waypoint index you choose. The waypoints and indexes are set in waypoint_marker_tester.py in the steelhead_controls folder.
+
+To visualize and graph the msgs in the topics you want, run this command to open the plotjugger UI:
+
+    ros2 run plotjuggler plotjuggler
