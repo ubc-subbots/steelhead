@@ -28,6 +28,7 @@ setup(
             'keyboard_teleop = steelhead_teleop.keyboard_teleop:main',
             'ssh_keyboard_teleop = steelhead_teleop.ssh_keyboard_teleop:main',
             'sim_thrust_mapper = steelhead_teleop.sim_thrust_mapper:main',
+            'controller_teleop = steelhead_teleop.controller_teleop:main'
         ],
     },
 )

@@ -9,6 +9,7 @@ class KeyboardTeleop(Node):
     """
     Keyboard teleop controller
     """
+    
 
     def __init__(self):
         super().__init__('keyboard_teleop')
@@ -30,6 +31,7 @@ class KeyboardTeleop(Node):
         self.req = ActuatorsCommand.Request()
 
         self.get_logger().info('Keyboard teleop succesfully started!')
+        
 
     def send_request(self, input):
         request = ActuatorsCommand.Request()
@@ -47,6 +49,7 @@ class KeyboardTeleop(Node):
             on_release=self._on_release
         )
         self.listener.start()
+
 
     def _on_press(self, key):
         """
@@ -81,6 +84,7 @@ class KeyboardTeleop(Node):
             elif key.char == 'p':
                 self.send_request("torpedo")
         self.force_pub.publish(msg)
+
 
     def _on_release(self, key):
         """
