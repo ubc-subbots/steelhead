@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
   <model name='steelhead_frame'>
-    <link name='frame'>
+    <link name='base_link'>
 
       <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
       <!-- Edited for Steelhead Aug 9 2024-->
@@ -96,10 +96,10 @@
         </surface>
       </collision>
       
-      <sensor type="camera" name="front_camera">
-        <pose>0.57 -0.05 0 0 0 0 </pose>
-        <update_rate>15</update_rate>
-        <visualize>true</visualize>
+      <sensor type="depth" name="front_camera">
+        <pose>0.45 -0.06 0 0 0 0 </pose>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
         <camera name="front">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
@@ -120,13 +120,22 @@
         <plugin name="front_camera" filename="libgazebo_ros_camera.so">
           <ros>
             <namespace>/steelhead/drivers</namespace>
+            <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
+            <remapping>custom_camera/depth/image_raw:=front_camera/depth/image_raw</remapping>
           </ros>
+
+          <publish_camera_info>true</publish_camera_info>
+
+          <frame_name>camera_link</frame_name>
+
+          <min_depth>0.1</min_depth>
+          <max_depth>100.0</max_depth>
         </plugin>
       </sensor>
       <sensor type="camera" name="down_camera">
-        <pose>0.05 -0.17 0 0 1.57 0</pose>
+        <pose>0.4 -0.06 0 0 1.57 0</pose>
         <update_rate>15</update_rate>
-        <visualize>true</visualize>
+        <visualize>false</visualize>
         <camera name="down">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
@@ -145,6 +154,7 @@
           </noise>
         </camera>
         <plugin name="down_camera" filename="libgazebo_ros_camera.so">
+          <bodyName>camera_link</bodyName>
           <ros>
             <namespace>/steelhead/drivers</namespace>
           </ros>
@@ -152,17 +162,20 @@
       </sensor>
       <sensor name="imu_sensor" type="imu">
         <always_on>true</always_on>
-        <update_rate>30</update_rate>
+        <update_rate>200</update_rate>
         <visualize>true</visualize>
         <topic>imu</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
           <topicName>imu</topicName>
           <bodyName>imu_link</bodyName>
-          <updateRateHZ>30.0</updateRateHZ>
-          <gaussianNoise>0</gaussianNoise>
+          <updateRateHZ>200</updateRateHZ>
+          <gaussianNoise>0.001</gaussianNoise>
           <xyzOffset>0 0 0</xyzOffset>
           <rpyOffset>0 0 0</rpyOffset>
-          <frameName>imu_link</frameName>
+          <frameName>base_link</frameName>
+          <linear_acceleration_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</linear_acceleration_covariance>
+          <angular_velocity_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</angular_velocity_covariance>
+          <orientation_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</orientation_covariance>
           <initialOrientationAsReference>false</initialOrientationAsReference>
           <ros>
             <namespace>/steelhead/drivers</namespace>

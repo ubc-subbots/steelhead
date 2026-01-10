@@ -12,10 +12,10 @@
       <uri>model://sun</uri>
     </include>
     <!-- A ground plane -->
-    <include>
+    <!-- <include>
         <pose>0 0 0 0 0 0</pose>
       <uri>model://ground_plane</uri>
-    </include>
+    </include> -->
 
     <include>
         <pose>-10 0 2 0 0 0</pose>
@@ -24,8 +24,36 @@
 
     <include>
       <uri>model://steelhead_auv</uri>
-      <pose>0 0 1 0 0 0</pose>
+      <pose>0 0 0.2 0 0 0</pose>
     </include>
+
+    <include>
+        <pose>0 0 0 0 0 0</pose>
+        <uri>model://woollett_pool</uri>
+    </include>
+
+  <!-- used for testing feature tracking -->
+      <!-- <model name="feature_grid_plane">
+      <static>true</static>
+      <pose>0 0 0.3 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://woollett_pool/materials/scripts</uri>
+              <uri>model://woollett_pool/materials</uri>
+              <name>steelhead/FeatureGrid</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model> -->
 
 
     <grid>0</grid>

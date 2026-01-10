@@ -15,8 +15,8 @@ This will open up Gazebo and allow you to control the AUV with a keyboard, below
 <kbd>A</kbd>/<kbd>D</kbd> : Left/Right (Y-Axis)  
 <kbd>Q</kbd>/<kbd>Z</kbd> : Up/Down (Z-Axis)  Up/Down (Z-Axis)  
 <kbd>←</kbd>/<kbd>→</kbd> : Rotate Left/Rotate Right (Around Z-Axis)   
-<kbd>↑</kbd>/<kbd>↓</kbd> : Rotate Left/Rotate Right (Around X-Axis)
-<kbd>o</kbd> : Toggle Claw
+<kbd>↑</kbd>/<kbd>↓</kbd> : Rotate Left/Rotate Right (Around X-Axis)   
+<kbd>o</kbd> : Toggle Claw   
 <kbd>p</kbd> : Toggle Torpedoes
 
 ### Another control scheme

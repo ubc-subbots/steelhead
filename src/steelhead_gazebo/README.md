@@ -12,19 +12,25 @@ To run a Gazebo simulation with a world file given in the `worlds` directory, us
 
 Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
 
+#### Optimization Guide
+Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a graphics card lol.
+
+1. In `src/steelhead_gazebo/models/steelhead_frame/model.sdf`:
+    * Change the types of the cameras to `camera` rather than `depth`.
+    * Set visualize to `false` for the cameras if not already done.
+    * Reduce the update rates of the sensors (IMU, camera) or down right comment out some of them.
+2. In the world file, most likely `src/steelhead_gazebo/worlds/competition.world`:
+    * Increase step size.
+    * Real time update rate may help as well.
+
+Remember to rebuild after making any changes, including model and world files.
+
 ### Underwater Camera
 To run the underwater camera node, use the following
 
         ros2 launch steelhead_gazebo underwater_camera_launch.py
 
 Sets of parameters for the underwater camera node (water transmission, spectral sensitivity, etc.) are stored in `config/underwater_camera.yaml`. To change which parameters are used, `launch/underwater_camera_launch.py` can be modified
-
-### Robot Localization
-To run the state estimation node with teleoperated simulation of the AUV and RViz visualization, run
-
-        ros2 launch steelhead_gazebo ukf_teleop_sim_launch.py
-
-It launches the `steelhead_auv.world` in Gazebo with `steelhead_auv/model.sdf`.
 
 ### Teleop Launch
 To run just the necessities for teleop Gazebop simulation, run
@@ -47,7 +53,7 @@ With 'data' being the index of the target pose, as defined in waypoint_marker_te
 ### Gate Navigation Test
 To run the Gate Navigation test
 
-        ros2 launch steelhead_gazebo gate_navigation_test.py
+        ros2 launch steelhead_gazebo gate_navigation_test_launch.py
 
 It launches ukf_teleop_sim_launch.py (except the teleop part), a PID controller, a waypoint marker, and a trajectory generator. The trajectory starts by turning the AUV around slowly. We can start the Gate Detection and navigation process by publishing the following command:
 
