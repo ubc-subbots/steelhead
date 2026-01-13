@@ -19,14 +19,14 @@ OdomToPose::OdomToPose() : Node("odom_to_pose")
 }
 
 void OdomToPose::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
-{
+{"""
     geometry_msgs::msg::Pose pose_msg;
 
     pose_msg.position = msg->pose.pose.position;
     pose_msg.orientation = msg->pose.pose.orientation;
 
     pose_pub_->publish(pose_msg);
-}
+}"""
 
 int main(int argc, char * argv[])
 {
