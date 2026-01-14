@@ -1,5 +1,6 @@
 FROM ros:foxy-ros-base-focal
 MAINTAINER Fei Kuan for UBC Subbots - kuan@iatfei.com
+ARG TARGETARCH
 
 # IMPORTANT!!!! Before running rosdep or colcon commands, you must source the ros2 installation in the same RUN command. 
 
@@ -14,20 +15,23 @@ RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; RTI_NC_LICENSE_ACCEPTED=yes r
 WORKDIR /root/
 RUN git clone https://github.com/ubc-subbots/steelhead.git 
 
-# Realsense install
-RUN mkdir -p /etc/apt/keyrings
-RUN curl -sSf https://librealsense.realsenseai.com/Debian/librealsense.pgp | tee /etc/apt/keyrings/librealsense.pgp > /dev/null
-RUN echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.realsenseai.com/Debian/apt-repo `lsb_release -cs` main" | tee /etc/apt/sources.list.d/librealsense.list
-RUN apt-get update
-RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg
-RUN mkdir -p /root/ros2_ws/src/
-WORKDIR /root/ros2_ws/src/
-RUN git clone https://github.com/realsenseai/realsense-ros.git -b ros2-master
-WORKDIR /root/ros2_ws/
-RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; rosdep init --include-eol-distros; rosdep update --include-eol-distros; rosdep install -i --from-path src --rosdistro foxy --skip-keys=librealsense2 -y; colcon build; . install/local_setup.bash"
-RUN echo "source /root/ros2_ws/install/local_setup.bash" >> /root/.bashrc
-RUN echo 'echo "Sourced RealSense in /root/ros2_ws/"' >> /root/.bashrc
-
+# Realsense install. Only works on amd64! To run on Jetson we need to follow their specific guide (pain)
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+    mkdir -p /etc/apt/keyrings; \
+    curl -sSf https://librealsense.realsenseai.com/Debian/librealsense.pgp | tee /etc/apt/keyrings/librealsense.pgp > /dev/null; \
+    echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.realsenseai.com/Debian/apt-repo `lsb_release -cs` main" | tee /etc/apt/sources.list.d/librealsense.list; \
+    apt-get update; \
+    apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg; \
+    mkdir -p /root/ros2_ws/src/; \
+    cd /root/ros2_ws/src/; \
+    git clone https://github.com/realsenseai/realsense-ros.git -b ros2-master; \
+    cd /root/ros2_ws/; \
+    /bin/bash -c "source /opt/ros/foxy/setup.bash; rosdep init --include-eol-distros; rosdep update --include-eol-distros; rosdep install -i --from-path src --rosdistro foxy --skip-keys=librealsense2 -y; colcon build; . install/local_setup.bash"; \
+    echo "source /root/ros2_ws/install/local_setup.bash" >> /root/.bashrc; \
+    echo 'echo "Sourced RealSense in /root/ros2_ws/"' >> /root/.bashrc; \
+    else \
+    echo "Non-amd64 architecture. Skipping Realsense Build"; \
+    fi
 # OpenCV build skipped
 #&& \
 #                git clone -b 4.5.3 https://github.com/opencv/opencv
