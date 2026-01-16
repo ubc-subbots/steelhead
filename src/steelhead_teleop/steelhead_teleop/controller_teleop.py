@@ -25,16 +25,31 @@ class ControllerTeleop(Node):
             10
         )
 
-        self._open_joystick()
-        self.running = True
+        # self._open_joystick()
+        # self.running = True
+        # self.running = False
+        # self.js_fd = None
 
+        # self.thread = threading.Thread(target=self._joystick_loop, daemon=True)
+        # self.thread.start()
+
+        # self.get_logger().info('Controller teleop successfully started!')
+
+        self.running = False
+        self.js_fd = None
+
+        if not self._open_joystick():
+            self.destroy_node()
+            return
+
+        self.running = True
         self.thread = threading.Thread(target=self._joystick_loop, daemon=True)
         self.thread.start()
 
-        self.get_logger().info('Controller teleop successfully started!')
+        self.get_logger().info("Controller teleop successfully start!")
 
 
-    def _open_joystick(self):
+    def _open_joystick(self) -> bool:
         """
         Opens the raw joystick device file.
         """
@@ -43,11 +58,13 @@ class ControllerTeleop(Node):
             self.js_fd = os.open(self.js_path, os.O_RDONLY | os.O_NONBLOCK)
             self.get_logger().info(f"Opened joystick: {self.js_path}")
         except FileNotFoundError:
-            self.get_logger().error("Joystick device not found at /dev/input/js0!")
-            self.js_fd = None
+            self.get_logger().info("Joystick device not found at /dev/input/js0!")
+            # self.js_fd = None
+            return False
         except PermissionError:
-            self.get_logger().error("Permission denied opening /dev/input/js0. Try 'sudo chmod a+rw /dev/input/js0'")
-            self.js_fd = None
+            self.get_logger().info("Permission denied opening /dev/input/js0. Try 'sudo chmod a+rw /dev/input/js0'")
+            # self.js_fd = None
+            return False
 
         # Each joystick event is 8 bytes
         self.EVENT_SIZE = struct.calcsize('IhBB')
@@ -55,6 +72,8 @@ class ControllerTeleop(Node):
         # Track current axis states
         self.axis_states = {}
         self.axis_map = {}
+
+        return True
 
 
     def _joystick_loop(self):
