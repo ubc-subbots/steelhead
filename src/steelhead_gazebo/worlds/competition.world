@@ -4,7 +4,7 @@
     <gravity>0 0 -9.81</gravity>
     <fluid_density>1000.00</fluid_density>
     <physics name="fast_simulation" type="ode">
-      <max_step_size>0.01</max_step_size> <!-- Larger step size for faster simulation -->
+      <max_step_size>0.005</max_step_size> <!-- Larger step size for faster simulation -->
       <real_time_update_rate>100</real_time_update_rate> <!-- 0 = as fast as possible, 100 = norma, 200= 2 times speed -->
     </physics>
     <!-- A global light source -->
@@ -12,10 +12,10 @@
       <uri>model://sun</uri>
     </include>
     <!-- A ground plane -->
-    <include>
+    <!-- <include>
         <pose>0 0 0 0 0 0</pose>
       <uri>model://ground_plane</uri>
-    </include>
+    </include> -->
 
     <include>
         <pose>-10 0 2 0 0 0</pose>
@@ -24,8 +24,36 @@
 
     <include>
       <uri>model://steelhead_auv</uri>
-      <pose>0 0 1 0 0 0</pose>
+      <pose>0 0 0.2 0 0 0</pose>
     </include>
+
+    <include>
+        <pose>0 0 0 0 0 0</pose>
+        <uri>model://woollett_pool</uri>
+    </include>
+
+  <!-- used for testing feature tracking -->
+      <!-- <model name="feature_grid_plane">
+      <static>true</static>
+      <pose>0 0 0.3 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://woollett_pool/materials/scripts</uri>
+              <uri>model://woollett_pool/materials</uri>
+              <name>steelhead/FeatureGrid</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model> -->
 
 
     <grid>0</grid>

@@ -1,0 +1,17 @@
+material steelhead/FeatureGrid
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture FeatureTesting.png
+        # This makes the pattern repeat across the plane
+        scale 0.1 0.1 
+        filtering aniso
+        max_anisotropy 16
+      }
+    }
+  }
+}

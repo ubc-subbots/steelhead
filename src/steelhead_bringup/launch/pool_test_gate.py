@@ -60,12 +60,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
-        'config',
-        'state_estimator_config_IMU_only.yaml'
-    )
-
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
