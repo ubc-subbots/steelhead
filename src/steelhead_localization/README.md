@@ -50,6 +50,7 @@ To run the VINS odometry model, which estimates position based on a monocular ca
   ### Notes
 
   - This node requires both the feature_tracker node as well as the camera_model node. For simplicities sake, just use the launch file and treat it as a black box, otherwise, check [here](https://github.com/dongbo19/VINS-MONO-ROS2?tab=readme-ov-file) for more information.
+  - For optimal performance, make some translation movements before attempting any rotational adjustments. Rotational tracking is pretty bad in general.
   - This node requires both Eigen 3.3.7 and [Ceres Solver](http://ceres-solver.org/installation.html) 1.14.0, which needs to be installed from source.
   - This node publishes more topics than neccessary, the major ones are listed (use ros2 node info for a full list.)
   - !TODO: put launch file under proper namespaces at some point (everything follows /vins_estimator/, when it should be something like /steelhead_localization/).

@@ -272,7 +272,7 @@ bool Estimator::initialStructure()
     int l;
     if (!relativePose(relative_R, relative_T, l))
     {
-        RCUTILS_LOG_INFO("Not enough features or parallax; Make slow movements forward/backwards and DO NOT rotate device");
+        RCUTILS_LOG_INFO("Not enough features or parallax");
         return false;
     }
     GlobalSFM sfm;
