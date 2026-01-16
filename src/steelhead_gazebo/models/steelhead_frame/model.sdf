@@ -40,11 +40,11 @@
       <!-- Collision Data-->
       <collision name='collision'>
         <laser_retro>0</laser_retro>
-        <max_contacts>10</max_contacts>
+        <max_contacts>2</max_contacts>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://steelhead_frame/meshes/steelhead_frame.stl</uri>
+            <uri>model://steelhead_frame/meshes/steelhead_frame_collision.stl</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -98,7 +98,7 @@
       
       <sensor type="camera" name="front_camera">
         <pose>0.57 -0.05 0 0 0 0 </pose>
-        <update_rate>60</update_rate>
+        <update_rate>15</update_rate>
         <visualize>true</visualize>
         <camera name="front">
           <horizontal_fov>1.3962634</horizontal_fov>
@@ -125,7 +125,7 @@
       </sensor>
       <sensor type="camera" name="down_camera">
         <pose>0.05 -0.17 0 0 1.57 0</pose>
-        <update_rate>60</update_rate>
+        <update_rate>15</update_rate>
         <visualize>true</visualize>
         <camera name="down">
           <horizontal_fov>1.3962634</horizontal_fov>
@@ -152,13 +152,13 @@
       </sensor>
       <sensor name="imu_sensor" type="imu">
         <always_on>true</always_on>
-        <update_rate>100</update_rate>
+        <update_rate>30</update_rate>
         <visualize>true</visualize>
         <topic>imu</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
           <topicName>imu</topicName>
           <bodyName>imu_link</bodyName>
-          <updateRateHZ>100.0</updateRateHZ>
+          <updateRateHZ>30.0</updateRateHZ>
           <gaussianNoise>0</gaussianNoise>
           <xyzOffset>0 0 0</xyzOffset>
           <rpyOffset>0 0 0</rpyOffset>

@@ -7,6 +7,10 @@ This package is for creating launch files and utilities needed for launching the
 
 - `barebones_gazebo_launch.py` : All-in-one launch file which launches everything necessary for keyboard operation WITHIN GAZEBO.
 
+    - If the simulation is running really slow, try disabling `visualize` parameter for the cameras in `src/steelhead_gazebo/models/steelhead_frame/model.sdf`.
+
+
+
 - `cameras_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
 
     - The cameras are configured with the config files `cameraX.yaml`.

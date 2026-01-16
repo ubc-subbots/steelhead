@@ -5,7 +5,7 @@
     <fluid_density>1000.00</fluid_density>
     <physics name="fast_simulation" type="ode">
       <max_step_size>0.01</max_step_size> <!-- Larger step size for faster simulation -->
-      <real_time_update_rate>200</real_time_update_rate> <!-- 0 = as fast as possible, 100 = norma, 200= 2 times speed -->
+      <real_time_update_rate>100</real_time_update_rate> <!-- 0 = as fast as possible, 100 = norma, 200= 2 times speed -->
     </physics>
     <!-- A global light source -->
     <include>
