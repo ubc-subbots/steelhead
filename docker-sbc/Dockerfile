@@ -43,7 +43,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 
 # Setup and build Steelhead
 WORKDIR /root/steelhead
-RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash; rosdep update; rosdep install -i --from-path src --rosdistro foxy --skip-keys "gazebo_ros gazebo_dev gazebo_ros_pkgs phidgets_spatial realsense2_camera" -y'
+RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash; rosdep update --include-eol-distros; rosdep install -i --from-path src --rosdistro foxy --skip-keys "gazebo_ros gazebo_dev gazebo_ros_pkgs phidgets_spatial realsense2_camera camera_model" -y'
 RUN python3 -m pip install setuptools==58.2.0 pyserial sshkeyboard
 RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; colcon build --packages-skip steelhead_gazebo"
 RUN echo "source /root/steelhead/install/setup.bash" >> /root/.bashrc
