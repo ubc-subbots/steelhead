@@ -36,12 +36,12 @@ target_poses = [
             'position': {
                 'x': 0.0,
                 'y': 0.0,
-                'z': 3.0
+                'z': 1.0
             },
             'orientation_rpy': {
                 'r': 0,
                 'p':0,
-                'y': -0.7
+                'y': 0
             },
             'orientation': {
                 'x': 0.0,
@@ -52,9 +52,9 @@ target_poses = [
         },
         'distance': {
             'position': {
-                'x': 0.5,
-                'y': 0.5,
-                'z': 0.5
+                'x': 0.1,
+                'y': 0.1,
+                'z': 0.1
             },
             'orientation_rpy': {
                 'r': 0,
@@ -71,13 +71,13 @@ target_poses = [
         'type': STABILIZE,
         'duration': 5.0
     },
-    # Move forward by 1 unit in x
+
     {
         'pose': {
             'position': {
-                'x': 5.0,
-                'y': 0.0,
-                'z': 5.0,
+                'x': 2.0,
+                'y': 2.0,
+                'z': 2.0,
             },
             'orientation_rpy': {
                 'r': 0,
@@ -93,14 +93,14 @@ target_poses = [
         },
         'distance': {
             'position': {
-                'x': 0.5,
-                'y': 10.0,
-                'z': 0.5
+                'x': 0.1,
+                'y': 0.1,
+                'z': 0.1
             },
             'orientation_rpy': {
-                'r': 181,
-                'p':181,
-                'y': 181
+                'r': 0,
+                'p': 0,
+                'y': 0
             },
             'orientation': {
                 'x': 100.0,
