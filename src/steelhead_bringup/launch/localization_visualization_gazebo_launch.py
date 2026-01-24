@@ -79,16 +79,6 @@ def generate_launch_description():
             get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
-
-    static_tf_vins = Node(
-    package='tf2_ros',
-    executable='static_transform_publisher',
-    # Arguments: x y z yaw pitch roll frame_id child_frame_id
-    # This aligns the VINS world/odom frame with the ROS AUV body convention
-    arguments=['0', '0', '0', '1.571', '0', '1.571', 'odom', 'vins_world_frame'],
-    parameters=[{'use_sim_time': True}]
-    )
-    ld.add_action(static_tf_vins)
     
     ld.add_action(gazebo)
     ld.add_action(rviz)

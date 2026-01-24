@@ -126,7 +126,7 @@
 
           <publish_camera_info>true</publish_camera_info>
 
-          <frame_name>camera_link</frame_name>
+          <frame_name>camera_link_optical</frame_name>
 
           <min_depth>0.1</min_depth>
           <max_depth>100.0</max_depth>
@@ -154,7 +154,7 @@
           </noise>
         </camera>
         <plugin name="down_camera" filename="libgazebo_ros_camera.so">
-          <bodyName>camera_link</bodyName>
+          <!-- <bodyName>camera_link</bodyName> -->
           <ros>
             <namespace>/steelhead/drivers</namespace>
           </ros>
