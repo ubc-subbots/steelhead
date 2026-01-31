@@ -35,7 +35,7 @@
       </visual>
 
       <!-- Collision Data-->
-      <collision name='collision'>
+      <!-- <collision name='collision'>
         <pose>0 0 0 0 0 0</pose> <geometry>
           <cylinder>
             <radius>0.05</radius>
@@ -50,7 +50,7 @@
             </ode>
           </contact>
         </surface>
-      </collision>
+      </collision> -->
 
     </link>
     <static>0</static>
