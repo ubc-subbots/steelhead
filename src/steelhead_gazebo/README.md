@@ -22,6 +22,7 @@ Gazebo can be quite computationally expensive, since it is calculating lots of t
 2. In the world file, most likely `src/steelhead_gazebo/worlds/competition.world`:
     * Increase step size.
     * Real time update rate may help as well.
+3. If you are using UTM Virtual Machine (most likelly for Mac users), switch to a GPU Supported emulated display card (e.g. virtio-ramfb-gl).
 
 Remember to rebuild after making any changes, including model and world files.
 
