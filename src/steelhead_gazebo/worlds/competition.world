@@ -829,10 +829,20 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>582 650000000</sim_time>
-      <real_time>121 83022104</real_time>
-      <wall_time>1770265488 488703799</wall_time>
-      <iterations>10375</iterations>
+      <sim_time>706 500000000</sim_time>
+      <real_time>130 287936145</real_time>
+      <wall_time>1770326533 499817530</wall_time>
+      <iterations>12385</iterations>
+      <model name='competition_dropper'>
+        <pose>12.7324 -3.21414 0.382466 0 0 -1.04738</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>12.7324 -3.21414 0.382466 0 0 -1.04738</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
       <model name='competition_gate'>
         <pose>3.44451 -1.49134 2.5 0 -0 3.13999</pose>
         <scale>1 1 1</scale>
@@ -932,49 +942,49 @@
         </link>
       </model>
       <model name='steelhead_auv'>
-        <pose>1.2671 -1.74605 0.634152 -0.000306 -2.2e-05 -0.535716</pose>
+        <pose>1.53242 -1.98162 0.565545 -0.001211 0.000401 -0.402493</pose>
         <scale>1 1 1</scale>
         <link name='base_link::base_link'>
-          <pose>1.2671 -1.74605 0.634152 -0.000306 -2.2e-05 -0.535716</pose>
-          <velocity>-0.000714 0.000402 0.00084 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.5e-05 -7e-06 -1.8e-05 0.000576 -0.000305 1e-06</acceleration>
-          <wrench>0.000199 -9.8e-05 -0.000249 0 -0 0</wrench>
+          <pose>1.53242 -1.98162 0.565545 -0.001211 0.000401 -0.402493</pose>
+          <velocity>0.001086 -0.000357 0.002137 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-2.5e-05 1e-06 -5.9e-05 0.002155 -0.001726 2e-06</acceleration>
+          <wrench>-0.000348 1e-05 -0.000807 0 -0 0</wrench>
         </link>
         <link name='thruster1::thruster'>
-          <pose>1.00353 -2.04313 0.63427 -1.59003 -1.56969 1.05432</pose>
-          <velocity>-0.000798 0.000476 0.000848 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.2e-05 -1.3e-05 -0.000226 0.000596 -0.000353 1e-06</acceleration>
-          <wrench>0 -0 -0 0 -0 0</wrench>
+          <pose>1.31064 -2.31107 0.566047 -1.3735 -1.56875 0.971006</pose>
+          <velocity>0.001247 -0.000464 0.002978 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-4e-05 -1.8e-05 -0.001061 0.002281 -0.001869 -2e-06</acceleration>
+          <wrench>-0 -0 -0 0 -0 0</wrench>
         </link>
         <link name='thruster2::thruster'>
-          <pose>1.40794 -2.15528 0.625745 -3.14156 -0.786899 -2.10733</pose>
-          <velocity>-0.000829 0.000362 0.000861 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.5e-05 -7e-06 -0.000167 0.000508 -0.000308 -2e-06</acceleration>
-          <wrench>0 -0 -0 0 -0 0</wrench>
+          <pose>1.72636 -2.36851 0.557252 3.14102 -0.787804 -1.97368</pose>
+          <velocity>0.001264 -0.000276 0.002529 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-2.5e-05 1e-06 -0.000467 0.001859 -0.00185 -3.1e-05</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
         </link>
         <link name='thruster3::thruster'>
-          <pose>1.62845 -1.7838 0.625613 -3.14156 0.786287 -2.10728</pose>
-          <velocity>-0.000724 0.000299 0.000848 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.4e-05 -7e-06 0.000114 0.000511 -0.000304 -3e-06</acceleration>
-          <wrench>0 -0 0 0 -0 0</wrench>
+          <pose>1.89558 -1.97104 0.556729 3.14103 0.785382 -1.97448</pose>
+          <velocity>0.001069 -0.000194 0.001643 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-2.6e-05 0 0.000681 0.00186 -0.001831 -1e-06</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
         </link>
         <link name='thruster4::thruster'>
-          <pose>1.33788 -1.47989 0.634069 -1.61499 1.57031 0.989289</pose>
-          <velocity>-0.000639 0.000382 0.000829 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.2e-05 -1.2e-05 0.0002 0.000592 -0.000359 -1e-06</acceleration>
-          <wrench>0 -0 0 0 -0 0</wrench>
+          <pose>1.56722 -1.70842 0.565254 0.804944 1.57022 -2.74073</pose>
+          <velocity>0.000952 -0.00034 0.001635 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-4.1e-05 -1.9e-05 0.00068 0.002278 -0.0019 -9e-06</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
         </link>
         <link name='thruster5::thruster'>
-          <pose>1.04652 -1.68776 0.714166 -3.14157 0.001287 -2.10731</pose>
-          <velocity>-0.000699 0.000468 0.000833 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>-1.3e-05 -5.9e-05 -9e-06 0.000509 -0.000306 -4e-06</acceleration>
+          <pose>1.30611 -1.95309 0.645708 3.1412 0.000382 -1.97408</pose>
+          <velocity>0.001177 -0.000333 0.002386 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-0.000179 -0.000191 -0.000298 0.001866 -0.001826 -1.9e-05</acceleration>
           <wrench>-0 -0 -0 0 -0 0</wrench>
         </link>
         <link name='thruster6::thruster'>
-          <pose>0.9261 -1.62503 0.634166 1.21224 1.56992 -0.893479</pose>
-          <velocity>-0.00068 0.000498 0.000828 -4.5e-05 -1.9e-05 -0.000282</velocity>
-          <acceleration>1.2e-05 -1.3e-05 -9e-06 0.000511 -0.000303 0</acceleration>
-          <wrench>0 -0 -0 0 -0 0</wrench>
+          <pose>1.17837 -1.90696 0.565772 0.315049 1.56952 -1.65744</pose>
+          <velocity>0.00105 -0.000529 0.002476 -0.001671 0.001312 0.000488</velocity>
+          <acceleration>-4.1e-05 -1.9e-05 -0.000419 0.001855 -0.00184 -5e-06</acceleration>
+          <wrench>-0 -0 -0 0 -0 0</wrench>
         </link>
       </model>
       <model name='woollettpool_2024'>
@@ -1044,7 +1054,7 @@
     </model>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-21.0908 0.903384 27.3447 0 0.705797 -0.131811</pose>
+        <pose>-6.11974 6.16979 11.1324 0 0.569797 -0.287019</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -1150,6 +1160,57 @@
         <kinematic>0</kinematic>
       </link>
       <pose>9.0796 -3.99753 0 0 -0 0</pose>
+    </model>
+    <model name='competition_dropper'>
+      <static>1</static>
+      <link name='base_link'>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://competition_dropper/meshes/bruvbin.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://competition_dropper/meshes/bruvbin.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>8.50109 -6.17154 0 0 -0 0</pose>
     </model>
     <fluid_density>1000.00</fluid_density>
     <grid>0</grid>
