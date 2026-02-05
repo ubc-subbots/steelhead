@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version='1.7'>
-  <model name='competition_tagging'>
+  <model name='competition_cleanup'>
     <static>true</static>
     <link name='base_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
@@ -20,7 +20,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-             <uri>model://competition_tagging/meshes/taggingtarget.dae</uri>
+             <uri>model://competition_cleanup/meshes/cleanuptable.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -28,7 +28,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://competition_tagging/meshes/taggingtarget.dae</uri>
+             <uri>model://competition_cleanup/meshes/cleanuptable.dae</uri>
           </mesh>
         </geometry>
       </visual>
