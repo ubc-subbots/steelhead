@@ -20,7 +20,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-             <uri>model://competition_path/materials/pathmarker.dae</uri>
+             <uri>model://competition_path/meshes/pathmarker.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -28,7 +28,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://competition_path/materials/pathmarker.dae</uri>
+            <uri>model://competition_path/meshes/pathmarker.dae</uri>
           </mesh>
         </geometry>
       </visual>
