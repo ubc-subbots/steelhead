@@ -7,21 +7,21 @@
     <link name="white_pole_row1_right">
       <pose>5.0 1.5 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="red_pole_row1_center">
       <pose>5.0 0 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="white_pole_row1_left">
       <pose>5.0 -1.5 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
@@ -29,21 +29,21 @@
     <link name="white_pole_row2_right">
       <pose>3.0 0.5 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="red_pole_row2_center">
       <pose>3.0 -1.0 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="white_pole_row2_left">
       <pose>3.0 -2.5 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
@@ -51,21 +51,21 @@
     <link name="white_pole_row3_right">
       <pose>1.0 2.0 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="red_pole_row3_center">
       <pose>1.0 0.5 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/red_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 
     <link name="white_pole_row3_left">
       <pose>1.0 -1.0 -0.15 0 0 -1.57</pose>
       <visual name="visual">
-        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri></mesh></geometry>
+        <geometry><mesh><uri>file://competition_slalom/meshes/white_pole_sub9.dae</uri><scale>1 1 2</scale></mesh></geometry>
       </visual>
     </link>
 

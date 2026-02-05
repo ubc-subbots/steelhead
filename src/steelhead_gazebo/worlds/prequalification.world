@@ -11,9 +11,9 @@
     <include>
       <uri>model://sun</uri>
     </include>
-    
+
     <include>
-        <pose>-10 0 2 0 0 0</pose>
+        <pose>-6 0 2 0 0 0</pose>
         <uri>model://gate</uri>
     </include>
 

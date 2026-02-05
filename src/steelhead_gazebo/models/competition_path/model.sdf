@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <sdf version='1.7'>
-  <model name='competition_gate'>
+  <model name='competition_pathmarker'>
     <static>true</static>
     <link name='base_link'>
-      <pose frame=''>0 0 -1 0 0 1.57</pose>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <mass>1</mass>
@@ -20,7 +20,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>file://competition_gate/meshes/startgate.dae</uri>
+             <uri>model://competition_path/materials/pathmarker.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -28,7 +28,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>file://competition_gate/meshes/startgate.dae</uri>
+            <uri>model://competition_path/materials/pathmarker.dae</uri>
           </mesh>
         </geometry>
       </visual>

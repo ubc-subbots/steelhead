@@ -91,7 +91,9 @@
     <base_link>base_link::base_link</base_link>
     <neutrally_buoyant>1</neutrally_buoyant>
     <volume>0.01334</volume>
-<center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy>
+    <!-- more "realistic" values (similar to what we saw in the pool) -->
+    <!-- <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy> -->
+    <center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
