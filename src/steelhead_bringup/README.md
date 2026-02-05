@@ -19,7 +19,7 @@ This package is for creating launch files and utilities needed for launching the
 
 - `teensy_test_launch.py`: Test package to test the connection to the Teensy, mainly to isolate any issues.
 
-- `pool_test_x.py` : Series of launch files for launching during pool time.
+- `pool_test_x_launch.py` : Series of launch files for launching during pool time.
 
     - `base`: A whole bunch of nodes that are meant for showcasing the various things that can be launched.
     - `gate`: Launches nodes necessary for a gate navigation test, which is the preliminary task for Robosub.
