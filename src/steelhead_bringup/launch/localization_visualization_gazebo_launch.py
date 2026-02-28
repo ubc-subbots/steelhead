@@ -86,7 +86,7 @@ def generate_launch_description():
     ld.add_action(keyboard_teleop)
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)
-    # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
+    ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
     # ld.add_action(vins_odometry)
 
