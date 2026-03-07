@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="steelhead_gate_world">
+
+    <!-- Physics & scene -->
+    <gravity>0 0 -9.81</gravity>
+    <physics name="ode" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.45 1</ambient>
+      <background>0.05 0.08 0.12 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Light -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Floor at z=0; flip plane so its visible face looks upward (normal = 0 0 -1) -->
+    <model name="pool_floor">
+      <static>true</static>
+      <link name="floor">
+        <collision name="col">
+          <pose>0 0 -0.5 0 0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>50 50</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction>
+          </surface>
+        </collision>
+        <visual name="vis">
+          <pose>0 0 -0.5 0 0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>50 50</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.10 0.25 0.35 1</ambient>
+            <diffuse>0.10 0.35 0.50 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Optional: faint water surface at z=2 to give a visual 'top' boundary -->
+    <model name="water_surface">
+      <static>true</static>
+      <link name="surface">
+        <visual name="vis">
+          <pose>0 0 2 0 0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 -1</normal>
+              <size>50 50</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.10 0.15 0.30 0.4</ambient>
+            <diffuse>0.10 0.20 0.40 0.4</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- RoboSub-style gate (two posts + crossbar) sitting on the floor at x=5 -->
+    <model name="robosub_gate">
+      <static>true</static>
+      <pose>5 0 0 0 0 0</pose>
+
+      <!-- left post: 0.1 x 0.1 x 1.5 -->
+      <link name="left_post">
+        <pose>0 -0.55 0.75 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+
+      <!-- right post -->
+      <link name="right_post">
+        <pose>0 0.55 0.75 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+
+      <!-- crossbar at z=1.5 -->
+      <link name="crossbar">
+        <pose>0 0 1.5 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 1.1 0.1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 1.1 0.1</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Steelhead AUV (ensure this model exists on your GAZEBO_MODEL_PATH) -->
+    <include>
+      <uri>model://steelhead_auv</uri>
+      <!-- Spawn slightly above the floor -->
+      <pose>0 0 1.5 0 0 0</pose>
+    </include>
+
+    <!-- GUI camera: behind and above the robot, looking slightly down -->
+    <gui>
+      <camera name="top_view">
+        <!--             x   y   z   roll pitch  yaw -->
+        <pose>0  -8  2.0   0    0.3   1.57</pose>
+        <track_visual></track_visual>
+      </camera>
+    </gui>
+
+  </world>
+</sdf>

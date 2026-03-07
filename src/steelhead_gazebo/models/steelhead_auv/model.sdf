@@ -73,6 +73,13 @@
       <name>thruster6</name>
     </include>
 
+    <!-- Torpedo (visual only, attached to AUV) -->
+    <include>
+      <uri>model://steelhead_torpedo</uri>
+      <pose>0.32 -0.0625 -0.10 -3.1416 -1.5708 0</pose>
+      <name>torpedo1</name>
+    </include>
+
 
 
 
@@ -231,6 +238,24 @@
       </physics>
     </joint>
 
+    <joint name='frame_torpedo' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>torpedo1::torpedo_link</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
     <!-- 
 
       Plugins
@@ -243,6 +268,18 @@
       <ros>
         <namespace>/steelhead/controls</namespace>
         <remapping>output_forces</remapping>
+      </ros>
+    </plugin>
+
+    <plugin name="torpedo_impulse" filename="libtorpedo_impulse_plugin.so">
+      <link_name>base_link::base_link</link_name>
+      <force_n>40</force_n>
+      <duration_s>0.05</duration_s>
+      <fire_on_spawn>false</fire_on_spawn>
+      <direction_body>0 0 1</direction_body>
+      <ros>
+        <namespace>/steelhead/torpedo</namespace>
+        <trigger_topic>fire</trigger_topic>
       </ros>
     </plugin>
 

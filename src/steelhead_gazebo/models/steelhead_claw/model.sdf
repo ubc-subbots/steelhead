@@ -1,0 +1,49 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='steelhead_claw'>
+
+    <!-- Debug mode: static makes it easier to see + avoids bad inertial issues -->
+    <static>1</static>
+
+    <link name='claw_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_claw/meshes/claw.stl</uri>
+
+            <!-- VERY COMMON: SolidWorks STL is effectively in mm; Gazebo uses meters -->
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+
+        <!-- keep the same Gazebo material style as your gate -->
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <shader type='pixel'/>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+
+      <!-- IMPORTANT: don't use mesh collision yet (can hang / be super slow) -->
+      <collision name='collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.20 0.20 0.20</size>
+          </box>
+        </geometry>
+      </collision>
+
+    </link>
+  </model>
+</sdf>
