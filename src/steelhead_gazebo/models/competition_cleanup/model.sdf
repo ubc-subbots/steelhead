@@ -5,15 +5,15 @@
     <link name='base_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>-0.000000 0.000819 -0.079716 0 0 0</pose>
         <mass>1</mass>
         <inertia>
-          <ixx>0.166667</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.166667</iyy>
-          <iyz>0</iyz>
-          <izz>0.166667</izz>
+          <ixx>0.001055</ixx>
+          <ixy>0.000000</ixy>
+          <ixz>0.000000</ixz>
+          <iyy>0.001449</iyy>
+          <iyz>-0.000001</iyz>
+          <izz>0.001770</izz>
         </inertia>
       </inertial>
       <collision name='base_link_collision'>
