@@ -46,7 +46,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
         ),
-        launch_arguments={'world': 'competition.world'}.items()
+        launch_arguments={'world': 'prequalification.world'}.items()
     )
 
     config = os.path.join(

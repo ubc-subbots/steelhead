@@ -15,7 +15,7 @@ class KeyboardTeleop(Node):
         super().__init__('keyboard_teleop')
 
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
-        self.torque_mags = [15.0, 0.0, 15.0]  # [x,y,z]
+        self.torque_mags = [15.0, 15.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
             Wrench,
@@ -79,6 +79,10 @@ class KeyboardTeleop(Node):
                 msg.force.z = self.force_mags[2]
             elif key.char == 'z':
                 msg.force.z = -self.force_mags[2]
+            elif key.char == 'e':
+                msg.torque.y = -self.torque_mags[1]
+            elif key.char == 'c':
+                msg.torque.y = self.torque_mags[1]
             elif key.char == 'o':
                 self.send_request("claw")
             elif key.char == 'p':

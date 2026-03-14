@@ -79,6 +79,17 @@ def generate_launch_description():
             get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
+
+    # there's some small mis matches with our physical model and simulation which results in a bunch of errors
+    # in the terminal despite it working as expected. this a bandaid fix that does nothing but stops the false errors
+    base_link_tf_publisher = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_link_tf_publisher',
+        output='screen',
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_link::base_link'],
+        parameters=[{'use_sim_time': True}]
+    )
     
     ld.add_action(gazebo)
     ld.add_action(rviz)
@@ -89,5 +100,6 @@ def generate_launch_description():
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
     # ld.add_action(vins_odometry)
+    ld.add_action(base_link_tf_publisher)
 
     return ld
