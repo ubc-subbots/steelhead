@@ -75,6 +75,13 @@ DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION = {
     }
 }
 
+BLANK_ORIENTATION = {
+    'x': 0.0,
+    'y': 0.0,
+    'z': 0.0,
+    'w': 1.0,
+}
+
 DEFAULT_STABILIZE_DURATION = 5.0 # seconds
 
 # Input a series of poses here
@@ -93,90 +100,15 @@ target_poses = [
             },
             'orientation_rpy': {
                 'r': 0,
-                'p':0,
+                'p': 0,
                 'y': 0
             },
-            'orientation': {
-                'x': 0.0,
-                'y': 0.0,
-                'z': 0.0,
-                'w': 1.0,
-            }
+            'orientation': BLANK_ORIENTATION
         },
         'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
         'type': STABILIZE,
         'duration': DEFAULT_STABILIZE_DURATION
-    },
-    # Pose 2
-    {
-        'pose': {
-            'position': {
-                'x': 11.0,
-                'y': 0.0,
-                'z': 0.0
-            },
-            'orientation_rpy': {
-                'r': 0,
-                'p':0,
-                'y': 0
-            },
-            'orientation': {
-                'x': 0.0,
-                'y': 0.0,
-                'z': 0.0,
-                'w': 1.0,
-            }
-        },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
-        'type': STABILIZE,
-        'duration': DEFAULT_STABILIZE_DURATION
-    },
-    {
-        'pose': {
-            'position': {
-                'x': 10.0,
-                'y': -1.0,
-                'z': 0.0
-            },
-            'orientation_rpy': {
-                'r': 0,
-                'p':0,
-                'y': 0
-            },
-            'orientation': {
-                'x': 0.0,
-                'y': 0.0,
-                'z': 0.0,
-                'w': 1.0,
-            }
-        },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
-        'type': STABILIZE,
-        'duration': DEFAULT_STABILIZE_DURATION
-    },
-    {
-        'pose': {
-            'position': {
-                'x': 0.0,
-                'y': 0.0,
-                'z': 0.0
-            },
-            'orientation_rpy': {
-                'r': 0,
-                'p':0,
-                'y': 0
-            },
-            'orientation': {
-                'x': 0.0,
-                'y': 0.0,
-                'z': 0.0,
-                'w': 1.0,
-            }
-        },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
-        'type': STABILIZE,
-        'duration': DEFAULT_STABILIZE_DURATION
-    },
+    }
 ]
 
 

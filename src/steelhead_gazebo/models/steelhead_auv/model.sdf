@@ -93,13 +93,12 @@
     <volume>0.01334</volume>
     <!-- more "realistic" values (similar to what we saw in the pool) -->
     <!-- <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy> -->
-    <center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
+    <center_of_buoyancy>0.1 -0.062 0.0</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
         <scalingDamping>1.0</scalingDamping>
         <scalingAddedMass>0.01</scalingAddedMass>
-
         <!-- Added mass: see p.28 in Berg2012 -->
         <added_mass>
           6.15014738  0.06685961  0.72507929  0.01407364  0.80638021 -0.51958879
