@@ -85,6 +85,13 @@ def generate_launch_description():
         output='screen', 
         parameters=[{'use_sim_time': True}]
     )
+
+    predetermined_route = Node(
+        package='steelhead_controls', 
+        executable='predetermined_route.py',
+        output='screen', 
+        parameters=[{'use_sim_time': True}]
+    )
     
     ld.add_action(gazebo)
     ld.add_action(rviz)
@@ -95,5 +102,6 @@ def generate_launch_description():
     ld.add_action(base_link_tf_publisher)
     ld.add_action(pid_controller)
     ld.add_action(waypoint_marker)
+    ld.add_action(predetermined_route)
 
     return ld

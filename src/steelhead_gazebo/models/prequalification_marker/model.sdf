@@ -45,8 +45,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <radius>0.5</radius>
-            <length>3</length>
+            <radius>0.1</radius>
+            <length>2</length>
           </cylinder>
         </geometry>
         <surface>
