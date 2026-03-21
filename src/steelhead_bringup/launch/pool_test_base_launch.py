@@ -97,6 +97,12 @@ def generate_launch_description():
         )
     )
 
+    actuators = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('steelhead_controls') + '/launch/actuators_command_server_launch.py'
+        )
+    )
+
     # state and transform publisher?
 
     ld.add_action(serial)
@@ -112,8 +118,8 @@ def generate_launch_description():
     ld.add_action(thrust_allocator)
     # ld.add_action(gate_container)
     # ld.add_action(trajectory_generator) 
-    #ld.add_action(record)
     # ld.add_action(keyboard_teleop)
+    ld.add_action(actuators)
     
 
 
