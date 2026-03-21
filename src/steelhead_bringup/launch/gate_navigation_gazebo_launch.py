@@ -16,6 +16,18 @@ def generate_launch_description():
         description='Logging level'
     )
 
+    rviz_config_file = os.path.join(
+        get_package_share_directory('steelhead_bringup'), 'config', 'gate_navigation.rviz')
+
+    rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': True}], 
+    )
+
     log_level = LaunchConfiguration('log_level')
 
     ld = LaunchDescription([log_level_arg])
@@ -95,7 +107,7 @@ def generate_launch_description():
     )
 
     ld.add_action(gazebo)
-    # ld.add_action(rviz)
+    ld.add_action(rviz)
     ld.add_action(thrust_allocator)
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)

@@ -757,7 +757,7 @@
         </surface>
       </collision>
     </link>
-    <!-- <link name='center_link'>
+    <link name='center_link'>
       <inertial>
         <mass>1</mass>
         <inertia>
@@ -870,7 +870,7 @@
           </suspension>
         </ode>
       </physics>
-    </joint> -->
+    </joint>
     <joint name='component_lt_lb' type='fixed'>
       <parent>component_lt</parent>
       <child>component_lb</child>
