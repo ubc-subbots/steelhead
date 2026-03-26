@@ -57,6 +57,10 @@ class KeyboardTeleop(Node):
             msg.torque.x = -self.torque_mags[0]
         elif key == "down":
             msg.torque.x = self.torque_mags[0]
+        elif key == 'e':
+            msg.torque.y = -self.torque_mags[1]
+        elif key == 'c':
+            msg.torque.y = self.torque_mags[1]
         elif key == "left":
             msg.torque.z = self.torque_mags[2]
         elif key == "right":

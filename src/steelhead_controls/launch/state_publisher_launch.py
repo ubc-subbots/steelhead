@@ -32,6 +32,6 @@ def generate_launch_description():
     )
 
     ld.add_action(state_publisher)
-    ld.add_action(transform_publisher)
+    # ld.add_action(transform_publisher)
 
     return ld

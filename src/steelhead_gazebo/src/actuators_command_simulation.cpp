@@ -23,8 +23,7 @@ namespace steelhead_gazebo
       action_map_["claw"] = std::bind(&ActuatorsCommandSimulation::handleClaw, this, std::placeholders::_1);
 
       // connect to gazebo spawning service
-      spawner_node_ = rclcpp::Node::make_shared("sdf_spawner_node");
-      spawner_client_ = spawner_node_->create_client<gazebo_msgs::srv::SpawnEntity>("/spawn_entity");
+      spawner_client_ = this->create_client<gazebo_msgs::srv::SpawnEntity>("/spawn_entity");
       while (!spawner_client_->wait_for_service(std::chrono::seconds(1))) {
           if (!rclcpp::ok()) {
               RCLCPP_ERROR(spawner_node_->get_logger(), "Interrupted while waiting for the service. Exiting.");

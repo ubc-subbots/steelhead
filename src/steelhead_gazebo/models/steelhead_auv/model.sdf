@@ -25,7 +25,7 @@
     <include>
       <uri>model://steelhead_frame</uri>
       <pose>0 0 0 0 0 0</pose>
-      <name>frame</name>
+      <name>base_link</name>
     </include>
 
     <!-- Thrusters (center of the auv in the y direction is offset by ~0.0625, so each y symmetrical thruster accounts for that)-->
@@ -88,10 +88,12 @@
 
     -->
 
-    <base_link>frame::frame</base_link>
+    <base_link>base_link::base_link</base_link>
     <neutrally_buoyant>1</neutrally_buoyant>
     <volume>0.01334</volume>
-<center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
+    <!-- more "realistic" values (similar to what we saw in the pool) -->
+    <!-- <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy> -->
+    <center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
@@ -100,12 +102,12 @@
 
         <!-- Added mass: see p.28 in Berg2012 -->
         <added_mass>
-          5.579266667 0           0           0         0           0
-          0           15.09083333 0           0         0           0
-          0           0           30.55093333 0         0           0
-          0           0           0           7.2955698 0           0
-          0           0           0           0         15.51297973 0
-          0           0           0           0         0           16.14743877
+          6.15014738  0.06685961  0.72507929  0.01407364  0.80638021 -0.51958879
+          0.23572914 19.30146549  1.90317065 -0.60248891  0.02939782 -0.02135169
+          0.0118428   0.19716241 32.1523071   1.73426368 -0.08577274  0.17025842
+          -0.02377885 -0.7641457   1.81954024  0.54185864 -0.00732747  0.01462377
+          0.66583002 -0.02091127 -0.12232994 -0.00613007  0.3035216  -0.04057885
+          -0.58639716  0.08093335 -0.11921726 -0.00848712 -0.07966262  0.42923905
         </added_mass>
         <!-- Linear damping: see p.31 in Berg2012 -->
         <linear_damping>
@@ -124,7 +126,7 @@
     -->
 
     <joint name='frame_thruster1' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster1::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -142,7 +144,7 @@
     </joint>
 
     <joint name='frame_thruster2' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster2::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -160,7 +162,7 @@
     </joint>
 
     <joint name='frame_thruster3' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster3::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -178,7 +180,7 @@
     </joint>
 
     <joint name='frame_thruster4' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster4::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -196,7 +198,7 @@
     </joint>
 
     <joint name='frame_thruster5' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster5::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -214,7 +216,7 @@
     </joint>
 
     <joint name='frame_thruster6' type='fixed'>
-      <parent>frame::frame</parent>
+      <parent>base_link::base_link</parent>
       <child>thruster6::thruster</child>
       <pose>0 0 0 0 0 0</pose>
       <physics>
@@ -250,19 +252,20 @@
 
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
       <state_topic>/steelhead/state</state_topic>
+      <publish_odom_tf>false</publish_odom_tf>
       <update_rate>50</update_rate>
     </plugin>
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
       <always_on>true</always_on>
       <update_rate>50.0</update_rate>
-      <body_name>frame::frame</body_name>
+      <publish_odom_tf>false</publish_odom_tf>
+      <body_name>base_link::base_link</body_name>
       <topic_name>/steelhead/state</topic_name>
       <gaussian_noise>0.01</gaussian_noise>
-      <frame_name>map</frame_name>
+      <frame_name>odom</frame_name>
       <xyz_offset>0 0 0</xyz_offset>
       <rpy_offset>0 0 0</rpy_offset>
     </plugin>
-
 
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>

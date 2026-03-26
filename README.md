@@ -101,8 +101,6 @@ The last line is helpful in that it colorizes ROS2 logging so that info/warn/err
    
 If this command executes successfully, you are ready to develop!
 
-If you are using UTM Virtual Machine, switch to a GPU Supported emulated display card (e.g. virtio-ramfb-gl) to optimize Gazebo simulation.
-
 ## Contributing
 To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md) and [conventions](CONVENTIONS.md) documents.
     

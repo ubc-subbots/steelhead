@@ -9,12 +9,13 @@ class KeyboardTeleop(Node):
     """
     Keyboard teleop controller
     """
+    
 
     def __init__(self):
         super().__init__('keyboard_teleop')
 
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
-        self.torque_mags = [15.0, 0.0, 15.0]  # [x,y,z]
+        self.torque_mags = [15.0, 15.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
             Wrench,
@@ -30,6 +31,7 @@ class KeyboardTeleop(Node):
         self.req = ActuatorsCommand.Request()
 
         self.get_logger().info('Keyboard teleop succesfully started!')
+        
 
     def send_request(self, input):
         request = ActuatorsCommand.Request()
@@ -47,6 +49,7 @@ class KeyboardTeleop(Node):
             on_release=self._on_release
         )
         self.listener.start()
+
 
     def _on_press(self, key):
         """
@@ -76,11 +79,16 @@ class KeyboardTeleop(Node):
                 msg.force.z = self.force_mags[2]
             elif key.char == 'z':
                 msg.force.z = -self.force_mags[2]
+            elif key.char == 'e':
+                msg.torque.y = -self.torque_mags[1]
+            elif key.char == 'c':
+                msg.torque.y = self.torque_mags[1]
             elif key.char == 'o':
                 self.send_request("claw")
             elif key.char == 'p':
                 self.send_request("torpedo")
         self.force_pub.publish(msg)
+
 
     def _on_release(self, key):
         """

@@ -60,9 +60,9 @@ namespace steelhead_controls {
         rclcpp::sleep_for(std::chrono::milliseconds(1000)); // time to stabilize
 
         // Extract buoy position
-        double buoy_x = buoy_global_position_.x();
-        double buoy_y = buoy_global_position_.y();
-        double buoy_z = buoy_global_position_.z();
+        // double buoy_x = buoy_global_position_.x();
+        // double buoy_y = buoy_global_position_.y();
+        // double buoy_z = buoy_global_position_.z();
 
         for (int i = 0; i < num_waypoints; ++i) {
             double angle = i * angle_step;
@@ -529,8 +529,8 @@ namespace steelhead_controls {
                 // }
 
                 // Publish the updated mode
-                auto mode_msg = steelhead_interfaces::msg::TrajectoryType();
-                mode_msg.type = type_;
+                // auto mode_msg = steelhead_interfaces::msg::TrajectoryType();
+                // mode_msg.type = type_;
                 // RCLCPP_INFO(this->get_logger(), "type: %d buoy_state: %d", mode_msg.type, buoy_state_);
             }
         }
@@ -572,6 +572,7 @@ namespace steelhead_controls {
   }
 
     void TrajectoryGenerator::waypoint_callback(const steelhead_interfaces::msg::Waypoint::SharedPtr msg) {
+        (void) msg;
         // RCLCPP_INFO(this->get_logger(), "IN WAYPOINT CALLBACK type: %d buoy_state: %d initial_rot_heading_reached_: %d", type_, buoy_state_,initial_rot_heading_reached_);
         // if (msg->success) {
         //         RCLCPP_INFO(this->get_logger(), "TEST1");

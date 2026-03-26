@@ -24,12 +24,12 @@ def generate_launch_description():
 
     underwater_camera = Node(
         name='underwater_camera',
-        namespace='/steelhead/gazebo_drivers',
+        namespace='/steelhead/drivers',
         package='steelhead_gazebo',
         executable='underwater_camera',
         output='screen',
-        remappings=[('/steelhead/gazebo_drivers/front_camera/underwater/image_raw',
-                     '/steelhead/drivers/front_camera/image_raw')],
+        # remappings=[('/steelhead/drivers/front_camera/underwater/image_raw',
+                    #  '/steelhead/drivers/front_camera/image_raw')],
         parameters=[
             {"rho": params["rho"]["default"]},
             {"irradiance_transmission": params["irradiance_transmission"][water_type]},
