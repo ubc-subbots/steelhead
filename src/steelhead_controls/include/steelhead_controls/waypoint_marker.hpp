@@ -50,6 +50,8 @@ namespace steelhead_controls
 
         // Current waypoint status
         rclcpp::Publisher<steelhead_interfaces::msg::Waypoint>::SharedPtr publisher_;
+        // Goal pose as standard geometry_msgs/Pose for Simulink SMC controller
+        rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr goal_pose_publisher_;
         // Goal minus current state. For the PID Controller
         rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr error_publisher_;
         // Current state of AUV

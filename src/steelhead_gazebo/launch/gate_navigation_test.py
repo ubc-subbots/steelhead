@@ -21,12 +21,6 @@ def generate_launch_description():
     ld = LaunchDescription([log_level_arg])
     
 
-    pid_controller = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
-        )
-    )
-
     waypoint_marker = Node(
         package='steelhead_controls', 
         executable='waypoint_marker',
@@ -103,7 +97,7 @@ def generate_launch_description():
     ld.add_action(state_estimator)
     ld.add_action(waypoint_marker)
     # ld.add_action(waypoint_marker_tester)
-    ld.add_action(pid_controller)
+    # pid_controller removed — using Simulink SMC controller via ROS 2 instead
     ld.add_action(trajectory_generator)
 
     return ld

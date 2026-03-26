@@ -13,6 +13,8 @@ namespace steelhead_controls
 
     publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/current_goal", 10);
 
+    goal_pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/steelhead/controls/waypoint_marker/current_goal_pose", 10);
+
     error_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/steelhead/controls/input_pose", 10);
 
     state_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
@@ -148,8 +150,9 @@ namespace steelhead_controls
       reply_msg.type = waypoint_.type;
 
       publisher_->publish(reply_msg);
+      goal_pose_publisher_->publish(waypoint_.pose);
     }
-    else if (waypoint_achieved_) 
+    else if (waypoint_achieved_)
     {
       // Publish the last waypoint, so that the AUV stabilizes at current pose
       auto reply_msg = steelhead_interfaces::msg::Waypoint();
@@ -160,6 +163,7 @@ namespace steelhead_controls
       reply_msg.type = waypoint_.type;
 
       publisher_->publish(reply_msg);
+      goal_pose_publisher_->publish(waypoint_.pose);
 
     }
     // else waypoint is not set
@@ -244,6 +248,7 @@ namespace steelhead_controls
 
     // RCLCPP_INFO(this->get_logger(), "A new waypoint is set. ");
     publisher_->publish(reply_msg);
+    goal_pose_publisher_->publish(waypoint_.pose);
   }
 } // namespace steelhead_controls
 
