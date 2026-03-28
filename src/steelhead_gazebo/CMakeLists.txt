@@ -283,6 +283,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   steelhead_gazebo/bounding_box_image_saver.py
   steelhead_gazebo/train_yolo.py
+  steelhead_gazebo/yolo_detector.py
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_export_dependencies(ament_cmake_python)

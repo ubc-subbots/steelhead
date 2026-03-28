@@ -7,3 +7,5 @@ darknet
 __pycache__
 .vscode
 rosbag2*
+
+*.pt

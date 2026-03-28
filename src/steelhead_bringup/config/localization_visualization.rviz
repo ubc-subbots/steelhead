@@ -17,6 +17,7 @@ Panels:
         - /PointCloud1
         - /PointCloud21
         - /Image3
+        - /Image41
       Splitter Ratio: 0.5
     Tree Height: 166
   - Class: rviz_common/Selection
@@ -118,6 +119,20 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /steelhead/drivers/front_camera/image_raw
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Yolo
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /steelhead/yolo_detector/annotated_image
       Value: true
     - Angle Tolerance: 0.10000000149011612
       Class: rviz_default_plugins/Odometry
