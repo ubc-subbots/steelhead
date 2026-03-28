@@ -44,9 +44,9 @@ DEFAULT_STABILIZE_DISTANCE = {
         'z': 0.5
     },
     'orientation_rpy': {
-        'r': 0,
-        'p':0,
-        'y': 0.1
+        'r': 0, # we don't currently target roll or pitch, beacuse ideally the robot is always upright without our input
+        'p': 0,
+        'y': 0.2
     },
     'orientation': {
         'x': 0.1,
@@ -82,19 +82,18 @@ BLANK_ORIENTATION = {
     'w': 1.0,
 }
 
-DEFAULT_STABILIZE_DURATION = 5.0 # seconds
-
 # Input a series of poses here
 # Distance can be the above defined ones, or custom ones
 # x,y,z in meters
 # r,p,y in radians
 # disregard 'orientation' and only fill in 'orienatation_rpy'
+DEFAULT_STABILIZE_DURATION = 1.0 # seconds
+
 target_poses = [
-    # Pose 1
     {
         'pose': {
             'position': {
-                'x': 10.0,
+                'x': 18.0,
                 'y': 1.0,
                 'z': 0.0
             },
@@ -108,7 +107,62 @@ target_poses = [
         'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
         'type': STABILIZE,
         'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 20.0,
+                'y': 0.0,
+                'z': 0.0
+            },
+            'orientation_rpy': {
+                'r': 0,
+                'p': 0,
+                'y': 0
+            },
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 18.0,
+                'y': -1.0,
+                'z': 0.0
+            },
+            'orientation_rpy': {
+                'r': 0,
+                'p': 0,
+                'y': 0
+            },
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 0.0,
+                'y': 0.0,
+                'z': 0.0
+            },
+            'orientation_rpy': {
+                'r': 0,
+                'p': 0,
+                'y': 0
+            },
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
     }
+
 ]
 
 
@@ -139,14 +193,18 @@ class PredeterminedRoute(Node):
         for tp in target_poses:
             pose_q = quaternion_from_euler(tp['pose']['orientation_rpy']['r'], tp['pose']['orientation_rpy']['p'], tp['pose']['orientation_rpy']['y'])
             dist_q = quaternion_from_euler(tp['distance']['orientation_rpy']['r'], tp['distance']['orientation_rpy']['p'], tp['distance']['orientation_rpy']['y'])
-            tp['pose']['orientation']['x'] = pose_q[1]
-            tp['pose']['orientation']['y'] = pose_q[2]
-            tp['pose']['orientation']['z'] = pose_q[3]
-            tp['pose']['orientation']['w'] = pose_q[0]
-            tp['distance']['orientation']['x'] = abs(dist_q[1])
-            tp['distance']['orientation']['y'] = abs(dist_q[2])
-            tp['distance']['orientation']['z'] = abs(dist_q[3])
-            tp['distance']['orientation']['w'] = abs(dist_q[0])
+            tp['pose']['orientation'] = {
+                'x': pose_q[1],
+                'y': pose_q[2],
+                'z': pose_q[3],
+                'w': pose_q[0]
+            }
+            tp['distance']['orientation'] = {
+                'x': abs(dist_q[1]),
+                'y': abs(dist_q[2]),
+                'z': abs(dist_q[3]),
+                'w': abs(dist_q[0])
+            }
             self.get_logger().info(str(pose_q))
             self.get_logger().info(str(dist_q))
 
@@ -173,7 +231,7 @@ class PredeterminedRoute(Node):
     def waypoint_callback(self, data):
 
         if data.success:
-            if self.current_index > len(target_poses):
+            if self.current_index >= len(target_poses):
                 self.get_logger().info("All targets reached!")
                 return
 
