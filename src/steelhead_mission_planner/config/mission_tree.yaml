@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Steelhead Mission Planner — Decision Tree Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Each task node publishes one of three strings to its completion topic:
+#
+#   "undecided"  — task is still running (planner ignores this)
+#   "complete"   — task succeeded       (planner follows on_complete)
+#   "abort"      — task failed          (planner follows on_abort)
+#
+# The special next-state "DONE" terminates the mission.
+#
+# To add a new state:
+#   1. Add its name to the `states` list.
+#   2. Add a <StateName>.listen_topic, <StateName>.on_complete,
+#      and <StateName>.on_abort entry below.
+#   3. Wire up on_complete / on_abort for any upstream states that should
+#      transition to the new state.
+# ─────────────────────────────────────────────────────────────────────────────
+
+/mission_planner:
+  ros__parameters:
+
+    # First state entered when the mission starts
+    initial_state: "Gate"
+
+    # Ordered list of all state names that exist in this tree.
+    # The planner loads parameters for each name listed here.
+    states:
+      - "Gate"
+      - "Buoy"
+      - "Torpedo"
+      - "Octagon"
+
+    # ── Gate ─────────────────────────────────────────────────────────────────
+    Gate.listen_topic: "/Gate_Complete"
+    Gate.on_complete:  "Buoy"
+    Gate.on_abort:     "Octagon"    # Skip to Octagon (surfacing) if gate fails
+
+    # ── Buoy ─────────────────────────────────────────────────────────────────
+    Buoy.listen_topic: "/Buoy_Complete"
+    Buoy.on_complete:  "Torpedo"
+    Buoy.on_abort:     "Octagon"    # Skip to Octagon if buoy fails
+
+    # ── Torpedo ──────────────────────────────────────────────────────────────
+    Torpedo.listen_topic: "/Torpedo_Complete"
+    Torpedo.on_complete:  "Octagon"
+    Torpedo.on_abort:     "Octagon" # Always proceed to Octagon regardless
+
+    # ── Octagon (final surfacing task) ────────────────────────────────────────
+    Octagon.listen_topic: "/Octagon_Complete"
+    Octagon.on_complete:  "DONE"
+    Octagon.on_abort:     "DONE"
