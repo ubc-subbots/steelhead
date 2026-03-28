@@ -1,21 +1,9 @@
 <?xml version="1.0"?>
 <sdf version='1.7'>
   <model name='competition_cleanup_cup'>
-    <static>false</static>
-    
+    <static>0</static>
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
-      
-      <inertial>
-        <pose>0.000000 0.000000 -0.089267 0 0 0</pose>
-        <mass>0.1</mass>
-        <inertia>
-          <ixx>0.00025</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>0.00025</iyy> <iyz>0</iyz>
-          <izz>0.00009</izz>
-        </inertia>
-      </inertial>
-
       <collision name='base_link_collision'>
         <geometry>
           <mesh><uri>model://competition_cleanup_cup/meshes/cup.dae</uri></mesh>
@@ -27,39 +15,5 @@
         </geometry>
       </visual>
     </link>
-
-    <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
-    
-    <base_link>base_link</base_link>
-    
-    <neutrally_buoyant>0</neutrally_buoyant>
-    
-    <volume>0.0009</volume>
-    
-    <center_of_buoyancy>0.0 0.0 -0.083</center_of_buoyancy>
-
-    <hydrodynamic_model>
-      <scalingBuoyancy>1.0</scalingBuoyancy>
-      <scalingDamping>1.0</scalingDamping>
-      <scalingAddedMass>1.0</scalingAddedMass>
-
-      <added_mass>
-        0.9 0 0 0 0 0
-        0 0.9 0 0 0 0
-        0 0 0.9 0 0 0
-        0 0 0 0.002 0 0
-        0 0 0 0 0.002 0
-        0 0 0 0 0 0.002
-      </added_mass>
-
-      <linear_damping>
-        -5.0 -5.0 -5.0 -1.0 -1.0 -1.0
-      </linear_damping>
-
-      <quadratic_damping>
-        -10.0 -10.0 -10.0 -2.0 -2.0 -2.0
-      </quadratic_damping>
-    </hydrodynamic_model>
-
   </model>
 </sdf>
