@@ -16,9 +16,12 @@ import time
 try:
     from ultralytics import YOLO
     ULTRALYTICS_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     ULTRALYTICS_AVAILABLE = False
-    print("Warning: ultralytics not installed. Install with: pip install ultralytics")
+    self.get_logger().warning(f"DEBUG: Import failed with error: {e}")
+    import sys
+    self.get_logger().info(f"DEBUG: Python Executable: {sys.executable}")
+    self.get_logger().info(f"DEBUG: Python Path: {sys.path}")
 
 
 class YOLODetector(Node):
@@ -93,12 +96,12 @@ class YOLODetector(Node):
             # If model is not loaded, just republish the original image
             if self.model is None:
                 annotated_image = cv_image
-                print(f'Frame {self.frame_count}: Model not loaded, republishing raw image')
+                # self.get_logger().info(f'Frame {self.frame_count}: Model not loaded, republishing raw image')
             else:
                 # Run YOLO inference
                 results = self.model(cv_image, conf=self.confidence_threshold, verbose=False, device='cpu')
 
-                print(f'Frame {self.frame_count}: {results}')  # Debug: print raw results to console
+                # self.get_logger().info(f'Frame {self.frame_count}: {results}')  # Debug: print raw results to console
                 
                 # Annotate image with detections
                 annotated_image = cv_image.copy()
