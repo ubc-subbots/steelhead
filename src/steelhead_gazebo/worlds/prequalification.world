@@ -13,13 +13,18 @@
     </include>
 
     <include>
-        <pose>-6 0 2 0 0 0</pose>
-        <uri>model://gate</uri>
+        <pose>-2 -1 2 0 0 0</pose>
+        <uri>model://prequalification_gate</uri>
+    </include>
+
+    <include>
+        <pose>5 0 1 0 0 0</pose>
+        <uri>model://prequalification_marker</uri>
     </include>
 
     <include>
       <uri>model://steelhead_auv</uri>
-      <pose>0 0 1.2 0 0 0</pose>
+      <pose>-5 0 1.2 0 0 0</pose>
     </include>
 
     <include>
