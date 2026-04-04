@@ -11,4 +11,4 @@
       image_width: 640
       image_height: 360
       camera_name: "camera1"
-      camera_info_url: "package://steelhead_bringup/config/camera1_info.yaml"
+      camera_info_url: "package://spiderfish_bringup/config/camera1_info.yaml"

@@ -11,15 +11,15 @@ def generate_launch_description():
 
     pipeline_manager = Node(
         name='pipeline_manager',
-        namespace='/steelhead',
-        package='steelhead_pipeline',
+        namespace='/spiderfish',
+        package='spiderfish_pipeline',
         executable='pipeline_manager',
         output='screen'
     )
 
     pipeline_container = ComposableNodeContainer(
         name='pipeline',
-        namespace='/steelhead',
+        namespace='/spiderfish',
         package='rclcpp_components',
         executable='component_container'
     )

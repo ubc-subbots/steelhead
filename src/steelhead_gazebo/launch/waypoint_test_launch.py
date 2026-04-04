@@ -12,19 +12,19 @@ def generate_launch_description():
 
     ukf_teleop_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'ukf_teleop_sim_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gazebo'), 'launch', 'ukf_teleop_sim_launch.py')
         )
     )
 
     waypoint_marker = Node(
-        package='steelhead_controls', 
+        package='spiderfish_controls', 
         executable='waypoint_marker',
         output='screen', 
         parameters=[{'use_sim_time': True}]
     )
 
     waypoint_marker_tester = Node(
-        package='steelhead_controls',
+        package='spiderfish_controls',
         executable='waypoint_marker_tester.py',
         name='waypoint_marker_tester',
         output='screen', 

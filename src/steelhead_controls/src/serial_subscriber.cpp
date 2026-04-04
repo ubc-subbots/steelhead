@@ -1,11 +1,11 @@
 #define TEENSY_PORT "/dev/teensy"
-#include "steelhead_controls/serial_subscriber.hpp"
+#include "spiderfish_controls/serial_subscriber.hpp"
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
 using std::placeholders::_1;
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
   SerialSubscriber::SerialSubscriber(const rclcpp::NodeOptions & options)
@@ -47,4 +47,4 @@ namespace steelhead_controls
     write(fd_, &msg->data, 4);
   }
 
-} // namespace steelhead_controls
+} // namespace spiderfish_controls

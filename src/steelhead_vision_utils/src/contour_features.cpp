@@ -1,9 +1,9 @@
-#include "steelhead_vision_utils/contour_features.hpp"
+#include "spiderfish_vision_utils/contour_features.hpp"
 
 using namespace cv;
 using namespace std;
 
-namespace steelhead_vision_utils
+namespace spiderfish_vision_utils
 {
 ContourFeatures::ContourFeatures()
 {
@@ -92,4 +92,4 @@ vector<float> ContourFeatures::hu_moments_featurize(vector<Point> cnt)
   return hu;
 }
 
-}  // namespace steelhead_vision_utils
+}  // namespace spiderfish_vision_utils

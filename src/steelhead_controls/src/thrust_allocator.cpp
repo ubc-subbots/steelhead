@@ -1,8 +1,8 @@
-#include "steelhead_controls/thrust_allocator.hpp"
+#include "spiderfish_controls/thrust_allocator.hpp"
 #include <unistd.h>
 using std::placeholders::_1;
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
   ThrustAllocator::ThrustAllocator(const rclcpp::NodeOptions & options)
@@ -183,7 +183,7 @@ namespace steelhead_controls
 
 
     
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 
 int main(int argc, char * argv[])
@@ -191,7 +191,7 @@ int main(int argc, char * argv[])
   try {
     rclcpp::init(argc, argv);
     auto options = rclcpp::NodeOptions();
-    rclcpp::spin(std::make_shared<steelhead_controls::ThrustAllocator>(options));
+    rclcpp::spin(std::make_shared<spiderfish_controls::ThrustAllocator>(options));
     rclcpp::shutdown();
   } catch (rclcpp::exceptions::RCLError const&){} // during testing sometimes throws error
   return 0;

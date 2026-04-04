@@ -21,7 +21,7 @@ class ControllerTeleop(Node):
 
         self.force_pub = self.create_publisher(
             Wrench,
-            '/steelhead/controls/input_forces',
+            '/spiderfish/controls/input_forces',
             10
         )
 

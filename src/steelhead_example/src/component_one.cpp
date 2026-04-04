@@ -1,7 +1,7 @@
-#include "steelhead_example/component_one.hpp"
+#include "spiderfish_example/component_one.hpp"
 using std::placeholders::_1;
 
-namespace steelhead_example
+namespace spiderfish_example
 {
 
 
@@ -28,4 +28,4 @@ void ComponentOne::callback(const std_msgs::msg::String::SharedPtr msg) const
 }
 
     
-} // namespace steelhead_example
+} // namespace spiderfish_example

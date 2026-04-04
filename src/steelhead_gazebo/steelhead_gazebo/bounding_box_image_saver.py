@@ -4,7 +4,7 @@ from rclpy.node import Node
 import os
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
-from steelhead_interfaces.msg import DetectionBoxArray
+from spiderfish_interfaces.msg import DetectionBoxArray
 from cv2 import cv2
 import cv_bridge
 import numpy as np
@@ -15,8 +15,8 @@ class BoundingBoxImageSaver(Node):
 
     def __init__(self):
         super().__init__('bounding_box_image_saver')
-        self.subscribe_image = self.create_subscription(Image, "/steelhead/drivers/front_camera/image_raw", self.save_image, 10)
-        self.subscriber_bbox = self.create_subscription(DetectionBoxArray, "/steelhead/gazebo_drivers/front_camera/bounding_box", self.save_bbox, 10)
+        self.subscribe_image = self.create_subscription(Image, "/spiderfish/drivers/front_camera/image_raw", self.save_image, 10)
+        self.subscriber_bbox = self.create_subscription(DetectionBoxArray, "/spiderfish/gazebo_drivers/front_camera/bounding_box", self.save_bbox, 10)
         self.lastmsg = None
         self.bbox_queue = [] #List of past images 
 
@@ -75,7 +75,7 @@ class BoundingBoxImageSaver(Node):
             self.get_logger().info("Saving..."+name)
             txt_string = f"{bbox.class_id} {centre_x} {centre_y} {width} {height}"
 
-            data_dir = os.path.join(get_package_share_directory("steelhead_gazebo"),"data")
+            data_dir = os.path.join(get_package_share_directory("spiderfish_gazebo"),"data")
             if not os.path.exists(data_dir):
                 os.makedirs(data_dir)
 

@@ -1,7 +1,7 @@
-#include "steelhead_gazebo/ground_truth_sensor.hpp"
+#include "spiderfish_gazebo/ground_truth_sensor.hpp"
 #include <ignition/math/Pose3.hh>
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     GroundTruthSensor::GroundTruthSensor() : node{rclcpp::Node::make_shared("ground_truth_sensor")} {}

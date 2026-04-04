@@ -17,21 +17,21 @@ def generate_launch_description():
             description='Sequence config file'
     )
 
-    config = [get_package_share_directory('steelhead_pipeline'),'/config/', LaunchConfiguration('sequence')]
+    config = [get_package_share_directory('spiderfish_pipeline'),'/config/', LaunchConfiguration('sequence')]
 
 
     pipeline_manager = Node(
         name='pipeline_manager',
-        namespace='/steelhead',
-        package='steelhead_pipeline',
+        namespace='/spiderfish',
+        package='spiderfish_pipeline',
         executable='pipeline_manager',
         output='screen'
     )
 
     pipeline_sequence_manager = Node(
         name='pipeline_sequence_manager',
-        namespace='/steelhead',
-        package='steelhead_pipeline',
+        namespace='/spiderfish',
+        package='spiderfish_pipeline',
         executable='pipeline_sequence_manager',
         output='screen',
         parameters=[config]
@@ -39,7 +39,7 @@ def generate_launch_description():
 
     pipeline_container = ComposableNodeContainer(
         name='pipeline',
-        namespace='/steelhead',
+        namespace='/spiderfish',
         package='rclcpp_components',
         executable='component_container'
     )

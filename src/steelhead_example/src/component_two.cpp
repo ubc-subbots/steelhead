@@ -1,7 +1,7 @@
-#include "steelhead_example/component_two.hpp"
+#include "spiderfish_example/component_two.hpp"
 using std::placeholders::_1;
 
-namespace steelhead_example
+namespace spiderfish_example
 {
 
 
@@ -10,8 +10,8 @@ ComponentTwo::ComponentTwo(const rclcpp::NodeOptions & options)
 {
     this->declare_parameter<int>("example_param", 0);
     
-    feedback_pub_ = this->create_publisher<steelhead_interfaces::msg::PipelineFeedback>(
-        "/steelhead/pipeline_feedback", 10
+    feedback_pub_ = this->create_publisher<spiderfish_interfaces::msg::PipelineFeedback>(
+        "/spiderfish/pipeline_feedback", 10
     );
 
     publisher_ = this->create_publisher<std_msgs::msg::String>(
@@ -38,7 +38,7 @@ void ComponentTwo::callback(const std_msgs::msg::String::SharedPtr msg)
     counter_++;
     if (counter_ == MESSAGE_THRESHOLD)
     {
-        auto feedback_msg = steelhead_interfaces::msg::PipelineFeedback();
+        auto feedback_msg = spiderfish_interfaces::msg::PipelineFeedback();
         feedback_msg.success = true;
         feedback_msg.message = "Reached 25! The example pipeline has completed it's action";
         feedback_pub_->publish(feedback_msg);
@@ -46,4 +46,4 @@ void ComponentTwo::callback(const std_msgs::msg::String::SharedPtr msg)
 }
 
     
-} // namespace steelhead_example
+} // namespace spiderfish_example

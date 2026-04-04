@@ -125,19 +125,19 @@ The C++ programming conventions we use are loosely based off the [ROS C++ Style 
 - Member variables are **under_scored_suffix_**
 - Members should be organized **Functions, Constants, Variables**
 - Leave **2** lines between functions and classes
-- If the C++ file exists in `steelhead_<PACKAGE_NAME>`, then the classes/functions should be namespaced using **<PACKAGE_NAME>**. 
-- If the file `example_file.hpp` exists in `steelhead_<PACKAGE_NAME>`, it's should have a definition **STEELHEAD_<PACKAGE_NAME>__EXAMPLE_FILE**
+- If the C++ file exists in `spiderfish_<PACKAGE_NAME>`, then the classes/functions should be namespaced using **<PACKAGE_NAME>**. 
+- If the file `example_file.hpp` exists in `spiderfish_<PACKAGE_NAME>`, it's should have a definition **SPIDERFISH_<PACKAGE_NAME>__EXAMPLE_FILE**
 - Includes should be organized **Standard, Third-Party, Application**
 - Includes should be in the `.hpp` as much as possible
 - Brackets (ie. `{` and `}`) should start on a new line
 - Function should be commented as per [Doxygen C++](https://www.doxygen.nl/manual/docblocks.html)
 
-Here is an example `.hpp` and `.cpp` file in the package `steelhead_example` dispalying these conventions
+Here is an example `.hpp` and `.cpp` file in the package `spiderfish_example` dispalying these conventions
 
 ```
 // example_file.hpp
-#ifndef STEELHEAD_EXAMPLE__EXAMPLE_FILE
-#define STEELHEAD_EXAMPLE__EXAMPLE_FILE
+#ifndef SPIDERFISH_EXAMPLE__EXAMPLE_FILE
+#define SPIDERFISH_EXAMPLE__EXAMPLE_FILE
 
 #include <some_standard_library>
 #include <another_standard_library>
@@ -203,12 +203,12 @@ namespace example
 
 } // namespace example
 
-#endif  //STEELHEAD_EXAMPLE__EXAMPLE_FILE
+#endif  //SPIDERFISH_EXAMPLE__EXAMPLE_FILE
 ```
 
 ```
 // example_file.cpp
-#include "steelhead_example/example_file.hpp"
+#include "spiderfish_example/example_file.hpp"
 
 namespace example
 {
@@ -242,7 +242,7 @@ namespace example
 
 # ROS2
 ROS2 has it's own set of conventions which we will follow. The following list gives the conventions that should be followed
-- Packages should be named **steelhead_<PACKAGE_NAME>** where `<PACKAGE_NAME>` is short and descriptive of the packages purpose (e.g `steelhead_example`)
+- Packages should be named **spiderfish_<PACKAGE_NAME>** where `<PACKAGE_NAME>` is short and descriptive of the packages purpose (e.g `spiderfish_example`)
 - Namespaces should be **under_scored** and as short as possible (e.g `/ns/component_one/output`)
 - Topics, actions, services, and node_names should also be **under_scored**
 - All interface files (`.msg`,`.srv`,`.action`) should be **CamelCase** (e.g `CustomMessage.msg`)

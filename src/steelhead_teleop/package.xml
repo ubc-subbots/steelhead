@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>steelhead_teleop</name>
+  <name>spiderfish_teleop</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="logan.fillo@gmail.com">logan</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>pynput-pip</depend>
-  <depend>steelhead_interfaces</depend>
+  <depend>spiderfish_interfaces</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

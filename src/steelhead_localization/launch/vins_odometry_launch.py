@@ -9,19 +9,19 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     config_path = os.path.join(
-        get_package_share_directory('steelhead_localization'),
+        get_package_share_directory('spiderfish_localization'),
         'config',
-        'steelhead_gazebo_vins_config.yaml'
+        'spiderfish_gazebo_vins_config.yaml'
     )
 
     vins_path = os.path.join(
-        get_package_share_directory('steelhead_localization'),
+        get_package_share_directory('spiderfish_localization'),
         'config',
         '..'
     )
 
     vins_estimator_node = Node(
-        package='steelhead_localization',
+        package='spiderfish_localization',
         namespace='vins_estimator',
         executable='vins_estimator',
         name='vins_estimator',
@@ -34,7 +34,7 @@ def generate_launch_description():
     )
 
     feature_tracker_node = Node(
-        package='steelhead_localization',
+        package='spiderfish_localization',
         namespace='feature_tracker',
         executable='feature_tracker',
         name='feature_tracker',

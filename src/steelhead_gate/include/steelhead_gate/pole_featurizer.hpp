@@ -1,14 +1,14 @@
-#ifndef STEELHEAD_GATE__POLE_FEATURIZER
-#define STEELHEAD_GATE__POLE_FEATURIZER
+#ifndef SPIDERFISH_GATE__POLE_FEATURIZER
+#define SPIDERFISH_GATE__POLE_FEATURIZER
 
 #include <unistd.h>
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-#include "steelhead_vision_utils/contour_features.hpp"
+#include "spiderfish_vision_utils/contour_features.hpp"
 
-namespace steelhead_gate
+namespace spiderfish_gate
 {
   
 using namespace std;
@@ -18,12 +18,12 @@ using namespace cv::ml;
 class PoleFeaturizer
 {
 private:
-  steelhead_vision_utils::ContourFeatures cnt_features;
+  spiderfish_vision_utils::ContourFeatures cnt_features;
 
 public:
   PoleFeaturizer()
   {
-    cnt_features = steelhead_vision_utils::ContourFeatures();
+    cnt_features = spiderfish_vision_utils::ContourFeatures();
   }
 
   /**
@@ -89,6 +89,6 @@ public:
   }
 };
 
-}  // namespace steelhead_gate
+}  // namespace spiderfish_gate
 
-#endif  // STEELHEAD_GATE__POLE_FEATURIZER
+#endif  // SPIDERFISH_GATE__POLE_FEATURIZER

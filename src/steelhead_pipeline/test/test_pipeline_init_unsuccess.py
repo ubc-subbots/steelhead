@@ -18,8 +18,8 @@ def generate_test_description():
 
     pipeline_manager = Node(
         name='pipeline_manager',
-        namespace='/steelhead',
-        package='steelhead_pipeline',
+        namespace='/spiderfish',
+        package='spiderfish_pipeline',
         executable='pipeline_manager',
         output='screen'
     )

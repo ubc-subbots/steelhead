@@ -19,8 +19,8 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 ComposableNode(
-                    package='steelhead_controls',
-                    plugin='steelhead_controls::SerialSubscriber',
+                    package='spiderfish_controls',
+                    plugin='spiderfish_controls::SerialSubscriber',
                     name='serial_subscriber'),
             ],
             output='both',
@@ -29,21 +29,21 @@ def generate_launch_description():
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'imu_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_bringup'), 'imu_launch.py')
         )
     )
 
     cameras = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'cameras_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_bringup'), 'cameras_launch.py')
         )
     )
 
     gate_detector = ComposableNode(
         name='detector',
-        namespace='/steelhead/gate',
-        package='steelhead_gate',
-        plugin='steelhead_gate::GateDetector',
+        namespace='/spiderfish/gate',
+        package='spiderfish_gate',
+        plugin='spiderfish_gate::GateDetector',
         parameters=[
             {'debug': False}
         ]
@@ -62,38 +62,38 @@ def generate_launch_description():
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_pid_controller'), 'launch', 'spiderfish_pid_controller_launch.py')
         )
     )
 
     waypoint_marker = Node(
-        package='steelhead_controls', 
+        package='spiderfish_controls', 
         executable='waypoint_marker',
         output='screen', 
         # parameters=[{'use_sim_time': True}]
     )
 
     ta_config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
+        get_package_share_directory('spiderfish_controls'),
         'config',
         'thruster_config.yaml'
     )
 
     thrust_allocator = Node(
         name='thrust_allocator',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='thrust_allocator',
         output='screen',
         parameters=[ta_config],
         remappings=[
-            ('/steelhead/controls/signals', '/motor_control')
+            ('/spiderfish/controls/signals', '/motor_control')
         ]
     )
 
     trajectory_generator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/trajectory_generator_launch.py'
+            get_package_share_directory('spiderfish_controls') + '/launch/trajectory_generator_launch.py'
         )
     )
 

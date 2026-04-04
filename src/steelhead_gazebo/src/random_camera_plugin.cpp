@@ -2,16 +2,16 @@
 #include <gazebo/common/Assert.hh>
 #include <gazebo/physics/Model.hh>
 #include <gazebo/physics/World.hh>
-#include "steelhead_gazebo/random_camera_plugin.hpp"
+#include "spiderfish_gazebo/random_camera_plugin.hpp"
 #include <random>
 #include <cmath>
 #include <time.h>
 
 using namespace gazebo;
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
-    GZ_REGISTER_MODEL_PLUGIN(steelhead_gazebo::RandomCameraPlugin)
+    GZ_REGISTER_MODEL_PLUGIN(spiderfish_gazebo::RandomCameraPlugin)
     RandomCameraPlugin::RandomCameraPlugin(){}
 
     RandomCameraPlugin::~RandomCameraPlugin(){}

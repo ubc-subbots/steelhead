@@ -7,8 +7,8 @@ def generate_launch_description():
 
     controller_teleop = Node(
         name='controller_teleop',
-        namespace='/steelhead/teleop',
-        package='steelhead_teleop',
+        namespace='/spiderfish/teleop',
+        package='spiderfish_teleop',
         executable='controller_teleop',
         output='screen',
     )

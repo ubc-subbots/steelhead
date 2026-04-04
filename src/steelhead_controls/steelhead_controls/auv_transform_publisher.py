@@ -18,14 +18,14 @@ class AUVTransformPublisher(Node):
         self.state_subscriber = self.create_subscription(
             #PoseStamped,
             PoseWithCovarianceStamped,
-            '/steelhead/state',
+            '/spiderfish/state',
             self.state_callback,
             10
 
         )
         self.path_publisher = self.create_publisher(
             Path,
-            '/steelhead/path',
+            '/spiderfish/path',
             qos_profile
         )
         self.pose_array = []

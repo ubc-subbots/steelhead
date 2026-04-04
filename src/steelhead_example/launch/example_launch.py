@@ -9,21 +9,21 @@ def generate_launch_description():
 
     component_one = ComposableNode(
         name='component_one',
-        namespace='/steelhead',
-        package='steelhead_example',
-        plugin='steelhead_example::ComponentOne'
+        namespace='/spiderfish',
+        package='spiderfish_example',
+        plugin='spiderfish_example::ComponentOne'
     )
 
     component_two = ComposableNode(
         name='component_two',
-        namespace='/steelhead',
-        package='steelhead_example',
-        plugin='steelhead_example::ComponentTwo'
+        namespace='/spiderfish',
+        package='spiderfish_example',
+        plugin='spiderfish_example::ComponentTwo'
     )
 
     example_container = ComposableNodeContainer(
         name='example_container',
-        namespace='/steelhead',
+        namespace='/spiderfish',
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[

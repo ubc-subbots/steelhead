@@ -14,7 +14,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = 'steelhead_pipeline'
+    pkg_name = 'spiderfish_pipeline'
     launch_file_name = 'pipeline_manager_launch.py'
 
     launch_file = IncludeLaunchDescription(

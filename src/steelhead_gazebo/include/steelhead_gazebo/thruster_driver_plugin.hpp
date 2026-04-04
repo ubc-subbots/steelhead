@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__THRUSTER_DRIVER_PLUGIN
-#define STEELHEAD_GAZEBO__THRUSTER_DRIVER_PLUGIN
+#ifndef SPIDERFISH_GAZEBO__THRUSTER_DRIVER_PLUGIN
+#define SPIDERFISH_GAZEBO__THRUSTER_DRIVER_PLUGIN
 
 #include <vector>
 
@@ -9,7 +9,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     using std::placeholders::_1;
@@ -78,4 +78,4 @@ namespace steelhead_gazebo
     GZ_REGISTER_MODEL_PLUGIN(ThrusterDriver)
 
 }
-#endif // STEELHEAD_GAZEBO__THRUSTER_DRIVER_PLUGIN
+#endif // SPIDERFISH_GAZEBO__THRUSTER_DRIVER_PLUGIN

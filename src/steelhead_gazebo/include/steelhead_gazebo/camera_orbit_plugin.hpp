@@ -1,11 +1,11 @@
-#ifndef STEELHEAD_GAZEBO__CAMERA_ORBIT_PLUGIN
-#define STEELHEAD_GAZEBO__CAMERA_ORBIT_PLUGIN
+#ifndef SPIDERFISH_GAZEBO__CAMERA_ORBIT_PLUGIN
+#define SPIDERFISH_GAZEBO__CAMERA_ORBIT_PLUGIN
 
 #include <sdf/sdf.hh>
 #include <gazebo/common/UpdateInfo.hh>
 #include <gazebo/common/Plugin.hh>
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
   class GAZEBO_VISIBLE CameraOrbitPlugin : public gazebo::ModelPlugin
   {

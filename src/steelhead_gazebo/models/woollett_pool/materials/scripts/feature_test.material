@@ -1,4 +1,4 @@
-material steelhead/FeatureGrid
+material spiderfish/FeatureGrid
 {
   technique
   {

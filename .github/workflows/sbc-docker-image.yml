@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ghcr.io/ubc-subbots/steelhead-sbc
+  IMAGE_NAME: ghcr.io/ubc-subbots/spiderfish-sbc
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:

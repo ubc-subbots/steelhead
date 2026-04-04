@@ -26,14 +26,14 @@ def generate_launch_description():
     )
 
     # We need to add the models and worlds directories to env so gazebo can find them
-    steelhead_gazebo_dir = get_package_share_directory('steelhead_gazebo')
+    spiderfish_gazebo_dir = get_package_share_directory('spiderfish_gazebo')
 
     gmp = 'GAZEBO_MODEL_PATH'
     add_model_path = SetEnvironmentVariable(
         name=gmp, 
         value=[
             EnvironmentVariable(gmp), 
-            os.pathsep + os.path.join(steelhead_gazebo_dir, 'gazebo', 'models')
+            os.pathsep + os.path.join(spiderfish_gazebo_dir, 'gazebo', 'models')
         ]
     )
 
@@ -42,7 +42,7 @@ def generate_launch_description():
         name=grp, 
         value=[
             EnvironmentVariable(grp), 
-            os.pathsep + os.path.join(steelhead_gazebo_dir, 'gazebo')
+            os.pathsep + os.path.join(spiderfish_gazebo_dir, 'gazebo')
         ]
     )
 

@@ -11,8 +11,8 @@ def generate_launch_description():
 
     waypoint_marker = Node(
         name='waypoint_marker',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='waypoint_marker',
         output='screen',
     )

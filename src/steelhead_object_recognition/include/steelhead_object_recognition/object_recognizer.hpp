@@ -1,20 +1,20 @@
-#ifndef STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
-#define STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#ifndef SPIDERFISH_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#define SPIDERFISH_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
 
 #include "rclcpp/rclcpp.hpp"
 #include "image_transport/image_transport.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "cv_bridge/cv_bridge.h"
 #include "sensor_msgs/image_encodings.hpp"
-#include "steelhead_interfaces/msg/detection_box_array.hpp"
-#include "steelhead_interfaces/srv/object_detection.hpp"
+#include "spiderfish_interfaces/msg/detection_box_array.hpp"
+#include "spiderfish_interfaces/srv/object_detection.hpp"
 #include <opencv2/opencv.hpp>
 
 #ifndef DEBUG_VISUALIZE
     #define DEBUG_VISUALIZE 1
 #endif
 
-namespace steelhead_object_recognition
+namespace spiderfish_object_recognition
 {      
 
     class ObjectRecognizer : public rclcpp::Node
@@ -40,19 +40,19 @@ namespace steelhead_object_recognition
          * @returns DetectionBoxArray message containing the bounding boxes of detected objects
          * 
          */
-        steelhead_interfaces::msg::DetectionBoxArray process(const sensor_msgs::msg::Image & msg) const;
+        spiderfish_interfaces::msg::DetectionBoxArray process(const sensor_msgs::msg::Image & msg) const;
 
         /** Callback used by subscriber to process and publish results
          */
         void subscriberCallback(const sensor_msgs::msg::Image::ConstSharedPtr & msg) const;
         /** Callback used by service to process and respond to client with results
          */
-        void serviceCallback(const steelhead_interfaces::srv::ObjectDetection::Request::SharedPtr request, 
-                const steelhead_interfaces::srv::ObjectDetection::Response::SharedPtr response) const;
+        void serviceCallback(const spiderfish_interfaces::srv::ObjectDetection::Request::SharedPtr request, 
+                const spiderfish_interfaces::srv::ObjectDetection::Response::SharedPtr response) const;
 
-        rclcpp::Publisher<steelhead_interfaces::msg::DetectionBoxArray>::SharedPtr publisher_;  
+        rclcpp::Publisher<spiderfish_interfaces::msg::DetectionBoxArray>::SharedPtr publisher_;  
         image_transport::Subscriber subscription_; 
-        rclcpp::Service<steelhead_interfaces::srv::ObjectDetection>::SharedPtr service_;
+        rclcpp::Service<spiderfish_interfaces::srv::ObjectDetection>::SharedPtr service_;
         #if DEBUG_VISUALIZE
             image_transport::Publisher debug_publisher_;
         #endif
@@ -80,9 +80,9 @@ namespace steelhead_object_recognition
                 cv::Mat & frame, const std::vector<cv::Mat>& outs) const;
     };
     
-} // namespace steelhead_object_recognition
+} // namespace spiderfish_object_recognition
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_object_recognition::ObjectRecognizer)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_object_recognition::ObjectRecognizer)
 
-#endif  //STEELHEAD_OBJECT_RECOGNITION__OBJECT_RECOGNIZER
+#endif  //SPIDERFISH_OBJECT_RECOGNITION__OBJECT_RECOGNIZER

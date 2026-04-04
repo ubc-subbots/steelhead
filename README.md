@@ -1,6 +1,6 @@
-# Steelhead AUV
+# Spiderfish AUV
 
-This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
+This repository contains the ROS2 system for the UBC SubBots Spiderfish AUV. It is meant to be launched in Ubuntu 20.04 on the Jetson TX2 on board the Spiderfish AUV.
 
 ## DISCLAIMER
 
@@ -20,7 +20,7 @@ This guide already assumes you have already followed the guide for installing Ub
 
 To get started, first clone this repo to your computer running Ubuntu 20.04 into whatever directory you choose by running
 
-    git clone https://github.com/ubc-subbots/steelhead.git
+    git clone https://github.com/ubc-subbots/spiderfish.git
 
 ### Gazebo Sourcing
 Next, we need to add the setup script to our `.bashrc` so that it is sourced on every new terminal. Open up `~/.bashrc` in a text editor or in nano as such
@@ -73,7 +73,7 @@ Next, install rosdep as such
     sudo apt install python3-rosdep2 -y --allow-unauthenticated 
     rosdep update --include-eol #(Foxy is now at end of life)
   
-Then, from the folder `steelhead`, resolve any dependency issues using the following command
+Then, from the folder `spiderfish`, resolve any dependency issues using the following command
  
         rosdep install -i --from-path src --rosdistro foxy -y -r
   
@@ -89,15 +89,15 @@ To finish the setup, edit your `.bashrc` file to source the global and local set
  
     nano ~/.bashrc
     
-Navigate to the bottom of the file and add the following three lines; be sure to set `<PATH_TO_STEELHEAD>` to whatever it is on your machine
+Navigate to the bottom of the file and add the following three lines; be sure to set `<PATH_TO_SPIDERFISH>` to whatever it is on your machine
 
     source /opt/ros/foxy/setup.bash                     # global setup script
-    source <PATH_TO_STEELHEAD>/steelhead/install/setup.bash   # local setup script
+    source <PATH_TO_SPIDERFISH>/spiderfish/install/setup.bash   # local setup script
     export RCUTILS_COLORIZED_OUTPUT=1
     
 The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the Gazebo sim by launching
 
-    ros2 launch steelhead_bringup barebones_gazebo_launch.py
+    ros2 launch spiderfish_bringup barebones_gazebo_launch.py
    
 If this command executes successfully, you are ready to develop!
 
@@ -106,10 +106,10 @@ To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md
     
 ## Tips
 Here are some tips to be aware of when developing on this repository and when developing in ROS2 in general
-- Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `steelhead`)
+- Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `spiderfish`)
 - After creating any new component nodes, you must either source the local setup script or simply open up a new terminal for them to show up under the command `ros2 component types` and be usable by the pipeline.
 - Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communication channels.
-- If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `steelhead` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
+- If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro foxy -y` in the `spiderfish` folder, and also that a release for the distro we are using (`foxy`) exists on the ROS2 package index.
 - For non-ROS2 dependencies, check [here](https://github.com/ros/rosdistro/tree/master/rosdep) to see the available system dependencies that can be used with `rosdep`.
 
 ## Useful Shortcuts
@@ -117,5 +117,5 @@ If you'd like, add these aliases to the bottom of your .bashrc
 
 ```
 alias build='colcon build && source install/setup.bash' # clean build
-alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
+alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF SPIDERFISH)
 ```

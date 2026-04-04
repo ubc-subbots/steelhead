@@ -1,6 +1,6 @@
 FROM ros:foxy
 
-# setup steelhead
+# setup spiderfish
 RUN mkdir -p /subbots
 COPY build.sh /subbots
 WORKDIR /subbots

@@ -11,32 +11,32 @@ def generate_launch_description():
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gazebo'), 'launch', 'gazebo_launch.py')
         ),
         launch_arguments={'world': 'prequalification.world'}.items()
     )
 
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'thrust_allocator_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'thrust_allocator_launch.py')
         )
     )
 
     keyboard_teleop = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'keyboard_teleop_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_teleop'), 'launch', 'keyboard_teleop_launch.py')
         )
     )
 
     controller_teleop = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'controller_teleop_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_teleop'), 'launch', 'controller_teleop_launch.py')
         )
     )
     
     actuators_simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'actuators_simulation_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gazebo'), 'launch', 'actuators_simulation_launch.py')
         )
     )
 

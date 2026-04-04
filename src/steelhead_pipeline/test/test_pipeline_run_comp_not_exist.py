@@ -8,9 +8,9 @@ import launch
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import Node
 
-from steelhead_interfaces.action import RunPipeline
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType, PipelineFeedback
+from spiderfish_interfaces.action import RunPipeline
+from spiderfish_interfaces.srv import ConfigurePipeline
+from spiderfish_interfaces.msg import PipelineType, PipelineFeedback
 
 import rclpy
 from rclpy.action import ActionClient
@@ -22,15 +22,15 @@ def generate_test_description():
 
     pipeline_manager = Node(
         name='pipeline_manager',
-        namespace='/steelhead',
-        package='steelhead_pipeline',
+        namespace='/spiderfish',
+        package='spiderfish_pipeline',
         executable='pipeline_manager',
         output='screen'
     )
 
     pipeline_container = ComposableNodeContainer(
         name='pipeline',
-        namespace='/steelhead',
+        namespace='/spiderfish',
         package='rclcpp_components',
         executable='component_container'
     )
@@ -63,7 +63,7 @@ class TestPipelineRun(unittest.TestCase):
 
         self.configure_client = self.node.create_client(
             ConfigurePipeline,
-            '/steelhead/configure_pipeline'
+            '/spiderfish/configure_pipeline'
         )
         while not self.configure_client.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().warn('Configure pipeline service not available, waiting again...')
@@ -71,7 +71,7 @@ class TestPipelineRun(unittest.TestCase):
         self.run_client = ActionClient(
             self.node,
             RunPipeline,
-            '/steelhead/run_pipeline'
+            '/spiderfish/run_pipeline'
         )
         while not self.run_client.wait_for_server(timeout_sec=1.0):
             self.node.get_logger().warn('Run pipeline service not available, waiting again...')

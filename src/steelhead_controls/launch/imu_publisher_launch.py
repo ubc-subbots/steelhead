@@ -11,8 +11,8 @@ def generate_launch_description():
 
     bno085_imu_publisher = Node(
         name='bno085_imu_publisher',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='bno085_imu_publisher.py',
         output='screen',
     )

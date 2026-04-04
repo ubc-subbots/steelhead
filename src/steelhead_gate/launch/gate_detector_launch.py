@@ -9,9 +9,9 @@ def generate_launch_description():
 
     gate_detector = ComposableNode(
         name='detector',
-        namespace='/steelhead/gate',
-        package='steelhead_gate',
-        plugin='steelhead_gate::GateDetector',
+        namespace='/spiderfish/gate',
+        package='spiderfish_gate',
+        plugin='spiderfish_gate::GateDetector',
         parameters=[
             {'debug': True}
         ]

@@ -1,15 +1,15 @@
 #include <string> 
-#include "steelhead_gate/gate_detector.hpp"
-#include "steelhead_gate/pole_featurizer.hpp"
+#include "spiderfish_gate/gate_detector.hpp"
+#include "spiderfish_gate/pole_featurizer.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 
 using namespace std;
 using namespace cv;
 using namespace cv::ml;
-using namespace steelhead_vision_utils;
+using namespace spiderfish_vision_utils;
 using std::placeholders::_1;
 
-namespace steelhead_gate
+namespace spiderfish_gate
 {
 GateDetector::GateDetector(const rclcpp::NodeOptions& options) : Node("gate_detector", options)
 {
@@ -28,7 +28,7 @@ GateDetector::GateDetector(const rclcpp::NodeOptions& options) : Node("gate_dete
   rmw_qos_profile_t sensor_qos_profile = rmw_qos_profile_sensor_data;
 
   subscription_ = image_transport::create_subscription(this,
-      "/steelhead/drivers/front_camera/image_raw",
+      "/spiderfish/drivers/front_camera/image_raw",
       bind(&GateDetector::subscriberCallback, this, _1),
       "raw",
       sensor_qos_profile
@@ -39,7 +39,7 @@ GateDetector::GateDetector(const rclcpp::NodeOptions& options) : Node("gate_dete
 
   // gate_center_publisher_ = this->create_publisher<std_msgs::msg::Float32MultiArray>(
   //   "detector/gate_center", 10);
-  gate_pose_publisher_ = this->create_publisher<steelhead_interfaces::msg::ObjectOffset>("detector/gate_pose", 10);
+  gate_pose_publisher_ = this->create_publisher<spiderfish_interfaces::msg::ObjectOffset>("detector/gate_pose", 10);
   if (debug_)
     gate_pose_only_publisher_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("detector/gate_pose_only", 10);
 
@@ -284,7 +284,7 @@ std::vector<Point> GateDetector::createGateContour(std::vector<Point> hull_point
 
   // Put values in message
 
-  steelhead_interfaces::msg::ObjectOffset gate_pose_;
+  spiderfish_interfaces::msg::ObjectOffset gate_pose_;
 
   gate_pose_.class_id = 1;
   gate_pose_.pose.position.x = distance;
@@ -377,7 +377,7 @@ void GateDetector::debugPublish(cv::Mat& src, image_transport::Publisher& publis
 void GateDetector::svmHullPredict(std::vector<std::vector<Point>> hulls)
 {
   vector<vector<Point>> pole_hulls;
-  Ptr<SVM> svm = SVM::load("/home/logan/Projects/steelhead/src/steelhead_gate/config/accuracy_opencv_model.xml");
+  Ptr<SVM> svm = SVM::load("/home/logan/Projects/spiderfish/src/spiderfish_gate/config/accuracy_opencv_model.xml");
   vector<float> y_hat;
   Mat X_hat = featurizer_.featurizeForClassification(hulls);
   svm->predict(X_hat, y_hat);
@@ -390,4 +390,4 @@ void GateDetector::svmHullPredict(std::vector<std::vector<Point>> hulls)
   }
 }
 
-}  // namespace steelhead_gate
+}  // namespace spiderfish_gate

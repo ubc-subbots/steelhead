@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__UNDERWATER_CAMERA
-#define STEELHEAD_GAZEBO__UNDERWATER_CAMERA
+#ifndef SPIDERFISH_GAZEBO__UNDERWATER_CAMERA
+#define SPIDERFISH_GAZEBO__UNDERWATER_CAMERA
 
 #include <memory>
 #include <eigen3/Eigen/Core>
@@ -10,7 +10,7 @@
 #include "image_transport/subscriber_filter.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
-#include "steelhead_interfaces/msg/detection_box_array.hpp"
+#include "spiderfish_interfaces/msg/detection_box_array.hpp"
 
 typedef sensor_msgs::msg::Image Image;
 typedef sensor_msgs::msg::Image::ConstSharedPtr ImageMsg;
@@ -18,7 +18,7 @@ typedef message_filters::sync_policies::ApproximateTime<Image, Image> ApproxPoli
 typedef message_filters::Synchronizer<ApproxPolicy> ApproxSync;
 
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {      
 
     class UnderwaterCamera : public rclcpp::Node
@@ -115,9 +115,9 @@ namespace steelhead_gazebo
         
     };
     
-} // namespace steelhead_gazebo
+} // namespace spiderfish_gazebo
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_gazebo::UnderwaterCamera)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_gazebo::UnderwaterCamera)
 
-#endif  //STEELHEAD_GAZEBO__UNDERWATER_CAMERA
+#endif  //SPIDERFISH_GAZEBO__UNDERWATER_CAMERA

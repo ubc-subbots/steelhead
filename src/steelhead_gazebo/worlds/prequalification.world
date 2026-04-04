@@ -23,7 +23,7 @@
     </include>
 
     <include>
-      <uri>model://steelhead_auv</uri>
+      <uri>model://spiderfish_auv</uri>
       <pose>-5 0 1.2 0 0 0</pose>
     </include>
 

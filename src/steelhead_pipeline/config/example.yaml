@@ -1,17 +1,17 @@
-/steelhead/pipeline_manager:
+/spiderfish/pipeline_manager:
   ros__parameters:
     pipeline:
       components:
-        - steelhead_example::ComponentOne
-        - steelhead_example::ComponentTwo
+        - spiderfish_example::ComponentOne
+        - spiderfish_example::ComponentTwo
       pkg_names: 
-        - steelhead_example
-        - steelhead_example
+        - spiderfish_example
+        - spiderfish_example
       param_files:
         - ''
         - params_two.yaml
-      namespace: /steelhead
+      namespace: /spiderfish
       remap_rules:
-        - /steelhead/example/component_two/in:=/steelhead/example/component_one/out
+        - /spiderfish/example/component_two/in:=/spiderfish/example/component_one/out
     use_sim_time: false
 

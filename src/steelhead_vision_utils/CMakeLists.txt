@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_vision_utils)
+project(spiderfish_vision_utils)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -21,22 +21,22 @@ find_package(OpenCV 4 REQUIRED)
 
 include_directories(include)
 
-add_library(steelhead_vision_utils SHARED
+add_library(spiderfish_vision_utils SHARED
   src/object_detector.cpp
   src/contour_features.cpp
 )
 
-target_include_directories(steelhead_vision_utils
+target_include_directories(spiderfish_vision_utils
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(steelhead_vision_utils
+ament_target_dependencies(spiderfish_vision_utils
   "OpenCV"
 )
 
-ament_export_targets(export_steelhead_vision_utils HAS_LIBRARY_TARGET)
+ament_export_targets(export_spiderfish_vision_utils HAS_LIBRARY_TARGET)
 ament_export_dependencies(
   "OpenCV"
 )
@@ -47,8 +47,8 @@ install(
 )
 
 install(
-  TARGETS steelhead_vision_utils
-  EXPORT export_steelhead_vision_utils
+  TARGETS spiderfish_vision_utils
+  EXPORT export_spiderfish_vision_utils
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin

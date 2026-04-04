@@ -1,12 +1,12 @@
-#ifndef STEELHEAD_GAZEBO__BOUNDING_BOX_PLUGIN
-#define STEELHEAD_GAZEBO__BOUNDING_BOX_PLUGIN
+#ifndef SPIDERFISH_GAZEBO__BOUNDING_BOX_PLUGIN
+#define SPIDERFISH_GAZEBO__BOUNDING_BOX_PLUGIN
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo_ros/node.hpp>
-#include "steelhead_interfaces/msg/detection_box_array.hpp"
+#include "spiderfish_interfaces/msg/detection_box_array.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
   class BoundingBoxPlugin : public gazebo::SensorPlugin
   {
@@ -27,7 +27,7 @@ namespace steelhead_gazebo
 
     //ROS
     gazebo_ros::Node::SharedPtr node_;
-    rclcpp::Publisher<steelhead_interfaces::msg::DetectionBoxArray>::SharedPtr publisher_; 
+    rclcpp::Publisher<spiderfish_interfaces::msg::DetectionBoxArray>::SharedPtr publisher_; 
 
     static int powint(int x, int p)//https://stackoverflow.com/a/1505791
     {
@@ -40,5 +40,5 @@ namespace steelhead_gazebo
 
   };
 }
-GZ_REGISTER_SENSOR_PLUGIN(steelhead_gazebo::BoundingBoxPlugin)
+GZ_REGISTER_SENSOR_PLUGIN(spiderfish_gazebo::BoundingBoxPlugin)
 #endif

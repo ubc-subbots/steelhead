@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__GAZEBO_UTILS
-#define STEELHEAD_GAZEBO__GAZEBO_UTILS
+#ifndef SPIDERFISH_GAZEBO__GAZEBO_UTILS
+#define SPIDERFISH_GAZEBO__GAZEBO_UTILS
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
@@ -8,7 +8,7 @@
 #include "include/math_utils.hpp"
 
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     /**
@@ -63,4 +63,4 @@ namespace steelhead_gazebo
 
 }
 
-#endif // STEELHEAD_GAZEBO__GAZEBO_UTILS
+#endif // SPIDERFISH_GAZEBO__GAZEBO_UTILS

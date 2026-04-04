@@ -1,6 +1,6 @@
 #include "include/gazebo_utils.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
     
     Eigen::Vector6d GetSdfVector(bool* status, sdf::ElementPtr _sdf, std::string param, Eigen::Vector6d def)

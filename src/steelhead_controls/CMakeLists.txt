@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_controls)
+project(spiderfish_controls)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -21,7 +21,7 @@ find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(steelhead_interfaces REQUIRED)
+find_package(spiderfish_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
@@ -67,7 +67,7 @@ ament_target_dependencies(
   "rclcpp"
   "rclcpp_components"
   "Eigen3"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "geometry_msgs"
   "sensor_msgs"
   "OpenCV"
@@ -81,7 +81,7 @@ ament_target_dependencies(
   "rclcpp"
   "rclcpp_components"
   "tf2"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "geometry_msgs"
   "sensor_msgs"
   "nav_msgs"
@@ -95,7 +95,7 @@ ament_target_dependencies(
   "rclcpp"
   "rclcpp_components"
   "tf2"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "geometry_msgs"
   "sensor_msgs"
   "nav_msgs"
@@ -108,33 +108,33 @@ ament_target_dependencies(
   actuators_command
   "rclcpp"
   "rclcpp_components"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
 
 
-add_library(steelhead_controls SHARED
+add_library(spiderfish_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
   src/serial_subscriber
 )
 
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::ThrustAllocator")
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::WaypointMarker")
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::SerialSubscriber")
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::TrajectoryGenerator")
+rclcpp_components_register_nodes(spiderfish_controls "spiderfish_controls::ThrustAllocator")
+rclcpp_components_register_nodes(spiderfish_controls "spiderfish_controls::WaypointMarker")
+rclcpp_components_register_nodes(spiderfish_controls "spiderfish_controls::SerialSubscriber")
+rclcpp_components_register_nodes(spiderfish_controls "spiderfish_controls::TrajectoryGenerator")
 
-target_compile_definitions(steelhead_controls
-  PRIVATE "steelhead_controls_CPP_BUILDING_DLL"
+target_compile_definitions(spiderfish_controls
+  PRIVATE "spiderfish_controls_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_controls
+ament_target_dependencies(spiderfish_controls
   "rclcpp"
   "rclcpp_components"
   "Eigen3"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "geometry_msgs"
   "sensor_msgs"
   "OpenCV"
@@ -143,7 +143,7 @@ ament_target_dependencies(steelhead_controls
 )
 
 install(TARGETS
-  steelhead_controls
+  spiderfish_controls
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -171,11 +171,11 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  steelhead_controls/auv_transform_publisher.py
-  steelhead_controls/waypoint_marker_tester.py
-  steelhead_controls/predetermined_route.py
-  steelhead_controls/predetermined_thrust.py
-  steelhead_controls/bno085_imu_publisher.py
+  spiderfish_controls/auv_transform_publisher.py
+  spiderfish_controls/waypoint_marker_tester.py
+  spiderfish_controls/predetermined_route.py
+  spiderfish_controls/predetermined_thrust.py
+  spiderfish_controls/bno085_imu_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

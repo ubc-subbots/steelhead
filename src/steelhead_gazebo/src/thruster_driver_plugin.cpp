@@ -1,6 +1,6 @@
-#include "steelhead_gazebo/thruster_driver_plugin.hpp"
+#include "spiderfish_gazebo/thruster_driver_plugin.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     ThrusterDriver::ThrusterDriver() : node{rclcpp::Node::make_shared("thruster_driver")} {}
@@ -59,7 +59,7 @@ namespace steelhead_gazebo
         }
         else
         {
-            _namespace = "steelhead/steelhead_gazebo";
+            _namespace = "spiderfish/spiderfish_gazebo";
         }
 
         if (ros_sdf->HasElement("remapping"))

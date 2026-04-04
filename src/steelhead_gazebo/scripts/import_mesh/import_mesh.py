@@ -36,7 +36,7 @@ def convert_mesh(model_path, model):
         print('Blender pre-check failed, missing or invalid Blender installation')
         sys.exit(1)
 
-    convert_mesh_path = os.path.join(REPO_ROOT, 'src/steelhead_gazebo/scripts/import_mesh/convert_mesh.py')
+    convert_mesh_path = os.path.join(REPO_ROOT, 'src/spiderfish_gazebo/scripts/import_mesh/convert_mesh.py')
     run_cmd = ['blender', '--background', '--python', convert_mesh_path, '--', model_path, model]
  
     # Need to catch errors here
@@ -108,7 +108,7 @@ def main():
     args = parser.parse_args()
 
     # Change directory to where models are located
-    os.chdir(os.path.join(REPO_ROOT, 'src/steelhead_gazebo/models'))
+    os.chdir(os.path.join(REPO_ROOT, 'src/spiderfish_gazebo/models'))
 
     if not os.path.exists(args.model): 
         print('ERROR: model %s not found, exiting' % args.model)
@@ -118,7 +118,7 @@ def main():
 
     sdf_data = ['<?xml version=\'1.0\'?>'] + convert_urdf(args.model, args.model)
 
-    with open(os.path.join(REPO_ROOT, 'src/steelhead_gazebo/scripts/', args.parameters), 'r') as param_file:
+    with open(os.path.join(REPO_ROOT, 'src/spiderfish_gazebo/scripts/', args.parameters), 'r') as param_file:
         params = json.load(param_file)
 
     params_sdf = ['<?xml version=\'1.0\'?>', '<sdf version=\'1.7\'>']

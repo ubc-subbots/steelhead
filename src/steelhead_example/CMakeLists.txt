@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_example)
+project(spiderfish_example)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -20,31 +20,31 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(steelhead_interfaces REQUIRED)
+find_package(spiderfish_interfaces REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_library(steelhead_example SHARED
+add_library(spiderfish_example SHARED
   src/component_one.cpp
   src/component_two.cpp
 )
 
-rclcpp_components_register_nodes(steelhead_example "steelhead_example::ComponentOne")
-rclcpp_components_register_nodes(steelhead_example "steelhead_example::ComponentTwo")
+rclcpp_components_register_nodes(spiderfish_example "spiderfish_example::ComponentOne")
+rclcpp_components_register_nodes(spiderfish_example "spiderfish_example::ComponentTwo")
 
-target_compile_definitions(steelhead_example
-  PRIVATE "steelhead_example_CPP_BUILDING_DLL"
+target_compile_definitions(spiderfish_example
+  PRIVATE "spiderfish_example_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_example
+ament_target_dependencies(spiderfish_example
   "rclcpp"
   "rclcpp_components"
   "std_msgs"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 
 install(TARGETS
-  steelhead_example
+  spiderfish_example
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

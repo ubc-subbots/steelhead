@@ -2,8 +2,8 @@ pipeline_manager:
   ros__parameters:
     pipeline:
       components:
-        - steelhead_controls::WaypointMarker
+        - spiderfish_controls::WaypointMarker
       pkg_names:
-        - steelhead_controls
-      namespace: /steelhead/waypoint
+        - spiderfish_controls
+      namespace: /spiderfish/waypoint
     use_sim_time: false

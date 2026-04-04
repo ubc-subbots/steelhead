@@ -9,9 +9,9 @@ from rclpy.action import ActionServer
 from rclpy.executors import MultiThreadedExecutor
 from ament_index_python.packages import get_package_share_directory
 
-from steelhead_interfaces.action import RunPipeline
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType, PipelineFeedback
+from spiderfish_interfaces.action import RunPipeline
+from spiderfish_interfaces.srv import ConfigurePipeline
+from spiderfish_interfaces.msg import PipelineType, PipelineFeedback
 from composition_interfaces.srv import LoadNode, UnloadNode, ListNodes
 
 from .load_params import load_parameter_file
@@ -125,7 +125,7 @@ class PipelineManager(Node):
             )
             response.success = False
         else:
-            manager_dir = get_package_share_directory('steelhead_pipeline')
+            manager_dir = get_package_share_directory('spiderfish_pipeline')
             config_file_name = pipeline_type if not request.config_file_name else request.config_file_name
             config_file = '{}.yaml'.format(config_file_name)
             self.get_logger().info('Using the configuration file "{}"'.format(config_file))
@@ -208,7 +208,7 @@ class PipelineManager(Node):
         busy waiting to recieve the response of whether or not the
         node was successfully loaded.
         @param component: A node component string (i.e 'package::NodeName')
-        @param pkg_name: Package in which the component is found(i.e 'steelhead_package')
+        @param pkg_name: Package in which the component is found(i.e 'spiderfish_package')
         @param param_file: Param file to load with the node (can be empty string)
         """
         req = LoadNode.Request()

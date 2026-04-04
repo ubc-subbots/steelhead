@@ -9,16 +9,16 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     config = os.path.join(
-        get_package_share_directory('steelhead_pid_controller'),
+        get_package_share_directory('spiderfish_pid_controller'),
         'config',
         'pid.yaml'
     )
 
     pid_controller = Node(
-        package='steelhead_pid_controller',
-        namespace='/steelhead/controls',
-        executable='steelhead_pid_controller',
-        name='steelhead_pid_controller',
+        package='spiderfish_pid_controller',
+        namespace='/spiderfish/controls',
+        executable='spiderfish_pid_controller',
+        name='spiderfish_pid_controller',
         output='screen',
         parameters=[
             config,

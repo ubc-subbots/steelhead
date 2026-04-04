@@ -1,4 +1,4 @@
-# steelhead_gazebo
+# spiderfish_gazebo
 ## Description
 
 This package contains the Gazebo models, worlds, and plugins needed to create a dynamic simulation of an accurate model of our AUV in a realistic environment. These simulations integrate into ROS2 so that full system simulations can be run.
@@ -8,18 +8,18 @@ This package contains the Gazebo models, worlds, and plugins needed to create a 
 ### Gazebo
 To run a Gazebo simulation with a world file given in the `worlds` directory, use the `gazebo_launch.py` file as follows
 
-    ros2 launch steelhead_gazebo gazebo_launch.py world:=<WORLD_FILE_NAME> headless:=<IS_HEADLESS>
+    ros2 launch spiderfish_gazebo gazebo_launch.py world:=<WORLD_FILE_NAME> headless:=<IS_HEADLESS>
 
-Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
+Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select spiderfish_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
 
 #### Optimization Guide
 Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a graphics card lol.
 
-1. In `src/steelhead_gazebo/models/steelhead_frame/model.sdf`:
+1. In `src/spiderfish_gazebo/models/spiderfish_frame/model.sdf`:
     * Change the types of the cameras to `camera` rather than `depth`.
     * Set visualize to `false` for the cameras if not already done.
     * Reduce the update rates of the sensors (IMU, camera) or down right comment out some of them.
-2. In the world file, most likely `src/steelhead_gazebo/worlds/competition.world`:
+2. In the world file, most likely `src/spiderfish_gazebo/worlds/competition.world`:
     * Increase step size.
     * Real time update rate may help as well.
 3. If you are using UTM Virtual Machine, switch to a GPU Supported emulated display card (e.g. virtio-ramfb-gl).
@@ -29,55 +29,55 @@ Remember to rebuild after making any changes, including model and world files.
 ### Underwater Camera
 To run the underwater camera node, use the following
 
-        ros2 launch steelhead_gazebo underwater_camera_launch.py
+        ros2 launch spiderfish_gazebo underwater_camera_launch.py
 
 Sets of parameters for the underwater camera node (water transmission, spectral sensitivity, etc.) are stored in `config/underwater_camera.yaml`. To change which parameters are used, `launch/underwater_camera_launch.py` can be modified
 
 ### Teleop Launch
 To run just the necessities for teleop Gazebop simulation, run
 
-        ros2 launch steelhead_gazebo barebones_teleop_launch.py
+        ros2 launch spiderfish_gazebo barebones_teleop_launch.py
 
-This will launch the Gazebo simulation using competition.world and steelhead_auv, the thruster allocator, and keyboard teleop.
+This will launch the Gazebo simulation using competition.world and spiderfish_auv, the thruster allocator, and keyboard teleop.
 
 ### Waypoint Marker and PID Controller
 To run the waypoint marker test
 
-        ros2 launch steelhead_gazebo waypoint_pid_test_launch.py
+        ros2 launch spiderfish_gazebo waypoint_pid_test_launch.py
 
-It launches ukf_teleop_sim_launch.py (except the teleop part), a PID controller, a waypoint marker, and a waypoint marker tester. The tester supports publishing one target pose. The target pose can be edited and more target poses can be added by editing the file src/steelhead_controls/steelhead_controls/waypoint_marker_tester.py. To notify the tester to publish a target waypoint: 
+It launches ukf_teleop_sim_launch.py (except the teleop part), a PID controller, a waypoint marker, and a waypoint marker tester. The tester supports publishing one target pose. The target pose can be edited and more target poses can be added by editing the file src/spiderfish_controls/spiderfish_controls/waypoint_marker_tester.py. To notify the tester to publish a target waypoint: 
 
-        ros2 topic pub -1 /steelhead/controls/waypoint_marker_tester/start std_msgs/msg/String "{data: 1}"
+        ros2 topic pub -1 /spiderfish/controls/waypoint_marker_tester/start std_msgs/msg/String "{data: 1}"
 
 With 'data' being the index of the target pose, as defined in waypoint_marker_tester.py
 
 ### Gate Navigation Test
 To run the Gate Navigation test
 
-        ros2 launch steelhead_gazebo gate_navigation_test_launch.py
+        ros2 launch spiderfish_gazebo gate_navigation_test_launch.py
 
 It launches ukf_teleop_sim_launch.py (except the teleop part), a PID controller, a waypoint marker, and a trajectory generator. The trajectory starts by turning the AUV around slowly. We can start the Gate Detection and navigation process by publishing the following command:
 
-        ros2 topic pub -1 /steelhead/controls/trajectory_generator/set_type steelhead_interfaces/msg/TrajectoryType "{type: 1}"
+        ros2 topic pub -1 /spiderfish/controls/trajectory_generator/set_type spiderfish_interfaces/msg/TrajectoryType "{type: 1}"
 
 ### Generating Data with Bounding Box
 To run the data generation node, use the following
 
-        ros2 launch steelhead_gazebo gendata_launch.py
+        ros2 launch spiderfish_gazebo gendata_launch.py
 
-This runs the Gazebo world `uc_gendata.world`, runs the underwater camera node with a random water type, and saves the output images along with label files containing the bounding box of the tracked model defined in `uc_gendata.world` under `bounding_box_controller/model_name`. The images and label files are saved in a folder called `data` in the steelhead_gazebo shared folder.
+This runs the Gazebo world `uc_gendata.world`, runs the underwater camera node with a random water type, and saves the output images along with label files containing the bounding box of the tracked model defined in `uc_gendata.world` under `bounding_box_controller/model_name`. The images and label files are saved in a folder called `data` in the spiderfish_gazebo shared folder.
 
 Currently, the generated images are not always well-suited for training, and may not be rendered properly due to timing mismatches between the Gazebo render, the underwater camera node, and the bounding box node. Some manual cleaning (removing incorrect images) will need to be done to obtain a good dataset.
 
-Data is saved to a folder in the share directory, ie. `<PATH_TO_STEELHEAD>/install/steelhead_gazebo/share/steelhead_gazebo/data`.
-If you get an error that the executable cannot be found, make sure `steelhead_gazebo/bounding_box_image_saver.py` has executable permissions (ie. `chmod +x bounding_box_image_saver.py`).
+Data is saved to a folder in the share directory, ie. `<PATH_TO_SPIDERFISH>/install/spiderfish_gazebo/share/spiderfish_gazebo/data`.
+If you get an error that the executable cannot be found, make sure `spiderfish_gazebo/bounding_box_image_saver.py` has executable permissions (ie. `chmod +x bounding_box_image_saver.py`).
 
 ### Training Yolo v3 Model
-The steelhead_gazebo shared folder should contain a folder called `data` with images with `.png` extensions (this can be changed in `train_yolo.py`). Each image should have a corresponding `.txt` file with the same name (other than extension) containing labels in standard Yolo format describing the bounding boxes (each line should be `<object class (integer)> <x centre> <y centre> <box width> <box height`, with x/y/width/height normalized between 0 and 1 using the image's dimensions).
+The spiderfish_gazebo shared folder should contain a folder called `data` with images with `.png` extensions (this can be changed in `train_yolo.py`). Each image should have a corresponding `.txt` file with the same name (other than extension) containing labels in standard Yolo format describing the bounding boxes (each line should be `<object class (integer)> <x centre> <y centre> <box width> <box height`, with x/y/width/height normalized between 0 and 1 using the image's dimensions).
 
 The `yolov3_custom.cfg` file should be modified based on the requirements of the model. See `AlexeyAB/darknet` on GitHub for a guide. 
 
-Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the model. By default, as training progresses backups will be saved in a folder called `backup` in the shared folder. If you get an error that the executable cannot be found, make sure `steelhead_gazebo/train_yolo.py` has executable permissions (ie. `chmod +x train_yolo.py`).
+Run `ros2 launch spiderfish_gazebo train_yolo_launch.py` to start training the model. By default, as training progresses backups will be saved in a folder called `backup` in the shared folder. If you get an error that the executable cannot be found, make sure `spiderfish_gazebo/train_yolo.py` has executable permissions (ie. `chmod +x train_yolo.py`).
 
 
 ## Nodes/Plugins
@@ -87,31 +87,31 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
     ### Subscribed Topics
     - `front_camera/image_raw` (`sensor_msgs/msg/Image.msg`) : Input RGB image
     - `front_camera/depth/image_raw` (`sensor_msgs/msg/Image.msg`) : Input depth image
-    - `front_camera/bounding_box` (`steelhead_interfaces/msg/DetectionBoxArray`) : Bounding box (only republishes to avoid data generation timing issues)
+    - `front_camera/bounding_box` (`spiderfish_interfaces/msg/DetectionBoxArray`) : Bounding box (only republishes to avoid data generation timing issues)
 
     ### Published Topics
     - `front_camera/underwater/image_raw` (`sensor_msgs/msg/Image.msg`) : Synthesized underwater image
     - `repub/image_raw` (`sensor_msgs/msg/Image.msg`) : Republished RGB image
     - `repub/depth/image_raw` (`sensor_msgs/msg/Image.msg`) : Republished depth image
-    - `repub/bounding_box` (`steelhead_interfaces/msg/DetectionBoxArray`) : Republished bounding box
+    - `repub/bounding_box` (`spiderfish_interfaces/msg/DetectionBoxArray`) : Republished bounding box
 
 - `bounding_box_plugin`: A Gazebo plugin which produces the bounding box of a specified object in camera image coordinates
 
     ### Published Topics
-    - `front_camera/bounding_box` (`steelhead_interfaces/msg/DetectionBoxArray`) : Bounding box
+    - `front_camera/bounding_box` (`spiderfish_interfaces/msg/DetectionBoxArray`) : Bounding box
 
 - `bounding_box_image_saver`: A node which saves images and bounding boxes for training.
 
     ### Subscribed Topics
     - `front_camera/underwater/image_raw` (`sensor_msgs/msg/Image.msg`) : Synthesized underwater image
-    - `repub/bounding_box` (`steelhead_interfaces/msg/DetectionBoxArray`) : Bounding box
+    - `repub/bounding_box` (`spiderfish_interfaces/msg/DetectionBoxArray`) : Bounding box
 
 - `camera_orbit_plugin`: A Gazebo plugin which rotates the camera around a specified object for data collection (not recommended as training data). Attach this to a camera in a .world file to use.
 
 - `random_camera_plugin`: A Gazebo plugin which randomly moves the camera around for data collection (currently no guarantee the object is in view). Attach this to a camera in a .world file to use.
 
 ## Services 
-- `actuators_command_simulation` : A service for simulation actuators commands in Gazebo. Should run parallel to actuators_command in steelhead_simulation and accept the same inputs.
+- `actuators_command_simulation` : A service for simulation actuators commands in Gazebo. Should run parallel to actuators_command in spiderfish_simulation and accept the same inputs.
     ### Serviced Topics
     - `actuators_command` (`string`) : Actuator command.
 
@@ -129,9 +129,9 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
 
 ## Models
 `cube`
-- A simple cube which uses a ROS2 force plugin to accept `geometry_msgs/msg/Wrench` messages on the topic `/steelhead/gazebo_drivers/force`. Here is an example command to apply forces to the cube
+- A simple cube which uses a ROS2 force plugin to accept `geometry_msgs/msg/Wrench` messages on the topic `/spiderfish/gazebo_drivers/force`. Here is an example command to apply forces to the cube
 
-        ros2 topic pub /steelhead/gazebo_drivers/force geometry_msgs/msg/Wrench "{force: {x: 1}}"
+        ros2 topic pub /spiderfish/gazebo_drivers/force geometry_msgs/msg/Wrench "{force: {x: 1}}"
 
 `lenabox`
 - A cube with the Lena test image as its texture.
@@ -154,8 +154,8 @@ This guide explains how we import mesh files and kinematic information from Soli
     - Verify that the model properties are correct and click Finish, navigate to the created folder and verify that it contains "meshes" and "urdf".
     - Save these files somewhere outside Windows' filesystem like a Git branch, likely you will only need to save the "meshes" and "urdf" folders.
 3. Boot your machine into Linux
-4. Access the files saved remotely mentioned in the previous step, save these to `steelhead/src/steelhead_gazebo/models/`
-6. To run the script for importing packages containing a .STL file and .urdf description, navigate to the steelhead repository and execute the command:
+4. Access the files saved remotely mentioned in the previous step, save these to `spiderfish/src/spiderfish_gazebo/models/`
+6. To run the script for importing packages containing a .STL file and .urdf description, navigate to the spiderfish repository and execute the command:
     `python3 <path-to-scripts>/scripts/import_mesh/import_mesh.py --model <model-name> --clean-up <True/False>`
    This command:
     - Converts the stl file into a dae using blender
@@ -164,7 +164,7 @@ This guide explains how we import mesh files and kinematic information from Soli
     - removed folders no longer needed
 
 At this point your model should be ready to be added to a Gazebo world, you can view your model by running:
-        `ros2 launch steelhead_gazebo gazebo_launch.py`
+        `ros2 launch spiderfish_gazebo gazebo_launch.py`
     and placing your model into the scene.
 
 ### Referenced Material

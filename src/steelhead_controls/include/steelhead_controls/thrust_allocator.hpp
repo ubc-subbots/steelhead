@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_CONTROL__THRUST_ALLOCATOR
-#define STEELHEAD_CONTROL__THRUST_ALLOCATOR
+#ifndef SPIDERFISH_CONTROL__THRUST_ALLOCATOR
+#define SPIDERFISH_CONTROL__THRUST_ALLOCATOR
 
 #include <math.h>
 #include <utility>
@@ -13,7 +13,7 @@
 
 #define MAX_THRUSTERS 6
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {      
 
     class ThrustAllocator : public rclcpp::Node
@@ -91,9 +91,9 @@ namespace steelhead_controls
         std::vector<double> z_help_;
     };
     
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::ThrustAllocator)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_controls::ThrustAllocator)
 
-#endif  //STEELHEAD_CONTROL__THRUST_ALLOCATOR
+#endif  //SPIDERFISH_CONTROL__THRUST_ALLOCATOR

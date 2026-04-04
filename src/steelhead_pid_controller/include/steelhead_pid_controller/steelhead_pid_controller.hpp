@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_PID_CONTROLLER__
-#define STEELHEAD_PID_CONTROLLER__
+#ifndef SPIDERFISH_PID_CONTROLLER__
+#define SPIDERFISH_PID_CONTROLLER__
 #pragma once
 
 #include <string>
@@ -11,7 +11,7 @@
 #include "geometry_msgs/msg/wrench.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 
-namespace steelhead_pid_controller
+namespace spiderfish_pid_controller
 {
 
 class PidController : public rclcpp::Node
@@ -61,9 +61,9 @@ private:
     PID pid_force_z;
     PID pid_yaw;
 };
-}  // namespace steelhead_pid_controller
+}  // namespace spiderfish_pid_controller
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_pid_controller::PidController)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_pid_controller::PidController)
 
 #endif

@@ -1,4 +1,4 @@
-name: Build and push steelhead Docker image
+name: Build and push spiderfish Docker image
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
 
-      - name: Check out ubc-subbots/steelhead
+      - name: Check out ubc-subbots/spiderfish
         uses: actions/checkout@v2
 
       - name: Log in to Docker Hub
@@ -23,4 +23,4 @@ jobs:
         with:
           context: ./docker
           push: true
-          tags: ubcsubbots/steelhead:latest
+          tags: ubcsubbots/spiderfish:latest

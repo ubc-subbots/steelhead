@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'steelhead_pipeline'
+package_name = 'spiderfish_pipeline'
 
 setup(
     name=package_name,
@@ -27,8 +27,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'pipeline_manager = steelhead_pipeline.pipeline_manager:main',
-            'pipeline_sequence_manager = steelhead_pipeline.pipeline_sequence_manager:main'
+            'pipeline_manager = spiderfish_pipeline.pipeline_manager:main',
+            'pipeline_sequence_manager = spiderfish_pipeline.pipeline_sequence_manager:main'
         ],
     },
 )

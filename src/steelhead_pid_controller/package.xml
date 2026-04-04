@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>steelhead_pid_controller</name>
+  <name>spiderfish_pid_controller</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="savitoj@todo.todo">savitoj</maintainer>
@@ -12,7 +12,7 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>eigen</depend>
-  <depend>steelhead_interfaces</depend>
+  <depend>spiderfish_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>tf2</depend>

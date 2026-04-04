@@ -1,8 +1,8 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/steelhead/drivers/imu/out"
-image_topic: "/steelhead/drivers/front_camera/image_raw"
+imu_topic: "/spiderfish/drivers/imu/out"
+image_topic: "/spiderfish/drivers/front_camera/image_raw"
 output_path: "/home/db/output/"
 
 #camera calibration 

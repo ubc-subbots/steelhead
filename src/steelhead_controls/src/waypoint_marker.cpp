@@ -1,7 +1,7 @@
-#include "steelhead_controls/waypoint_marker.hpp"
+#include "spiderfish_controls/waypoint_marker.hpp"
 using std::placeholders::_1;
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
   WaypointMarker::WaypointMarker(const rclcpp::NodeOptions &options)
@@ -11,15 +11,15 @@ namespace steelhead_controls
         waypoint_being_achieved_(false)
   {
 
-    publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/current_goal", 10);
+    publisher_ = this->create_publisher<spiderfish_interfaces::msg::Waypoint>("/spiderfish/controls/waypoint_marker/current_goal", 10);
 
-    error_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/steelhead/controls/input_pose", 10);
+    error_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/spiderfish/controls/input_pose", 10);
 
     state_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-        "/steelhead/controls/ukf/odometry/filtered", 10, std::bind(&WaypointMarker::state_callback, this, _1));
+        "/spiderfish/controls/ukf/odometry/filtered", 10, std::bind(&WaypointMarker::state_callback, this, _1));
 
-    waypoint_subscription_ = this->create_subscription<steelhead_interfaces::msg::Waypoint>(
-        "/steelhead/controls/waypoint_marker/set", 10, std::bind(&WaypointMarker::waypoint_callback, this, _1));
+    waypoint_subscription_ = this->create_subscription<spiderfish_interfaces::msg::Waypoint>(
+        "/spiderfish/controls/waypoint_marker/set", 10, std::bind(&WaypointMarker::waypoint_callback, this, _1));
 
     RCLCPP_INFO(this->get_logger(), "Waypoint Marker successfully started!");
   }
@@ -140,7 +140,7 @@ namespace steelhead_controls
         waypoint_being_achieved_ = false;
       }
 
-      auto reply_msg = steelhead_interfaces::msg::Waypoint();
+      auto reply_msg = spiderfish_interfaces::msg::Waypoint();
       reply_msg.pose = waypoint_.pose;
       reply_msg.distance = waypoint_.distance;
       reply_msg.duration = waypoint_.duration;
@@ -152,7 +152,7 @@ namespace steelhead_controls
     else if (waypoint_achieved_) 
     {
       // Publish the last waypoint, so that the AUV stabilizes at current pose
-      auto reply_msg = steelhead_interfaces::msg::Waypoint();
+      auto reply_msg = spiderfish_interfaces::msg::Waypoint();
       reply_msg.pose = waypoint_.pose;
       reply_msg.distance = waypoint_.distance;
       reply_msg.duration = waypoint_.duration;
@@ -180,7 +180,7 @@ namespace steelhead_controls
 
   }
 
-  void WaypointMarker::waypoint_callback(const steelhead_interfaces::msg::Waypoint::SharedPtr msg)
+  void WaypointMarker::waypoint_callback(const spiderfish_interfaces::msg::Waypoint::SharedPtr msg)
   {
 
     if (waypoint_set_)
@@ -235,7 +235,7 @@ namespace steelhead_controls
     distance_q_m.getRPY(distance_roll, distance_pitch, distance_yaw);
 
 
-    auto reply_msg = steelhead_interfaces::msg::Waypoint();
+    auto reply_msg = spiderfish_interfaces::msg::Waypoint();
     reply_msg.pose = waypoint_.pose;
     reply_msg.success = waypoint_achieved_;
     reply_msg.type = waypoint_.type;
@@ -245,14 +245,14 @@ namespace steelhead_controls
     // RCLCPP_INFO(this->get_logger(), "A new waypoint is set. ");
     publisher_->publish(reply_msg);
   }
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 int main(int argc, char * argv[])
 {
   try {
     rclcpp::init(argc, argv);
     auto options = rclcpp::NodeOptions();
-    rclcpp::spin(std::make_shared<steelhead_controls::WaypointMarker>(options));
+    rclcpp::spin(std::make_shared<spiderfish_controls::WaypointMarker>(options));
     rclcpp::shutdown();
   } catch (rclcpp::exceptions::RCLError const&){} // during testing sometimes throws error
   return 0;

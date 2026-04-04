@@ -1,9 +1,9 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='steelhead_auv'>
+  <model name='spiderfish_auv'>
     <!-- 
 
-      Steelhead AUV components
+      Spiderfish AUV components
 
       Thrusters will follow the following naming convention: 
                             __
@@ -23,7 +23,7 @@
 
     <!-- Frame -->
     <include>
-      <uri>model://steelhead_frame</uri>
+      <uri>model://spiderfish_frame</uri>
       <pose>0 0 0 0 0 0</pose>
       <name>frame</name>
     </include>
@@ -32,42 +32,42 @@
 
     <!-- Right Midsection -->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>-0.075 -0.39 0 -1.57 -1.57 1.57</pose>
       <name>thruster1</name>
     </include>
 
     <!-- Angled Front Right-->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>0.33 -0.28 -0.0085 0 -2.355 1.57</pose>
       <name>thruster2</name>
     </include>
 
     <!-- Angled Front Left-->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>0.33 0.152 -0.0085 0 2.355 1.57</pose>
       <name>thruster3</name>
     </include>
 
     <!-- Left Midsection -->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>-0.075 0.265 0 -1.57 1.57 1.57</pose>
       <name>thruster4</name>
     </include>
     
     <!-- Vertical -->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>-0.219431 -0.0625 0.08 0 3.14 1.57</pose>
       <name>thruster5</name>
     </include>
 
     <!-- Back Horizontal-->
     <include>
-      <uri>model://steelhead_thruster</uri>
+      <uri>model://spiderfish_thruster</uri>
       <pose>-0.355 -0.07 0 1.57 1.57 0</pose>
       <pose>0 0 0 0 0 0</pose>
       <name>thruster6</name>
@@ -241,7 +241,7 @@
     <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
       <ros>
-        <namespace>/steelhead/controls</namespace>
+        <namespace>/spiderfish/controls</namespace>
         <remapping>output_forces</remapping>
       </ros>
     </plugin>
@@ -249,14 +249,14 @@
     <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
 
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
-      <state_topic>/steelhead/state</state_topic>
+      <state_topic>/spiderfish/state</state_topic>
       <update_rate>50</update_rate>
     </plugin>
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
       <always_on>true</always_on>
       <update_rate>50.0</update_rate>
       <body_name>frame::frame</body_name>
-      <topic_name>/steelhead/state</topic_name>
+      <topic_name>/spiderfish/state</topic_name>
       <gaussian_noise>0.01</gaussian_noise>
       <frame_name>map</frame_name>
       <xyz_offset>0 0 0</xyz_offset>

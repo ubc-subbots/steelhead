@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_gate)
+project(spiderfish_gate)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -21,41 +21,41 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV 4 REQUIRED)
-find_package(steelhead_vision_utils REQUIRED)
+find_package(spiderfish_vision_utils REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
-find_package(steelhead_interfaces REQUIRED)
+find_package(spiderfish_interfaces REQUIRED)
 find_package(tf2 REQUIRED)
 
 include_directories(include)
 
-add_library(steelhead_gate SHARED
+add_library(spiderfish_gate SHARED
   src/gate_detector.cpp
 )
 
-rclcpp_components_register_nodes(steelhead_gate "steelhead_gate::GateDetector")
+rclcpp_components_register_nodes(spiderfish_gate "spiderfish_gate::GateDetector")
 
-target_compile_definitions(steelhead_gate
-  PRIVATE "steelhead_gate_CPP_BUILDING_DLL"
+target_compile_definitions(spiderfish_gate
+  PRIVATE "spiderfish_gate_CPP_BUILDING_DLL"
 )
-target_compile_options(steelhead_gate
+target_compile_options(spiderfish_gate
   PRIVATE -Wno-vla
 )
 
-ament_target_dependencies(steelhead_gate
+ament_target_dependencies(spiderfish_gate
   "rclcpp"
   "rclcpp_components"
   "cv_bridge"
   "OpenCV"
-  "steelhead_vision_utils"
+  "spiderfish_vision_utils"
   "sensor_msgs"
   "image_transport"
   "tf2"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 
 install(TARGETS
-  steelhead_gate
+  spiderfish_gate
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

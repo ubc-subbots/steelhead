@@ -1,4 +1,4 @@
-#include "steelhead_object_recognition/object_recognizer.hpp"
+#include "spiderfish_object_recognition/object_recognizer.hpp"
 #include <opencv2/dnn.hpp>
 #include <boost/filesystem.hpp>
 #include <rcl_yaml_param_parser/parser.h>
@@ -6,13 +6,13 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace steelhead_object_recognition
+namespace spiderfish_object_recognition
 {
     ObjectRecognizer::ObjectRecognizer(const rclcpp::NodeOptions & options)
     : Node("object_recognizer", options) 
     {
         // Create publisher, subscriber, and service
-        publisher_ = this->create_publisher<steelhead_interfaces::msg::DetectionBoxArray>(
+        publisher_ = this->create_publisher<spiderfish_interfaces::msg::DetectionBoxArray>(
             "object_recognizer/out", 
             10
         );
@@ -23,7 +23,7 @@ namespace steelhead_object_recognition
             "raw"
         );
 
-        service_ = create_service<steelhead_interfaces::srv::ObjectDetection>(
+        service_ = create_service<spiderfish_interfaces::srv::ObjectDetection>(
             "object_recognizer/recognize",
             std::bind(&ObjectRecognizer::serviceCallback, this, _1, _2)
         );
@@ -68,7 +68,7 @@ namespace steelhead_object_recognition
 
         // Get model folder as the install directory of this package
         boost::filesystem::path model_folder = boost::filesystem::path(
-            ament_index_cpp::get_package_share_directory("steelhead_object_recognition"));
+            ament_index_cpp::get_package_share_directory("spiderfish_object_recognition"));
 
         // Check weights file exists
         boost::filesystem::path model_weights = model_folder / weights_filename_;
@@ -97,13 +97,13 @@ namespace steelhead_object_recognition
         publisher_->publish(process(*msg));
     }
 
-    void ObjectRecognizer::serviceCallback(const steelhead_interfaces::srv::ObjectDetection::Request::SharedPtr request, 
-            const steelhead_interfaces::srv::ObjectDetection::Response::SharedPtr response) const
+    void ObjectRecognizer::serviceCallback(const spiderfish_interfaces::srv::ObjectDetection::Request::SharedPtr request, 
+            const spiderfish_interfaces::srv::ObjectDetection::Response::SharedPtr response) const
     {
         response->boxes_out = process(request->image_in);
     }
 
-    steelhead_interfaces::msg::DetectionBoxArray ObjectRecognizer::process(const sensor_msgs::msg::Image & msg) const
+    spiderfish_interfaces::msg::DetectionBoxArray ObjectRecognizer::process(const sensor_msgs::msg::Image & msg) const
     {
         // Get image from message
         RCLCPP_INFO(this->get_logger(), "In object_recognizer");
@@ -112,7 +112,7 @@ namespace steelhead_object_recognition
             cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
         } catch (cv_bridge::Exception& e) {
             RCLCPP_ERROR(get_logger(),"cv_bridge exception: %s", e.what());
-            return steelhead_interfaces::msg::DetectionBoxArray();
+            return spiderfish_interfaces::msg::DetectionBoxArray();
         }
 
         // Detect objects in image
@@ -165,9 +165,9 @@ namespace steelhead_object_recognition
         #endif
 
         // Publish message with detected boxes
-        auto message = steelhead_interfaces::msg::DetectionBoxArray();
+        auto message = spiderfish_interfaces::msg::DetectionBoxArray();
         for (size_t i = 0; i < boxes.size(); i++){
-            steelhead_interfaces::msg::DetectionBox out;
+            spiderfish_interfaces::msg::DetectionBox out;
             out.class_id = classIds[i];
             out.confidence = confidences[i];
             out.x = boxes[i].x;
@@ -312,5 +312,5 @@ namespace steelhead_object_recognition
             confidences = nmsConfidences;
         }
     }
-} // namespace steelhead_object_recognition
+} // namespace spiderfish_object_recognition
 

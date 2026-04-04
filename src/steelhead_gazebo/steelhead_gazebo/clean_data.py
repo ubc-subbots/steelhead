@@ -9,8 +9,8 @@ import cv2
 from ament_index_python.packages import get_package_share_directory
 
 def main(args=None):
-    shared_dir = get_package_share_directory("steelhead_gazebo")
-    data_dir = os.path.join(get_package_share_directory("steelhead_gazebo"),"data")# Path to image directory
+    shared_dir = get_package_share_directory("spiderfish_gazebo")
+    data_dir = os.path.join(get_package_share_directory("spiderfish_gazebo"),"data")# Path to image directory
 
     window_name = "Press `d` to delete"
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL) 

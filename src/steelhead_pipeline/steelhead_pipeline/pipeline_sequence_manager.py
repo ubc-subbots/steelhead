@@ -4,9 +4,9 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType
-from steelhead_interfaces.action import RunPipeline
+from spiderfish_interfaces.srv import ConfigurePipeline
+from spiderfish_interfaces.msg import PipelineType
+from spiderfish_interfaces.action import RunPipeline
 from rcl_interfaces.msg import Parameter, ParameterValue, ParameterType
 
 class PipelineSequenceManager(Node):
@@ -25,10 +25,10 @@ class PipelineSequenceManager(Node):
         self.get_logger().info('Pipeline Sequence ' + str(self.pipelines))
 
         self.configure_client = self.create_client(
-            ConfigurePipeline, '/steelhead/configure_pipeline')
+            ConfigurePipeline, '/spiderfish/configure_pipeline')
 
         self.run_client = ActionClient(
-            self, RunPipeline, '/steelhead/run_pipeline')
+            self, RunPipeline, '/spiderfish/run_pipeline')
 
         while not self.run_client.wait_for_server(timeout_sec=1.0):
             self.get_logger().warn(

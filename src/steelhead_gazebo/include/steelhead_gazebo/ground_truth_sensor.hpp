@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__GROUND_TRUTH_SENSOR
-#define STEELHEAD_GAZEBO__GROUND_TRUTH_SENSOR
+#ifndef SPIDERFISH_GAZEBO__GROUND_TRUTH_SENSOR
+#define SPIDERFISH_GAZEBO__GROUND_TRUTH_SENSOR
 
 #include <vector>
 
@@ -10,7 +10,7 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     using std::placeholders::_1;
@@ -61,4 +61,4 @@ namespace steelhead_gazebo
     GZ_REGISTER_MODEL_PLUGIN(GroundTruthSensor)
 
 }
-#endif // STEELHEAD_GAZEBO__GROUND_TRUTH_SENSOR
+#endif // SPIDERFISH_GAZEBO__GROUND_TRUTH_SENSOR

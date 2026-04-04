@@ -1,6 +1,6 @@
-#include "steelhead_gazebo/hydrodynamics_plugin.hpp"
+#include "spiderfish_gazebo/hydrodynamics_plugin.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     HydrodynamicsPlugin::HydrodynamicsPlugin() {}
@@ -265,4 +265,4 @@ namespace steelhead_gazebo
         this->frame->AddForceAtRelativePosition(buoyancy_force, this->rel_CoB);
     }
 
-} // namespace steelhead_gazebo
+} // namespace spiderfish_gazebo

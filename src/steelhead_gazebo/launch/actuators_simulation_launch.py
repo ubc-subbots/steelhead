@@ -10,15 +10,15 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
+        get_package_share_directory('spiderfish_controls'),
         'config',
         'actuators_config.yaml'
     )
 
     actuators_command = Node(
         name='actuators_command_simulation',
-        namespace='/steelhead/controls',
-        package='steelhead_gazebo',
+        namespace='/spiderfish/controls',
+        package='spiderfish_gazebo',
         executable='actuators_command_simulation',
         output='screen',
         parameters=[config],

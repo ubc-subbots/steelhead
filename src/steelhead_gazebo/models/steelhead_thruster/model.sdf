@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='steelhead_thruster'>
+  <model name='spiderfish_thruster'>
     <link name='thruster'>
       <pose>-0 0 0 0 -0 0</pose>
       <inertial>
@@ -22,7 +22,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <uri>model://spiderfish_thruster/meshes/spiderfish_thruster.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

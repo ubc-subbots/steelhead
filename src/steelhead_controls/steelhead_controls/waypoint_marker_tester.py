@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from steelhead_interfaces.msg import Waypoint
+from spiderfish_interfaces.msg import Waypoint
 from std_msgs.msg import String
 import math
 
@@ -122,21 +122,21 @@ class WaypointMarkerTester(Node):
 
         self.publisher = self.create_publisher(
             Waypoint,
-            '/steelhead/controls/waypoint_marker/set',
+            '/spiderfish/controls/waypoint_marker/set',
             10
         )
 
         # Start a particular target (by index)
         self.subscription = self.create_subscription(
             String,
-            '/steelhead/controls/waypoint_marker_tester/start',
+            '/spiderfish/controls/waypoint_marker_tester/start',
             self.start_callback,
             1
         )
 
         self.subscription = self.create_subscription(
             Waypoint,
-            '/steelhead/controls/waypoint_marker/current_goal',
+            '/spiderfish/controls/waypoint_marker/current_goal',
             self.waypoint_callback,
             10
         )

@@ -12,37 +12,37 @@ def generate_launch_description():
     ld = launch.LaunchDescription()
 
     with open(os.path.join(
-            get_package_share_directory('steelhead_object_recognition'),
+            get_package_share_directory('spiderfish_object_recognition'),
             'config',
             'realsense.yaml',), 'r') as f:
         realsense_config = yaml.load(f, Loader=yaml.Loader)
 
     realsense = Node(
         name='realsense',
-        namespace='/steelhead',
+        namespace='/spiderfish',
         package='realsense2_camera',
         parameters=[realsense_config],
         executable='realsense2_camera_node'
     )
 
     config = os.path.join(
-        get_package_share_directory('steelhead_object_recognition'),
+        get_package_share_directory('spiderfish_object_recognition'),
         'config',
         'tiny_yolov4.yaml'
     )
 
     object_recognizer = ComposableNode(
         name='object_recognizer',
-        namespace='/steelhead',
-        package='steelhead_object_recognition',
+        namespace='/spiderfish',
+        package='spiderfish_object_recognition',
         parameters=[config],
-        plugin='steelhead_object_recognition::ObjectRecognizer',
-        remappings=[('/steelhead/object_recognizer/in', '/steelhead/color/image_raw')]
+        plugin='spiderfish_object_recognition::ObjectRecognizer',
+        remappings=[('/spiderfish/object_recognizer/in', '/spiderfish/color/image_raw')]
     )
 
     object_recognizer_container = ComposableNodeContainer(
         name='object_recognizer_container',
-        namespace='/steelheadimage_underwater',
+        namespace='/spiderfishimage_underwater',
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[

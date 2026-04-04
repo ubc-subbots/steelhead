@@ -100,7 +100,7 @@
         <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
             <thruster_count>6</thruster_count>
             <ros>
-                <namespace>/steelhead/controls</namespace>
+                <namespace>/spiderfish/controls</namespace>
                 <remapping>output_forces</remapping>
             </ros>
         </plugin>

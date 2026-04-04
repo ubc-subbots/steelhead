@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_CONTROL__WAYPOINT_MARKER
-#define STEELHEAD_CONTROL__WAYPOINT_MARKER
+#ifndef SPIDERFISH_CONTROL__WAYPOINT_MARKER
+#define SPIDERFISH_CONTROL__WAYPOINT_MARKER
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -10,10 +10,10 @@
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include <tf2/convert.h>
-#include "steelhead_interfaces/msg/waypoint.hpp"
+#include "spiderfish_interfaces/msg/waypoint.hpp"
 #include <math.h>
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
     class WaypointMarker : public rclcpp::Node
@@ -44,21 +44,21 @@ namespace steelhead_controls
          * 
          * Updates destination waypoint. 
          * 
-         * @param msg steelhead_interfaces waypoint message with pose and waypoint type
+         * @param msg spiderfish_interfaces waypoint message with pose and waypoint type
          */
-        void waypoint_callback(const steelhead_interfaces::msg::Waypoint::SharedPtr msg);
+        void waypoint_callback(const spiderfish_interfaces::msg::Waypoint::SharedPtr msg);
 
         // Current waypoint status
-        rclcpp::Publisher<steelhead_interfaces::msg::Waypoint>::SharedPtr publisher_;
+        rclcpp::Publisher<spiderfish_interfaces::msg::Waypoint>::SharedPtr publisher_;
         // Goal minus current state. For the PID Controller
         rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr error_publisher_;
         // Current state of AUV
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr state_subscription_;
         // New goal
-        rclcpp::Subscription<steelhead_interfaces::msg::Waypoint>::SharedPtr waypoint_subscription_;
+        rclcpp::Subscription<spiderfish_interfaces::msg::Waypoint>::SharedPtr waypoint_subscription_;
 
         bool waypoint_set_;                         // Whether a waypoint is set
-        steelhead_interfaces::msg::Waypoint waypoint_; // Destination waypoint pose
+        spiderfish_interfaces::msg::Waypoint waypoint_; // Destination waypoint pose
         double waypoint_roll, waypoint_pitch, waypoint_yaw; // Waypoint orientation in RPY
         double distance_roll, distance_pitch, distance_yaw; // Waypoint distance orientation in RPY
         geometry_msgs::msg::Pose current_pose_;     // AUV current pose
@@ -69,9 +69,9 @@ namespace steelhead_controls
 
     };
 
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::WaypointMarker)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_controls::WaypointMarker)
 
-#endif  //STEELHEAD_CONTROL__WAYPOINT_MARKER
+#endif  //SPIDERFISH_CONTROL__WAYPOINT_MARKER

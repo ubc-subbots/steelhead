@@ -3,7 +3,7 @@ for debugging on another laptop on saturday
 added bno publisher to CMAKELISTS.txt
 plug in imu
 make sure .ino file is uploaded / serial monitor is showing imu is giving that output
-joel@joel-B450-AORUS-ELITE:~/Documents/code/steelhead/src/steelhead_controls/steelhead_controls$ python3 bno085_imu_publisher.py
+joel@joel-B450-AORUS-ELITE:~/Documents/code/spiderfish/src/spiderfish_controls/spiderfish_controls$ python3 bno085_imu_publisher.py
 */
 
 // This file has been modified from the official adafruit demo files and simply publishes yaw, pitch, roll, and acceleration in x, y, z direction to serial output

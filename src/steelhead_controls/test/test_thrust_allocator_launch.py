@@ -15,7 +15,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = 'steelhead_controls'
+    pkg_name = 'spiderfish_controls'
     launch_file_name = 'thrust_allocator_launch.py'
 
     launch_action = IncludeLaunchDescription(

@@ -1,4 +1,4 @@
-# steelhead_controls
+# spiderfish_controls
 
 ## Description
 
@@ -10,21 +10,21 @@ This package contains the nodes related to the control system.
 
 To launch the `thrust_allocator` node, use the following command
 
-    ros2 launch steelhead_controls thrust_allocator_launch.py
+    ros2 launch spiderfish_controls thrust_allocator_launch.py
 
-You can change the configuration file for the `thrust_allocator` in the launch file, just be sure that the configuration file you want to use exists in `steelhead_controls/config`.
+You can change the configuration file for the `thrust_allocator` in the launch file, just be sure that the configuration file you want to use exists in `spiderfish_controls/config`.
 
 ### Waypoint Marker
 
 To run the waypoint marker node, run
 
-        ros2 launch steelhead_controls waypoint_marker_launch.py
+        ros2 launch spiderfish_controls waypoint_marker_launch.py
 
 ### Trajectory Generator
 
 To run the Trajectory Generator node, run
 
-        ros2 launch steelhead_controls trajectory_generator_launch.py
+        ros2 launch spiderfish_controls trajectory_generator_launch.py
 
 ## Nodes
 
@@ -60,11 +60,11 @@ To run the Trajectory Generator node, run
   ### Subscribed Topics
 
   - `controls/ukf/odometry/filtered` (`nav_msgs/Odometry`) : AUV state
-  - `controls/waypoint_marker/set` (`steelhead_interfaces/Waypoint`) : Target waypoint
+  - `controls/waypoint_marker/set` (`spiderfish_interfaces/Waypoint`) : Target waypoint
 
   ### Published Topics
 
-  - `controls/waypoint_marker/current_goal` (`steelhead_interfaces/Waypoint`) : Current target waypoint
+  - `controls/waypoint_marker/current_goal` (`spiderfish_interfaces/Waypoint`) : Current target waypoint
   - `controls/input_pose` (`geometry_msgs/Pose`) : Error to target pose. For navigation.
 
   ### Notes
@@ -81,13 +81,13 @@ To run the Trajectory Generator node, run
   ### Subscribed Topics
 
   - `controls/ukf/odometry/filtered` (`nav_msgs/Odometry`) : AUV state
-  - `controls/waypoint_marker/current_goal` (`steelhead_interfaces/Waypoint`) : Current target waypoint
-  - `controls/trajectory_generator/set` (`steelhead_interfaces/ObjectOffset`) : Current destination and object type
-  - `controls/trajectory_generator/set_type` (`steelhead_interfaces/TrajectoryType`) : Current trajectory type
+  - `controls/waypoint_marker/current_goal` (`spiderfish_interfaces/Waypoint`) : Current target waypoint
+  - `controls/trajectory_generator/set` (`spiderfish_interfaces/ObjectOffset`) : Current destination and object type
+  - `controls/trajectory_generator/set_type` (`spiderfish_interfaces/TrajectoryType`) : Current trajectory type
 
   ### Published Topics
 
-  - `controls/waypoint_marker/set` (`steelhead_interfaces/Waypoint`) : Set current target waypoint
+  - `controls/waypoint_marker/set` (`spiderfish_interfaces/Waypoint`) : Set current target waypoint
 
   ### Notes
 
@@ -97,15 +97,15 @@ To run the Trajectory Generator node, run
     - More specifically, it gets the AUV to turn towards the gate and move forward, as well as manage the depth
     - TODO: make an actual trajectory
 
-- `bno085_imu_publisher` : A Python node for launching the BNO085 IMU on Steelhead
+- `bno085_imu_publisher` : A Python node for launching the BNO085 IMU on Spiderfish
 
   ### Published Topics
 
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
+  - `/spiderfish/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Spiderfish.)
 
   ### Notes
 
-  - The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
+  - The publish topic is temporary, and should not have the spiderfish/drivers namespace, which should be assigned in the launch file instead.
 
 ## Services
 

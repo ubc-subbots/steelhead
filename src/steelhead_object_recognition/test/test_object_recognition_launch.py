@@ -15,11 +15,11 @@ from ament_index_python.packages import get_package_share_directory
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = 'steelhead_object_recognition'
-    component = 'steelhead_object_recognition::ObjectRecognizer'
+    pkg_name = 'spiderfish_object_recognition'
+    component = 'spiderfish_object_recognition::ObjectRecognizer'
 
     config = os.path.join(
-        get_package_share_directory('steelhead_object_recognition'),
+        get_package_share_directory('spiderfish_object_recognition'),
         'config',
         'custom_yolov4.yaml'
     )

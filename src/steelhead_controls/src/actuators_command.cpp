@@ -1,11 +1,11 @@
 #define ARDUINO_PORT "/dev/teensy"
-#include "steelhead_controls/actuators_command.hpp"
+#include "spiderfish_controls/actuators_command.hpp"
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
 using std::placeholders::_1;
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
   ActuatorsCommand::ActuatorsCommand(const rclcpp::NodeOptions & options)
@@ -33,7 +33,7 @@ namespace steelhead_controls
       tty.c_cc[VMIN] = 0;
       tty.c_cc[VTIME] = 1;
 
-      service_ = this->create_service<steelhead_interfaces::srv::ActuatorsCommand>(
+      service_ = this->create_service<spiderfish_interfaces::srv::ActuatorsCommand>(
                   "actuators_command", 
                   std::bind(&ActuatorsCommand::sendOverSerial, this,
                 std::placeholders::_1,
@@ -63,10 +63,10 @@ namespace steelhead_controls
     close(fd_);
   }
 
-  void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
-          std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
+  void ActuatorsCommand::sendOverSerial(const std::shared_ptr<spiderfish_interfaces::srv::ActuatorsCommand::Request> request,
+          std::shared_ptr<spiderfish_interfaces::srv::ActuatorsCommand::Response>      response) {
             if (nameToPin.find(request->input) == nameToPin.end()) {
-              RCLCPP_ERROR(this->get_logger(), request->input + " is not configured in steelhead_controls actuators_config.yaml!");
+              RCLCPP_ERROR(this->get_logger(), request->input + " is not configured in spiderfish_controls actuators_config.yaml!");
               return;
             }
 
@@ -81,12 +81,12 @@ namespace steelhead_controls
             RCLCPP_INFO(this->get_logger(), returnMessage);
           }
 
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
 
-    auto actuators_command_node = std::make_shared<steelhead_controls::ActuatorsCommand>(
+    auto actuators_command_node = std::make_shared<spiderfish_controls::ActuatorsCommand>(
         rclcpp::NodeOptions());
 
     rclcpp::spin(actuators_command_node);

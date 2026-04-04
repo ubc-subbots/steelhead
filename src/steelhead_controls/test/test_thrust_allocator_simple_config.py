@@ -18,7 +18,7 @@ def generate_test_description():
     ld = LaunchDescription()
 
     config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
+        get_package_share_directory('spiderfish_controls'),
         'test',
         'config',
         'test_thruster_simple_config.yaml'
@@ -27,7 +27,7 @@ def generate_test_description():
     thrust_allocator = Node(
         name='thrust_allocator',
         namespace='/',
-        package='steelhead_controls',
+        package='spiderfish_controls',
         executable='thrust_allocator',
         output='screen',
         parameters=[config]
@@ -62,7 +62,7 @@ class TestThrustAllocator(unittest.TestCase):
         self.node = rclpy.create_node('test_node')
         self.forces_pub = self.node.create_publisher(
             Wrench,
-            "/steelhead/controls/input_forces",
+            "/spiderfish/controls/input_forces",
             10)
         self.forces_sub = self.node.create_subscription(
             Float64MultiArray,

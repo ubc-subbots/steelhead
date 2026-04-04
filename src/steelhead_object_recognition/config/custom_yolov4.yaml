@@ -1,7 +1,7 @@
 # There is an issue with ComposableNode where it doesn't understand the typical nested YAML structure
 # https://github.com/ros2/rclcpp/issues/715
 
-weights_filename: "src/steelhead_object_recognition/config/weights/best.pt"
+weights_filename: "src/spiderfish_object_recognition/config/weights/best.pt"
 # cfg_filename: "yolov4-custom-3l.cfg"
 # cfg_url: "https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg"
 # We are using a PyTorch model that was trained and saved with the .pt file, so we typically do not need a separate configuration file like we would with Darknet models.

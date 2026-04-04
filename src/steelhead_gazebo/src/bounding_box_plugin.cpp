@@ -1,9 +1,9 @@
-#include "steelhead_gazebo/bounding_box_plugin.hpp"
+#include "spiderfish_gazebo/bounding_box_plugin.hpp"
 #include <gazebo/rendering/rendering.hh>
 #include <vector>
 using namespace gazebo;
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
     BoundingBoxPlugin::BoundingBoxPlugin() : SensorPlugin()
     {
@@ -54,7 +54,7 @@ namespace steelhead_gazebo
         node_ = gazebo_ros::Node::Get(_sdf); //Make sure to use gazebo_ros::Node instead of rclcpp::Node, otherwise sim time doesn't work
         const gazebo_ros::QoS & qos = node_->get_qos();
 
-        publisher_ = node_->create_publisher<steelhead_interfaces::msg::DetectionBoxArray>(
+        publisher_ = node_->create_publisher<spiderfish_interfaces::msg::DetectionBoxArray>(
             camera_name+"/bounding_box", 
             qos.get_publisher_qos(camera_name+"/bounding_box")
         );
@@ -69,7 +69,7 @@ namespace steelhead_gazebo
 
     void BoundingBoxPlugin::OnUpdate()
     {
-        steelhead_interfaces::msg::DetectionBoxArray bbox_arr;
+        spiderfish_interfaces::msg::DetectionBoxArray bbox_arr;
         bbox_arr.header.stamp = node_->get_clock()->now();
         
         rendering::ScenePtr scene = rendering::get_scene();
@@ -143,7 +143,7 @@ namespace steelhead_gazebo
             }
         }
 
-        steelhead_interfaces::msg::DetectionBox bbox;
+        spiderfish_interfaces::msg::DetectionBox bbox;
         bbox.x = x_min;
         bbox.y = y_min;
         bbox.width = x_max-x_min;
@@ -162,4 +162,4 @@ namespace steelhead_gazebo
         publisher_->publish(bbox_arr);
     }
     
-} // namespace steelhead_gazebo
+} // namespace spiderfish_gazebo

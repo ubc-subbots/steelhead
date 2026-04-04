@@ -1,9 +1,9 @@
-#include "steelhead_vision_utils/object_detector.hpp"
+#include "spiderfish_vision_utils/object_detector.hpp"
 
 using namespace cv;
 using namespace std;
 
-namespace steelhead_vision_utils
+namespace spiderfish_vision_utils
 {
 ObjectDetector::ObjectDetector(float _im_resize, bool _debug, float _focal)
 {
@@ -159,4 +159,4 @@ vector<vector<Point>> ObjectDetector::convexHulls(Mat& src, float upper_area, fl
   return right_size_vector_of_hulls;
 }
 
-}  // namespace steelhead_vision_utils
+}  // namespace spiderfish_vision_utils

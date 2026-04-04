@@ -54,7 +54,7 @@ class KeyPublisher(Node):
         super().__init__('key_publisher')
         self.publisher_ = self.create_publisher(
             UInt32,
-            #'/steelhead/controls/key',
+            #'/spiderfish/controls/key',
             '/motor_control', # What the teensy expects
             10
         )

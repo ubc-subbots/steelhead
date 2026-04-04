@@ -2,15 +2,15 @@
 #include <gazebo/common/Assert.hh>
 #include <gazebo/physics/Model.hh>
 #include <gazebo/physics/World.hh>
-#include "steelhead_gazebo/camera_orbit_plugin.hpp"
+#include "spiderfish_gazebo/camera_orbit_plugin.hpp"
 #include <random>
 #include <time.h>
 
 using namespace gazebo;
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
-    GZ_REGISTER_MODEL_PLUGIN(steelhead_gazebo::CameraOrbitPlugin)
+    GZ_REGISTER_MODEL_PLUGIN(spiderfish_gazebo::CameraOrbitPlugin)
     CameraOrbitPlugin::CameraOrbitPlugin(){}
 
     CameraOrbitPlugin::~CameraOrbitPlugin(){}

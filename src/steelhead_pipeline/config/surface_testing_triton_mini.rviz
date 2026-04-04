@@ -84,7 +84,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/controls/ukf/odometry/filtered
+        Value: /spiderfish/controls/ukf/odometry/filtered
       Value: true
     - Class: rviz_default_plugins/TF
       Enabled: false
@@ -112,7 +112,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/debug/detection
+        Value: /spiderfish/gate/detector/debug/detection
       Value: false
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -126,7 +126,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/debug/segment
+        Value: /spiderfish/gate/detector/debug/segment
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -140,7 +140,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/drivers/front_camera/image_raw
+        Value: /spiderfish/drivers/front_camera/image_raw
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -154,7 +154,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/debug/detection
+        Value: /spiderfish/gate/detector/debug/detection
       Value: true
   Enabled: true
   Global Options:

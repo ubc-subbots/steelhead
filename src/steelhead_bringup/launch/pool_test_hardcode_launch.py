@@ -19,35 +19,35 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 ComposableNode(
-                    package='steelhead_controls',
-                    plugin='steelhead_controls::SerialSubscriber',
+                    package='spiderfish_controls',
+                    plugin='spiderfish_controls::SerialSubscriber',
                     name='serial_subscriber'),
             ],
             output='both',
     ) 
 
     ta_config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
+        get_package_share_directory('spiderfish_controls'),
         'config',
         'thruster_config.yaml'
     )
 
     thrust_allocator = Node(
         name='thrust_allocator',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='thrust_allocator',
         output='screen',
         parameters=[ta_config],
         remappings=[
-            ('/steelhead/controls/signals', '/motor_control')
+            ('/spiderfish/controls/signals', '/motor_control')
         ]
     )
 
     hardcoded_thrusters = Node(
         name='predetermined_thrust',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='predetermined_thrust.py'
     )
 

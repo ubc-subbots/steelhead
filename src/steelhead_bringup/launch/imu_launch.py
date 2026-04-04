@@ -14,25 +14,25 @@ def generate_launch_description():
 
     trajectory_generator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/trajectory_generator_launch.py'
+            get_package_share_directory('spiderfish_controls') + '/launch/trajectory_generator_launch.py'
         )
     )
 
     state_estimator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'state_estimator_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_localization'), 'launch', 'state_estimator_launch.py')
         )
     )
 
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'state_publisher_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'state_publisher_launch.py')
         )
     )
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/imu_publisher_launch.py'
+            get_package_share_directory('spiderfish_controls') + '/launch/imu_publisher_launch.py'
         )
     )
 

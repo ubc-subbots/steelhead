@@ -1,4 +1,4 @@
-# steelhead_teleop
+# spiderfish_teleop
 ## Description
 
 This package is for teleoperation (i.e manual control) of the AUV.
@@ -7,7 +7,7 @@ This package is for teleoperation (i.e manual control) of the AUV.
 
 To launch the keyboard teleoperation simulation of the AUV, use the following command
 
-    ros2 launch steelhead_bringup barebones_gazebo_launch.py
+    ros2 launch spiderfish_bringup barebones_gazebo_launch.py
 
 This will open up Gazebo and allow you to control the AUV with a keyboard, below are the key controls 
 
@@ -24,7 +24,7 @@ This will open up Gazebo and allow you to control the AUV with a keyboard, below
 
 To launch the publisher for controlling the Teensy
 
-    ros2 run steelhead_teleop key_publisher
+    ros2 run spiderfish_teleop key_publisher
 
 It publishes to the `/motor_control` topic that the Teensy listens to. Key controls:  
 <kbd>R</kbd>/<kbd>F</kbd> : Increment/Decrement power level of TL  
@@ -43,7 +43,7 @@ where 'T/B/M' stand for 'Top', 'Bottom', and 'Middle', and 'L/R' stand for 'Left
 
 - `keyboard_teleop` : A standalone node which listens on keyboard events and publishes forces corresponding to these events
     ### Published Topics
-    - `/steelhead/controls/input_forces` (`geometry_msgs/msg/Wrench.msg`) : The wrench message which acts upon the body of the AUV
+    - `/spiderfish/controls/input_forces` (`geometry_msgs/msg/Wrench.msg`) : The wrench message which acts upon the body of the AUV
 
     ### Notes
     - This node will try to connect to the actuators service, but will not fail if it is not connected. It will instead display a warning message, but for simulation and non actuators purposes, this is fine.
@@ -51,10 +51,10 @@ where 'T/B/M' stand for 'Top', 'Bottom', and 'Middle', and 'L/R' stand for 'Left
 - `sim_thrust_mapper` : A standalone node which takes in input from the thrust allocator and multiplexes it to the gazebo driver topic for each simulated thruster
 
     ### Subscribed Topics
-    - `/steelhead/controls/output_forces` (`std_msgs/msg/Float64MultiArray.msg`) : Control output, must be num_thrusters in length
+    - `/spiderfish/controls/output_forces` (`std_msgs/msg/Float64MultiArray.msg`) : Control output, must be num_thrusters in length
 
     ### Published Topics
-    - `/steelhead/gazebo_drivers/thruster_<N>` (`geometry_msgs/msg/Wrench.msg`) : A wrench message for each thruster, only the X axis force is used as it assumes all thruster's X axis is aligned to where their propeller's produce positive force
+    - `/spiderfish/gazebo_drivers/thruster_<N>` (`geometry_msgs/msg/Wrench.msg`) : A wrench message for each thruster, only the X axis force is used as it assumes all thruster's X axis is aligned to where their propeller's produce positive force
 
     ### Parameters
     - `num_thrusters` (`integer`): Number of thrusters to map the control output to

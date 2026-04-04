@@ -1,28 +1,28 @@
-# steelhead_pipeline
+# spiderfish_pipeline
 ## Description
 
 This package is for creating a pipeline which can autonomously manage the states and actions of the AUV. The pipeline can be configured to run a defined sequence of actions, given as pipeline types, moving to the next action in a sequence when a stopping condition is reached. The nodes in the current running pipeline type can publish feedback which is able to trigger the stopping condition and ultimatley the transition to the next action.
 
 ## Usage
 
-To define a pipeline type, follow the syntax given in `example.yaml` in the `config` folder which contains the parameters for the `pipeline_manager`. After defining your pipeline type, you have to add it to `PipelineType.msg` in `steelhead_interfaces` for you to be able to configure and run it. When naming a pipeline config file, you must have the name of the pipeline type match the name of the yaml (i.e after defining `example.yaml`, you have to add `string TYPE_EXAMPLE = "example"` to `PipelineType.msg`). To define a pipeline sequence, follow the syntax given in `example_sequence.yaml` in the `config` folder. The values for the sequences should all be pipeline types defined in `PipelineType.msg`. Next you can launch the pipeline as follows
+To define a pipeline type, follow the syntax given in `example.yaml` in the `config` folder which contains the parameters for the `pipeline_manager`. After defining your pipeline type, you have to add it to `PipelineType.msg` in `spiderfish_interfaces` for you to be able to configure and run it. When naming a pipeline config file, you must have the name of the pipeline type match the name of the yaml (i.e after defining `example.yaml`, you have to add `string TYPE_EXAMPLE = "example"` to `PipelineType.msg`). To define a pipeline sequence, follow the syntax given in `example_sequence.yaml` in the `config` folder. The values for the sequences should all be pipeline types defined in `PipelineType.msg`. Next you can launch the pipeline as follows
 
-    ros2 launch steelhead_pipeline pipeline_launch.py sequence:=<SEQUENCE_CONFIG_FILE>
+    ros2 launch spiderfish_pipeline pipeline_launch.py sequence:=<SEQUENCE_CONFIG_FILE>
 
-Where `<SEQUENCE_CONFIG_FILE>` is the name of a yaml file in the `config` folder of `steelhead_pipeline` which contains the `pipeline_sequence_manager` parameters (e.g see `steelhead_example` for a concrete example of using the pipeline).
+Where `<SEQUENCE_CONFIG_FILE>` is the name of a yaml file in the `config` folder of `spiderfish_pipeline` which contains the `pipeline_sequence_manager` parameters (e.g see `spiderfish_example` for a concrete example of using the pipeline).
 
 ## Nodes
 
 - `pipeline_manager` : A standalone node used to manage a component container to use it as a pipeline.
 
     ### Subscribed Topics
-    - `pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback.msg`) : Accepts feedback from nodes in the pipeline.
+    - `pipeline_feedback` (`spiderfish_interfaces/msg/PipelineFeedback.msg`) : Accepts feedback from nodes in the pipeline.
     
     ### Services
-    - `configure_pipeline` (`steelhead_interfaces/srv/ConfigurePipeline.srv`) : Service for configuring the pipeline.
+    - `configure_pipeline` (`spiderfish_interfaces/srv/ConfigurePipeline.srv`) : Service for configuring the pipeline.
     
     ### Action Servers
-    - `run_pipeline` (`steelhead_interfaces/action/RunPipeline.action`) : Action for running the configured pipeline.
+    - `run_pipeline` (`spiderfish_interfaces/action/RunPipeline.action`) : Action for running the configured pipeline.
 
     ### Parameters
     - `components` (`string[]`): Declares the components to be launched in the pipeline when it is run.

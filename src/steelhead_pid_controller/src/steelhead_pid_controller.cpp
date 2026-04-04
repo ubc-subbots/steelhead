@@ -1,13 +1,13 @@
 #include <chrono>
 #include <cmath>
 #include <memory>
-#include <steelhead_pid_controller/steelhead_pid_controller.hpp>
+#include <spiderfish_pid_controller/spiderfish_pid_controller.hpp>
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
-namespace steelhead_pid_controller
+namespace spiderfish_pid_controller
 {
 
   PidController::PidController(const rclcpp::NodeOptions & options) 
@@ -23,12 +23,12 @@ namespace steelhead_pid_controller
 
     // ROS2 setup
     sub_ = create_subscription<geometry_msgs::msg::Pose>(
-        "/steelhead/controls/input_pose",
+        "/spiderfish/controls/input_pose",
         10,
         std::bind(&PidController::pose_update, this, _1));
 
     pub_ = create_publisher<geometry_msgs::msg::Wrench>(
-        "/steelhead/controls/input_forces",
+        "/spiderfish/controls/input_forces",
         10);
 
     RCLCPP_INFO(this->get_logger(), "PID Controller starting!");
@@ -127,13 +127,13 @@ namespace steelhead_pid_controller
     wrenchOut.torque.z = torqueZ;
     pub_->publish(wrenchOut);
   }
-}  // namespace steelhead_pid_controller
+}  // namespace spiderfish_pid_controller
 
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
   auto options = rclcpp::NodeOptions();
-  rclcpp::spin(std::make_shared<steelhead_pid_controller::PidController>(options));
+  rclcpp::spin(std::make_shared<spiderfish_pid_controller::PidController>(options));
   rclcpp::shutdown();
   return 0;
 }

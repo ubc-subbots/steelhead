@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'steelhead_bringup'
+package_name = 'spiderfish_bringup'
 
 setup(
     name=package_name,

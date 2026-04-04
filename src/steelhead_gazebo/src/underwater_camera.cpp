@@ -1,11 +1,11 @@
-#include "steelhead_gazebo/underwater_camera.hpp"
+#include "spiderfish_gazebo/underwater_camera.hpp"
 #include "cv_bridge/cv_bridge.h"
 #include <opencv2/opencv.hpp>
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     UnderwaterCamera::UnderwaterCamera(const rclcpp::NodeOptions & options)
@@ -229,13 +229,13 @@ namespace steelhead_gazebo
         RCLCPP_INFO(this->get_logger(),"Processing took: "+ std::to_string(runtime.seconds()) + "s");
     }
 
-} // namespace steelhead_gazebo
+} // namespace spiderfish_gazebo
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto options = rclcpp::NodeOptions();
-  rclcpp::spin(std::make_shared<steelhead_gazebo::UnderwaterCamera>(options));
+  rclcpp::spin(std::make_shared<spiderfish_gazebo::UnderwaterCamera>(options));
   rclcpp::shutdown();
   return 0;
 }

@@ -1,11 +1,11 @@
-#ifndef STEELHEAD_EXAMPLE__COMPONENT_TWO
-#define STEELHEAD_EXAMPLE__COMPONENT_TWO
+#ifndef SPIDERFISH_EXAMPLE__COMPONENT_TWO
+#define SPIDERFISH_EXAMPLE__COMPONENT_TWO
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "steelhead_interfaces/msg/pipeline_feedback.hpp"
+#include "spiderfish_interfaces/msg/pipeline_feedback.hpp"
 
-namespace steelhead_example
+namespace spiderfish_example
 {      
 
     class ComponentTwo : public rclcpp::Node
@@ -59,16 +59,16 @@ namespace steelhead_example
 
         int counter_;
 
-        rclcpp::Publisher<steelhead_interfaces::msg::PipelineFeedback>::SharedPtr feedback_pub_; 
+        rclcpp::Publisher<spiderfish_interfaces::msg::PipelineFeedback>::SharedPtr feedback_pub_; 
 
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;  
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_; 
 
     };
     
-} // namespace steelhead_example
+} // namespace spiderfish_example
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_example::ComponentTwo)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_example::ComponentTwo)
 
-#endif  //STEELHEAD_EXAMPLE__COMPONENT_TWO
+#endif  //SPIDERFISH_EXAMPLE__COMPONENT_TWO

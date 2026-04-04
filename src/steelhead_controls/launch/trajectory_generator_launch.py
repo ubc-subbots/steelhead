@@ -11,8 +11,8 @@ def generate_launch_description():
 
     trajectory_generator = Node(
         name='trajectory_generator',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
+        namespace='/spiderfish/controls',
+        package='spiderfish_controls',
         executable='trajectory_generator',
         output='screen',
     )

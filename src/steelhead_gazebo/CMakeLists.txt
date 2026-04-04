@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_gazebo)
+project(spiderfish_gazebo)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -34,7 +34,7 @@ find_package(rclcpp_components REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(cv_bridge REQUIRED)
-find_package(steelhead_interfaces REQUIRED)
+find_package(spiderfish_interfaces REQUIRED)
 
 include_directories(include)
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -105,7 +105,7 @@ ament_target_dependencies(underwater_camera
   "rclcpp"
   "OpenCV"
   "cv_bridge"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 
 install(TARGETS 
@@ -113,7 +113,7 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-add_library(steelhead_gazebo SHARED
+add_library(spiderfish_gazebo SHARED
   src/underwater_camera.cpp
 )
 
@@ -123,7 +123,7 @@ target_include_directories(bounding_box_plugin PUBLIC
 )
 target_link_libraries(bounding_box_plugin ${GAZEBO_LIBRARIES})
 ament_target_dependencies(bounding_box_plugin
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 ament_export_libraries(bounding_box_plugin)
 target_link_libraries(bounding_box_plugin ${GAZEBO_LIBRARIES})
@@ -135,7 +135,7 @@ target_include_directories(camera_orbit_plugin PUBLIC
 )
 target_link_libraries(camera_orbit_plugin ${GAZEBO_LIBRARIES})
 ament_target_dependencies(camera_orbit_plugin
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 ament_export_libraries(camera_orbit_plugin)
 target_link_libraries(camera_orbit_plugin ${GAZEBO_LIBRARIES})
@@ -146,7 +146,7 @@ target_include_directories(random_camera_plugin PUBLIC
 )
 target_link_libraries(random_camera_plugin ${GAZEBO_LIBRARIES})
 ament_target_dependencies(random_camera_plugin
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 ament_export_libraries(random_camera_plugin)
 target_link_libraries(random_camera_plugin ${GAZEBO_LIBRARIES})
@@ -157,24 +157,24 @@ target_include_directories(smooth_camera_plugin PUBLIC
 )
 target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
 ament_target_dependencies(smooth_camera_plugin
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
 )
 ament_export_libraries(smooth_camera_plugin)
 target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
 
-rclcpp_components_register_nodes(steelhead_gazebo "steelhead_gazebo::UnderwaterCamera")
+rclcpp_components_register_nodes(spiderfish_gazebo "spiderfish_gazebo::UnderwaterCamera")
 
-target_compile_definitions(steelhead_gazebo
-  PRIVATE "steelhead_gazebo_CPP_BUILDING_DLL"
+target_compile_definitions(spiderfish_gazebo
+  PRIVATE "spiderfish_gazebo_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_gazebo
+ament_target_dependencies(spiderfish_gazebo
   "rclcpp"
   "rclcpp_components"
   "image_transport"
   "sensor_msgs"
   "message_filters"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "geometry_msgs"
 )
 
@@ -209,7 +209,7 @@ ament_target_dependencies(
   actuators_command_simulation
   "rclcpp"
   "rclcpp_components"
-  "steelhead_interfaces"
+  "spiderfish_interfaces"
   "gazebo_msgs"
 )
 
@@ -225,7 +225,7 @@ install(TARGETS
 )
 
 install(TARGETS
-  steelhead_gazebo
+  spiderfish_gazebo
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -281,8 +281,8 @@ install(DIRECTORY
 ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
-  steelhead_gazebo/bounding_box_image_saver.py
-  steelhead_gazebo/train_yolo.py
+  spiderfish_gazebo/bounding_box_image_saver.py
+  spiderfish_gazebo/train_yolo.py
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_export_dependencies(ament_cmake_python)

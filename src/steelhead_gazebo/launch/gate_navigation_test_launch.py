@@ -23,19 +23,19 @@ def generate_launch_description():
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_pid_controller'), 'launch', 'spiderfish_pid_controller_launch.py')
         )
     )
 
     waypoint_marker = Node(
-        package='steelhead_controls', 
+        package='spiderfish_controls', 
         executable='waypoint_marker',
         output='screen', 
         parameters=[{'use_sim_time': True}]
     )
 
     # waypoint_marker_tester = Node(
-    #     package='steelhead_controls',
+    #     package='spiderfish_controls',
     #     executable='waypoint_marker_tester.py',
     #     name='waypoint_marker_tester',
     #     output='screen', 
@@ -44,20 +44,20 @@ def generate_launch_description():
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gazebo'), 'launch', 'gazebo_launch.py')
         ),
         launch_arguments={'world': 'gate_test.world'}.items()
     )
 
     config = os.path.join(
-        get_package_share_directory('steelhead_localization'),
+        get_package_share_directory('spiderfish_localization'),
         'config',
         'state_estimator_config.yaml'
     )
 
     state_estimator = Node(
         name='state_estimator',
-        namespace='/steelhead/controls/ukf',
+        namespace='/spiderfish/controls/ukf',
         package='robot_localization',
         executable='ukf_node',
         output='screen',
@@ -66,31 +66,31 @@ def generate_launch_description():
 
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'state_publisher_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'state_publisher_launch.py')
         )
     )
 
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'thrust_allocator_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'thrust_allocator_launch.py')
         )
     )
 
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gate'), 'launch', 'gate_detector_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gate'), 'launch', 'gate_detector_launch.py')
         )
     )
 
     underwater_camera = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
+            get_package_share_directory('spiderfish_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
 
     trajectory_generator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/trajectory_generator_launch.py'
+            get_package_share_directory('spiderfish_controls') + '/launch/trajectory_generator_launch.py'
         )
     )
 

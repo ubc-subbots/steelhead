@@ -14,8 +14,8 @@ from ament_index_python.packages import get_package_share_directory
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = 'steelhead_example'
-    components = ['steelhead_example::ComponentOne', 'steelhead_example::ComponentTwo']
+    pkg_name = 'spiderfish_example'
+    components = ['spiderfish_example::ComponentOne', 'spiderfish_example::ComponentTwo']
 
     example_container = ComposableNodeContainer(
         name='example_container',

@@ -50,7 +50,7 @@
                     </camera>
                     <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
                         <ros>
-                            <namespace>steelhead/gazebo_drivers</namespace>
+                            <namespace>spiderfish/gazebo_drivers</namespace>
                         </ros>
                         <camera_name>front_camera</camera_name>
                         <min_depth>0.1</min_depth>

@@ -7,8 +7,8 @@ def generate_launch_description():
 
     keyboard_teleop = Node(
         name='keyboard_teleop',
-        namespace='/steelhead/teleop',
-        package='steelhead_teleop',
+        namespace='/spiderfish/teleop',
+        package='spiderfish_teleop',
         executable='keyboard_teleop',
         output='screen',
     )

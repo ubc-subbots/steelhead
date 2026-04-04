@@ -1,20 +1,20 @@
 # Workflow
 This document outlines the workflow that one should follow when developing on this repo.
 
- First, you will have been assigned to a GitHub issue associated to the `steelhead` repo that will look something like this: 
+ First, you will have been assigned to a GitHub issue associated to the `spiderfish` repo that will look something like this: 
  
   ![Workflow Issue](assets/workflow_issue.png)
  
- This issue will generally have the following sections, a section describing the reason for the issue and what should be done to resolve it, a set of resources that might come in handy, a set of notes that should be taken into consideration when developing, and a set of tasks which break the issue up into smaller components. These tasks are meant to guide you through the issue, but are not concrete and are simply there to help keep you on track. Feel free to add to or modify the tasks as you see fit. To start working on the issue, you must branch off from the latest state of the `main` branch of `steelhead` as such **(*NOTE*: In some cases, you will be branching off of someone else's branch, keep track of if you do this and let a team lead know before submitting a pull request as you will have to merge with the other branch before `main` as shown later on)**
+ This issue will generally have the following sections, a section describing the reason for the issue and what should be done to resolve it, a set of resources that might come in handy, a set of notes that should be taken into consideration when developing, and a set of tasks which break the issue up into smaller components. These tasks are meant to guide you through the issue, but are not concrete and are simply there to help keep you on track. Feel free to add to or modify the tasks as you see fit. To start working on the issue, you must branch off from the latest state of the `main` branch of `spiderfish` as such **(*NOTE*: In some cases, you will be branching off of someone else's branch, keep track of if you do this and let a team lead know before submitting a pull request as you will have to merge with the other branch before `main` as shown later on)**
 
-    cd <PATH_TO_STEELHEAD>/steelhead
+    cd <PATH_TO_SPIDERFISH>/spiderfish
     git checkout main
     git pull
     git checkout -b <YOUR_FIRST_NAME>/<APPROPRIATE_LABEL>
 
-Note that `<PATH_TO_STEELHEAD>` should be substituted to what it is on your machine,  `<YOUR_FIRST_NAME>` should be substituted as your first name, and `<APPROPRIATE_LABEL>` should be some short label that describes the changes you made.
+Note that `<PATH_TO_SPIDERFISH>` should be substituted to what it is on your machine,  `<YOUR_FIRST_NAME>` should be substituted as your first name, and `<APPROPRIATE_LABEL>` should be some short label that describes the changes you made.
 
-To update the state of your branch, follow the basic add, commit, and push workflow in git. [Here](https://www.atlassian.com/git/glossary) is a tutorial on that if you are new to git. Once you are have completed the tasks given in the issue, and are sure that it follows the [conventions](CONVENTIONS.md) (make sure you add/edit any package documentation as stated [here](CONVENTIONS.md#github)) you are asked to follow, it is time to make a pull request. Go to the `steelhead` repo on GitHub, make sure you are viewing the branch which you are trying to make a pull request for, and you should see a button which says "Contribute", which leads to a "Open pull request" button (GitHub also prompts you to compare and make pull request on branches that had recent pushes, as seen highlighted below):
+To update the state of your branch, follow the basic add, commit, and push workflow in git. [Here](https://www.atlassian.com/git/glossary) is a tutorial on that if you are new to git. Once you are have completed the tasks given in the issue, and are sure that it follows the [conventions](CONVENTIONS.md) (make sure you add/edit any package documentation as stated [here](CONVENTIONS.md#github)) you are asked to follow, it is time to make a pull request. Go to the `spiderfish` repo on GitHub, make sure you are viewing the branch which you are trying to make a pull request for, and you should see a button which says "Contribute", which leads to a "Open pull request" button (GitHub also prompts you to compare and make pull request on branches that had recent pushes, as seen highlighted below):
 
 ![Pull Request](assets/workflow_pull_request.png)
 

@@ -1,4 +1,4 @@
-/steelhead/controls/thrust_allocator:
+/spiderfish/controls/thrust_allocator:
   ros__parameters:
       # Thrusters will follow the following naming convention: 
 

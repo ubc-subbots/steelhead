@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__HYDRODYNAMICS_PLUGIN
-#define STEELHEAD_GAZEBO__HYDRODYNAMICS_PLUGIN
+#ifndef SPIDERFISH_GAZEBO__HYDRODYNAMICS_PLUGIN
+#define SPIDERFISH_GAZEBO__HYDRODYNAMICS_PLUGIN
 
 #include <functional>
 #include <vector>
@@ -11,7 +11,7 @@
 #include "include/gazebo_utils.hpp"
 #include "include/math_utils.hpp"
 
-namespace steelhead_gazebo 
+namespace spiderfish_gazebo 
 {
 
     class HydrodynamicsPlugin : public gazebo::ModelPlugin
@@ -132,8 +132,8 @@ namespace steelhead_gazebo
 
     };
 
-} //namespace steelhead_gazebo
+} //namespace spiderfish_gazebo
 
-GZ_REGISTER_MODEL_PLUGIN(steelhead_gazebo::HydrodynamicsPlugin)
+GZ_REGISTER_MODEL_PLUGIN(spiderfish_gazebo::HydrodynamicsPlugin)
 
-#endif //STEELHEAD_GAZEBO__HYDRODYNAMICS_PLUGIN
+#endif //SPIDERFISH_GAZEBO__HYDRODYNAMICS_PLUGIN

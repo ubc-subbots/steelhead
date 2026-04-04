@@ -1,10 +1,10 @@
-#ifndef STEELHEAD_EXAMPLE__COMPONENT_ONE
-#define STEELHEAD_EXAMPLE__COMPONENT_ONE
+#ifndef SPIDERFISH_EXAMPLE__COMPONENT_ONE
+#define SPIDERFISH_EXAMPLE__COMPONENT_ONE
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-namespace steelhead_example
+namespace spiderfish_example
 {      
 
     class ComponentOne : public rclcpp::Node
@@ -59,9 +59,9 @@ namespace steelhead_example
 
     };
     
-} // namespace steelhead_example
+} // namespace spiderfish_example
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_example::ComponentOne)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_example::ComponentOne)
 
-#endif  //STEELHEAD_EXAMPLE__COMPONENT_ONE
+#endif  //SPIDERFISH_EXAMPLE__COMPONENT_ONE

@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Wrench
-from steelhead_interfaces.srv import ActuatorsCommand
+from spiderfish_interfaces.srv import ActuatorsCommand
 from sshkeyboard import listen_keyboard
 
 
@@ -18,11 +18,11 @@ class KeyboardTeleop(Node):
 
         self.force_pub = self.create_publisher(
             Wrench,
-            '/steelhead/controls/input_forces',
+            '/spiderfish/controls/input_forces',
             10
         )
 
-        self.cli = self.create_client(ActuatorsCommand, '/steelhead/controls/actuators_command')
+        self.cli = self.create_client(ActuatorsCommand, '/spiderfish/controls/actuators_command')
         if not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning('Actuators service is not running.')
         self.req = ActuatorsCommand.Request()

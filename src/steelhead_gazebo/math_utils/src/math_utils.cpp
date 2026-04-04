@@ -1,6 +1,6 @@
 #include "include/math_utils.hpp"
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     Eigen::Matrix6d ToDiagonalMatrix(Eigen::Vector6d _vec)

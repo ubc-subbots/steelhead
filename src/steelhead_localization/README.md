@@ -1,4 +1,4 @@
-# steelhead_localization
+# spiderfish_localization
 
 ## Description
 
@@ -10,13 +10,13 @@ This package deals with localizing the AUV within the pool (figuring out where i
 
 To run the robot localization node, which synthesizes odometry and IMU data, run
 
-        ros2 launch steelhead_localization state_estimator_launch.py
+        ros2 launch spiderfish_localization state_estimator_launch.py
 
 ### Visual-inertial Odometry
 
 To run the VINS odometry model, which estimates position based on a monocular camera and an IMU, run
 
-        ros2 launch steelhead_localization vins_odometry_launch.py
+        ros2 launch spiderfish_localization vins_odometry_launch.py
 
 ## Nodes
 
@@ -24,7 +24,7 @@ To run the VINS odometry model, which estimates position based on a monocular ca
 
   ### Subscribed Topics
 
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : IMU data: linear acceleration and angular velocity
+  - `/spiderfish/drivers/imu/out` (`sensor_msgs/Imu`) : IMU data: linear acceleration and angular velocity
   - `/vins_estimator/odometry` (`nav_msgs/Odometry`) : Odometry: Raw position, orientation, angular, and linear velocity estimated from visual-odometry
 
   ### Published Topics
@@ -40,7 +40,7 @@ To run the VINS odometry model, which estimates position based on a monocular ca
   ### Subscribed Topics
 
   - `/feature_tracker/feature` (`sensor_msgs/msg/PointCloud`) : The point cloud generated from the feature tracker running on the camera, which tracks rough edges based on pixel data.
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/msg/Imu`) : IMU data: linear acceleration and angular velocity
+  - `/spiderfish/drivers/imu/out` (`sensor_msgs/msg/Imu`) : IMU data: linear acceleration and angular velocity
 
   ### Published Topics
 
@@ -53,7 +53,7 @@ To run the VINS odometry model, which estimates position based on a monocular ca
   - For optimal performance, make some translation movements before attempting any rotational adjustments. Rotational tracking is pretty bad in general.
   - This node requires both Eigen 3.3.7 and [Ceres Solver](http://ceres-solver.org/installation.html) 1.14.0, which needs to be installed from source.
   - This node publishes more topics than neccessary, the major ones are listed (use ros2 node info for a full list.)
-  - !TODO: put launch file under proper namespaces at some point (everything follows /vins_estimator/, when it should be something like /steelhead_localization/).
+  - !TODO: put launch file under proper namespaces at some point (everything follows /vins_estimator/, when it should be something like /spiderfish_localization/).
  
 ## Acknowledgements
 

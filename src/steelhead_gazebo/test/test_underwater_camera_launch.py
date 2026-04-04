@@ -14,7 +14,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = 'steelhead_gazebo'
+    pkg_name = 'spiderfish_gazebo'
     launch_file_name = 'underwater_camera_launch.py'
 
     launch_action = IncludeLaunchDescription(

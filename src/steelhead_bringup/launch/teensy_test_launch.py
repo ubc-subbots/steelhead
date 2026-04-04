@@ -17,8 +17,8 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 ComposableNode(
-                    package='steelhead_controls',
-                    plugin='steelhead_controls::SerialSubscriber',
+                    package='spiderfish_controls',
+                    plugin='spiderfish_controls::SerialSubscriber',
                     name='serial_subscriber'),
             ],
             output='both',

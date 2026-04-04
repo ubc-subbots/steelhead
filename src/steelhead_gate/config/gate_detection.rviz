@@ -70,7 +70,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/debug/detection
+        Value: /spiderfish/gate/detector/debug/detection
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -84,7 +84,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/debug/segment
+        Value: /spiderfish/gate/detector/debug/segment
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -98,7 +98,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/drivers/front_camera/image_raw
+        Value: /spiderfish/drivers/front_camera/image_raw
       Value: true
     - Alpha: 1
       Axes Length: 1
@@ -117,7 +117,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /steelhead/gate/detector/gate_pose_only
+        Value: /spiderfish/gate/detector/gate_pose_only
       Value: true
   Enabled: true
   Global Options:

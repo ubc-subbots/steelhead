@@ -9,22 +9,22 @@ def generate_launch_description():
     ld = launch.LaunchDescription()
 
     config = os.path.join(
-        get_package_share_directory('steelhead_object_recognition'),
+        get_package_share_directory('spiderfish_object_recognition'),
         'config',
         'tiny_yolov3.yaml'
     )
 
     object_recognizer = ComposableNode(
         name='object_recognizer',
-        namespace='/steelhead',
-        package='steelhead_object_recognition',
+        namespace='/spiderfish',
+        package='spiderfish_object_recognition',
         parameters=[config], 
-        plugin='steelhead_object_recognition::ObjectRecognizer'
+        plugin='spiderfish_object_recognition::ObjectRecognizer'
     )
 
     object_recognizer_container = ComposableNodeContainer(
         name='object_recognizer_container',
-        namespace='/steelheadimage_underwater',
+        namespace='/spiderfishimage_underwater',
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[

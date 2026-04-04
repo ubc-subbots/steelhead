@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_CONTROL__TRAJECTORY_GENERATOR
-#define STEELHEAD_CONTROL__TRAJECTORY_GENERATOR
+#ifndef SPIDERFISH_CONTROL__TRAJECTORY_GENERATOR
+#define SPIDERFISH_CONTROL__TRAJECTORY_GENERATOR
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"
@@ -9,9 +9,9 @@
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include <tf2/convert.h>
-#include "steelhead_interfaces/msg/waypoint.hpp"
-#include "steelhead_interfaces/msg/object_offset.hpp"
-#include "steelhead_interfaces/msg/trajectory_type.hpp"
+#include "spiderfish_interfaces/msg/waypoint.hpp"
+#include "spiderfish_interfaces/msg/object_offset.hpp"
+#include "spiderfish_interfaces/msg/trajectory_type.hpp"
 #include <math.h>
 
 // Trajectory type
@@ -23,7 +23,7 @@
 #define BUOY_ROTATE 1
 #define BUOY_RETURN 2
 
-namespace steelhead_controls
+namespace spiderfish_controls
 {
 
     class TrajectoryGenerator : public rclcpp::Node
@@ -53,26 +53,26 @@ namespace steelhead_controls
          * 
          * Updates private variable containing the current trajectory type. 
          * 
-         * @param msg steelhead_interfaces trajectory type message with type
+         * @param msg spiderfish_interfaces trajectory type message with type
          */
-        void type_callback(const steelhead_interfaces::msg::TrajectoryType::SharedPtr msg);
+        void type_callback(const spiderfish_interfaces::msg::TrajectoryType::SharedPtr msg);
 
          /** Gate pose message callback
          * 
          * Updates private variable containing the current target pose if Object type is 
          * TRAJ_GATE and if current trajectory type is also TRAJ_GATE. 
          * 
-         * @param msg steelhead_interfaces object offset message with pose and object type
+         * @param msg spiderfish_interfaces object offset message with pose and object type
          */
-        void gate_callback(const steelhead_interfaces::msg::ObjectOffset::SharedPtr msg);
+        void gate_callback(const spiderfish_interfaces::msg::ObjectOffset::SharedPtr msg);
 
          /** Waypoint message callback
          * 
          * Checks if current waypoint is completed
          * 
-         * @param msg steelhead_interfaces waypoint message with pose and waypoint type
+         * @param msg spiderfish_interfaces waypoint message with pose and waypoint type
          */
-        void waypoint_callback(const steelhead_interfaces::msg::Waypoint::SharedPtr msg);
+        void waypoint_callback(const spiderfish_interfaces::msg::Waypoint::SharedPtr msg);
 
 
         void approach_buoy();
@@ -82,23 +82,23 @@ namespace steelhead_controls
         tf2::Vector3 get_buoy_global_position();
 
 
-        rclcpp::Publisher<steelhead_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
+        rclcpp::Publisher<spiderfish_interfaces::msg::TrajectoryType>::SharedPtr current_mode_publisher_;
 
         // Publish waypoint 
-        rclcpp::Publisher<steelhead_interfaces::msg::Waypoint>::SharedPtr waypoint_publisher_;
+        rclcpp::Publisher<spiderfish_interfaces::msg::Waypoint>::SharedPtr waypoint_publisher_;
         // Current state of AUV
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr state_subscription_;
         // Trajectory type
-        rclcpp::Subscription<steelhead_interfaces::msg::TrajectoryType>::SharedPtr type_subscription_;
+        rclcpp::Subscription<spiderfish_interfaces::msg::TrajectoryType>::SharedPtr type_subscription_;
         // Gate pose
-        rclcpp::Subscription<steelhead_interfaces::msg::ObjectOffset>::SharedPtr gate_subscription_;
+        rclcpp::Subscription<spiderfish_interfaces::msg::ObjectOffset>::SharedPtr gate_subscription_;
         // Current Waypoint
-        rclcpp::Subscription<steelhead_interfaces::msg::Waypoint>::SharedPtr waypoint_subscription_;
+        rclcpp::Subscription<spiderfish_interfaces::msg::Waypoint>::SharedPtr waypoint_subscription_;
 
         uint8_t type_;
         geometry_msgs::msg::Pose current_pose_;     // AUV current pose
         geometry_msgs::msg::Pose destination_pose_;     
-        std::vector<steelhead_interfaces::msg::Waypoint> waypoints_; // Destination waypoints in trajectory 
+        std::vector<spiderfish_interfaces::msg::Waypoint> waypoints_; // Destination waypoints in trajectory 
         bool destination_achieved_;                    
         float start_turning_factor_;
 
@@ -111,9 +111,9 @@ namespace steelhead_controls
 
     };
 
-} // namespace steelhead_controls
+} // namespace spiderfish_controls
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_controls::TrajectoryGenerator)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_controls::TrajectoryGenerator)
 
-#endif  //STEELHEAD_CONTROL__TRAJECTORY_GENERATOR
+#endif  //SPIDERFISH_CONTROL__TRAJECTORY_GENERATOR

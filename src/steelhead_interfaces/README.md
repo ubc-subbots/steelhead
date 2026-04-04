@@ -1,4 +1,4 @@
-# steelhead_interfaces
+# spiderfish_interfaces
 ## Description
 
 This package is for adding custom interface functionality such as custom messages, actions, and services. Any new interface must follow the ROS2 conventions given [here](https://index.ros.org/doc/ros2/Concepts/About-ROS-Interfaces/). 

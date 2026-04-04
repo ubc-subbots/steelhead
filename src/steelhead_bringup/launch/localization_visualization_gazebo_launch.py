@@ -12,19 +12,19 @@ def generate_launch_description():
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gazebo'), 'launch', 'gazebo_launch.py')
         ),
         launch_arguments={'world': 'competition.world'}.items()
     )
 
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'thrust_allocator_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'thrust_allocator_launch.py')
         )
     )
 
     rviz_config_file = os.path.join(
-        get_package_share_directory('steelhead_bringup'), 'config', 'localization_visualization.rviz')
+        get_package_share_directory('spiderfish_bringup'), 'config', 'localization_visualization.rviz')
 
     rviz = Node(
         package='rviz2',
@@ -36,14 +36,14 @@ def generate_launch_description():
     )
 
     config = os.path.join(
-        get_package_share_directory('steelhead_localization'),
+        get_package_share_directory('spiderfish_localization'),
         'config',
         'state_estimator_config.yaml'
     )
 
     state_estimator = Node(
         name='state_estimator',
-        namespace='/steelhead/controls/ukf',
+        namespace='/spiderfish/controls/ukf',
         package='robot_localization',
         executable='ukf_node',
         output='screen',
@@ -52,31 +52,31 @@ def generate_launch_description():
 
     # vins_odometry = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'vins_odometry_launch.py')
+    #         os.path.join(get_package_share_directory('spiderfish_localization'), 'launch', 'vins_odometry_launch.py')
     #     )
     # )
 
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'state_publisher_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_controls'), 'launch', 'state_publisher_launch.py')
         )
     )
 
     keyboard_teleop = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'keyboard_teleop_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_teleop'), 'launch', 'keyboard_teleop_launch.py')
         )
     )
 
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gate'), 'launch', 'gate_detector_launch.py')
+            os.path.join(get_package_share_directory('spiderfish_gate'), 'launch', 'gate_detector_launch.py')
         )
     )
 
     underwater_camera = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
+            get_package_share_directory('spiderfish_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
 

@@ -1,10 +1,10 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='steelhead_frame'>
+  <model name='spiderfish_frame'>
     <link name='frame'>
 
       <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
-      <!-- Edited for Steelhead Aug 9 2024-->
+      <!-- Edited for Spiderfish Aug 9 2024-->
       <inertial>
         <mass>29.4835</mass>
         <inertia>
@@ -23,7 +23,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://steelhead_frame/meshes/steelhead_frame.stl</uri>
+            <uri>model://spiderfish_frame/meshes/spiderfish_frame.stl</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -44,7 +44,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://steelhead_frame/meshes/steelhead_frame_collision.stl</uri>
+            <uri>model://spiderfish_frame/meshes/spiderfish_frame_collision.stl</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -119,7 +119,7 @@
         </camera>
         <plugin name="front_camera" filename="libgazebo_ros_camera.so">
           <ros>
-            <namespace>/steelhead/drivers</namespace>
+            <namespace>/spiderfish/drivers</namespace>
           </ros>
         </plugin>
       </sensor>
@@ -146,7 +146,7 @@
         </camera>
         <plugin name="down_camera" filename="libgazebo_ros_camera.so">
           <ros>
-            <namespace>/steelhead/drivers</namespace>
+            <namespace>/spiderfish/drivers</namespace>
           </ros>
         </plugin>
       </sensor>
@@ -165,7 +165,7 @@
           <frameName>imu_link</frameName>
           <initialOrientationAsReference>false</initialOrientationAsReference>
           <ros>
-            <namespace>/steelhead/drivers</namespace>
+            <namespace>/spiderfish/drivers</namespace>
           </ros>
         </plugin>
         <pose>0 0 0 0 0 0</pose>

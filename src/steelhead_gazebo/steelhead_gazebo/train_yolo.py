@@ -8,9 +8,9 @@ import requests
 from ament_index_python.packages import get_package_share_directory
 
 def main(args=None):
-    shared_dir = get_package_share_directory("steelhead_gazebo")
-    data_dir = os.path.join(get_package_share_directory("steelhead_gazebo"),"data")# Path to image directory
-    backup_dir = os.path.join(get_package_share_directory("steelhead_gazebo"),"backup")# Path to backup directory
+    shared_dir = get_package_share_directory("spiderfish_gazebo")
+    data_dir = os.path.join(get_package_share_directory("spiderfish_gazebo"),"data")# Path to image directory
+    backup_dir = os.path.join(get_package_share_directory("spiderfish_gazebo"),"backup")# Path to backup directory
     darknet_exec = "darknet/darknet"# Path to darknet installation
 
     if not os.path.exists(backup_dir):
@@ -77,8 +77,8 @@ backup = {backup_dir}\n")
             f.write(requests.get('https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.conv.29').content)
 
     os.system(f"{darknet_exec} detector train {os.path.join(data_dir,'obj.data')} {os.path.join(shared_dir,'config',model_name+'.cfg')} {os.path.join(shared_dir,'yolov4-tiny.conv.29')} -map")
-    os.system(f"cp {os.path.join(backup_dir,model_name+'_final.weights')} {get_package_share_directory('steelhead_object_recognition')}")
-    os.system(f"cp {os.path.join(shared_dir,'config',model_name+'.cfg')} {get_package_share_directory('steelhead_object_recognition')}")
+    os.system(f"cp {os.path.join(backup_dir,model_name+'_final.weights')} {get_package_share_directory('spiderfish_object_recognition')}")
+    os.system(f"cp {os.path.join(shared_dir,'config',model_name+'.cfg')} {get_package_share_directory('spiderfish_object_recognition')}")
 
 
 if __name__ == '__main__':

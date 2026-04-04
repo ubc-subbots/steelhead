@@ -18,7 +18,7 @@ class SimThrustMapper(Node):
 
         self.thrust_allocator_sub = self.create_subscription(
             Float64MultiArray,
-            '/steelhead/controls/output_forces',
+            '/spiderfish/controls/output_forces',
             self.thrust_allocator_callback,
             10
         )
@@ -26,7 +26,7 @@ class SimThrustMapper(Node):
         self.thrust_pub_dict = {
             num: self.create_publisher(
                 Wrench,
-                '/steelhead/gazebo_drivers/thruster_{}'.format(num),
+                '/spiderfish/gazebo_drivers/thruster_{}'.format(num),
                 10)
             for num in range(1, self.num_thrusters+1)
         }

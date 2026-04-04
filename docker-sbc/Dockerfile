@@ -11,9 +11,9 @@ RUN apt-get install -y apt-transport-https apt-utils bash-completion python3-pip
 WORKDIR /opt/ros/foxy
 RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; RTI_NC_LICENSE_ACCEPTED=yes rosdep install --from-paths . --ignore-src --rosdistro foxy -yr"
 
-# Clone Steelhead repo
+# Clone Spiderfish repo
 WORKDIR /root/
-RUN git clone https://github.com/ubc-subbots/steelhead.git 
+RUN git clone https://github.com/ubc-subbots/spiderfish.git 
 
 # Realsense install. Only works on amd64! To run on Jetson we need to follow their specific guide (pain)
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
@@ -41,14 +41,14 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 #RUN make -j4 && make install
 #RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; rosdep update"
 
-# Setup and build Steelhead
-WORKDIR /root/steelhead
+# Setup and build Spiderfish
+WORKDIR /root/spiderfish
 RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash; rosdep update --include-eol-distros; rosdep install -i --from-path src --rosdistro foxy --skip-keys "gazebo_ros gazebo_dev gazebo_ros_pkgs phidgets_spatial realsense2_camera camera_model" -y'
 RUN python3 -m pip install setuptools==58.2.0 pyserial sshkeyboard
-RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; colcon build --packages-skip steelhead_gazebo"
-RUN echo "source /root/steelhead/install/setup.bash" >> /root/.bashrc
-RUN echo 'echo "Sourced Steelhead in /root/steelhead/"' >> /root/.bashrc
-RUN echo "alias cbs='colcon build --packages-skip steelhead_gazebo && source install/setup.bash'" >> /root/.bashrc
+RUN /bin/bash -c "source /opt/ros/foxy/setup.bash; colcon build --packages-skip spiderfish_gazebo"
+RUN echo "source /root/spiderfish/install/setup.bash" >> /root/.bashrc
+RUN echo 'echo "Sourced Spiderfish in /root/spiderfish/"' >> /root/.bashrc
+RUN echo "alias cbs='colcon build --packages-skip spiderfish_gazebo && source install/setup.bash'" >> /root/.bashrc
 RUN echo "alias clean='rm -r build install log'" >> /root/.bashrc
 
 CMD /bin/bash

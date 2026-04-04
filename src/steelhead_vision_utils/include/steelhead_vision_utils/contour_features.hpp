@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_VISION_UTILS__CONTOUR_FEATURES
-#define STEELHEAD_VISION_UTILS__CONTOUR_FEATURES
+#ifndef SPIDERFISH_VISION_UTILS__CONTOUR_FEATURES
+#define SPIDERFISH_VISION_UTILS__CONTOUR_FEATURES
 
 #include <unistd.h>
 
@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-namespace steelhead_vision_utils
+namespace spiderfish_vision_utils
 {
 class ContourFeatures
 {
@@ -50,6 +50,6 @@ public:
    */
   std::vector<float> hu_moments_featurize(std::vector<cv::Point> cnt);
 };
-}  // namespace steelhead_vision_utils
+}  // namespace spiderfish_vision_utils
 
-#endif  // STEELHEAD_VISION_UTILS__CONTOUR_FEATURES
+#endif  // SPIDERFISH_VISION_UTILS__CONTOUR_FEATURES

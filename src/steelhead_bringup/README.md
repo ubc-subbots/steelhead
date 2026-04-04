@@ -1,4 +1,4 @@
-# steelhead_bringup
+# spiderfish_bringup
 ## Description
 
 This package is for creating launch files and utilities needed for launching the entire AUV system in different environments and under different configurations. Nothing new should be defined here, and it should just be launching preexisting nodes in other packages.
@@ -7,11 +7,11 @@ This package is for creating launch files and utilities needed for launching the
 
 - `barebones_gazebo_launch.py` : All-in-one launch file which launches everything necessary for keyboard operation WITHIN GAZEBO.
 
-    - If the simulation is running really slow, try following the optimization guide in the steelhead_gazebo README.md.
+    - If the simulation is running really slow, try following the optimization guide in the spiderfish_gazebo README.md.
 
 - `localization_visualization_gazebo_launch.py` : Launches a visualization WITHIN GAZEBO of where the robot "thinks" it is based off of visual-inertial odometry and the IMU, visualized in RViz. Right now it's sort of luck based, since it will sometimes randomly fly off to infinity for some reason ¯\\\_(ツ)_/¯.
 
-- `cameras_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
+- `cameras_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Spiderfish.
 
     - The cameras are configured with the config files `cameraX.yaml`.
 
@@ -25,15 +25,15 @@ This package is for creating launch files and utilities needed for launching the
     - `gate`: Launches nodes necessary for a gate navigation test, which is the preliminary task for Robosub.
     - `hardcode`: Launches nodes that make the robot spin certain thrusters for a certain amount of time.
 
-        - The hardcoded instructions are defined in steelhead_controls/steelhead_controls/predetermined_thrust.py.
+        - The hardcoded instructions are defined in spiderfish_controls/spiderfish_controls/predetermined_thrust.py.
 
     - `route`: Launches nodes that make the robot follow a predetermined route.
 
-        - The hardcoded instructions are defined in steelhead_controls/steelhead_controls/predetermined_route.py.
+        - The hardcoded instructions are defined in spiderfish_controls/spiderfish_controls/predetermined_route.py.
 
-    - `ssh_teleop`: Launches the nodes that allow for teleoperation (keyboard control) of Steelhead. 
+    - `ssh_teleop`: Launches the nodes that allow for teleoperation (keyboard control) of Spiderfish. 
 
-        - Because of certain limitations with SSH, the teleop can't be run in a launch file, so do `ros2 launch steelhead_bringup pool_test_ssh_teleop.py` alongside `ros2 run steelhead_teleop ssh_keyboard_teleop` in another terminal session.
+        - Because of certain limitations with SSH, the teleop can't be run in a launch file, so do `ros2 launch spiderfish_bringup pool_test_ssh_teleop.py` alongside `ros2 run spiderfish_teleop ssh_keyboard_teleop` in another terminal session.
 
 ## Contributors
 

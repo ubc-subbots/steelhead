@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from steelhead_interfaces.msg import Waypoint
+from spiderfish_interfaces.msg import Waypoint
 from std_msgs.msg import String
 from std_msgs.msg import String, Int32, UInt32
 from geometry_msgs.msg import Wrench, Vector3
@@ -86,7 +86,7 @@ class PredeterminedThrust(Node):
 
         self.publisher_ = self.create_publisher(
             Wrench,
-            '/steelhead/controls/input_forces',
+            '/spiderfish/controls/input_forces',
             10
         )
 

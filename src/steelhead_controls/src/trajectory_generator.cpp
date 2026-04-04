@@ -1,7 +1,7 @@
-#include "steelhead_controls/trajectory_generator.hpp"
+#include "spiderfish_controls/trajectory_generator.hpp"
 using std::placeholders::_1;
 
-namespace steelhead_controls {   
+namespace spiderfish_controls {   
     // GLOBAL VARIABLES
     bool approach_destination_achieved_ = false; // whether we have successfully closed the distance to the buoy
     double radius_for_rotation = 3.0; // the destired radius of rotation (doubles as approach distance)
@@ -18,22 +18,22 @@ namespace steelhead_controls {
         { 
 
         //can remove later but this publishes the current mode
-        current_mode_publisher_ = this->create_publisher<steelhead_interfaces::msg::TrajectoryType>("/steelhead/controls/trajectory_generator/current_mode", 10);
+        current_mode_publisher_ = this->create_publisher<spiderfish_interfaces::msg::TrajectoryType>("/spiderfish/controls/trajectory_generator/current_mode", 10);
 
 
-        waypoint_publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/set", 10);
+        waypoint_publisher_ = this->create_publisher<spiderfish_interfaces::msg::Waypoint>("/spiderfish/controls/waypoint_marker/set", 10);
 
         state_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-            "/steelhead/controls/ukf/odometry/filtered", 10, std::bind(&TrajectoryGenerator::state_callback, this, _1));
+            "/spiderfish/controls/ukf/odometry/filtered", 10, std::bind(&TrajectoryGenerator::state_callback, this, _1));
 
-        type_subscription_ = this->create_subscription<steelhead_interfaces::msg::TrajectoryType>(
-            "/steelhead/controls/trajectory_generator/set_type", 10, std::bind(&TrajectoryGenerator::type_callback, this, _1));
+        type_subscription_ = this->create_subscription<spiderfish_interfaces::msg::TrajectoryType>(
+            "/spiderfish/controls/trajectory_generator/set_type", 10, std::bind(&TrajectoryGenerator::type_callback, this, _1));
 
-        gate_subscription_ = this->create_subscription<steelhead_interfaces::msg::ObjectOffset>(
-            "/steelhead/gate/detector/gate_pose", 10, std::bind(&TrajectoryGenerator::gate_callback, this, _1));
+        gate_subscription_ = this->create_subscription<spiderfish_interfaces::msg::ObjectOffset>(
+            "/spiderfish/gate/detector/gate_pose", 10, std::bind(&TrajectoryGenerator::gate_callback, this, _1));
 
-        waypoint_subscription_ = this->create_subscription<steelhead_interfaces::msg::Waypoint>(
-            "/steelhead/controls/waypoint_marker/current_goal", 10, std::bind(&TrajectoryGenerator::waypoint_callback, this, _1));
+        waypoint_subscription_ = this->create_subscription<spiderfish_interfaces::msg::Waypoint>(
+            "/spiderfish/controls/waypoint_marker/current_goal", 10, std::bind(&TrajectoryGenerator::waypoint_callback, this, _1));
 
         // this->declare_parameter("start_turning_factor", start_turning_factor_);
         // this->get_parameter("start_turning_factor", start_turning_factor_);
@@ -48,7 +48,7 @@ namespace steelhead_controls {
         double angle_step = 2 * M_PI / num_waypoints; // Equal angle steps
 
         // Stop residual movement and stabilize
-        auto stop_msg = steelhead_interfaces::msg::Waypoint();
+        auto stop_msg = spiderfish_interfaces::msg::Waypoint();
         stop_msg.pose.position = current_pose_.position; // Stay in place
         stop_msg.pose.orientation = current_pose_.orientation; // Keep current orientation
 
@@ -73,7 +73,7 @@ namespace steelhead_controls {
             double waypoint_z = buoy_global_position_.z(); // Maintain depth
 
             // Set waypoint message
-            auto reply_msg = steelhead_interfaces::msg::Waypoint();
+            auto reply_msg = spiderfish_interfaces::msg::Waypoint();
             reply_msg.pose.position.x = waypoint_x;
             reply_msg.pose.position.y = waypoint_y;
             reply_msg.pose.position.z = waypoint_z;
@@ -183,7 +183,7 @@ namespace steelhead_controls {
 
 
     void TrajectoryGenerator::approach_buoy() {
-        auto reply_msg = steelhead_interfaces::msg::Waypoint(); // Create a new waypoint message
+        auto reply_msg = spiderfish_interfaces::msg::Waypoint(); // Create a new waypoint message
 
         // Prepare to calculate adjustments for the waypoint
         // reply_msg is in the map frame, destination_pose_ is in the base frame, and current_pose_ is in the map frame
@@ -241,7 +241,7 @@ namespace steelhead_controls {
 
 
     void TrajectoryGenerator::aim_back_at_start() {
-        auto reply_msg = steelhead_interfaces::msg::Waypoint();
+        auto reply_msg = spiderfish_interfaces::msg::Waypoint();
 
         // Set waypoint to the starting position
         reply_msg.pose.position = starting_position_;
@@ -269,14 +269,14 @@ namespace steelhead_controls {
     void TrajectoryGenerator::state_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
         current_pose_ = msg->pose.pose; // imu data
-        auto mode_msg = steelhead_interfaces::msg::TrajectoryType();
+        auto mode_msg = spiderfish_interfaces::msg::TrajectoryType();
         mode_msg.type = type_;
         current_mode_publisher_->publish(mode_msg);
 
         if (type_ == TRAJ_START) {
             RCLCPP_INFO(this->get_logger(), "Scanning for targets in TRAJ_START mode.");
             // Turn the AUV around slowly (to search for gate)
-            auto reply_msg = steelhead_interfaces::msg::Waypoint(); // Create a new waypoint message
+            auto reply_msg = spiderfish_interfaces::msg::Waypoint(); // Create a new waypoint message
             reply_msg.pose = msg->pose.pose; // Set the waypoint's pose to the current pose from odometry
 
             // Extract the current pose's orientation as a quaternion
@@ -319,7 +319,7 @@ namespace steelhead_controls {
             // RCLCPP_INFO(this->get_logger(), "Approaching gate in TRAJ_GATE mode. [SHOULD BE DISABLED RIGHT NOW BECAUSE I AM IMPLEMENTING BUOY NAVIGATION]");
             // TODO: Generate trajectory logic for navigating through a gate
             if (!destination_achieved_) {// If the destination hasn't been reached
-                auto reply_msg = steelhead_interfaces::msg::Waypoint(); // Create a new waypoint message
+                auto reply_msg = spiderfish_interfaces::msg::Waypoint(); // Create a new waypoint message
 
                 // Prepare to calculate adjustments for the waypoint
                 // reply_msg is in the map frame, destination_pose_ is in the base frame, and current_pose_ is in the map frame
@@ -383,7 +383,7 @@ namespace steelhead_controls {
                 }
 
                 // Turn the AUV around slowly (to search for gate again)
-                auto reply_msg = steelhead_interfaces::msg::Waypoint(); // Create a new waypoint message
+                auto reply_msg = spiderfish_interfaces::msg::Waypoint(); // Create a new waypoint message
                 reply_msg.pose = current_pose_; // Use the current pose as the waypoint pose
 
                 // Extract the current pose's orientation as a quaternion
@@ -481,7 +481,7 @@ namespace steelhead_controls {
 
 
 
-    void TrajectoryGenerator::type_callback(const steelhead_interfaces::msg::TrajectoryType::SharedPtr msg) {
+    void TrajectoryGenerator::type_callback(const spiderfish_interfaces::msg::TrajectoryType::SharedPtr msg) {
 
         if (!(buoy_state_ == BUOY_ROTATE) && !(type_ == TRAJ_BUOY)) {
             type_ = msg->type;
@@ -492,7 +492,7 @@ namespace steelhead_controls {
 
     }
 
-    void TrajectoryGenerator::gate_callback(const steelhead_interfaces::msg::ObjectOffset::SharedPtr msg) {
+    void TrajectoryGenerator::gate_callback(const spiderfish_interfaces::msg::ObjectOffset::SharedPtr msg) {
         /**
          * Below is the buoy_callback function implementation that currently lives in gate_callback cause I'm treating a gate like a buoy
          */
@@ -529,7 +529,7 @@ namespace steelhead_controls {
                 // }
 
                 // Publish the updated mode
-                // auto mode_msg = steelhead_interfaces::msg::TrajectoryType();
+                // auto mode_msg = spiderfish_interfaces::msg::TrajectoryType();
                 // mode_msg.type = type_;
                 // RCLCPP_INFO(this->get_logger(), "type: %d buoy_state: %d", mode_msg.type, buoy_state_);
             }
@@ -558,7 +558,7 @@ namespace steelhead_controls {
       //             RCLCPP_INFO(this->get_logger(), "Gate detected! Switching to TRAJ_GATE mode.");
 
       //             // Publish the updated mode
-      //             auto mode_msg = steelhead_interfaces::msg::TrajectoryType();
+      //             auto mode_msg = spiderfish_interfaces::msg::TrajectoryType();
       //             mode_msg.type = type_;
       //             current_mode_publisher_->publish(mode_msg);
       //         }
@@ -571,7 +571,7 @@ namespace steelhead_controls {
       // }
   }
 
-    void TrajectoryGenerator::waypoint_callback(const steelhead_interfaces::msg::Waypoint::SharedPtr msg) {
+    void TrajectoryGenerator::waypoint_callback(const spiderfish_interfaces::msg::Waypoint::SharedPtr msg) {
         (void) msg;
         // RCLCPP_INFO(this->get_logger(), "IN WAYPOINT CALLBACK type: %d buoy_state: %d initial_rot_heading_reached_: %d", type_, buoy_state_,initial_rot_heading_reached_);
         // if (msg->success) {
@@ -604,13 +604,13 @@ namespace steelhead_controls {
     }
 
     
-}// namespace steelhead_controls
+}// namespace spiderfish_controls
 
 int main(int argc, char * argv[]) {
   try {
     rclcpp::init(argc, argv);
     auto options = rclcpp::NodeOptions();
-    rclcpp::spin(std::make_shared<steelhead_controls::TrajectoryGenerator>(options));
+    rclcpp::spin(std::make_shared<spiderfish_controls::TrajectoryGenerator>(options));
     rclcpp::shutdown();
   } catch (rclcpp::exceptions::RCLError const&){
     // RCLCPP_INFO(this->get_logger(), "Error thrown in main");

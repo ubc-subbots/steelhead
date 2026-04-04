@@ -10,7 +10,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     config = os.path.join(
-        get_package_share_directory('steelhead_gazebo'),
+        get_package_share_directory('spiderfish_gazebo'),
         'config',
         'underwater_camera.yaml'
     )
@@ -24,12 +24,12 @@ def generate_launch_description():
 
     underwater_camera = Node(
         name='underwater_camera',
-        namespace='/steelhead/drivers',
-        package='steelhead_gazebo',
+        namespace='/spiderfish/drivers',
+        package='spiderfish_gazebo',
         executable='underwater_camera',
         output='screen',
-        # remappings=[('/steelhead/drivers/front_camera/underwater/image_raw',
-                    #  '/steelhead/drivers/front_camera/image_raw')],
+        # remappings=[('/spiderfish/drivers/front_camera/underwater/image_raw',
+                    #  '/spiderfish/drivers/front_camera/image_raw')],
         parameters=[
             {"rho": params["rho"]["default"]},
             {"irradiance_transmission": params["irradiance_transmission"][water_type]},

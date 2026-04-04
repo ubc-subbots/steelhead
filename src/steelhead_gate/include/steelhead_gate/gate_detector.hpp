@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GATE__GATE_DETECTOR
-#define STEELHEAD_GATE__GATE_DETECTOR
+#ifndef SPIDERFISH_GATE__GATE_DETECTOR
+#define SPIDERFISH_GATE__GATE_DETECTOR
 
 #include <opencv2/opencv.hpp>
 
@@ -9,14 +9,14 @@
 #include "cv_bridge/cv_bridge.h"
 #include "sensor_msgs/image_encodings.hpp"
 #include "std_msgs/msg/float32_multi_array.hpp"
-#include "steelhead_gate/pole_featurizer.hpp"
-#include "steelhead_vision_utils/object_detector.hpp"
-#include "steelhead_interfaces/msg/object_offset.hpp"
+#include "spiderfish_gate/pole_featurizer.hpp"
+#include "spiderfish_vision_utils/object_detector.hpp"
+#include "spiderfish_interfaces/msg/object_offset.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 
-namespace steelhead_gate
+namespace spiderfish_gate
 {
-class GateDetector : public rclcpp::Node, public steelhead_vision_utils::ObjectDetector
+class GateDetector : public rclcpp::Node, public spiderfish_vision_utils::ObjectDetector
 {
 public:
   GateDetector(const rclcpp::NodeOptions& options);
@@ -80,19 +80,19 @@ private:
   image_transport::Subscriber subscription_; 
   image_transport::Publisher debug_segment_publisher_;
   image_transport::Publisher debug_detection_publisher_;
-  steelhead_gate::PoleFeaturizer featurizer_;
+  spiderfish_gate::PoleFeaturizer featurizer_;
   // rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr gate_center_publisher_;  
   // Gate Pose relative to AUV
-  rclcpp::Publisher<steelhead_interfaces::msg::ObjectOffset>::SharedPtr gate_pose_publisher_;
+  rclcpp::Publisher<spiderfish_interfaces::msg::ObjectOffset>::SharedPtr gate_pose_publisher_;
   // Gate Pose relative to AUV: Debug
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr gate_pose_only_publisher_;
   // Gate Offset on image
   rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr gate_offset_publisher_;  
 };
 
-}  // namespace steelhead_gate
+}  // namespace spiderfish_gate
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_gate::GateDetector)
+RCLCPP_COMPONENTS_REGISTER_NODE(spiderfish_gate::GateDetector)
 
-#endif  // STEELHEAD_GATE__GATE_DETECTOR
+#endif  // SPIDERFISH_GATE__GATE_DETECTOR

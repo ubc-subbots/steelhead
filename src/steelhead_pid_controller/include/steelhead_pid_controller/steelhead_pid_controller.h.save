@@ -4,7 +4,7 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <yaml-cpp/yaml.h>
-#include "steelhead_interfaces/msg/float.hpp" 
+#include "spiderfish_interfaces/msg/float.hpp" 
 
 class PidController : public rclcpp::Node
 {
@@ -16,14 +16,14 @@ public:
 private:
     void imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
     void motor_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg);
-    void cur_pitch_update_callback(const steelhead_interfaces::msg::Float::SharedPtr msg);
-    void target_update_callback(const steelhead_interfaces::msg::Float::SharedPtr msg);
+    void cur_pitch_update_callback(const spiderfish_interfaces::msg::Float::SharedPtr msg);
+    void target_update_callback(const spiderfish_interfaces::msg::Float::SharedPtr msg);
     void control_loop();
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr sub_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr sub_motor_state_;
-    rclcpp::Subscription<steelhead_
+    rclcpp::Subscription<spiderfish_
 interfaces::msg::Float>::SharedPtr sub_target_;
-    rclcpp::Subscription<steelhead_interfaces::msg::Float>::SharedPtr sub_cur_pitch_;
+    rclcpp::Subscription<spiderfish_interfaces::msg::Float>::SharedPtr sub_cur_pitch_;
 
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr pub_;
 

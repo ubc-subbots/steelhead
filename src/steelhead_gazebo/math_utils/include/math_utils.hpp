@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_GAZEBO__MATH_UTILS
-#define STEELHEAD_GAZEBO__MATH_UTILS
+#ifndef SPIDERFISH_GAZEBO__MATH_UTILS
+#define SPIDERFISH_GAZEBO__MATH_UTILS
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
@@ -17,7 +17,7 @@ namespace Eigen
 } // namespace Eigen
 
 
-namespace steelhead_gazebo
+namespace spiderfish_gazebo
 {
 
     /**
@@ -55,4 +55,4 @@ namespace steelhead_gazebo
 
 }
 
-#endif // STEELHEAD_GAZEBO__MATH_UTILS
+#endif // SPIDERFISH_GAZEBO__MATH_UTILS

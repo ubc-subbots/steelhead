@@ -31,8 +31,8 @@ cd ..
 rm -rf build opencv.zip opencv-4.5.3
 
 # fetch repo
-git clone https://github.com/ubc-subbots/steelhead.git
-cd steelhead
+git clone https://github.com/ubc-subbots/spiderfish.git
+cd spiderfish
 
 # install deps and build
 rosdep install -i --from-path src --rosdistro foxy -y

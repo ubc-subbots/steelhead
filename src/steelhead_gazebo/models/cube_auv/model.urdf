@@ -78,19 +78,19 @@
     <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
       <ros>
-          <namespace>/steelhead/controls</namespace>
+          <namespace>/spiderfish/controls</namespace>
           <remapping>output_forces</remapping>
       </ros>
     </plugin>
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
-      <state_topic>/steelhead/state</state_topic>
+      <state_topic>/spiderfish/state</state_topic>
       <update_rate>50</update_rate>
     </plugin>
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
       <always_on>true</always_on>
       <update_rate>50.0</update_rate>
       <body_name>base_link</body_name>
-      <topic_name>/steelhead/state</topic_name>
+      <topic_name>/spiderfish/state</topic_name>
       <gaussian_noise>0.01</gaussian_noise>
       <frame_name>map</frame_name>
       <xyz_offset>0 0 0</xyz_offset>
@@ -125,7 +125,7 @@
       </camera>
       <plugin name="front_camera" filename="libgazebo_ros_camera.so">
         <ros>
-          <namespace>/steelhead/drivers</namespace>
+          <namespace>/spiderfish/drivers</namespace>
         </ros>
       </plugin>
     </sensor>
@@ -152,7 +152,7 @@
       </camera>
       <plugin name="down_camera" filename="libgazebo_ros_camera.so">
         <ros>
-          <namespace>/steelhead/drivers</namespace>
+          <namespace>/spiderfish/drivers</namespace>
         </ros>
       </plugin>
     </sensor>
@@ -171,7 +171,7 @@
         <frameName>imu_link</frameName>
         <initialOrientationAsReference>false</initialOrientationAsReference>
         <ros>
-          <namespace>/steelhead/drivers</namespace>
+          <namespace>/spiderfish/drivers</namespace>
         </ros>
       </plugin>
       <pose>0 0 0 0 0 0</pose>

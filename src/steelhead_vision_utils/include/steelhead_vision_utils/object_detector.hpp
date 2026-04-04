@@ -1,11 +1,11 @@
-#ifndef STEELHEAD_VISION_UTILS__OBJECT_DETECTOR
-#define STEELHEAD_VISION_UTILS__OBJECT_DETECTOR
+#ifndef SPIDERFISH_VISION_UTILS__OBJECT_DETECTOR
+#define SPIDERFISH_VISION_UTILS__OBJECT_DETECTOR
 
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <vector>
 
-namespace steelhead_vision_utils
+namespace spiderfish_vision_utils
 {
 class ObjectDetector
 {
@@ -87,6 +87,6 @@ private:
   cv::Mat curr_image;
 };
 
-}  // namespace steelhead_vision_utils
+}  // namespace spiderfish_vision_utils
 
-#endif  // STEELHEAD_VISION_UTILS__OBJECT_DETECTOR
+#endif  // SPIDERFISH_VISION_UTILS__OBJECT_DETECTOR

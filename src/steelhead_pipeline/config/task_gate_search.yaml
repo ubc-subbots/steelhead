@@ -1,11 +1,11 @@
-/steelhead/pipeline_manager:
+/spiderfish/pipeline_manager:
   ros__parameters:
     pipeline:
       components:
-        - steelhead_gate::GateDetector
+        - spiderfish_gate::GateDetector
       pkg_names: 
-        - steelhead_gate
+        - spiderfish_gate
       param_files:
         - ''
-      namespace: /steelhead
+      namespace: /spiderfish
     use_sim_time: false

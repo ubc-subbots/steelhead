@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(steelhead_object_recognition)
+project(spiderfish_object_recognition)
 
 # Default to C99 for C and C++14 for C++
 if(NOT CMAKE_C_STANDARD)
@@ -19,7 +19,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(steelhead_interfaces REQUIRED)
+find_package(spiderfish_interfaces REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
@@ -33,27 +33,27 @@ include_directories(
 )
 
 # Create a shared library
-add_library(steelhead_object_recognition SHARED
+add_library(spiderfish_object_recognition SHARED
   src/object_recognizer.cpp
 )
 
 # Link libraries
-target_link_libraries(steelhead_object_recognition
+target_link_libraries(spiderfish_object_recognition
   ${OpenCV_LIBRARIES}
   ${Boost_LIBRARIES}
 )
 
 # Register component nodes
-rclcpp_components_register_nodes(steelhead_object_recognition 
-  "steelhead_object_recognition::ObjectRecognizer"
+rclcpp_components_register_nodes(spiderfish_object_recognition 
+  "spiderfish_object_recognition::ObjectRecognizer"
 )
 
 # Define target dependencies explicitly
-ament_target_dependencies(steelhead_object_recognition
+ament_target_dependencies(spiderfish_object_recognition
   rclcpp
   rclcpp_components
   std_msgs
-  steelhead_interfaces
+  spiderfish_interfaces
   cv_bridge
   sensor_msgs
   image_transport
@@ -63,7 +63,7 @@ ament_target_dependencies(steelhead_object_recognition
 
 # Install the library and other directories
 install(TARGETS
-  steelhead_object_recognition
+  spiderfish_object_recognition
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

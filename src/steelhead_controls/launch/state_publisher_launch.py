@@ -10,8 +10,8 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    pkg_share = get_package_share_directory('steelhead_controls')
-    sdf_file =  os.path.join(pkg_share, 'models', 'steelhead_auv', 'model.urdf')
+    pkg_share = get_package_share_directory('spiderfish_controls')
+    sdf_file =  os.path.join(pkg_share, 'models', 'spiderfish_auv', 'model.urdf')
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
     rsp_params = {'robot_description': robot_desc}
@@ -24,7 +24,7 @@ def generate_launch_description():
     )
 
     transform_publisher = Node(
-        package='steelhead_controls',
+        package='spiderfish_controls',
         executable='auv_transform_publisher.py',
         name='auv_transform_publisher',
         output='screen', 
