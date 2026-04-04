@@ -19,7 +19,7 @@ def generate_launch_description():
     log_level = LaunchConfiguration('log_level')
 
     ld = LaunchDescription([log_level_arg])
-    
+
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -46,7 +46,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
         ),
-        launch_arguments={'world': 'prequalification.world'}.items()
+        launch_arguments={'world': 'gate_test.world'}.items()
     )
 
     config = os.path.join(
