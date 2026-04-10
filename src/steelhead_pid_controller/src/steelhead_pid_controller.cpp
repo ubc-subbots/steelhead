@@ -13,9 +13,6 @@ namespace steelhead_pid_controller
   PidController::PidController(const rclcpp::NodeOptions & options) 
   : Node("pid_controller", options)
   {
-  //  pid_pitch_.load("pid_controller/pid_pitch.yaml");
-  //  pid_pos_.load("pid_controller/pid_pos.yaml");
-
     last_time_ = std::chrono::high_resolution_clock::now();
     auto control_loop_time = 5ms;
     control_loop_timer_ = create_wall_timer(control_loop_time, 
@@ -36,6 +33,8 @@ namespace steelhead_pid_controller
     float x_p, x_i, x_d;
     float y_p, y_i, y_d;
     float z_p, z_i, z_d;
+    float roll_p, roll_i, roll_d;
+    float pitch_p, pitch_i, pitch_d;
     float yaw_p, yaw_i, yaw_d;
     this->declare_parameter("force_x_p", x_p);
     this->declare_parameter("force_x_i", x_i);
@@ -46,6 +45,12 @@ namespace steelhead_pid_controller
     this->declare_parameter("force_z_p", z_p);
     this->declare_parameter("force_z_i", z_i);
     this->declare_parameter("force_z_d", z_d);
+    this->declare_parameter("force_roll_p", roll_p);
+    this->declare_parameter("force_roll_i", roll_i);
+    this->declare_parameter("force_roll_d", roll_d);
+    this->declare_parameter("force_pitch_p", pitch_p);
+    this->declare_parameter("force_pitch_i", pitch_i);
+    this->declare_parameter("force_pitch_d", pitch_d);
     this->declare_parameter("force_yaw_p", yaw_p);
     this->declare_parameter("force_yaw_i", yaw_i);
     this->declare_parameter("force_yaw_d", yaw_d);
@@ -59,6 +64,12 @@ namespace steelhead_pid_controller
     this->get_parameter("force_z_p", z_p);
     this->get_parameter("force_z_i", z_i);
     this->get_parameter("force_z_d", z_d);
+    this->get_parameter("force_roll_p", roll_p);
+    this->get_parameter("force_roll_i", roll_i);
+    this->get_parameter("force_roll_d", roll_d);
+    this->get_parameter("force_pitch_p", pitch_p);
+    this->get_parameter("force_pitch_i", pitch_i);
+    this->get_parameter("force_pitch_d", pitch_d);
     this->get_parameter("force_yaw_p", yaw_p);
     this->get_parameter("force_yaw_i", yaw_i);
     this->get_parameter("force_yaw_d", yaw_d);
@@ -66,6 +77,8 @@ namespace steelhead_pid_controller
     pid_force_x.load(x_p, x_i, x_d);
     pid_force_y.load(y_p, y_i, y_d);
     pid_force_z.load(z_p, z_i, z_d);
+    pid_roll.load(roll_p, roll_i, roll_d);
+    pid_pitch.load(pitch_p, pitch_i, pitch_d);
     pid_yaw.load(yaw_p, yaw_i, yaw_d);
 
     RCLCPP_INFO(this->get_logger(), "PID Controller successfully started!");
@@ -106,14 +119,18 @@ namespace steelhead_pid_controller
       cur_yaw = -current_pose_yaw; // TODO: why negative
     }
 
-    float yaw_error = cur_yaw;
     float pos_x_error = cur_pose->position.x;
     float pos_y_error = cur_pose->position.y;
     float pos_z_error = cur_pose->position.z;
+    float roll_error = !std::isnan(current_pose_roll) ? current_pose_roll : 0;
+    float pitch_error = !std::isnan(current_pose_pitch) ? current_pose_pitch : 0;
+    float yaw_error = cur_yaw;
 
     float forceX = pid_force_x.update(pos_x_error, dt);
     float forceY = pid_force_y.update(pos_y_error, dt);
     float forceZ = pid_force_z.update(pos_z_error, dt);
+    float torqueX = pid_roll.update(roll_error, dt);
+    float torqueY = pid_roll.update(pitch_error, dt);
     float torqueZ = pid_yaw.update(yaw_error, dt);
 
     last_time_ = std::chrono::high_resolution_clock::now();
@@ -122,8 +139,8 @@ namespace steelhead_pid_controller
     wrenchOut.force.x = forceX;
     wrenchOut.force.y = forceY;
     wrenchOut.force.z = forceZ;
-    wrenchOut.torque.x = 0;
-    wrenchOut.torque.y = 0;
+    wrenchOut.torque.x = torqueX;
+    wrenchOut.torque.y = torqueY;
     wrenchOut.torque.z = torqueZ;
     pub_->publish(wrenchOut);
   }

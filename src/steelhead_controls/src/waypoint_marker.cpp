@@ -54,7 +54,7 @@ namespace steelhead_controls
       error_yaw = atan2(sin(error_yaw), cos(error_yaw));
 
       tf2::Quaternion tf2_quat_difference;
-      tf2_quat_difference.setRPY(0.001, 0.001, -error_yaw); // TODO: add back roll and pitch if we control them in the future
+      tf2_quat_difference.setRPY(error_roll, error_pitch, -error_yaw); 
 
       // Assign differences to error_pose_
       // error_pose_ is in the base frame, so we need some rotation
