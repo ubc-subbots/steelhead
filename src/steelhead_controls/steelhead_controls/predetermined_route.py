@@ -46,7 +46,7 @@ DEFAULT_STABILIZE_DISTANCE = {
     'orientation_rpy': {
         'r': 0, # we don't currently target roll or pitch, beacuse ideally the robot is always upright without our input
         'p': 0,
-        'y': 0.2
+        'y': 0.05
     },
     'orientation': {
         'x': 0.1,
@@ -82,65 +82,122 @@ BLANK_ORIENTATION = {
     'w': 1.0,
 }
 
+# Preset directions
+SLIGHT_LEFT = {
+    'r': 0,
+    'p': 0,
+    'y': 0.175
+}
+
+SLIGHT_RIGHT = {
+    'r': 0,
+    'p': 0,
+    'y': -0.175
+}
+
 # Input a series of poses here
 # Distance can be the above defined ones, or custom ones
 # x,y,z in meters
 # r,p,y in radians
 # disregard 'orientation' and only fill in 'orienatation_rpy'
-DEFAULT_STABILIZE_DURATION = 1.0 # seconds
+DEFAULT_STABILIZE_DURATION = 2.0 # seconds
 
 target_poses = [
     {
         'pose': {
             'position': {
-                'x': 18.0,
-                'y': 1.0,
-                'z': 0.0
-            },
-            'orientation_rpy': {
-                'r': 0,
-                'p': 0,
-                'y': 0
-            },
-            'orientation': BLANK_ORIENTATION
-        },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
-        'type': STABILIZE,
-        'duration': DEFAULT_STABILIZE_DURATION
-    },
-    {
-        'pose': {
-            'position': {
-                'x': 20.0,
+                'x': 0.0,
                 'y': 0.0,
                 'z': 0.0
             },
-            'orientation_rpy': {
-                'r': 0,
-                'p': 0,
-                'y': 0
-            },
+            'orientation_rpy': SLIGHT_LEFT,
             'orientation': BLANK_ORIENTATION
         },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'distance': DEFAULT_STABILIZE_DISTANCE,
         'type': STABILIZE,
         'duration': DEFAULT_STABILIZE_DURATION
     },
     {
         'pose': {
             'position': {
-                'x': 18.0,
+                'x': 10.0,
+                'y': 1.0,
+                'z': 0.0
+            },
+            'orientation_rpy': SLIGHT_LEFT,
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 10.0,
+                'y': 1.0,
+                'z': 0.0
+            },
+            'orientation_rpy': SLIGHT_RIGHT,
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 12.5,
+                'y': 0.0,
+                'z': 0.0
+            },
+            'orientation_rpy': SLIGHT_RIGHT,
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 12.5,
+                'y': 0.0,
+                'z': 0.0
+            },
+            'orientation_rpy': SLIGHT_LEFT,
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 8.0,
                 'y': -1.0,
                 'z': 0.0
             },
-            'orientation_rpy': {
-                'r': 0,
-                'p': 0,
-                'y': 0
-            },
+            'orientation_rpy': SLIGHT_LEFT,
             'orientation': BLANK_ORIENTATION
         },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    },
+    {
+        'pose': {
+            'position': {
+                'x': 10.0,
+                'y': -1.0,
+                'z': 0.0
+            },
+            'orientation_rpy': SLIGHT_RIGHT,
+            'orientation': BLANK_ORIENTATION
+        },
+        'distance': DEFAULT_STABILIZE_DISTANCE,
         'type': STABILIZE,
         'duration': DEFAULT_STABILIZE_DURATION
     },
@@ -151,14 +208,10 @@ target_poses = [
                 'y': 0.0,
                 'z': 0.0
             },
-            'orientation_rpy': {
-                'r': 0,
-                'p': 0,
-                'y': 0
-            },
+            'orientation_rpy': SLIGHT_RIGHT,
             'orientation': BLANK_ORIENTATION
         },
-        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'distance': DEFAULT_STABILIZE_DISTANCE,
         'type': STABILIZE,
         'duration': DEFAULT_STABILIZE_DURATION
     }

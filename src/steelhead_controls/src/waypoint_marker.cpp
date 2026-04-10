@@ -49,6 +49,10 @@ namespace steelhead_controls
       error_pitch = waypoint_pitch - current_pose_pitch;
       error_yaw = waypoint_yaw - current_pose_yaw;
 
+      error_roll = atan2(sin(error_roll), cos(error_roll));
+      error_pitch = atan2(sin(error_pitch), cos(error_pitch));
+      error_yaw = atan2(sin(error_yaw), cos(error_yaw));
+
       tf2::Quaternion tf2_quat_difference;
       tf2_quat_difference.setRPY(0.001, 0.001, -error_yaw); // TODO: add back roll and pitch if we control them in the future
 
@@ -71,9 +75,13 @@ namespace steelhead_controls
       error_pose_.orientation.z = tf2_quat_difference.z();
       error_pose_.orientation.w = tf2_quat_difference.w();
 
-      if ( fabs(error_roll) <= fabs(distance_roll)
-        && fabs(error_pitch) <= fabs(distance_pitch)
-        && fabs(error_yaw) <= fabs(distance_yaw)
+      double effective_distance_roll = (distance_roll == 0.0) ? 3.15 : fabs(distance_roll);
+      double effective_distance_pitch = (distance_pitch == 0.0) ? 3.15 : fabs(distance_pitch);
+      double effective_distance_yaw = (distance_yaw == 0.0) ? 3.15 : fabs(distance_yaw);
+
+      if ( fabs(error_roll) <= effective_distance_roll
+        && fabs(error_pitch) <= effective_distance_pitch
+        && fabs(error_yaw) <= effective_distance_yaw
         && fabs(error_pose_.position.x) <= waypoint_.distance.position.x
         && fabs(error_pose_.position.y) <= waypoint_.distance.position.y
         && fabs(error_pose_.position.z) <= waypoint_.distance.position.z)
