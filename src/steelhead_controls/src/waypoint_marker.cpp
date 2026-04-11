@@ -170,7 +170,7 @@ namespace steelhead_controls
 
     // If a waypoint is set, then error_pose_ contains the error
     // Else, it will be set to all 0s, so the AUV stays still
-    if (!waypoint_set_) 
+    if (!waypoint_set_)
     {
       error_pose_.position.x = 0;
       error_pose_.position.y = 0;
@@ -179,6 +179,8 @@ namespace steelhead_controls
       error_pose_.orientation.y = 0;
       error_pose_.orientation.z = 0;
       error_pose_.orientation.w = 0;
+      // Publish current pose as goal so Simulink has a valid target before the first waypoint arrives
+      goal_pose_publisher_->publish(current_pose_);
     }
     error_publisher_->publish(error_pose_);
 

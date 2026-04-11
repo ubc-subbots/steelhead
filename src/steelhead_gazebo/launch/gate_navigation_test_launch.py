@@ -2,7 +2,7 @@ import os
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription, TimerAction, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, TimerAction, DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
@@ -18,7 +18,10 @@ def generate_launch_description():
 
     log_level = LaunchConfiguration('log_level')
 
-    ld = LaunchDescription([log_level_arg])
+    ld = LaunchDescription([
+        SetEnvironmentVariable('ROS_DOMAIN_ID', '0'),
+        log_level_arg,
+    ])
     
 
     waypoint_marker = Node(
@@ -55,7 +58,8 @@ def generate_launch_description():
         package='robot_localization',
         executable='ukf_node',
         output='screen',
-        parameters=[config, {'use_sim_time': True}]
+        parameters=[config, {'use_sim_time': True}],
+        remappings=[('/odom', '/steelhead/state')]
     )
 
     state_publisher = IncludeLaunchDescription(
@@ -94,7 +98,16 @@ def generate_launch_description():
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)
     ld.add_action(underwater_camera)
+    odom_relay = Node(
+        package='steelhead_gazebo',
+        executable='odom_relay.py',
+        name='odom_relay',
+        output='screen',
+        parameters=[{'use_sim_time': True}]
+    )
+
     ld.add_action(state_estimator)
+    ld.add_action(odom_relay)
     ld.add_action(waypoint_marker)
     # ld.add_action(waypoint_marker_tester)
     # pid_controller removed — using Simulink SMC controller via ROS 2 instead

@@ -15,6 +15,7 @@ def generate_launch_description():
         package='steelhead_controls',
         executable='trajectory_generator',
         output='screen',
+        parameters=[{'use_sim_time': True}]
     )
 
     ld.add_action(trajectory_generator)

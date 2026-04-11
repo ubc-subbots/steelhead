@@ -14,7 +14,7 @@
 
     <include>
         <pose>-6 0 2 0 0 0</pose>
-        <uri>model://gate</uri>
+        <uri>model://prequalification_gate</uri>
     </include>
 
     <include>

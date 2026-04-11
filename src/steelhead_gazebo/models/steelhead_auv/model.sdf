@@ -251,7 +251,7 @@
     <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
 
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
-      <state_topic>/steelhead/state</state_topic>
+      <state_topic>/steelhead/ground_truth_pose</state_topic>
       <publish_odom_tf>false</publish_odom_tf>
       <update_rate>50</update_rate>
     </plugin>

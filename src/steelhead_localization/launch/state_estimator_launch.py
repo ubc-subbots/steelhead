@@ -13,11 +13,7 @@ def generate_launch_description():
     config = os.path.join(
         get_package_share_directory('steelhead_localization'),
         'config',
-<<<<<<< HEAD:src/steelhead_controls/launch/state_estimator_launch.py
-        'state_estimator_config_GT_only.yaml'
-=======
         'state_estimator_config.yaml'
->>>>>>> main:src/steelhead_localization/launch/state_estimator_launch.py
     )
 
     state_estimator = Node(
@@ -26,7 +22,7 @@ def generate_launch_description():
         package='robot_localization',
         executable='ukf_node',
         output='screen',
-        parameters=[config, {'use_sim_time': False}]
+        parameters=[config, {'use_sim_time': True}]
     )
 
     ld.add_action(state_estimator)
