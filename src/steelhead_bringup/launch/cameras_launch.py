@@ -24,11 +24,11 @@ def generate_launch_description():
         ]
     )
 
-    ld.add_action(camera1)
+    # ld.add_action(camera1)
 
     camera2 = Node(
-        package='usb_cam',
-        executable='usb_cam_node_exe',
+        package='v4l2_camera',
+        executable='v4l2_camera_node',
         namespace='/camera2',
         parameters=[
             os.path.join(

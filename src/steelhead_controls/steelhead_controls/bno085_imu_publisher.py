@@ -35,21 +35,22 @@ class Bno085ImuPublisher(Node):
 
         tokens = line.split(',')
         # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
-        if len(tokens) < 7:
+        if len(tokens) < 10:
             self.get_logger().warn(f'Not enough tokens in line: {line}')
             return
 
         try:
-            # parse floats
-            status = float(tokens[0])  # we might not use it, but let's parse
+            status = float(tokens[0])
             yaw_deg = float(tokens[1])
             pitch_deg = float(tokens[2])
             roll_deg = float(tokens[3])
             ax = float(tokens[4])
             ay = float(tokens[5])
             az = float(tokens[6])
+            gx = float(tokens[7])
+            gy = float(tokens[8])
+            gz = float(tokens[9])
 
-            # Convert yaw/pitch/roll in degrees to quaternion (Z->Y->X)
             yaw_rad   = math.radians(yaw_deg)
             pitch_rad = math.radians(pitch_deg)
             roll_rad  = math.radians(roll_deg)
@@ -66,7 +67,6 @@ class Bno085ImuPublisher(Node):
             qy = cr * sp * cy + sr * cp * sy
             qz = cr * cp * sy - sr * sp * cy
 
-            # Construct and publish IMU message
             msg = Imu()
             msg.header.stamp = self.get_clock().now().to_msg()
             msg.header.frame_id = 'imu_link'
@@ -80,7 +80,9 @@ class Bno085ImuPublisher(Node):
             msg.linear_acceleration.y = ay
             msg.linear_acceleration.z = az
 
-            # We are not using angular_velocity in this example
+            msg.angular_velocity.x = gx
+            msg.angular_velocity.y = gy
+            msg.angular_velocity.z = gz
 
             self.publisher_.publish(msg)
 

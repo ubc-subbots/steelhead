@@ -52,8 +52,11 @@ void setReports(sh2_SensorId_t reportType, long report_interval) {
   if (! bno08x.enableReport(reportType, report_interval)) {
     Serial.println("Could not enable stabilized remote vector");
   }
-  if (! bno08x.enableReport(SH2_LINEAR_ACCELERATION, report_interval)) {
-    Serial.println("Could not enable accelerometer");
+  if (! bno08x.enableReport(SH2_ACCELEROMETER, report_interval)) {
+    Serial.println("Could not enable raw accelerometer");
+  }
+  if (! bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, report_interval)) {
+    Serial.println("Could not enable gyroscope");
   }
 }
 
@@ -113,41 +116,29 @@ void loop() {
     setReports(reportType, reportIntervalUs);
   }
 
-  float ax = 0, ay = 0, az = 0; 
+  static float ax = 0, ay = 0, az = 0; 
+  static float gx = 0, gy = 0, gz = 0;
   
   if (bno08x.getSensorEvent(&sensorValue)) {
-    // in this demo only one report type will be received depending on FAST_MODE define (above)
     switch (sensorValue.sensorId) {
       case SH2_ARVR_STABILIZED_RV:
         quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+        break;
       case SH2_GYRO_INTEGRATED_RV:
-        // faster (more noise?)
         quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
         break;
-      case SH2_LINEAR_ACCELERATION:
-        // Serial.print("\t\t\tAccelerometer - x: ");
-        // Serial.print(sensorValue.un.accelerometer.x);
-        // Serial.print(" y: ");
-        // Serial.print(sensorValue.un.accelerometer.y);
-        // Serial.print(" z: ");
-        // Serial.println(sensorValue.un.accelerometer.z);
-        // Serial.println("\n");
+      case SH2_ACCELEROMETER:
         ax = sensorValue.un.accelerometer.x;
         ay = sensorValue.un.accelerometer.y;
         az = sensorValue.un.accelerometer.z;
         break;
+      case SH2_GYROSCOPE_CALIBRATED:
+        gx = sensorValue.un.gyroscope.x;
+        gy = sensorValue.un.gyroscope.y;
+        gz = sensorValue.un.gyroscope.z;
+        break;
     }
-    // static long last = 0;
-    // long now = micros();
-    // Serial.print(now - last);             Serial.print("\t"); // time elapsed since last reading
-    // last = now; 
-    // Serial.print(sensorValue.status);     Serial.print("\t");  // This is accuracy in the range of 0 to 3
-    // Serial.print(ypr.yaw);                Serial.print("\t"); //yaw
-    // Serial.print(ypr.pitch);              Serial.print("\t"); //pitch
-    // Serial.println(ypr.roll); //roll
 
-    // Print everything on ONE line, comma-separated:
-    // Format: status,yaw,pitch,roll,ax,ay,az
     float yaw_deg   = ypr.yaw;
     float pitch_deg = ypr.pitch;
     float roll_deg  = ypr.roll;
@@ -165,8 +156,12 @@ void loop() {
     Serial.print(",");
     Serial.print(ay);
     Serial.print(",");
-    Serial.println(az);
+    Serial.print(az);
+    Serial.print(",");
+    Serial.print(gx);
+    Serial.print(",");
+    Serial.print(gy);
+    Serial.print(",");
+    Serial.println(gz);
   }
-  
-
 }
