@@ -86,7 +86,7 @@ def generate_launch_description():
         name='yolo_detector',
         parameters=[
             {'weights_path': 'yolov8n.pt'},
-            {'confidence_threshold': 0.5},
+            {'confidence_threshold': 0.1},
             {'inference_interval': 1.0}
         ],
         output='screen'
