@@ -57,7 +57,7 @@ Still from the build folder, make the project using parallel jobs; this will tak
 
     make -j7 # runs 7 jobs in parallel
 
-After the make command finishes successfully, install OpenCV as such. This will also take a bit, so grab some fresh air and go for a walk
+After the make command finishes successfully, install OpenCV as such. 
 
     sudo make install
 
@@ -69,7 +69,7 @@ We use VINS-Mono to localize our robot, which requires the Ceres solver as a dep
 First, pull the repository
 
     cd
-    git clone https://ceres-solver.googlesource.com/ceres-solver
+    git clone https://github.com/ceres-solver/ceres-solver.git
 
 Then, checkout the 1.14 build
 
@@ -92,7 +92,7 @@ Then, build it from source
     cmake ..
     make -j3
     make test # Optional, tests the build to make sure it went well
-    make install
+    sudo make install
 
 Ceres should now be installed!
 
