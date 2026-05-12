@@ -63,6 +63,39 @@ After the make command finishes successfully, install OpenCV as such. This will 
 
 OpenCV is now successfully installed!
 
+### Ceres Solver Installation
+We use VINS-Mono to localize our robot, which requires the Ceres solver as a dependency.
+
+First, pull the repository
+
+    cd
+    git clone https://ceres-solver.googlesource.com/ceres-solver
+
+Then, checkout the 1.14 build
+
+    cd ceres-solver
+    git checkout 1.14.x
+
+Install all of the dependencies (some of these may already be installed, that's fine)
+
+    sudo apt-get install cmake
+    sudo apt-get install libgoogle-glog-dev libgflags-dev
+    sudo apt-get install libatlas-base-dev
+    sudo apt-get install libeigen3-dev
+    sudo apt-get install libsuitesparse-dev
+    sudo apt-get install libboost-all-dev
+
+Then, build it from source
+    
+    mkdir build
+    cd build
+    cmake ..
+    make -j3
+    make test # Optional, tests the build to make sure it went well
+    make install
+
+Ceres should now be installed!
+
 ### ROS2 Dependencies
 Source the global ROS2 setup script in the terminal
 
