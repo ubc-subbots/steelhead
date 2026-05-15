@@ -89,11 +89,11 @@
     -->
 
     <base_link>base_link::base_link</base_link>
-    <neutrally_buoyant>0</neutrally_buoyant>
+    <neutrally_buoyant>1</neutrally_buoyant>
     <volume>0.01334</volume>
     <!-- more "realistic" values (similar to what we saw in the pool) -->
-    <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy>
-    <!-- <center_of_buoyancy>0.1 -0.062 0.0</center_of_buoyancy> -->
+    <!-- <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy> -->
+    <center_of_buoyancy>0.1 -0.062 0.0</center_of_buoyancy>
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
@@ -262,6 +262,17 @@
       <topic_name>/steelhead/state</topic_name>
       <gaussian_noise>0.01</gaussian_noise>
       <frame_name>odom</frame_name>
+      <xyz_offset>0 0 0</xyz_offset>
+      <rpy_offset>0 0 0</rpy_offset>
+    </plugin>
+    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <always_on>true</always_on>
+      <update_rate>50.0</update_rate>
+      <publish_odom_tf>false</publish_odom_tf>
+      <body_name>base_link::base_link</body_name>
+      <topic_name>/steelhead/state</topic_name>
+      <gaussian_noise>0.01</gaussian_noise>
+      <frame_name>world</frame_name>
       <xyz_offset>0 0 0</xyz_offset>
       <rpy_offset>0 0 0</rpy_offset>
     </plugin>

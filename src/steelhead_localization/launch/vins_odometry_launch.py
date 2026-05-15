@@ -20,6 +20,12 @@ def generate_launch_description():
         '..'
     )
 
+    support_path = os.path.join(
+        get_package_share_directory('steelhead_localization'),
+        'config',
+        'support_files'
+    )
+
     vins_estimator_node = Node(
         package='steelhead_localization',
         namespace='vins_estimator',
@@ -46,7 +52,24 @@ def generate_launch_description():
         }]
     )
 
+    pose_graph_node = Node(
+        package='steelhead_localization',
+        executable='pose_graph',
+        name='pose_graph',
+        namespace='pose_graph',
+        output='screen',
+        parameters=[{
+            'config_file': config_path,
+            'support_file': support_path,
+            'visualization_shift_x': 0,
+            'visualization_shift_y': 0,
+            'skip_cnt': 0,
+            'skip_dis': 0.0
+        }]
+    )
+
     return LaunchDescription([
         vins_estimator_node,
-        feature_tracker_node
+        feature_tracker_node,
+        pose_graph_node
     ])

@@ -31,10 +31,13 @@ include_directories(
     src/camera_model/include
     src/feature_tracker/src
     src/vins_estimator/src
+    src/pose_graph/src
     ${CERES_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
+
+######################## CAMERA MODEL ################################
 
 set(CAMERA_MODEL_SRC
     src/camera_model/src/chessboard/Chessboard.cc
@@ -63,6 +66,11 @@ add_executable(Calibration
 )
 target_link_libraries(Calibration camera_model)
 
+ament_export_include_directories(include src/camera_model/include)
+ament_export_libraries(camera_model)
+
+################################### FEATURE TRACKER ########################################
+
 add_executable(feature_tracker
     src/feature_tracker/src/feature_tracker_node.cpp
     src/feature_tracker/src/parameters.cpp
@@ -72,6 +80,8 @@ ament_target_dependencies(feature_tracker
     rclcpp rcpputils std_msgs sensor_msgs geometry_msgs cv_bridge image_transport
 )
 target_link_libraries(feature_tracker camera_model ${OpenCV_LIBS})
+
+################################### VINS ESTIMATOR ############################################
 
 add_executable(vins_estimator
     src/vins_estimator/src/estimator_node.cpp
@@ -96,11 +106,33 @@ ament_target_dependencies(vins_estimator
 )
 target_link_libraries(vins_estimator camera_model ${OpenCV_LIBS} ${CERES_LIBRARIES})
 
-ament_export_include_directories(include src/camera_model/include)
-ament_export_libraries(camera_model)
+################################### POSE GRAPH #####################################################
+
+add_executable(pose_graph
+    src/pose_graph/src/pose_graph_node.cpp
+    src/pose_graph/src/pose_graph.cpp
+    src/pose_graph/src/keyframe.cpp
+    src/pose_graph/src/utility/CameraPoseVisualization.cpp
+    src/pose_graph/src/ThirdParty/DBoW/BowVector.cpp
+    src/pose_graph/src/ThirdParty/DBoW/FBrief.cpp
+    src/pose_graph/src/ThirdParty/DBoW/FeatureVector.cpp
+    src/pose_graph/src/ThirdParty/DBoW/QueryResults.cpp
+    src/pose_graph/src/ThirdParty/DBoW/ScoringObject.cpp
+    src/pose_graph/src/ThirdParty/DUtils/Random.cpp
+    src/pose_graph/src/ThirdParty/DUtils/Timestamp.cpp
+    src/pose_graph/src/ThirdParty/DVision/BRIEF.cpp
+    src/pose_graph/src/ThirdParty/VocabularyBinary.cpp
+    )
+
+ament_target_dependencies(pose_graph rclcpp rcpputils std_msgs sensor_msgs visualization_msgs geometry_msgs nav_msgs tf2 tf2_ros cv_bridge image_transport)
+
+target_link_libraries(pose_graph camera_model ${OpenCV_LIBS} ${CERES_LIBRARIES}) 
+
+################################## INSTALL #######################################################
+
 ament_export_dependencies(std_msgs rclcpp OpenCV Ceres)
 
-install(TARGETS camera_model Calibration feature_tracker vins_estimator
+install(TARGETS camera_model Calibration feature_tracker vins_estimator pose_graph
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION lib/${PROJECT_NAME}

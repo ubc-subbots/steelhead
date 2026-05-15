@@ -50,11 +50,11 @@ def generate_launch_description():
         parameters=[config, {'use_sim_time': True}]
     )
 
-    # vins_odometry = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'vins_odometry_launch.py')
-    #     )
-    # )
+    vins_odometry = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'vins_odometry_launch.py')
+        )
+    )
 
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -108,7 +108,7 @@ def generate_launch_description():
     ld.add_action(pid_controller)
     ld.add_action(waypoint_marker)
     ld.add_action(predetermined_route)
-    # ld.add_action(vins_odometry)
+    ld.add_action(vins_odometry)
     ld.add_action(keyboard_teleop)
 
     return ld
