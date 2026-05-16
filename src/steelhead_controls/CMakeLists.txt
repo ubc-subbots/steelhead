@@ -176,7 +176,6 @@ install(PROGRAMS
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
   steelhead_controls/bno085_imu_publisher.py
-  steelhead_gazebo/yolo_detector.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
