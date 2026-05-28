@@ -10,7 +10,7 @@
 
     <light name="sun_z" type="directional">
       <cast_shadows>1</cast_shadows>
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 1.3 9 0 0 0</pose>
       <diffuse>0.4 0.4 0.4 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
@@ -27,7 +27,7 @@
       </spot>
     </light>
     <light name="sun_x-z" type="directional">
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 1.3 9 0 0 0</pose>
       <diffuse>0.4 0.4 0.4 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <direction>0.707107 0 -0.707107</direction>
@@ -40,7 +40,7 @@
       <cast_shadows>1</cast_shadows>
     </light>
     <light name="sun_-x-z" type="directional">
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 1.3 9 0 0 0</pose>
       <diffuse>0.4 0.4 0.4 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <direction>-0.707107 0 -0.707107</direction>
@@ -53,7 +53,7 @@
       <cast_shadows>1</cast_shadows>
     </light>
     <light name="sun_y-z" type="directional">
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 1.3 9 0 0 0</pose>
       <diffuse>0.4 0.4 0.4 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <direction>0 0.707107 -0.707107</direction>
@@ -66,7 +66,7 @@
       <cast_shadows>1</cast_shadows>
     </light>
     <light name="sun_-y-z" type="directional">
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 1.3 9 0 0 0</pose>
       <diffuse>0.4 0.4 0.4 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <direction>0 -0.707107 -0.707107</direction>
@@ -81,63 +81,63 @@
 
     <include>
       <uri>model://competition_slalom</uri>
-      <pose>5.3448 -0.0869 1 0 0 0</pose>
+      <pose>5.3448 1.2131 0 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://competition_gate</uri>
-      <pose>3.44451 -1.49134 2.5 0 0 3.13999</pose>
+      <pose>3.44451 -0.19134 1.5 0 0 3.13999</pose>
     </include>
 
     <include>
       <uri>model://steelhead_auv</uri>
-      <pose>0 -1.3 1 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://woollett_pool</uri>
-      <pose>10.0564 0.181011 0 0 0 0</pose>
+      <pose>10.0564 1.481011 -1 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://competition_cleanup</uri>
-      <pose>16.4801 0.415959 0.929642 0 0 -1.50365</pose>
+      <pose>16.4801 1.715959 -0.070358 0 0 -1.50365</pose>
     </include>
 
     <include>
       <uri>model://competition_cleanup_cup</uri>
-      <pose>16.2855 0.446378 0.919551 -3.14155 -8.2e-05 2.02433</pose>
+      <pose>16.2855 1.746378 -0.080449 -3.14155 -8.2e-05 2.02433</pose>
     </include>
 
     <include>
       <uri>model://competition_cleanup_spoon</uri>
-      <pose>16.5212 0.260732 0.878401 -0.255579 -0.280209 -1.73531</pose>
+      <pose>16.5212 1.560732 -0.121599 -0.255579 -0.280209 -1.73531</pose>
     </include>
 
     <include>
       <uri>model://competition_dropper</uri>
-      <pose>12.7324 -3.21414 0.382466 0 0 -1.04738</pose>
+      <pose>12.7324 -1.91414 -0.617534 0 0 -1.04738</pose>
     </include>
 
     <include>
       <uri>model://competition_octagon</uri>
-      <pose>15.1911 0.314284 2.47093 0 0 0</pose>
+      <pose>15.1911 1.614284 1.47093 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://competition_path</uri>
-      <pose>4.82476 -1.03022 0.540327 0 0 -1.27847</pose>
+      <pose>4.82476 0.26978 -0.459673 0 0 -1.27847</pose>
     </include>
 
     <include>
       <name>competition_pathmarker_2</name>
       <uri>model://competition_path</uri>
-      <pose>11.6845 -0.786482 0.540327 0 0 -2.54361</pose>
+      <pose>11.6845 0.513518 -0.459673 0 0 -2.54361</pose>
     </include>
 
     <include>
       <uri>model://competition_tagging</uri>
-      <pose>14.9023 -1.92346 1.11933 0 0 1.69616</pose>
+      <pose>14.9023 -0.62346 0.11933 0 0 1.69616</pose>
     </include>
   </world>
 </sdf>
