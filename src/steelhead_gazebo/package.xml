@@ -16,6 +16,7 @@
   <depend>gazebo_ros</depend>
   <depend>image_transport</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>rclpy</depend>

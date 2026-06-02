@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="steelhead_gate_world">
+    <!-- Basic physics & scene (Gazebo Classic / ODE) -->
+    <gravity>0 0 -9.81</gravity>
+    <physics name="ode" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.45 1</ambient>
+      <background>0.05 0.08 0.12 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Light -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Simple pool floor so things have depth reference -->
+    <model name="pool_floor">
+      <static>true</static>
+      <link name="floor">
+        <collision name="col">
+          <pose>0 0 -2 0 0 0</pose>
+          <geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry>
+          <surface><friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction></surface>
+        </collision>
+        <visual name="vis">
+          <pose>0 0 -2 0 0 0</pose>
+          <geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry>
+          <material><ambient>0.1 0.25 0.35 1</ambient><diffuse>0.1 0.35 0.5 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- RoboSub-style gate (3 boxes) -->
+    <model name="robosub_gate">
+      <static>true</static>
+      <!-- dimensions in meters -->
+      <!-- posts: 0.1 x 0.1 x 1.5, crossbar: 0.1 x 1.0 x 0.1 -->
+      <!-- place the gate center at x=5, z=-1 -->
+      <pose>5 0 -1 0 0 0</pose>
+
+      <!-- left post -->
+      <link name="left_post">
+        <pose>0 -0.55 0.75 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+
+      <!-- right post -->
+      <link name="right_post">
+        <pose>0 0.55 0.75 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 0.1 1.5</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+
+      <!-- crossbar -->
+      <link name="crossbar">
+        <pose>0 0 1.5 0 0 0</pose>
+        <collision name="c">
+          <geometry><box><size>0.1 1.1 0.1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.1 1.1 0.1</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Steelhead AUV (expects the model to be on your Gazebo model path) -->
+    <include>
+      <!-- Common guesses: model name "steelhead_auv" or "steelhead" in steelhead_gazebo/models -->
+      <uri>model://steelhead_auv</uri>
+      <pose>0 0 -1 0 0 0</pose>
+      <!-- If your model is named differently, change the URI accordingly -->
+    </include>
+
+    <!-- Helpful default camera -->
+<gui>
+  <camera name="user_camera">
+    <!-- x  y   z   roll pitch yaw -->
+    <pose>-6  0  1.0   0    0     0</pose>
+    <track_visual></track_visual>
+  </camera>
+</gui>
+
+  </world>
+</sdf>

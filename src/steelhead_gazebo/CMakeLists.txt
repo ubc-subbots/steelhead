@@ -24,10 +24,10 @@ find_package(gazebo_ros_pkgs REQUIRED)
 find_package(gazebo REQUIRED)
 find_package(gazebo_dev REQUIRED)
 find_package(gazebo_ros REQUIRED)
-find_package(gazebo_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
@@ -89,6 +89,24 @@ install(TARGETS
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+)
+
+add_library(torpedo_impulse_plugin SHARED
+  src/torpedo_impulse_plugin.cpp
+)
+target_include_directories(torpedo_impulse_plugin PUBLIC
+  include
+)
+ament_target_dependencies(torpedo_impulse_plugin
+  "gazebo_dev"
+  "gazebo_ros"
+  "rclcpp"
+  "std_msgs"
+)
+ament_export_libraries(torpedo_impulse_plugin)
+target_link_libraries(
+  torpedo_impulse_plugin
+  ${GAZEBO_LIBRARIES}
 )
 
 add_executable(underwater_camera 
@@ -210,7 +228,7 @@ ament_target_dependencies(
   "rclcpp"
   "rclcpp_components"
   "steelhead_interfaces"
-  "gazebo_msgs"
+  "std_msgs"
 )
 
 install(TARGETS actuators_command_simulation
@@ -226,6 +244,13 @@ install(TARGETS
 
 install(TARGETS
   steelhead_gazebo
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  torpedo_impulse_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
