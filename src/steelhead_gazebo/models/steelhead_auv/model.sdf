@@ -255,6 +255,13 @@
       <publish_odom_tf>false</publish_odom_tf>
       <update_rate>50</update_rate>
     </plugin>
+
+    <!-- this plugin assumes that z=0 is the surface of the water. -->
+    <plugin name="pressure_sensor" filename="libpressure_sensor.so">
+      <publish_topic>/steelhead/state/pressure_sensor</publish_topic>
+      <update_rate>50</update_rate>
+    </plugin>
+    
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
       <always_on>true</always_on>
       <update_rate>50.0</update_rate>

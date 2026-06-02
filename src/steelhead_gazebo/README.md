@@ -110,6 +110,16 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
 
 - `random_camera_plugin`: A Gazebo plugin which randomly moves the camera around for data collection (currently no guarantee the object is in view). Attach this to a camera in a .world file to use.
 
+- `ground_truth_sensor`: Plugin that publishes the location of the attached model.
+
+    ### Published Topics
+    - `/odom` (`steelhead_interfaces/msg/DetectionBoxArray`) : Position of the robot in world frame (using the Gazebo transform frame)
+
+- `pressure_sensor`: Plugin meant to mock the data coming from a pressure sensor, currently a BlueRobotics MS5837 onboard Steelhead.
+
+    ### Published Topics
+    - `state/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth will be the only thing mocked from this plugin, the others are rubbish. Importantly, this plugin assumes that z=0 is the surface of the water.
+
 ## Services 
 - `actuators_command_simulation` : A service for simulation actuators commands in Gazebo. Should run parallel to actuators_command in steelhead_simulation and accept the same inputs.
     ### Serviced Topics
@@ -120,6 +130,13 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
     - The service will respond with the status of whether or not writing the serial communication was successful or not.
      
 ## Worlds
+Note: For realistic simulations, its expected that the robot is placed at origin, and that the surface of the pool is at z=0. This is to make sure things like the pressure sensor simulates depth properly. In the future, when water physics are implemented, this standard can be relaxed.
+
+`competition.world`
+- A full simulation of the RoboSub competition layout.
+
+`prequalification.world`
+- World that simulates the conditions needed for the prequalification task.
 
 `cube.world` 
 - A simple world with the `cube` model.
