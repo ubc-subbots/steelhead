@@ -50,12 +50,6 @@ def generate_launch_description():
         parameters=[config, {'use_sim_time': True}]
     )
 
-    # vins_odometry = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'vins_odometry_launch.py')
-    #     )
-    # )
-
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'state_publisher_launch.py')
@@ -99,7 +93,6 @@ def generate_launch_description():
     ld.add_action(state_publisher)
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
-    # ld.add_action(vins_odometry)
     ld.add_action(base_link_tf_publisher)
 
     return ld
