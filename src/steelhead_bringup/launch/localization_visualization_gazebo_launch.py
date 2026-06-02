@@ -80,6 +80,18 @@ def generate_launch_description():
         )
     )
 
+    yolo_detector = Node(
+        package='steelhead_gazebo',
+        executable='yolo_detector.py',
+        name='yolo_detector',
+        parameters=[
+            {'weights_path': 'yolov8n.pt'},
+            {'confidence_threshold': 0.1},
+            {'inference_interval': 1.0}
+        ],
+        output='screen'
+    )
+
     # there's some small mis matches with our physical model and simulation which results in a bunch of errors
     # in the terminal despite it working as expected. this a bandaid fix that does nothing but stops the false errors
     base_link_tf_publisher = Node(
@@ -99,6 +111,7 @@ def generate_launch_description():
     ld.add_action(state_publisher)
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
+    ld.add_action(yolo_detector)
     # ld.add_action(vins_odometry)
     ld.add_action(base_link_tf_publisher)
 
