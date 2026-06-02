@@ -68,6 +68,31 @@ install(TARGETS
   RUNTIME DESTINATION bin
 )
 
+add_library(pressure_sensor SHARED
+  src/pressure_sensor.cpp
+)
+target_include_directories(pressure_sensor PUBLIC
+  include
+)
+ament_target_dependencies(pressure_sensor
+  "gazebo_dev"
+  "gazebo_ros"
+  "steelhead_interfaces"
+)
+ament_export_libraries(gpressure_sensor)
+target_link_libraries(
+  pressure_sensor
+  ${geometry_msgs_LIBRARIES} 
+  ${GAZEBO_LIBRARIES}
+)
+
+install(TARGETS
+  pressure_sensor
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
 add_library(thruster_driver_plugin SHARED
   src/thruster_driver_plugin.cpp
 )
