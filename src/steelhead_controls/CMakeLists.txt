@@ -62,6 +62,14 @@ target_include_directories(actuators_command PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+add_executable(hover_at_depth
+  src/hover_at_depth.cpp
+)
+target_include_directories(hover_at_depth PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 ament_target_dependencies(
   thrust_allocator
   "rclcpp"
@@ -113,6 +121,19 @@ ament_target_dependencies(
 install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
+
+ament_target_dependencies(
+  hover_at_depth
+  "rclcpp"
+  "rclcpp_components"
+  "steelhead_interfaces"
+  "geometry_msgs"
+  "sensor_msgs"
+)
+install(TARGETS hover_at_depth
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 
 add_library(steelhead_controls SHARED
