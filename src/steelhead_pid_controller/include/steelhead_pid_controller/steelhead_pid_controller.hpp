@@ -59,6 +59,8 @@ private:
     PID pid_force_x;
     PID pid_force_y;
     PID pid_force_z;
+    PID pid_roll;
+    PID pid_pitch;
     PID pid_yaw;
 };
 }  // namespace steelhead_pid_controller

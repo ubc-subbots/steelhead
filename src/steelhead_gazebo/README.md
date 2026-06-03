@@ -118,7 +118,7 @@ Run `ros2 launch steelhead_gazebo train_yolo_launch.py` to start training the mo
 - `pressure_sensor`: Plugin meant to mock the data coming from a pressure sensor, currently a BlueRobotics MS5837 onboard Steelhead.
 
     ### Published Topics
-    - `state/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth will be the only thing mocked from this plugin, the others are rubbish. Importantly, this plugin assumes that z=0 is the surface of the water.
+    - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth will be the only thing mocked from this plugin, the others are rubbish. Importantly, this plugin assumes that z=0 is the surface of the water.
 
 ## Services 
 - `actuators_command_simulation` : A service for simulation actuators commands in Gazebo. Should run parallel to actuators_command in steelhead_simulation and accept the same inputs.

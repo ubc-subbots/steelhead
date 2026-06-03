@@ -105,7 +105,22 @@ To run the Trajectory Generator node, run
 
   ### Notes
 
-  - The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
+  - !TODO The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
+
+- `hover_at_depth` : A node that keeps the robot upright at a certain depth from the surface of the water.
+
+  ### Subscribed Topics
+
+  - `drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
+  - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth is the only value used.
+
+  ### Published Topics
+
+  - `controls/input_pose` (`geometry_msgs/Pose`) : Error to target pose for the PID controller.
+
+  ### Notes
+
+  - A target depth to maintain is expected as input to the node, but a default value of 0.5m will be assigned if not specified.
 
 ## Services
 
