@@ -38,7 +38,7 @@ To run just the necessities for teleop Gazebop simulation, run
 
         ros2 launch steelhead_gazebo barebones_teleop_launch.py
 
-This will launch the Gazebo simulation using competition.world and steelhead_auv, the thruster allocator, and keyboard teleop.
+This will launch the Gazebo simulation using competition.world, the thruster allocator, and keyboard teleop.
 
 ### Waypoint Marker and PID Controller
 To run the waypoint marker test
@@ -152,6 +152,12 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 
 `lenabox`
 - A cube with the Lena test image as its texture.
+
+`steelhead_auv_ideal`
+- Steelhead AUV with ideal hydrodynamics (neutrally buoyant and naturally upright)
+
+`steelhead_auv_real`
+- Steelhead AUV with hydrodynamics more similar to observed (negatively buoyant and naturally tilted)
 
 ##  Importing Models From SolidWorks 
 

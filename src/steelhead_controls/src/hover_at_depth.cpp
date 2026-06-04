@@ -12,17 +12,20 @@ namespace steelhead_controls
     {
         this->declare_parameter<float>("depth", 0.5);
         this->get_parameter("depth", hover_depth_);
-        RCLCPP_INFO(this->get_logger(), "Hovering at %fm below surface", hover_depth_);
+        if (hover_depth_ < 0.0) hover_depth_ = 0.0;
+        RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at %fm below surface." : "Negative or 0.0 depth provided, only adjusting orientation.", hover_depth_);
 
         this->declare_parameter<bool>("adjust_yaw", false);
         this->get_parameter("adjust_yaw", adjust_yaw_);
         RCLCPP_INFO(this->get_logger(), adjust_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
+        // If no adjustments are published, adjustments_ is zeroed out and nothing is applied
+        adjustments_ = std::make_shared<geometry_msgs::msg::Wrench>();
+
         pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("controls/input_pose", 10);
         imu_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>("drivers/imu/out", 10, std::bind(&HoverAtDepth::imu_callback, this, _1));
-        pressure_subscription_ = this->create_subscription<steelhead_interfaces::msg::PressureSensor>("drivers/pressure_sensor", 10, std::bind(&HoverAtDepth::depth_callback, this, _1));
-
-        RCLCPP_INFO(this->get_logger(), "Hover node successfully started!");
+        if (hover_depth_) pressure_subscription_ = this->create_subscription<steelhead_interfaces::msg::PressureSensor>("drivers/pressure_sensor", 10, std::bind(&HoverAtDepth::depth_callback, this, _1));
+        wrench_subscription_ = this->create_subscription<geometry_msgs::msg::Wrench>("controls/hover_adjust", 10, std::bind(&HoverAtDepth::wrench_callback, this, _1));
     }
 
     void HoverAtDepth::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg)
@@ -37,40 +40,42 @@ namespace steelhead_controls
         publish_error_to_target();
     }
 
+    void HoverAtDepth::wrench_callback(const geometry_msgs::msg::Wrench::SharedPtr msg)
+    {
+        adjustments_ = msg;
+    }
+
     void HoverAtDepth::publish_error_to_target()
     {
         // !TODO replace with a ros2 message filter so we don't poll on callback
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
             geometry_msgs::msg::Pose pose;
-            pose.position.z = pressure_sensor_->depth - hover_depth_;
+            if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
+            pose.position.x = adjustments_->force.x;
+            pose.position.y = adjustments_->force.y;
         
-            if (adjust_yaw_) {
-                pose.orientation.w = imu_->orientation.w;
-                pose.orientation.x = -imu_->orientation.x;
-                pose.orientation.y = -imu_->orientation.y;
-                pose.orientation.z = -imu_->orientation.z;
-            } else {
-                tf2::Quaternion q_current(
-                    imu_->orientation.x,
-                    imu_->orientation.y,
-                    imu_->orientation.z,
-                    imu_->orientation.w
-                );
-                
-                double roll, pitch, yaw;
-                tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
-                
-                tf2::Quaternion q_target;
-                q_target.setRPY(0.0, 0.0, yaw);
-                
-                tf2::Quaternion q_error = q_target * q_current.inverse();
-                q_error.normalize();
-                
-                pose.orientation.w = q_error.getW();
-                pose.orientation.x = q_error.getX();
-                pose.orientation.y = q_error.getY();
-                pose.orientation.z = q_error.getZ();
-            }
+            tf2::Quaternion q_current(
+                imu_->orientation.x,
+                imu_->orientation.y,
+                imu_->orientation.z,
+                imu_->orientation.w
+            );
+
+            double roll, pitch, current_yaw;
+            tf2::Matrix3x3(q_current).getRPY(roll, pitch, current_yaw);
+
+            double target_yaw = adjust_yaw_ ? 0.0 : current_yaw - adjustments_->torque.z;
+
+            tf2::Quaternion q_target;
+            q_target.setRPY(0.0, 0.0, target_yaw);
+
+            tf2::Quaternion q_error = q_target * q_current.inverse();
+            q_error.normalize();
+
+            pose.orientation.x = q_error.x();
+            pose.orientation.y = q_error.y();
+            pose.orientation.z = q_error.z();
+            pose.orientation.w = q_error.w();
             
             pose_publisher_->publish(pose);
         }

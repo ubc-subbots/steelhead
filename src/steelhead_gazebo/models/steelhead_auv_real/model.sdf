@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='steelhead_auv'>
+  <model name='steelhead_auv_real'>
     <!-- 
 
       Steelhead AUV components
@@ -91,9 +91,7 @@
     <base_link>base_link::base_link</base_link>
     <neutrally_buoyant>0</neutrally_buoyant>
     <volume>0.01334</volume>
-    <!-- more "realistic" values (similar to what we saw in the pool) -->
     <center_of_buoyancy>0.1 -0.062 -0.01</center_of_buoyancy>
-    <!-- <center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy> -->
     <hydrodynamic_model>
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>

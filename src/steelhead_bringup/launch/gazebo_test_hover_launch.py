@@ -23,10 +23,13 @@ def generate_launch_description():
         )
     )
 
-    keyboard_teleop = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'keyboard_teleop_launch.py')
-        )
+    keyboard_teleop = Node(
+        name='keyboard_teleop',
+        namespace='/steelhead/teleop',
+        package='steelhead_teleop',
+        executable='keyboard_teleop',
+        output='screen',
+        parameters=[{'publish_topic': "/steelhead/controls/hover_adjust"}],
     )
 
     hover_script = IncludeLaunchDescription(
