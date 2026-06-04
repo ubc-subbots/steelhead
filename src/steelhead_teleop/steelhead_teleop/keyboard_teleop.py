@@ -14,12 +14,15 @@ class KeyboardTeleop(Node):
     def __init__(self):
         super().__init__('keyboard_teleop')
 
+        self.declare_parameter('publish_topic', '/steelhead/controls/input_forces')
+        publish_topic = self.get_parameter('publish_topic').get_parameter_value().string_value
+
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
         self.torque_mags = [15.0, 15.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
             Wrench,
-            '/steelhead/controls/input_forces',
+            publish_topic,
             10
         )
 
