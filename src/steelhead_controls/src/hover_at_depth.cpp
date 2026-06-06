@@ -53,6 +53,7 @@ namespace steelhead_controls
             if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
             pose.position.x = adjustments_->force.x;
             pose.position.y = adjustments_->force.y;
+            if (adjustments_->force.z) pose.position.z = adjustments_->force.z;
         
             tf2::Quaternion q_current(
                 imu_->orientation.x,

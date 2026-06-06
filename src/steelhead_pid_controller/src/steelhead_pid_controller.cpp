@@ -81,6 +81,8 @@ namespace steelhead_pid_controller
     pid_pitch.load(pitch_p, pitch_i, pitch_d);
     pid_yaw.load(yaw_p, yaw_i, yaw_d);
 
+    param_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&PidController::parametersCallback, this, _1));
+
     RCLCPP_INFO(this->get_logger(), "PID Controller successfully started!");
   }
 
@@ -143,6 +145,37 @@ namespace steelhead_pid_controller
     wrenchOut.torque.y = torqueY;
     wrenchOut.torque.z = torqueZ;
     pub_->publish(wrenchOut);
+  }
+
+  rcl_interfaces::msg::SetParametersResult PidController::parametersCallback(const std::vector<rclcpp::Parameter> &parameters)
+  {
+    rcl_interfaces::msg::SetParametersResult result;
+    result.successful = true;
+    result.reason = "success";
+
+    for (const auto &param : parameters)
+    {
+      if (param.get_name() == "force_x_p") pid_force_x.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_x_i") pid_force_x.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_x_d") pid_force_x.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_y_p") pid_force_y.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_y_i") pid_force_y.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_y_d") pid_force_y.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_z_p") pid_force_z.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_z_i") pid_force_z.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_z_d") pid_force_z.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_roll_p") pid_roll.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_roll_i") pid_roll.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_roll_d") pid_roll.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_pitch_p") pid_pitch.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_pitch_i") pid_pitch.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_pitch_d") pid_pitch.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_yaw_p") pid_yaw.Kp = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_yaw_i") pid_yaw.Ki = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_yaw_d") pid_yaw.Kd = static_cast<float>(param.as_double());
+    }
+
+    return result;
   }
 }  // namespace steelhead_pid_controller
 

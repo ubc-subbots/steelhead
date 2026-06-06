@@ -43,11 +43,25 @@ def generate_launch_description():
             os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
         )
     )
+
+    rqt_reconfigure_node = Node(
+        name='rqt_reconfigure',
+        package='rqt_reconfigure',
+        executable='rqt_reconfigure',
+        output='screen',
+        arguments=['/steelhead/controls/steelhead_pid_controller']
+    )
+
+    delayed_rqt = TimerAction(
+        period=15.0,
+        actions=[rqt_reconfigure_node]
+    )
     
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
+    ld.add_action(delayed_rqt) # let gazebo spin up
 
     return ld
