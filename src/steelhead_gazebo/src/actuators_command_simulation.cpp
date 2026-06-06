@@ -56,7 +56,8 @@ namespace steelhead_gazebo
       std::string sdf_content((std::istreambuf_iterator<char>(sdf_file)), std::istreambuf_iterator<char>());
       request->xml = sdf_content;
       request->robot_namespace = "steelhead_gazebo"; 
-      request->initial_pose.position.x = 0.0;
+      request->reference_frame = "steelhead_auv";
+      request->initial_pose.position.x = 0.2;
       request->initial_pose.position.y = 0.0;
       request->initial_pose.position.z = -0.2;
 
