@@ -54,6 +54,7 @@ namespace steelhead_gazebo
       auto request = std::make_shared<gazebo_msgs::srv::SpawnEntity::Request>();
       std::ifstream sdf_file(ament_index_cpp::get_package_share_directory("steelhead_gazebo") + "/gazebo/models/steelhead_torpedo/model.sdf");
       std::string sdf_content((std::istreambuf_iterator<char>(sdf_file)), std::istreambuf_iterator<char>());
+      request->name = "torpedo_" + std::to_string(this->now().nanoseconds());
       request->xml = sdf_content;
       request->robot_namespace = "steelhead_gazebo"; 
       request->reference_frame = "steelhead_auv";
@@ -66,9 +67,24 @@ namespace steelhead_gazebo
       response->succeeded = true;
   }
 
+  // right now, we are only using the claw for the dropper task. !TODO add claw functionality
   void ActuatorsCommandSimulation::handleClaw(std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response> response) {
-      RCLCPP_INFO(this->get_logger(), "Toggling Claw");
-      // TODO simulate a claw in gazebo
+      RCLCPP_INFO(this->get_logger(), "Toggling Claw / Dropping Marker");
+
+      // load SDF content from a file
+      auto request = std::make_shared<gazebo_msgs::srv::SpawnEntity::Request>();
+      std::ifstream sdf_file(ament_index_cpp::get_package_share_directory("steelhead_gazebo") + "/gazebo/models/steelhead_dropper_marker/model.sdf");
+      std::string sdf_content((std::istreambuf_iterator<char>(sdf_file)), std::istreambuf_iterator<char>());
+      request->name = "dropper_" + std::to_string(this->now().nanoseconds());
+      request->xml = sdf_content;
+      request->robot_namespace = "steelhead_gazebo"; 
+      request->reference_frame = "steelhead_auv";
+      request->initial_pose.position.x = 0.0;
+      request->initial_pose.position.y = 0.0;
+      request->initial_pose.position.z = -0.2;
+
+      // send request
+      auto result = spawner_client_->async_send_request(request);
       response->succeeded = true;
   }
 } // namespace steelhead_gazebo
