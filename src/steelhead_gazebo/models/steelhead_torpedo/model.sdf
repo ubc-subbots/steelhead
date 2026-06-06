@@ -4,7 +4,7 @@
     <link name='torpedo'>
       <pose>-0 0 0 0 -0 0</pose>
       <inertial>
-        <mass>0.000001</mass>
+        <mass>0.1</mass>
         <inertia>
           <ixx>0.00030988</ixx>
           <ixy>5.5564e-08</ixy>
@@ -15,7 +15,7 @@
         </inertia>
       </inertial>
 
-      <gravity>1</gravity>
+      <gravity>0</gravity>
 
       <!-- Visual Data -->
       <visual name='visual'>
@@ -55,5 +55,15 @@
     </link>
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
+
+    <plugin name="torpedo_plugin" filename="libtorpedo_plugin.so">
+      <ros>
+        <namespace>/torpedo</namespace>
+      </ros>
+      <link_name>torpedo</link_name>
+      <initial_force>50</initial_force>
+      <force_duration>0.05</force_duration>
+      <lifetime>15.0</lifetime>
+    </plugin>
   </model>
 </sdf>
