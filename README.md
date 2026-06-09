@@ -1,6 +1,6 @@
 # Steelhead AUV
 
-This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
+This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Radxa X4 on board the Steelhead AUV.
 
 ## DISCLAIMER
 

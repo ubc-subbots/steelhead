@@ -3,6 +3,8 @@
 
 This package is for creating a pipeline which can autonomously manage the states and actions of the AUV. The pipeline can be configured to run a defined sequence of actions, given as pipeline types, moving to the next action in a sequence when a stopping condition is reached. The nodes in the current running pipeline type can publish feedback which is able to trigger the stopping condition and ultimatley the transition to the next action.
 
+!TODO: The feedback topic would be better suited as a service, as it provides heavy overhead as a publisher/subscriber.
+
 ## Usage
 
 To define a pipeline type, follow the syntax given in `example.yaml` in the `config` folder which contains the parameters for the `pipeline_manager`. After defining your pipeline type, you have to add it to `PipelineType.msg` in `steelhead_interfaces` for you to be able to configure and run it. When naming a pipeline config file, you must have the name of the pipeline type match the name of the yaml (i.e after defining `example.yaml`, you have to add `string TYPE_EXAMPLE = "example"` to `PipelineType.msg`). To define a pipeline sequence, follow the syntax given in `example_sequence.yaml` in the `config` folder. The values for the sequences should all be pipeline types defined in `PipelineType.msg`. Next you can launch the pipeline as follows
