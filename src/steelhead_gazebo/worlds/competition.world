@@ -116,7 +116,7 @@
 
     <include>
       <uri>model://competition_dropper</uri>
-      <pose>12.7324 -1.91414 -1.867534 0 0 -1.04738</pose>
+      <pose>12.7869 -1.3222 -1.867534 0 0 2.10738</pose>
     </include>
 
     <include>
