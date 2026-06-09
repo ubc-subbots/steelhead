@@ -81,12 +81,7 @@
 
     <include>
       <uri>model://competition_slalom</uri>
-      <pose>5.3448 1.2131 -1.25 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_gate</uri>
-      <pose>3.44451 -0.19134 0.25 0 0 3.13999</pose>
+      <pose>1.75 0 -1.25 0 0 0</pose>
     </include>
 
     <include>
@@ -96,48 +91,7 @@
 
     <include>
       <uri>model://woollett_pool</uri>
-      <pose>10.0564 1.481011 -2.25 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_cleanup</uri>
-      <pose>16.4801 1.715959 -1.320358 0 0 -1.50365</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_cleanup_cup</uri>
-      <pose>16.2855 1.746378 -1.330449 -3.14155 -8.2e-05 2.02433</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_cleanup_spoon</uri>
-      <pose>16.5212 1.560732 -1.371599 -0.255579 -0.280209 -1.73531</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_dropper</uri>
-      <pose>12.7324 -1.91414 -1.867534 0 0 -1.04738</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_octagon</uri>
-      <pose>15.1911 1.614284 0 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_path</uri>
-      <pose>4.82476 0.26978 -1.709673 0 0 -1.27847</pose>
-    </include>
-
-    <include>
-      <name>competition_pathmarker_2</name>
-      <uri>model://competition_path</uri>
-      <pose>11.6845 0.513518 -1.709673 0 0 -2.54361</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_tagging</uri>
-      <pose>14.9023 -0.62346 -1.13067 0 0 1.69616</pose>
+      <pose>0 1.481011 -2.25 0 0 0</pose>
     </include>
   </world>
 </sdf>

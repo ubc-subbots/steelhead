@@ -105,16 +105,6 @@
     </include>
 
     <include>
-      <uri>model://competition_cleanup_cup</uri>
-      <pose>16.2855 1.746378 -1.330449 -3.14155 -8.2e-05 2.02433</pose>
-    </include>
-
-    <include>
-      <uri>model://competition_cleanup_spoon</uri>
-      <pose>16.5212 1.560732 -1.371599 -0.255579 -0.280209 -1.73531</pose>
-    </include>
-
-    <include>
       <uri>model://competition_dropper</uri>
       <pose>12.7869 -1.3222 -1.867534 0 0 2.10738</pose>
     </include>
