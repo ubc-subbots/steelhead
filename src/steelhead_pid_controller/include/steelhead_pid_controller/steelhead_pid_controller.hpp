@@ -25,9 +25,11 @@ private:
 
     void control_loop();
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr sub_;
-
     rclcpp::Publisher<geometry_msgs::msg::Wrench>::SharedPtr pub_;
-    geometry_msgs::msg::Pose::SharedPtr cur_pose ;
+    geometry_msgs::msg::Pose::SharedPtr cur_pose;
+
+    rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr param_callback_handle_;
+    rcl_interfaces::msg::SetParametersResult parametersCallback(const std::vector<rclcpp::Parameter> &parameters);
 
     std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
     rclcpp::TimerBase::SharedPtr control_loop_timer_;
@@ -59,6 +61,8 @@ private:
     PID pid_force_x;
     PID pid_force_y;
     PID pid_force_z;
+    PID pid_roll;
+    PID pid_pitch;
     PID pid_yaw;
 };
 }  // namespace steelhead_pid_controller

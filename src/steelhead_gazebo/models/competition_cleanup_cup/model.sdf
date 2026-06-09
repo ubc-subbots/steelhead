@@ -28,38 +28,5 @@
       </visual>
     </link>
 
-    <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
-    
-    <base_link>base_link</base_link>
-    
-    <neutrally_buoyant>0</neutrally_buoyant>
-    
-    <volume>0.0009</volume>
-    
-    <center_of_buoyancy>0.0 0.0 -0.083</center_of_buoyancy>
-
-    <hydrodynamic_model>
-      <scalingBuoyancy>1.0</scalingBuoyancy>
-      <scalingDamping>1.0</scalingDamping>
-      <scalingAddedMass>1.0</scalingAddedMass>
-
-      <added_mass>
-        0.9 0 0 0 0 0
-        0 0.9 0 0 0 0
-        0 0 0.9 0 0 0
-        0 0 0 0.002 0 0
-        0 0 0 0 0.002 0
-        0 0 0 0 0 0.002
-      </added_mass>
-
-      <linear_damping>
-        -5.0 -5.0 -5.0 -1.0 -1.0 -1.0
-      </linear_damping>
-
-      <quadratic_damping>
-        -10.0 -10.0 -10.0 -2.0 -2.0 -2.0
-      </quadratic_damping>
-    </hydrodynamic_model>
-
   </model>
 </sdf>

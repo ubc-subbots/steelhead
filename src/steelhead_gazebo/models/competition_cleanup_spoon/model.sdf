@@ -2,29 +2,6 @@
 <sdf version='1.7'>
   <model name='competition_cleanup_spoon'>
     <static>false</static>
-    <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
-    <neutrally_buoyant>0</neutrally_buoyant>
-    <volume>0.01334</volume>
-    <center_of_buoyancy>0.1 -0.062 -0.0</center_of_buoyancy>
-    <hydrodynamic_model>
-      <scalingBuoyancy>0.93</scalingBuoyancy>
-      <scalingDamping>1.0</scalingDamping>
-      <scalingAddedMass>0.01</scalingAddedMass>
-      <added_mass>
-        6.15014738  0.06685961  0.72507929  0.01407364  0.80638021 -0.51958879
-        0.23572914 19.30146549  1.90317065 -0.60248891  0.02939782 -0.02135169
-        0.0118428   0.19716241 32.1523071   1.73426368 -0.08577274  0.17025842
-        -0.02377885 -0.7641457   1.81954024  0.54185864 -0.00732747  0.01462377
-        0.66583002 -0.02091127 -0.12232994 -0.00613007  0.3035216  -0.04057885
-        -0.58639716  0.08093335 -0.11921726 -0.00848712 -0.07966262  0.42923905
-      </added_mass>
-      <linear_damping>
-          -0.2229119791 -1.105547605 -0.2472084207 -0.02229119791 -0.1105547605 -0.02472084207
-      </linear_damping>
-      <quadratic_damping>
-          -59.75066625 -71.13459739 -67.099009 -5.975066625 -7.113459739 -6.7099009
-      </quadratic_damping>
-    </hydrodynamic_model>
     <link name='base_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
