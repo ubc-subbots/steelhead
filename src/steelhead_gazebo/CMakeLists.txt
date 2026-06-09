@@ -187,6 +187,15 @@ ament_target_dependencies(smooth_camera_plugin
 ament_export_libraries(smooth_camera_plugin)
 target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
 
+add_library(torpedo_plugin SHARED src/torpedo_plugin.cpp)
+target_include_directories(torpedo_plugin PUBLIC
+  ${gazebo_dev_INCLUDE_DIRS}
+)
+target_link_libraries(torpedo_plugin
+  ${gazebo_dev_LIBRARIES}
+)
+ament_target_dependencies(torpedo_plugin gazebo_ros rclcpp)
+
 rclcpp_components_register_nodes(steelhead_gazebo "steelhead_gazebo::UnderwaterCamera")
 
 target_compile_definitions(steelhead_gazebo
@@ -280,6 +289,12 @@ install(TARGETS
 
 install(TARGETS
   smooth_camera_plugin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS torpedo_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

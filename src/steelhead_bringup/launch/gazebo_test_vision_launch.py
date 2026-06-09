@@ -24,7 +24,7 @@ def generate_launch_description():
     )
 
     rviz_config_file = os.path.join(
-        get_package_share_directory('steelhead_bringup'), 'config', 'localization_visualization.rviz')
+        get_package_share_directory('steelhead_bringup'), 'config', 'gazebo_test.rviz')
 
     rviz = Node(
         package='rviz2',
@@ -86,6 +86,18 @@ def generate_launch_description():
         output='screen'
     )
 
+    hover_script = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'hover_at_depth_launch.py')
+        )
+    )
+
+    pid_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+        )
+    )
+
     # there's some small mis matches with our physical model and simulation which results in a bunch of errors
     # in the terminal despite it working as expected. this a bandaid fix that does nothing but stops the false errors
     base_link_tf_publisher = Node(
@@ -106,7 +118,8 @@ def generate_launch_description():
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
     ld.add_action(yolo_detector)
-    # ld.add_action(vins_odometry)
+    ld.add_action(hover_script)
+    ld.add_action(pid_controller)
     ld.add_action(base_link_tf_publisher)
 
     return ld

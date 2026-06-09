@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='steelhead_auv_ideal'>
+  <model name='steelhead_auv'>
     <!-- 
 
       Steelhead AUV components
