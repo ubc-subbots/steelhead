@@ -197,6 +197,7 @@ install(PROGRAMS
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
   steelhead_controls/bno085_imu_publisher.py
+  steelhead_controls/ms5837_pressure_sensor_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
