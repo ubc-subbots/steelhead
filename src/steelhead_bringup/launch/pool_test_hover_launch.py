@@ -64,6 +64,17 @@ def generate_launch_description():
         namespace="steelhead"
     )
 
+    delay_hover = TimerAction(
+        period=10.0,
+        actions=[hover]
+    )
+
+    pressure_sensor = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'pressure_sensor_publisher_launch.py')
+        )
+    )
+
     pid_teleop = Node(
         name='keyboard_teleop',
         namespace='/steelhead/teleop',
@@ -77,8 +88,8 @@ def generate_launch_description():
     ld.add_action(imu)
     ld.add_action(cameras)
     ld.add_action(thrust_allocator)
-    ld.add_action(hover)
-    # ld.add_action(pressure_sensor)
+    ld.add_action(delay_hover) # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
+    ld.add_action(pressure_sensor)
     ld.add_action(pid_teleop)
     
     return ld
