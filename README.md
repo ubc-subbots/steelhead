@@ -1,6 +1,6 @@
 # Steelhead AUV
 
-This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Jetson TX2 on board the Steelhead AUV.
+This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Radxa X4 on board the Steelhead AUV.
 
 ## DISCLAIMER
 
@@ -116,6 +116,10 @@ Here are some tips to be aware of when developing on this repository and when de
 If you'd like, add these aliases to the bottom of your .bashrc
 
 ```
+alias setup='nano ~/.bashrc'
+alias gzkill='killall -9 gzserver; killall -9 gzclient'
+alias open='explorer.exe'
 alias build='colcon build && source install/setup.bash' # clean build
 alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
+alias run='ros2 launch steelhead_bringup barebones_gazebo_launch.py'
 ```

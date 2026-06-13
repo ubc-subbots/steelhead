@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="default">
+    <gravity>0 0 -9.81</gravity>
+    <fluid_density>1000.00</fluid_density>
+    <physics name="fast_simulation" type="ode">
+      <max_step_size>0.01</max_step_size>
+      <real_time_update_rate>100</real_time_update_rate>
+    </physics>
+
+    <light name="sun_z" type="directional">
+      <cast_shadows>1</cast_shadows>
+      <pose>0 1.3 7.75 0 0 0</pose>
+      <diffuse>0.4 0.4 0.4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0 0 1</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <light name="sun_x-z" type="directional">
+      <pose>0 1.3 7.75 0 0 0</pose>
+      <diffuse>0.4 0.4 0.4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>0.707107 0 -0.707107</direction>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>1</cast_shadows>
+    </light>
+    <light name="sun_-x-z" type="directional">
+      <pose>0 1.3 7.75 0 0 0</pose>
+      <diffuse>0.4 0.4 0.4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.707107 0 -0.707107</direction>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>1</cast_shadows>
+    </light>
+    <light name="sun_y-z" type="directional">
+      <pose>0 1.3 7.75 0 0 0</pose>
+      <diffuse>0.4 0.4 0.4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>0 0.707107 -0.707107</direction>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>1</cast_shadows>
+    </light>
+    <light name="sun_-y-z" type="directional">
+      <pose>0 1.3 7.75 0 0 0</pose>
+      <diffuse>0.4 0.4 0.4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>0 -0.707107 -0.707107</direction>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>1</cast_shadows>
+    </light>
+
+    <include>
+      <uri>model://competition_slalom</uri>
+      <pose>1.75 0 -1.25 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://steelhead_auv_real</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://woollett_pool</uri>
+      <pose>0 1.481011 -2.25 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

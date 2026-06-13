@@ -68,6 +68,31 @@ install(TARGETS
   RUNTIME DESTINATION bin
 )
 
+add_library(pressure_sensor SHARED
+  src/pressure_sensor.cpp
+)
+target_include_directories(pressure_sensor PUBLIC
+  include
+)
+ament_target_dependencies(pressure_sensor
+  "gazebo_dev"
+  "gazebo_ros"
+  "steelhead_interfaces"
+)
+ament_export_libraries(gpressure_sensor)
+target_link_libraries(
+  pressure_sensor
+  ${geometry_msgs_LIBRARIES} 
+  ${GAZEBO_LIBRARIES}
+)
+
+install(TARGETS
+  pressure_sensor
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
 add_library(thruster_driver_plugin SHARED
   src/thruster_driver_plugin.cpp
 )
@@ -181,6 +206,15 @@ ament_target_dependencies(smooth_camera_plugin
 ament_export_libraries(smooth_camera_plugin)
 target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
 
+add_library(torpedo_plugin SHARED src/torpedo_plugin.cpp)
+target_include_directories(torpedo_plugin PUBLIC
+  ${gazebo_dev_INCLUDE_DIRS}
+)
+target_link_libraries(torpedo_plugin
+  ${gazebo_dev_LIBRARIES}
+)
+ament_target_dependencies(torpedo_plugin gazebo_ros rclcpp)
+
 rclcpp_components_register_nodes(steelhead_gazebo "steelhead_gazebo::UnderwaterCamera")
 
 target_compile_definitions(steelhead_gazebo
@@ -274,6 +308,12 @@ install(TARGETS
 
 install(TARGETS
   smooth_camera_plugin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS torpedo_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
