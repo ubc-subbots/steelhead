@@ -132,7 +132,7 @@ namespace steelhead_pid_controller
     float forceY = pid_force_y.update(pos_y_error, dt);
     float forceZ = pid_force_z.update(pos_z_error, dt);
     float torqueX = pid_roll.update(roll_error, dt);
-    float torqueY = pid_roll.update(pitch_error, dt);
+    float torqueY = pid_pitch.update(pitch_error, dt);
     float torqueZ = pid_yaw.update(yaw_error, dt);
 
     last_time_ = std::chrono::high_resolution_clock::now();
