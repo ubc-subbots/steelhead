@@ -71,7 +71,7 @@ def generate_launch_description():
 
     pressure_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'pressure_sensor_publisher_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'depth_sensor_publisher_launch.py')
         )
     )
 
