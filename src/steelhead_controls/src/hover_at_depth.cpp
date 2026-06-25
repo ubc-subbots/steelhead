@@ -71,7 +71,7 @@ namespace steelhead_controls
             double target_yaw = 0.0;
             if (!hold_yaw_) {
                 if (adjustments_->torque.z) {
-                    target_yaw = yaw + (adjustments_->torque.z < 0 ? -0.05 : 0.05);
+                    target_yaw = yaw + (adjustments_->torque.z < 0 ? -0.01 : 0.01);
                 } else {
                     target_yaw = yaw;
                 }
