@@ -56,7 +56,7 @@ namespace steelhead_controls
             if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
             pose.position.x = adjustments_->force.x;
             pose.position.y = adjustments_->force.y;
-            if (adjustments_->force.z) pose.position.z = adjustments_->force.z;
+            if (adjustments_->force.z) pose.position.z = adjustments_->force.z < 0 ? -0.2 : 0.2; // standardize inputs
         
             tf2::Quaternion q_current(
                 imu_->orientation.x,
@@ -65,11 +65,19 @@ namespace steelhead_controls
                 imu_->orientation.w
             );
 
-            double roll, pitch, current_yaw;
-            tf2::Matrix3x3(q_current).getRPY(roll, pitch, current_yaw);
+            double roll, pitch, yaw;
+            tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
 
-            double target_yaw = hold_yaw_ ? 0.0 : current_yaw - adjustments_->torque.z;
-
+            double target_yaw = 0.0;
+            if (!hold_yaw_) {
+                if (adjustments_->torque.z) {
+                    target_yaw = yaw + (adjustments_->torque.z < 0 ? -0.05 : 0.05);
+                } else {
+                    target_yaw = yaw;
+                }
+            }
+            
+            
             tf2::Quaternion q_target;
             q_target.setRPY(0.0, 0.0, target_yaw);
 
