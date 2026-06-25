@@ -115,18 +115,12 @@ namespace steelhead_pid_controller
     double current_pose_roll, current_pose_pitch, current_pose_yaw;
     current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
 
-    float cur_yaw = 0;
-    if (!std::isnan(current_pose_yaw)) 
-    {
-      cur_yaw = -current_pose_yaw; // TODO: why negative
-    }
-
     float pos_x_error = cur_pose->position.x;
     float pos_y_error = cur_pose->position.y;
     float pos_z_error = cur_pose->position.z;
     float roll_error = !std::isnan(current_pose_roll) ? current_pose_roll : 0;
     float pitch_error = !std::isnan(current_pose_pitch) ? current_pose_pitch : 0;
-    float yaw_error = cur_yaw;
+    float yaw_error = !std::isnan(current_pose_yaw) ? current_pose_yaw : 0;
 
     float forceX = pid_force_x.update(pos_x_error, dt);
     float forceY = pid_force_y.update(pos_y_error, dt);

@@ -60,12 +60,12 @@ def generate_launch_description():
     hover = Node(
         package='steelhead_controls', 
         executable='hover_at_depth',
-        parameters=[{'depth': 0.5, 'adjust_yaw': False}],
+        parameters=[{'depth': 0.5, 'hold_yaw': False}],
         namespace="steelhead"
     )
 
     delay_hover = TimerAction(
-        period=10.0,
+        period=3.0,
         actions=[hover]
     )
 
@@ -86,7 +86,7 @@ def generate_launch_description():
 
     ld.add_action(serial)
     ld.add_action(imu)
-    ld.add_action(cameras)
+    ld.add_action(pid_controller)
     ld.add_action(thrust_allocator)
     ld.add_action(delay_hover) # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
     ld.add_action(pressure_sensor)
