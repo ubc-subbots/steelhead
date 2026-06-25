@@ -120,6 +120,14 @@ namespace steelhead_gazebo
     void HydrodynamicsPlugin::Update()
     {
         Eigen::Vector6d velocity = this->GetVelocityVector();
+        const double kMaxSpeed = 10.0;  
+        if (!velocity.allFinite() || velocity.cwiseAbs().maxCoeff() > kMaxSpeed)
+        {
+            this->model->SetLinearVel(ignition::math::Vector3d::Zero);
+            this->model->SetAngularVel(ignition::math::Vector3d::Zero);
+            return;
+        }
+
         Eigen::Vector6d acceleration = this->GetAccelerationVector();
         Eigen::Vector6d velRel = ToNED(velocity);
 
@@ -146,9 +154,7 @@ namespace steelhead_gazebo
         // All additional (compared to standard rigid body) Fossen terms combined.
         Eigen::Vector6d tau = damping + added + cor;
 
-        GZ_ASSERT(!std::isnan(tau.norm()), "Hydrodynamic forces vector is nan");
-
-        if (!std::isnan(tau.norm()))
+        if (tau.allFinite())
         {
             this->SetWrenchVector(FromNED(tau));
         }
