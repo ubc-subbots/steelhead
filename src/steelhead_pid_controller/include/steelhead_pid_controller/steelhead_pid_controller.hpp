@@ -3,6 +3,8 @@
 #pragma once
 
 #include <string>
+#include <cmath>
+#include <algorithm>
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
@@ -25,9 +27,11 @@ private:
 
     void control_loop();
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr sub_;
-
     rclcpp::Publisher<geometry_msgs::msg::Wrench>::SharedPtr pub_;
-    geometry_msgs::msg::Pose::SharedPtr cur_pose ;
+    geometry_msgs::msg::Pose::SharedPtr cur_pose;
+
+    rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr param_callback_handle_;
+    rcl_interfaces::msg::SetParametersResult parametersCallback(const std::vector<rclcpp::Parameter> &parameters);
 
     std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
     rclcpp::TimerBase::SharedPtr control_loop_timer_;
@@ -46,19 +50,25 @@ private:
         float Kd = 0;
         float sum_error = 0;
         float last_error = 0;
+        float i_max = 0;  // integral clamp magnitude; <= 0 disables clamping
         float update(float error, float dt)
         {
+            if (!std::isfinite(error) || dt <= 0.0f) return 0.0f;
+
             float diff_error = error - last_error;
             sum_error += error * dt;
+            if (i_max > 0.0f) sum_error = std::max(-i_max, std::min(sum_error, i_max));
             float ret = Kp * error + Ki * sum_error + Kd * diff_error / dt;
             last_error = error;
-            return ret;
+            return std::isfinite(ret) ? ret : 0.0f;
         }
     };
 
     PID pid_force_x;
     PID pid_force_y;
     PID pid_force_z;
+    PID pid_roll;
+    PID pid_pitch;
     PID pid_yaw;
 };
 }  // namespace steelhead_pid_controller

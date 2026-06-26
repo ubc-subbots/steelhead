@@ -9,7 +9,7 @@ This package is for creating launch files and utilities needed for launching the
 
     - If the simulation is running really slow, try following the optimization guide in the steelhead_gazebo README.md.
 
-- `localization_visualization_gazebo_launch.py` : Launches a visualization WITHIN GAZEBO of where the robot "thinks" it is based off of visual-inertial odometry and the IMU, visualized in RViz. Right now it's sort of luck based, since it will sometimes randomly fly off to infinity for some reason ¯\\\_(ツ)_/¯.
+- `localization_visualization_gazebo_launch.py` : Launches a visualization WITHIN GAZEBO of where the robot "thinks" it is, visualized in RViz.
 
 - `cameras_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
 
@@ -21,19 +21,19 @@ This package is for creating launch files and utilities needed for launching the
 
 - `pool_test_x_launch.py` : Series of launch files for launching during pool time.
 
-    - `base`: A whole bunch of nodes that are meant for showcasing the various things that can be launched.
+    - `example`: A whole bunch of nodes that are meant for showcasing the various things that can be launched.
     - `gate`: Launches nodes necessary for a gate navigation test, which is the preliminary task for Robosub.
     - `hardcode`: Launches nodes that make the robot spin certain thrusters for a certain amount of time.
 
         - The hardcoded instructions are defined in steelhead_controls/steelhead_controls/predetermined_thrust.py.
-
-    - `route`: Launches nodes that make the robot follow a predetermined route.
-
-        - The hardcoded instructions are defined in steelhead_controls/steelhead_controls/predetermined_route.py.
-
+        
     - `ssh_teleop`: Launches the nodes that allow for teleoperation (keyboard control) of Steelhead. 
 
         - Because of certain limitations with SSH, the teleop can't be run in a launch file, so do `ros2 launch steelhead_bringup pool_test_ssh_teleop.py` alongside `ros2 run steelhead_teleop ssh_keyboard_teleop` in another terminal session.
+
+    - `hover`: Launches everything necessary for the hover script, which aims to keep Steelhead at a certain depth and orientation.
+
+        - We wait a bit before trying to hover to allow the imu to calibrate itself.
 
 ## Contributors
 

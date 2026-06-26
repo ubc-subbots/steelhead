@@ -11,7 +11,7 @@
     </include>
 
     <include>
-      <uri>model://steelhead_auv</uri>
+      <uri>model://steelhead_auv_ideal</uri>
     </include>
     <grid>0</grid>
   </world>
