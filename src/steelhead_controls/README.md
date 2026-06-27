@@ -134,7 +134,7 @@ To run the Trajectory Generator node, run
 
 ## Services
 
-- `actuators_command` : A service for communicating with the actuators enclosure. Utilizes a map configured in `actuators_config.yaml` from keyword to Arduino pin.
+- `actuators_command` : A service for communicating with the actuators enclosure. Expects certain strings defined on the arduino to operate.
 
   ### Serviced Topics
 
@@ -143,9 +143,9 @@ To run the Trajectory Generator node, run
   ### Notes
 
   - To utilize this service, remember to start it up using `actuators_command_server_launch.py`.
-  - This system relies on an arduino connected to `/dev/ttyACM0` with a baud rate of 9600.
+  - This system relies on an arduino connected to `/dev/arduino` with a baud rate of 115200.
   - The service will respond with the status of whether or not writing the serial communication was successful or not.
-  - Right now, we don't know the state of the actuators and can only send a toggle to the pin.
+  - There are preset commands that the Ardunio board expects set as enumerations in `src/steelhead_interfaces/srv/ActuatorsCommand.srv`. These are defined in the `ardunio` repository in `ubc-subbots`.
 
 ## Contributors
 
