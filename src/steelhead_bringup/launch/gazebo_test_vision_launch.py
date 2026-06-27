@@ -79,8 +79,8 @@ def generate_launch_description():
         executable='yolo_detector.py',
         name='yolo_detector',
         parameters=[
-            {'weights_path': 'yolov8n.pt'},
-            {'confidence_threshold': 0.1},
+            {'weights_path': '/home/ubcsubbots/Desktop/steelhead/src/steelhead_bringup/launch/best.pt'},
+            {'confidence_threshold': 0.4},
             {'inference_interval': 1.0}
         ],
         output='screen'

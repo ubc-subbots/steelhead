@@ -37,7 +37,7 @@ class YOLODetector(Node):
         self.inference_interval = 1.0  # Run inference every 1 second
         
         # Declare parameters
-        self.declare_parameter('weights_path', 'yolov8n.pt')  # Can be overridden
+        self.declare_parameter('weights_path', './best.pt')  # Can be overridden
         self.declare_parameter('confidence_threshold', 0.1)
         self.declare_parameter('inference_interval', 1.0)
         
