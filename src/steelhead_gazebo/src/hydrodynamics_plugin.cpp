@@ -71,7 +71,7 @@ namespace steelhead_gazebo
 
         // Linear damping manipulators 
         this->scalingDamping = GetSdfElement<double>(&status, hydro_model, "scalingDamping", 1.00);
-        this->offsetLinearDamping = GetSdfElement<double>(&status, hydro_model, "offetLineaDamping", 0.00);
+        this->offsetLinearDamping = GetSdfElement<double>(&status, hydro_model, "offsetLinearDamping", 0.00);
         this->offsetLinForwardSpeedDamping = GetSdfElement<double>(&status, hydro_model, "offsetLinForwardSpeedDamping", 0.00);
 
         // Non-linear damping manipulators 
