@@ -87,9 +87,13 @@ class KeyboardTeleop(Node):
             elif key.char == 'c':
                 msg.torque.y = self.torque_mags[1]
             elif key.char == 'o':
-                self.send_request("claw")
+                self.send_request(ActuatorsCommand.Request.FIRE_LEFT_TORPEDO)
             elif key.char == 'p':
-                self.send_request("torpedo")
+                self.send_request(ActuatorsCommand.Request.FIRE_RIGHT_TORPEDO)
+            elif key.char == 'k':
+                self.send_request(ActuatorsCommand.Request.OPEN_CLAW)
+            elif key.char == 'l':
+                self.send_request(ActuatorsCommand.Request.CLOSE_CLAW)
         self.force_pub.publish(msg)
 
 
