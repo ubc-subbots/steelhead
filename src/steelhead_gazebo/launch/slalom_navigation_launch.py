@@ -112,6 +112,7 @@ def generate_launch_description():
     ld.add_action(keyboard_teleop)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
+    # ld.add_action(delayed_rviz)
     # ld.add_action(delayed_rqt) # let gazebo spin up
 
     return ld
