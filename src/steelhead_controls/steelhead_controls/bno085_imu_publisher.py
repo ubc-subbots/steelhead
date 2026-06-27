@@ -11,7 +11,6 @@ class Bno085ImuPublisher(Node):
     def __init__(self):
         super().__init__('bno085_imu_publisher')
 
-
         port = '/dev/imu'
         baud = 115200 
 

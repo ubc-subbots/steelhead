@@ -57,7 +57,7 @@ namespace steelhead_controls
         void publish_error_to_target();
 
         float hover_depth_;
-        bool adjust_yaw_;
+        bool hold_yaw_;
 
         sensor_msgs::msg::Imu::SharedPtr imu_;
         steelhead_interfaces::msg::PressureSensor::SharedPtr pressure_sensor_;

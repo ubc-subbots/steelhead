@@ -6,6 +6,13 @@ This package contains the nodes related to the control system.
 
 ## Usage
 
+### Arduino
+
+These are sketeches to be uploaded on the board holding the sensors for communication with the main computer. For information on how the onboard computer should be configured, check the [Notion guide](https://app.notion.com/p/subbots/Hardware-Guide-connecting-to-AUV-1be8c60b4369804ba01ad3bc5f43e8bc).
+
+- `bno085_serial_output_parser`: For the BNO085 IMU. Uploaded onto the Qtpy, sends imu information over USB serial (this should be renamed as /dev/imu.)
+- `ms5837_depth_sensor`: For the MS5837 depth sensor, most likely aboard the Bar02 pressure sensor from Blue Robotics. Currently communnicates over UART on the onboard 2040 chip on the Radxa X4 (this should be renamed as /dev/depth).
+
 ### Thrust Allocation
 
 To launch the `thrust_allocator` node, use the following command
@@ -122,7 +129,7 @@ To run the Trajectory Generator node, run
   ### Notes
 
   - A target depth to maintain is expected as input to the node via the `depth` parameter, but a default value of 0.5m will be assigned if not specified. If a negative value or zero is provided, it's assumed that depth should not be considered and the script will only adjust for orientation.
-  - If desired, yaw can be adjusted via the `adjust_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
+  - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
   - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward.
 
 ## Services
