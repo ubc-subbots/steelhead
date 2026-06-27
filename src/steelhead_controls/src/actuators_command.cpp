@@ -1,4 +1,4 @@
-#define ARDUINO_PORT "/dev/teensy"
+#define ARDUINO_PORT "/dev/arduino"
 #include "steelhead_controls/actuators_command.hpp"
 #include <termios.h>
 #include <fcntl.h>
@@ -49,18 +49,19 @@ namespace steelhead_controls
     close(fd_);
   }
 
-  void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
-          std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
-            std::string returnMessage = "Writing " + request->input + " to arduino was ";
-            if (write(fd_, &request->input, 4) == -1) {
-              response->succeeded = false;
-              returnMessage+="unsuccessful";
-            } else {
-              response->succeeded = true;
-              returnMessage+="successful";
+    void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
+            std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
+              std::string returnMessage = "Writing " + request->input + " to arduino was ";
+              std::string payload = request->input + "\n";
+              if (write(fd_, payload.c_str(), payload.length()) == -1) {
+                response->succeeded = false;
+                returnMessage+="unsuccessful";
+              } else {
+                response->succeeded = true;
+                returnMessage+="successful";
+              }
+              RCLCPP_INFO(this->get_logger(), returnMessage);
             }
-            RCLCPP_INFO(this->get_logger(), returnMessage);
-          }
 
 } // namespace steelhead_controls
 
