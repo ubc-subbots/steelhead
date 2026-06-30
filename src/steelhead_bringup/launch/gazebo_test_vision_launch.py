@@ -75,11 +75,13 @@ def generate_launch_description():
     )
 
     yolo_detector = Node(
-        package='steelhead_gazebo',
+        package='steelhead_object_recognition',
         executable='yolo_detector.py',
         name='yolo_detector',
         parameters=[
-            {'weights_path': '/home/ubcsubbots/Desktop/steelhead/src/steelhead_bringup/launch/best.pt'},
+            {'weights_path': os.path.join(
+                get_package_share_directory('steelhead_object_recognition'),
+                'config', 'competition.pt')},
             {'confidence_threshold': 0.4},
             {'inference_interval': 1.0}
         ],
