@@ -17,8 +17,8 @@ This will open up Gazebo and allow you to control the AUV with a keyboard, below
 <kbd>←</kbd>/<kbd>→</kbd> : Rotate Left/Right (Around Z-Axis / Yaw)  
 <kbd>e</kbd>/<kbd>c</kbd> : Rotate Up/Down (Around Y-Axis / Pitch)    
 <kbd>↑</kbd>/<kbd>↓</kbd> : Rotate Left/Right (Around X-Axis / Roll)   
-<kbd>o</kbd> : Toggle Claw   
-<kbd>p</kbd> : Toggle Torpedoes
+<kbd>o</kbd>/<kbd>p</kbd> : Shoot Left/Right Torpedo (requires `steelhead_controls/actuators_command.cpp` to be running)  
+<kbd>k</kbd>/<kbd>l</kbd> : Open/Close Claw (requires `steelhead_controls/actuators_command.cpp` to be running) 
 
 ### Another control scheme
 

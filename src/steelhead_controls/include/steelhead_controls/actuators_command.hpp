@@ -20,7 +20,6 @@ namespace steelhead_controls
 
     private:
         int fd_;
-        std::map<std::string,int> nameToPin;
         rclcpp::Service<steelhead_interfaces::srv::ActuatorsCommand>::SharedPtr service_;
 
         void sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,

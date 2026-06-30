@@ -1,3 +1,9 @@
+string OPEN_CLAW = "claw open"
+string CLOSE_CLAW = "claw close"
+string FIRE_LEFT_TORPEDO = "launcher left"
+string FIRE_RIGHT_TORPEDO = "launcher right"
+string RESET_TORPEDO = "launcher neutral"
+
 string input
 ---
 bool succeeded

@@ -78,9 +78,13 @@ class KeyboardTeleop(Node):
         elif key == 'z':
             msg.force.z = -self.force_mags[2]
         elif key == 'o':
-            self.send_request("claw")
+            self.send_request(ActuatorsCommand.Request.FIRE_LEFT_TORPEDO)
         elif key == 'p':
-            self.send_request("torpedo")
+            self.send_request(ActuatorsCommand.Request.FIRE_RIGHT_TORPEDO)
+        elif key == 'k':
+            self.send_request(ActuatorsCommand.Request.OPEN_CLAW)
+        elif key == 'l':
+            self.send_request(ActuatorsCommand.Request.CLOSE_CLAW)
         self.force_pub.publish(msg)
 
     def _on_release(self, key):
