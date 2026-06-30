@@ -101,6 +101,23 @@ The last line is helpful in that it colorizes ROS2 logging so that info/warn/err
    
 If this command executes successfully, you are ready to develop!
 
+## Development Setup
+### C++ Tooling (clangd)
+This package uses clangd for C++ language support i(i.e., go-to-definition, autocomplete, error highlighting). To set it up:
+1. Install clangd:
+
+        sudo apt install clangd
+2. Install **clangd** VS Code extension (By LLVM). When prompted, disable the Microsoft C++ IntelliSense Engine
+3. Build the workspace with compile commands export enabled:
+        
+        colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+4. Merge the per-package compile commands into the workspace root:
+
+        jq -s 'map(.[])' build/*/compile_commands.json > compile_commands.json
+
+Re-run steps 3-4 after adding new packages or source files
+
 ## Contributing
 To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md) and [conventions](CONVENTIONS.md) documents.
     

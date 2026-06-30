@@ -1,4 +1,4 @@
-#define ARDUINO_PORT "/dev/teensy"
+#define ARDUINO_PORT "/dev/arduino"
 #include "steelhead_controls/actuators_command.hpp"
 #include <termios.h>
 #include <fcntl.h>
@@ -39,20 +39,6 @@ namespace steelhead_controls
                 std::placeholders::_1,
                 std::placeholders::_2));
 
-      // sets up map defined in actuators_config.yaml
-      this->declare_parameter("actuators_names", std::vector<std::string>{});
-      this->declare_parameter("actuators_pins", std::vector<long int>{});
-      std::vector<std::string> nameList;
-      std::vector<long int> pinList;
-      this->get_parameter("actuators_names", nameList);
-      this->get_parameter("actuators_pins", pinList);
-
-      if (nameList.size() != pinList.size())
-        RCLCPP_ERROR(this->get_logger(), "Actuators config file has mismatching name and pin lengths!");
-
-      for (size_t i = 0; i < nameList.size(); i++)
-        nameToPin[nameList[i]] = pinList[i];
-
       RCLCPP_INFO(this->get_logger(), "Actuators command server succesfully started!");
     } else {
       RCLCPP_ERROR(this->get_logger(), "Actuators command server could not connect to arduino! Can the computer recognize the port?");
@@ -63,23 +49,19 @@ namespace steelhead_controls
     close(fd_);
   }
 
-  void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
-          std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
-            if (nameToPin.find(request->input) == nameToPin.end()) {
-              RCLCPP_ERROR(this->get_logger(), request->input + " is not configured in steelhead_controls actuators_config.yaml!");
-              return;
+    void ActuatorsCommand::sendOverSerial(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
+            std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response) {
+              std::string returnMessage = "Writing " + request->input + " to arduino was ";
+              std::string payload = request->input + "\n";
+              if (write(fd_, payload.c_str(), payload.length()) == -1) {
+                response->succeeded = false;
+                returnMessage+="unsuccessful";
+              } else {
+                response->succeeded = true;
+                returnMessage+="successful";
+              }
+              RCLCPP_INFO(this->get_logger(), returnMessage);
             }
-
-            std::string returnMessage = "Writing " + request->input + " on pin " + std::to_string(nameToPin[request->input]) + " was ";
-            if (write(fd_, &nameToPin[request->input], 4) == -1) {
-              response->succeeded = false;
-              returnMessage+="unsuccessful";
-            } else {
-              response->succeeded = true;
-              returnMessage+="successful";
-            }
-            RCLCPP_INFO(this->get_logger(), returnMessage);
-          }
 
 } // namespace steelhead_controls
 

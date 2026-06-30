@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(steelhead_controls)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -197,6 +199,7 @@ install(PROGRAMS
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
   steelhead_controls/bno085_imu_publisher.py
+  steelhead_controls/ms5837_depth_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

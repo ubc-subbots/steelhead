@@ -39,12 +39,10 @@ Adafruit_BNO08x  bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 
 #ifdef FAST_MODE
-  // Top frequency is reported to be 1000Hz (but freq is somewhat variable)
   sh2_SensorId_t reportType = SH2_GYRO_INTEGRATED_RV;
   long reportIntervalUs = 2000;
 #else
-  // Top frequency is about 250Hz but this report is more accurate
-  sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
+  sh2_SensorId_t reportType = SH2_GAME_ROTATION_VECTOR;
   long reportIntervalUs = 5000;
 #endif
 void setReports(sh2_SensorId_t reportType, long report_interval) {
@@ -116,38 +114,33 @@ void loop() {
   float ax = 0, ay = 0, az = 0; 
   
   if (bno08x.getSensorEvent(&sensorValue)) {
-    // in this demo only one report type will be received depending on FAST_MODE define (above)
     switch (sensorValue.sensorId) {
+
       case SH2_ARVR_STABILIZED_RV:
         quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+        break;
+
       case SH2_GYRO_INTEGRATED_RV:
-        // faster (more noise?)
         quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
         break;
+
+      case SH2_GAME_ROTATION_VECTOR:
+        quaternionToEuler(
+          sensorValue.un.gameRotationVector.real,
+          sensorValue.un.gameRotationVector.i,
+          sensorValue.un.gameRotationVector.j,
+          sensorValue.un.gameRotationVector.k,
+          &ypr, true);
+        break;
+
       case SH2_LINEAR_ACCELERATION:
-        // Serial.print("\t\t\tAccelerometer - x: ");
-        // Serial.print(sensorValue.un.accelerometer.x);
-        // Serial.print(" y: ");
-        // Serial.print(sensorValue.un.accelerometer.y);
-        // Serial.print(" z: ");
-        // Serial.println(sensorValue.un.accelerometer.z);
-        // Serial.println("\n");
         ax = sensorValue.un.accelerometer.x;
         ay = sensorValue.un.accelerometer.y;
         az = sensorValue.un.accelerometer.z;
         break;
-    }
-    // static long last = 0;
-    // long now = micros();
-    // Serial.print(now - last);             Serial.print("\t"); // time elapsed since last reading
-    // last = now; 
-    // Serial.print(sensorValue.status);     Serial.print("\t");  // This is accuracy in the range of 0 to 3
-    // Serial.print(ypr.yaw);                Serial.print("\t"); //yaw
-    // Serial.print(ypr.pitch);              Serial.print("\t"); //pitch
-    // Serial.println(ypr.roll); //roll
 
-    // Print everything on ONE line, comma-separated:
-    // Format: status,yaw,pitch,roll,ax,ay,az
+    }
+
     float yaw_deg   = ypr.yaw;
     float pitch_deg = ypr.pitch;
     float roll_deg  = ypr.roll;
@@ -167,6 +160,4 @@ void loop() {
     Serial.print(",");
     Serial.println(az);
   }
-  
-
 }

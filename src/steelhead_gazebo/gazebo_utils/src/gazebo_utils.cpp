@@ -19,13 +19,17 @@ namespace steelhead_gazebo
 
         std::istringstream iss(sdf_data);
 
-        while (iss >> val)
+        while (iss >> val && idx < MAX_DIMENSION)
         {
-            _vector(idx++, 1) = val;
+            _vector(idx++) = val;
         }
-        if (idx != MAX_DIMENSION) 
+        if (idx == 0)
         {
-            gzdbg << "Vector did not fully populate.\n";
+            gzerr << "Vector parameter '" << param << "' contained no values. Using default values.\n";
+        }
+        else if (idx < MAX_DIMENSION)
+        {
+            gzdbg << "Vector parameter '" << param << "' contained " << idx << " values; using defaults for remaining " << (MAX_DIMENSION - idx) << ".\n";
         }
         *status = true;
         gzdbg << param << ": \n" << _vector << std::endl;
@@ -36,7 +40,7 @@ namespace steelhead_gazebo
 
     Eigen::Matrix6d GetSdfMatrix(bool* status, sdf::ElementPtr _sdf, std::string param, Eigen::Matrix6d def)
     {
-        Eigen::Matrix6d _matrix;
+        Eigen::Matrix6d _matrix = def;
         int r_idx = 0, c_idx = 0;
         double val;
 
