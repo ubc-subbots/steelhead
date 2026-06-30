@@ -74,6 +74,20 @@ def generate_launch_description():
         )
     )
 
+    yolo_detector = Node(
+        package='steelhead_object_recognition',
+        executable='yolo_detector.py',
+        name='yolo_detector',
+        parameters=[
+            {'weights_path': os.path.join(
+                get_package_share_directory('steelhead_object_recognition'),
+                'config', 'competition.pt')},
+            {'confidence_threshold': 0.4},
+            {'inference_interval': 1.0}
+        ],
+        output='screen'
+    )
+
     hover_script = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'hover_at_depth_launch.py')
@@ -105,6 +119,7 @@ def generate_launch_description():
     ld.add_action(state_publisher)
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
+    ld.add_action(yolo_detector)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
     ld.add_action(base_link_tf_publisher)
