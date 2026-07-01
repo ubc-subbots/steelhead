@@ -19,6 +19,13 @@ namespace steelhead_controls
         this->get_parameter("hold_yaw", hold_yaw_);
         RCLCPP_INFO(this->get_logger(), hold_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
+        // How far (rad) ahead of the current yaw the target is placed while a
+        // yaw adjustment is commanded. This sets the yaw error the PID sees,
+        // so it must be large enough to overcome the heading hold's noise
+        // floor or the vehicle only jitters instead of turning. Re-read on
+        // every update so it can be tuned live with `ros2 param set`.
+        this->declare_parameter<double>("yaw_step", 0.3);
+
         // If no adjustments are published, adjustments_ is zeroed out and nothing is applied
         adjustments_ = std::make_shared<geometry_msgs::msg::Wrench>();
 
@@ -69,12 +76,14 @@ namespace steelhead_controls
             tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
 
             double target_yaw = 0.0;
-            if (!hold_yaw_) {
-                if (adjustments_->torque.z) {
-                    target_yaw = yaw + (adjustments_->torque.z < 0 ? -0.01 : 0.01);
-                } else {
-                    target_yaw = yaw;
-                }
+            if (adjustments_->torque.z) {
+                // Yaw adjustments override hold_yaw so task nodes (e.g.
+                // yaw_spin) can steer while the depth hold stays active.
+                // Only the sign of torque.z is used; yaw_step sets authority.
+                double yaw_step = this->get_parameter("yaw_step").as_double();
+                target_yaw = yaw + (adjustments_->torque.z < 0 ? -yaw_step : yaw_step);
+            } else if (!hold_yaw_) {
+                target_yaw = yaw;
             }
             
             

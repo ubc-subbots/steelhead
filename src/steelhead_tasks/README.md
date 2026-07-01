@@ -44,6 +44,28 @@ point for new task nodes.
     - `/steelhead/pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback`) :
       Pipeline feedback, published once the duration has elapsed.
 
+- `yaw_spin` : A component node (`steelhead_tasks::YawSpin`) which spins the
+  AUV a configurable number of full yaw turns using the IMU, ending on the
+  same heading it started at (for gate style points). It latches the starting
+  heading on the first IMU message, commands a yaw adjustment while
+  accumulating the unwrapped yaw travel, then trims back onto the start
+  heading before reporting success. Parameters `turns` (sign sets direction),
+  `yaw_tolerance`, and `success_message` are re-read every control tick so
+  they can be set from a pipeline param file (e.g. `config/style_spin.yaml`)
+  or live with `ros2 param set`. Note yaw adjustments override
+  hover_at_depth's `hold_yaw` parameter.
+
+    ### Subscribed Topics
+    - `drivers/imu/out` (`sensor_msgs/msg/Imu`) : AUV orientation, used to
+      latch the start heading and count the rotation.
+
+    ### Published Topics
+    - `controls/hover_adjust` (`geometry_msgs/msg/Wrench`) : Yaw-only wrench
+      while spinning and trimming, then a zero wrench.
+    - `/steelhead/pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback`) :
+      Pipeline feedback, published once the spin is complete and the heading
+      is back on the start.
+
 ## Contributors
 
 - Dorson Tang (apersonnameddorson@gmail.com)

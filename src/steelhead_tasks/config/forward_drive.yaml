@@ -4,6 +4,6 @@
 # blind forward leg. force_x matches the gate task's forward_drive default.
 timed_wrench:
   ros__parameters:
-    duration: 10.0
+    duration: 5.0
     force_x: 10.0
     success_message: "Forward drive complete"

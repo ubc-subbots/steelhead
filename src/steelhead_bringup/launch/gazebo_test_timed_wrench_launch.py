@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -22,10 +23,11 @@ def generate_launch_description():
         )
     )
 
-    hover_script = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'hover_at_depth_launch.py')
-        )
+    hover_script = Node(
+        package='steelhead_controls', 
+        executable='hover_at_depth',
+        parameters=[{'depth': 1.0, 'hold_yaw': True}],
+        namespace="steelhead"
     )
 
     pid_controller = IncludeLaunchDescription(
@@ -49,7 +51,7 @@ def generate_launch_description():
     # hold the pipeline back until gazebo has spun up and the AUV is in the
     # water, otherwise the first maneuver burns its time against a paused sim.
     delayed_pipeline = TimerAction(
-        period=15.0,
+        period=5.0,
         actions=[pipeline]
     )
 

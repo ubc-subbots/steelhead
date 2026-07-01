@@ -2,7 +2,7 @@
   ros__parameters:
     pipeline:
       components:
-        - steelhead_tasks::TimedWrench
+        - steelhead_tasks::YawSpin
       pkg_names:
         - steelhead_tasks
       param_files:

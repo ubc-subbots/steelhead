@@ -24,17 +24,20 @@ find_package(rclcpp_components REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
+find_package(tf2 REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(steelhead_tasks SHARED
   src/automated_competition_gate.cpp
   src/timed_wrench.cpp
+  src/yaw_spin.cpp
 )
 
 rclcpp_components_register_nodes(steelhead_tasks
   "steelhead_tasks::AutomatedCompetitionGate"
   "steelhead_tasks::TimedWrench"
+  "steelhead_tasks::YawSpin"
 )
 
 target_compile_definitions(steelhead_tasks
@@ -47,6 +50,7 @@ ament_target_dependencies(steelhead_tasks
   "geometry_msgs"
   "sensor_msgs"
   "steelhead_interfaces"
+  "tf2"
 )
 
 install(TARGETS
