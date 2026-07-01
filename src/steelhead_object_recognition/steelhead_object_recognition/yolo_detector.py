@@ -21,9 +21,7 @@ try:
 except ImportError as e:
     ULTRALYTICS_AVAILABLE = False
     import sys
-    print(f"DEBUG: ultralytics import failed with error: {e}")
-    print(f"DEBUG: Python Executable: {sys.executable}")
-    print(f"DEBUG: Python Path: {sys.path}")
+    print(f"DEBUG: ultralytics import failed with error: {e}. Try 'pip install ultralytics'")
 
 
 class YOLODetector(Node):
@@ -138,6 +136,7 @@ class YOLODetector(Node):
                         # Record machine-readable detection (xy = top-left corner, pixels)
                         detection_box = DetectionBox()
                         detection_box.class_id = cls_id
+                        detection_box.label = cls_name
                         detection_box.confidence = conf
                         detection_box.x = float(x1)
                         detection_box.y = float(y1)

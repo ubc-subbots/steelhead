@@ -104,7 +104,7 @@
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
             <width>640</width>
-            <height>480</height>
+            <height>360</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -122,6 +122,7 @@
             <namespace>/steelhead/drivers</namespace>
             <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
             <remapping>custom_camera/depth/image_raw:=front_camera/depth/image_raw</remapping>
+            <remapping>custom_camera/camera_info:=front_camera/camera_info</remapping>
           </ros>
 
           <publish_camera_info>true</publish_camera_info>
@@ -140,7 +141,7 @@
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
             <width>640</width>
-            <height>480</height>
+            <height>360</height>
             <format>R8G8B8</format>
           </image>
           <clip>

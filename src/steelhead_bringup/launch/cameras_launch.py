@@ -37,7 +37,8 @@ def generate_launch_description():
                 'camera2.yaml')
         ],
         remappings=[
-            ('/camera2/image_raw', '/steelhead/drivers/front_camera/image_raw')
+            ('/camera2/image_raw', '/steelhead/drivers/front_camera/image_raw'),
+            ('/camera2/camera_info', '/steelhead/drivers/front_camera/camera_info')
         ]
     )
 
