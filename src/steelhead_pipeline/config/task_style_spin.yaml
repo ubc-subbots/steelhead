@@ -1,0 +1,11 @@
+/steelhead/pipeline_manager:
+  ros__parameters:
+    pipeline:
+      components:
+        - steelhead_tasks::TimedWrench
+      pkg_names:
+        - steelhead_tasks
+      param_files:
+        - style_spin.yaml
+      namespace: /steelhead
+    use_sim_time: false

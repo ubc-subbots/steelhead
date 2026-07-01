@@ -1,0 +1,12 @@
+# Loaded into the timed_wrench node by the pipeline manager (see
+# steelhead_pipeline/config/task_style_spin.yaml). Spins in place for gate
+# style points: hover_at_depth uses only the sign of torque.z, stepping the
+# yaw target a fixed amount per IMU update, so `duration` (not the torque
+# magnitude) sets how far the AUV rotates. All force components stay zero so
+# depth and position hold while spinning. Tune duration at the pool with
+#   ros2 param set /steelhead/timed_wrench duration <seconds>
+timed_wrench:
+  ros__parameters:
+    duration: 60.0
+    torque_z: 1.0
+    success_message: "Style spin complete"

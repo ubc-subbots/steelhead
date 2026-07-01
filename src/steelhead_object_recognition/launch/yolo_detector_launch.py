@@ -12,7 +12,7 @@ def generate_launch_description():
     weights_path = os.path.join(
         get_package_share_directory('steelhead_object_recognition'),
         'config',
-        'competition.pt'
+        'ffc_rs_26.pt'
     )
 
     yolo_detector = Node(

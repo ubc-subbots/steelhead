@@ -29,9 +29,13 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(steelhead_tasks SHARED
   src/automated_competition_gate.cpp
+  src/timed_wrench.cpp
 )
 
-rclcpp_components_register_nodes(steelhead_tasks "steelhead_tasks::AutomatedCompetitionGate")
+rclcpp_components_register_nodes(steelhead_tasks
+  "steelhead_tasks::AutomatedCompetitionGate"
+  "steelhead_tasks::TimedWrench"
+)
 
 target_compile_definitions(steelhead_tasks
   PRIVATE "steelhead_tasks_CPP_BUILDING_DLL"
@@ -54,6 +58,7 @@ install(TARGETS
 
 install(DIRECTORY
   launch
+  config
   DESTINATION share/${PROJECT_NAME}/
 )
 
