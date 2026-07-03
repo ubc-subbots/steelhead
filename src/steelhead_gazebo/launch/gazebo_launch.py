@@ -46,6 +46,12 @@ def generate_launch_description():
         ]
     )
 
+    verbose_arg = DeclareLaunchArgument(
+        'verbose',
+        default_value='false',
+        description="Set to 'true' for verbose gzserver debug output"
+    )
+
     gazebo_server = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('gazebo_ros'), 
@@ -53,7 +59,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'world': ['worlds/', LaunchConfiguration('world')],
-            'verbose': 'true'
+            'verbose': LaunchConfiguration('verbose')
             }.items()
     )
 
@@ -71,4 +77,5 @@ def generate_launch_description():
     ld.add_action(add_resource_path)
     ld.add_action(gazebo_server)
     ld.add_action(gazebo_client)
+    ld.add_action(verbose_arg)
     return ld
