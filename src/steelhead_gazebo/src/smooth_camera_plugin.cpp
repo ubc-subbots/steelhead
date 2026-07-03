@@ -130,6 +130,7 @@ namespace steelhead_gazebo
                     theta = -1;
                     phi = -1;
                     incr_phi = 0;
+                    /// is this statement needed?
                     std::cout << "END ME PLEASE" << std::endl;
                     return;
                 }

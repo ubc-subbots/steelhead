@@ -32,7 +32,8 @@ namespace steelhead_gazebo
             gzdbg << "Vector parameter '" << param << "' contained " << idx << " values; using defaults for remaining " << (MAX_DIMENSION - idx) << ".\n";
         }
         *status = true;
-        gzdbg << param << ": \n" << _vector << std::endl;
+        // gzdbg << param << ": \n" << _vector << std::endl;
+        gzlog << param << ": \n" << _vector << std::endl;
 
         return _vector;
     }
@@ -69,7 +70,6 @@ namespace steelhead_gazebo
         }
         *status = true;
         gzdbg << param << ": \n" << _matrix << std::endl;
-
         return _matrix;
     }
 
