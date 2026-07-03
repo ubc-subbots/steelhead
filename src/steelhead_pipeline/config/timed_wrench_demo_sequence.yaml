@@ -1,9 +1,0 @@
-# Demo sequence chaining two maneuvers: drive forward for a fixed time
-# (TimedWrench), then spin in place for gate style points, ending on the same
-# heading (YawSpin, IMU-based). Each entry must be a PipelineType constant and
-# have a matching <type>.yaml in this directory.
-/steelhead/pipeline_sequence_manager:
-  ros__parameters:
-    pipeline_sequence:
-    - task_forward_drive
-    - task_style_spin
