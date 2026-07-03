@@ -29,35 +29,8 @@ def generate_launch_description():
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'imu_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'imu_publisher_launch.py')
         )
-    )
-
-    cameras = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'cameras_launch.py')
-        )
-    )
-
-    gate_detector = ComposableNode(
-        name='detector',
-        namespace='/steelhead/gate',
-        package='steelhead_gate',
-        plugin='steelhead_gate::GateDetector',
-        parameters=[
-            {'debug': False}
-        ]
-    )
-
-    gate_container = ComposableNodeContainer(
-        name='gate_container',
-        namespace='/',
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            gate_detector
-        ],
-        output='screen'
     )
 
     pid_controller = IncludeLaunchDescription(
@@ -66,17 +39,10 @@ def generate_launch_description():
         )
     )
 
-    waypoint_marker = Node(
-        package='steelhead_controls', 
-        executable='waypoint_marker',
-        output='screen', 
-        # parameters=[{'use_sim_time': True}]
-    )
-
     ta_config = os.path.join(
         get_package_share_directory('steelhead_controls'),
         'config',
-        'thruster_config.yaml'
+        'thruster_config_steelhead.yaml'
     )
 
     thrust_allocator = Node(
@@ -91,27 +57,42 @@ def generate_launch_description():
         ]
     )
 
-    trajectory_generator = IncludeLaunchDescription(
+    hover = Node(
+        package='steelhead_controls', 
+        executable='hover_at_depth',
+        parameters=[{'depth': 0.5, 'hold_yaw': False}],
+        namespace="steelhead"
+    )
+
+    delay_hover = TimerAction(
+        period=10.0,
+        actions=[hover]
+    )
+
+    pressure_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/trajectory_generator_launch.py'
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'depth_sensor_publisher_launch.py')
         )
     )
 
-    # state and transform publisher?
+    pipeline = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_pipeline'), 'launch', 'pipeline_launch.py')
+        ),
+        launch_arguments={'sequence': 'competition_hardcode_sequence.yaml'}.items()
+    )
+
+    delay_pipeline = TimerAction(
+        period=20.0,
+        actions=[pipeline]
+    )
 
     ld.add_action(serial)
-    # ld.add_action(micro_ros_agent)
     ld.add_action(imu)
-    ld.add_action(cameras)
-    # ld.add_action(transform_publisher)
     ld.add_action(pid_controller)
-    ld.add_action(waypoint_marker)
     ld.add_action(thrust_allocator)
-    ld.add_action(gate_container)
-    ld.add_action(trajectory_generator) # we use key publisher instead
-    #ld.add_action(record)
-    # ld.add_action(keyboard_teleop)
+    ld.add_action(delay_hover) # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
+    ld.add_action(delay_pipeline) # let the robot stabalize itself before starting the route
+    ld.add_action(pressure_sensor)
     
-
-
     return ld

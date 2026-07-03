@@ -4,7 +4,11 @@
     <link name='thruster'>
       <pose>-0 0 0 0 -0 0</pose>
       <inertial>
-        <mass>0.001</mass>
+        <!-- Realistic thruster mass (T200-class). A near-zero mass here makes
+             the frame/thruster mass ratio so extreme that the fixed-joint
+             constraint solver explodes ("thrusters bursting out"); the frame
+             link's mass is reduced to keep the total at 13.706 kg. -->
+        <mass>0.299</mass>
         <inertia>
           <ixx>0.00030988</ixx>
           <ixy>5.5564e-08</ixy>

@@ -6,6 +6,9 @@
       <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
       <!-- Edited for Steelhead Aug 9 2024-->
       <inertial>
+        <!-- Full vehicle mass: the thrusters are visuals on this link rather
+             than separate links/joints (see the thruster visuals below), so
+             the frame carries all of it. -->
         <mass>13.7</mass>
         <inertia>
           <ixx> 0.548853532</ixx>
@@ -33,6 +36,68 @@
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
+      </visual>
+
+      <!-- Thruster visuals. The thrusters used to be separate links held by
+           fixed joints, but the soft joint constraints periodically snapped
+           under sustained thrust (violent attitude "tweaks"), so the vehicle
+           is now a single rigid body: thrust is applied by the thruster
+           driver plugin at <thruster_pose> offsets configured in the AUV
+           model, and these visuals replace the old links. Poses match the
+           old thruster <include> poses in steelhead_auv_real/model.sdf. -->
+      <visual name='thruster1_visual'>
+        <pose>-0.075 -0.39 0 -1.57 -1.57 1.57</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='thruster2_visual'>
+        <pose>0.33 -0.28 -0.0085 0 -2.355 1.57</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='thruster3_visual'>
+        <pose>0.33 0.152 -0.0085 0 2.355 1.57</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='thruster4_visual'>
+        <pose>-0.075 0.265 0 -1.57 1.57 1.57</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='thruster5_visual'>
+        <pose>-0.219431 -0.0625 0.08 0 3.14 1.57</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='thruster6_visual'>
+        <pose>-0.355 -0.07 0 1.57 1.57 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://steelhead_thruster/meshes/steelhead_thruster.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
       </visual>
 
       <gravity>1</gravity>
@@ -98,7 +163,10 @@
       
       <sensor type="depth" name="front_camera">
         <pose>0.45 -0.06 0 0 0 0 </pose>
-        <update_rate>60</update_rate>
+        <!-- 20Hz (was 60): software rendering in WSL2 cannot sustain 60fps
+             (measured ~42), which saturates gzserver and makes frame timing
+             irregular for the vision nodes. 20Hz renders reliably. -->
+        <update_rate>20</update_rate>
         <visualize>false</visualize>
         <camera name="front">
           <horizontal_fov>1.3962634</horizontal_fov>
@@ -135,7 +203,8 @@
       </sensor>
       <sensor type="camera" name="down_camera">
         <pose>0.4 -0.06 0 0 1.57 0</pose>
-        <update_rate>60</update_rate>
+        <!-- 20Hz (was 60): see front_camera. -->
+        <update_rate>20</update_rate>
         <visualize>false</visualize>
         <camera name="down">
           <horizontal_fov>1.3962634</horizontal_fov>

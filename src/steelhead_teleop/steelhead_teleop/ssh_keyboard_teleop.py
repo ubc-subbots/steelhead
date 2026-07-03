@@ -18,7 +18,7 @@ class KeyboardTeleop(Node):
 
         self.force_pub = self.create_publisher(
             Wrench,
-            '/steelhead/controls/input_forces',
+            '/steelhead/controls/hover_adjust',
             10
         )
 

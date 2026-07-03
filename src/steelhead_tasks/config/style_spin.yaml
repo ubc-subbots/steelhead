@@ -1,11 +1,5 @@
-# Loaded into the yaw_spin node by the pipeline manager (see
-# steelhead_pipeline/config/task_style_spin.yaml). Spins in place for gate
-# style points using the IMU, ending on the same heading it started at.
-# turns: 2.0 sweeps 720 degrees, the maximum eight 90-degree style changes;
-# a negative value spins the other way. Tune at the pool with
-#   ros2 param set /steelhead/yaw_spin turns <value>
 yaw_spin:
   ros__parameters:
     turns: 2.0
-    yaw_tolerance: 0.05
+    yaw_tolerance: 0.15
     success_message: "Style spin complete"

@@ -28,54 +28,15 @@
       <name>base_link</name>
     </include>
 
-    <!-- Thrusters (center of the auv in the y direction is offset by ~0.0625, so each y symmetrical thruster accounts for that)-->
-
-    <!-- Right Midsection -->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>-0.075 -0.39 0 -1.57 -1.57 1.57</pose>
-      <name>thruster1</name>
-    </include>
-
-    <!-- Angled Front Right-->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>0.33 -0.28 -0.0085 0 -2.355 1.57</pose>
-      <name>thruster2</name>
-    </include>
-
-    <!-- Angled Front Left-->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>0.33 0.152 -0.0085 0 2.355 1.57</pose>
-      <name>thruster3</name>
-    </include>
-
-    <!-- Left Midsection -->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>-0.075 0.265 0 -1.57 1.57 1.57</pose>
-      <name>thruster4</name>
-    </include>
-    
-    <!-- Vertical -->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>-0.219431 -0.0625 0.08 0 3.14 1.57</pose>
-      <name>thruster5</name>
-    </include>
-
-    <!-- Back Horizontal-->
-    <include>
-      <uri>model://steelhead_thruster</uri>
-      <pose>-0.355 -0.07 0 1.57 1.57 0</pose>
-      <pose>0 0 0 0 0 0</pose>
-      <name>thruster6</name>
-    </include>
-
-
-
-
+    <!-- Thrusters: no longer separate links/joints. The soft fixed-joint
+         constraints periodically snapped under sustained thrust ("tweaks"),
+         so the vehicle is a single rigid body; thrust is applied at the
+         <thruster_pose> offsets in the thruster_array plugin below, and the
+         thruster visuals live on the frame link (steelhead_frame model).
+         To revert: restore the six thruster <include>s and frame_thrusterN
+         joints from git history (commit 02c6520), remove the
+         <thruster_pose> elements below, set the frame link mass back to
+         11.906 and remove the thruster visuals in steelhead_frame. -->
 
 
 
@@ -96,7 +57,10 @@
         <!-- Useful params for controls simplifications-->
         <scalingBuoyancy>0.93</scalingBuoyancy>
         <scalingDamping>1.0</scalingDamping>
-        <scalingAddedMass>0.01</scalingAddedMass>
+        <!-- 0.0 (was 0.01): the added-mass term feeds measured acceleration
+             back as force, an algebraic loop Gazebo classic cannot resolve
+             cleanly; even at 0.01 it causes periodic attitude snaps. -->
+        <scalingAddedMass>0.0</scalingAddedMass>
 
         <!-- Added mass: see p.28 in Berg2012 -->
         <added_mass>
@@ -119,127 +83,21 @@
 
     <!--
 
-      Fixed Joints within AUV
-
-    -->
-
-    <joint name='frame_thruster1' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster1::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <joint name='frame_thruster2' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster2::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <joint name='frame_thruster3' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster3::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <joint name='frame_thruster4' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster4::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <joint name='frame_thruster5' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster5::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <joint name='frame_thruster6' type='fixed'>
-      <parent>base_link::base_link</parent>
-      <child>thruster6::thruster</child>
-      <pose>0 0 0 0 0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-
-    <!-- 
-
       Plugins
 
     -->
 
-    <!-- Thrust Vectors -->
+    <!-- Thrust Vectors: poses relative to the frame link, in thruster order
+         (same values as the old thruster include poses); thrust acts along
+         each pose's local z axis. -->
     <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
+      <thruster_pose>-0.075 -0.39 0 -1.57 -1.57 1.57</thruster_pose>
+      <thruster_pose>0.33 -0.28 -0.0085 0 -2.355 1.57</thruster_pose>
+      <thruster_pose>0.33 0.152 -0.0085 0 2.355 1.57</thruster_pose>
+      <thruster_pose>-0.075 0.265 0 -1.57 1.57 1.57</thruster_pose>
+      <thruster_pose>-0.219431 -0.0625 0.08 0 3.14 1.57</thruster_pose>
+      <thruster_pose>-0.355 -0.07 0 1.57 1.57 0</thruster_pose>
       <ros>
         <namespace>/steelhead/controls</namespace>
         <remapping>output_forces</remapping>

@@ -7,6 +7,7 @@
 #include "geometry_msgs/msg/wrench.hpp"
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
 #include <math.h>
+#include <chrono>
 
 namespace steelhead_controls
 {
@@ -50,14 +51,28 @@ namespace steelhead_controls
         void wrench_callback(const geometry_msgs::msg::Wrench::SharedPtr msg);
 
         /** Input pose callback
-         * 
+         *
          * Callback to publish error to pose for PID controller, called by either of the other callbacks when updated
-         * 
+         *
          */
         void publish_error_to_target();
 
+        /** Sensor staleness watchdog
+         *
+         * If the sensors feeding this node go silent, the PID would keep acting on the
+         * last published error open-loop. This periodic check publishes a zero error
+         * instead so the thrusters idle until sensor data returns.
+         *
+         */
+        void watchdog_callback();
+
         float hover_depth_;
         bool hold_yaw_;
+        bool sensors_stale_ = false;
+
+        std::chrono::steady_clock::time_point last_imu_time_;
+        std::chrono::steady_clock::time_point last_pressure_time_;
+        rclcpp::TimerBase::SharedPtr watchdog_timer_;
 
         sensor_msgs::msg::Imu::SharedPtr imu_;
         steelhead_interfaces::msg::PressureSensor::SharedPtr pressure_sensor_;

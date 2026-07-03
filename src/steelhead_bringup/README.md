@@ -11,22 +11,18 @@ This package is for creating launch files and utilities needed for launching the
 
 - `localization_visualization_gazebo_launch.py` : Launches a visualization WITHIN GAZEBO of where the robot "thinks" it is, visualized in RViz.
 
-- `cameras_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
-
-    - The cameras are configured with the config files `cameraX.yaml`.
-
-- `imu_launch.py`: Starts the nodes that publish the IMU data to ROS as well as the robot_localization package which publishes the Odometry of the robot.
-
-- `teensy_test_launch.py`: Test package to test the connection to the Teensy, mainly to isolate any issues.
-
 - `pool_test_x_launch.py` : Series of launch files for launching during pool time.
 
-    - `example`: A whole bunch of nodes that are meant for showcasing the various things that can be launched.
-    - `gate`: Launches nodes necessary for a gate navigation test, which is the preliminary task for Robosub.
+    - `all`: A whole bunch of nodes that would be the robot utilizuing every sensor it has.
+    - `sensors`: Launches all of the nodes that publish information from the onboard sensors (currently the imu, cameras, and depth sensor.)
     - `hardcode`: Launches nodes that make the robot spin certain thrusters for a certain amount of time.
 
-        - The hardcoded instructions are defined in steelhead_controls/steelhead_controls/predetermined_thrust.py.
+        - The hardcoded instructions are defined in `steelhead_controls/steelhead_controls/predetermined_thrust.py`.
         
+    - `hardcode_pipeline`: Launches nodes that are neccessary for the hard coded hover route.
+
+        - The hardcoded instructions are defined in `src/steelhead_pipeline/config/competition_hardcode_sequence.yaml`.
+
     - `ssh_teleop`: Launches the nodes that allow for teleoperation (keyboard control) of Steelhead. 
 
         - Because of certain limitations with SSH, the teleop can't be run in a launch file, so do `ros2 launch steelhead_bringup pool_test_ssh_teleop.py` alongside `ros2 run steelhead_teleop ssh_keyboard_teleop` in another terminal session.

@@ -29,7 +29,11 @@ YawSpin::YawSpin(const rclcpp::NodeOptions & options)
   accumulated_(0.0), have_imu_(false), done_(false)
 {
     this->declare_parameter<double>("turns", 1.0);
-    this->declare_parameter<double>("yaw_tolerance", 0.05);
+    // The trim can only command full yaw steps (hover_at_depth uses the sign
+    // of torque.z and moves the target a fixed yaw_step), so the tolerance
+    // must be wider than one step plus coasting or the vehicle ping-pongs
+    // around the start heading forever and the task never completes.
+    this->declare_parameter<double>("yaw_tolerance", 0.15);
     this->declare_parameter<std::string>("success_message", "Yaw spin complete");
     this->declare_parameter<double>("control_period", 0.1);
 

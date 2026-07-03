@@ -29,13 +29,13 @@ def generate_launch_description():
 
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'launch', 'imu_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'imu_publisher_launch.py')
         )
     )
 
     cameras = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_bringup'), 'launch', 'cameras_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'cameras_publisher_launch.py')
         )
     )
 
@@ -97,7 +97,35 @@ def generate_launch_description():
         )
     )
 
-    # state and transform publisher?
+    actuators_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('steelhead_controls') + '/launch/actuators_command_server_launch.py'
+        )
+    )
+
+    depth_sensor = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('steelhead_controls') + '/launch/depth_sensor_publisher_launch.py'
+        )
+    )
+
+    hover_at_depth = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('steelhead_controls') + '/launch/hover_at_depth_launch.py'
+        )
+    )
+
+    pipeline = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('steelhead_pipeline'), 'launch', 'pipeline_launch.py')
+        ),
+        launch_arguments={'sequence': 'competition_hardcode_sequence.yaml'}.items()
+    )
+
+    delayed_pipeline = TimerAction(
+        period=5.0,
+        actions=[pipeline]
+    )
 
     ld.add_action(serial)
     # ld.add_action(micro_ros_agent)
@@ -107,13 +135,17 @@ def generate_launch_description():
     # ld.add_action(state_estimator)
     # ld.add_action(imu_tf)
     # ld.add_action(transform_publisher)
-    # ld.add_action(pid_controller)
+    ld.add_action(pid_controller)
     # ld.add_action(waypoint_marker)
     ld.add_action(thrust_allocator)
     # ld.add_action(gate_container)
     # ld.add_action(trajectory_generator) 
     #ld.add_action(record)
     # ld.add_action(keyboard_teleop)
+    ld.add_action(actuators_server)
+    ld.add_action(depth_sensor)
+    ld.add_action(hover_at_depth)
+    # ld.add_action(delayed_pipeline)
     
 
 

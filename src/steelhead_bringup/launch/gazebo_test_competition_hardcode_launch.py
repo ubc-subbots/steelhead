@@ -26,7 +26,7 @@ def generate_launch_description():
     hover_script = Node(
         package='steelhead_controls', 
         executable='hover_at_depth',
-        parameters=[{'depth': 1.0, 'hold_yaw': True}],
+        parameters=[{'depth': 1.0, 'hold_yaw': True, 'yaw_step': 0.1}],
         namespace="steelhead"
     )
 
@@ -36,20 +36,13 @@ def generate_launch_description():
         )
     )
 
-    # Pipeline manager + sequence manager + component container, configured to
-    # run two TimedWrench maneuvers back to back (forward drive, then style
-    # spin). No teleop node here: it would publish to the same
-    # controls/hover_adjust topic the tasks use and fight them for control.
     pipeline = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('steelhead_pipeline'), 'launch', 'pipeline_launch.py')
         ),
-        launch_arguments={'sequence': 'timed_wrench_demo_sequence.yaml'}.items()
+        launch_arguments={'sequence': 'competition_hardcode_sequence.yaml'}.items()
     )
 
-    # A TimedWrench task starts its duration clock the moment it is loaded, so
-    # hold the pipeline back until gazebo has spun up and the AUV is in the
-    # water, otherwise the first maneuver burns its time against a paused sim.
     delayed_pipeline = TimerAction(
         period=5.0,
         actions=[pipeline]

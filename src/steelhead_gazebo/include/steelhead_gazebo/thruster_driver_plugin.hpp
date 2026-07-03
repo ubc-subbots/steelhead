@@ -66,6 +66,12 @@ namespace steelhead_gazebo
         gazebo::event::ConnectionPtr updateConnection_;
 
         std::vector<gazebo::physics::LinkPtr> thruster;
+        // Fixed thruster poses relative to the base link, from <thruster_pose>
+        // elements; used for thrusters that have no dedicated link
+        std::vector<ignition::math::Pose3d> thruster_offset;
+        // Heavy main body link the thrust forces are applied to; if it cannot
+        // be resolved, forces fall back onto the thruster links themselves
+        gazebo::physics::LinkPtr base_link;
         std::vector<double> thrust_values;
         std::thread spinThread;
         std::string topic_name;
