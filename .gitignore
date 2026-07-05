@@ -9,3 +9,5 @@ __pycache__
 rosbag2*
 compile_commands.json
 .clangd
+
+.DS_Store

@@ -1,4 +1,5 @@
 int32 class_id
+string label
 float32 confidence
 # Bounding box location and size (xy correspond to pixel location of top-left corner of bounding box)
 float32 x
