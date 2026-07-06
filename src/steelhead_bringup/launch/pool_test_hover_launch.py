@@ -66,7 +66,7 @@ def generate_launch_description():
     hover = Node(
         package="steelhead_controls",
         executable="hover_at_depth",
-        parameters=[{"depth": 0.5, "hold_yaw": False}],
+        parameters=[{"depth": 0.5, "hold_yaw": True}],
         namespace="steelhead",
     )
 

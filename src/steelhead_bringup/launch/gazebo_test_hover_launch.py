@@ -39,14 +39,11 @@ def generate_launch_description():
         output="screen",
     )
 
-    hover_script = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_controls"),
-                "launch",
-                "hover_at_depth_launch.py",
-            )
-        )
+    hover = Node(
+        package="steelhead_controls",
+        executable="hover_at_depth",
+        parameters=[{"depth": 1.3, "hold_yaw": True}],
+        namespace="steelhead",
     )
 
     pid_controller = IncludeLaunchDescription(
@@ -72,7 +69,7 @@ def generate_launch_description():
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
-    ld.add_action(hover_script)
+    ld.add_action(hover)
     ld.add_action(pid_controller)
     # ld.add_action(delayed_rqt) # let gazebo spin up
 
