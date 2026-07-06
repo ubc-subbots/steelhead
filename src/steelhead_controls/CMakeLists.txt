@@ -137,7 +137,6 @@ install(TARGETS hover_at_depth
 )
 
 
-
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp

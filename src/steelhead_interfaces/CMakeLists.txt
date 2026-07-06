@@ -39,6 +39,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Float.msg"
   "srv/ActuatorsCommand.srv"
   "msg/PressureSensor.msg"
+  "msg/HoverAdjustment.msg"
   DEPENDENCIES builtin_interfaces std_msgs sensor_msgs geometry_msgs
 )
 

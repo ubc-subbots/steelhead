@@ -120,7 +120,7 @@ To run the Trajectory Generator node, run
 
   - `drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
   - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth is the only value used.
-  - `controls/hover_adjust` (`geometry_msgs/msg/Wrench`) : Optionally uses input forces for navigating while hovering and keeping upright. Only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script.
+  - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Optionally uses input forces for navigating while hovering and keeping upright. If partial adjustment is configured, only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script. Otherwise, full overrides essentially shut down the hover functionality.
 
   ### Published Topics
 
