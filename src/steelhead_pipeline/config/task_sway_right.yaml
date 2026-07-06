@@ -1,0 +1,13 @@
+/steelhead/pipeline_manager:
+  ros__parameters:
+    pipeline:
+      components:
+        - steelhead_tasks::HardcodeInputs
+      pkg_names:
+        - steelhead_tasks
+      param_files:
+        - sway_right.yaml
+      namespace: /steelhead
+      remap_rules:
+        - ''
+    use_sim_time: false

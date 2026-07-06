@@ -1,5 +1,6 @@
 #include "steelhead_controls/hover_at_depth.hpp"
 
+#include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
 using std::placeholders::_1;
@@ -52,45 +53,59 @@ namespace steelhead_controls
     {
         // !TODO replace with a ros2 message filter so we don't poll on callback
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
-            geometry_msgs::msg::Pose pose;
-            if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
-            pose.position.x = adjustments_->input.force.x;
-            pose.position.y = adjustments_->input.force.y;
-            if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
-            // add a field for adjustments for full or partial
-        
-            tf2::Quaternion q_current(
-                imu_->orientation.x,
-                imu_->orientation.y,
-                imu_->orientation.z,
-                imu_->orientation.w
-            );
+            if (adjustments_->type == steelhead_interfaces::msg::HoverAdjustment::PARTIAL) {
+                geometry_msgs::msg::Pose pose;
+                if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
+                pose.position.x = adjustments_->input.force.x;
+                pose.position.y = adjustments_->input.force.y;
+                if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
+                // add a field for adjustments for full or partial
+            
+                tf2::Quaternion q_current(
+                    imu_->orientation.x,
+                    imu_->orientation.y,
+                    imu_->orientation.z,
+                    imu_->orientation.w
+                );
 
-            double roll, pitch, yaw;
-            tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
+                double roll, pitch, yaw;
+                tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
 
-            double target_yaw = 0.0;
-            if (!hold_yaw_) {
-                if (adjustments_->input.torque.z) {
-                    target_yaw = yaw + (adjustments_->input.torque.z < 0 ? -0.01 : 0.01);
-                } else {
-                    target_yaw = yaw;
+                double target_yaw = 0.0;
+                if (!hold_yaw_) {
+                    if (adjustments_->input.torque.z) {
+                        target_yaw = yaw + (adjustments_->input.torque.z < 0 ? -0.01 : 0.01);
+                    } else {
+                        target_yaw = yaw;
+                    }
                 }
+                
+                tf2::Quaternion q_target;
+                q_target.setRPY(0.0, 0.0, target_yaw);
+
+                tf2::Quaternion q_error = q_target * q_current.inverse();
+                q_error.normalize();
+
+                pose.orientation.x = q_error.x();
+                pose.orientation.y = q_error.y();
+                pose.orientation.z = q_error.z();
+                pose.orientation.w = q_error.w();
+                
+                pose_publisher_->publish(pose); 
+            } else {
+                // !TODO: Update to allow the other adjustments
+                geometry_msgs::msg::Pose pose;
+
+                tf2::Quaternion error;
+                error.setRPY(0.0, adjustments_->input.torque.y, 0.0);
+
+                pose.orientation.x = error.x();
+                pose.orientation.y = error.y();
+                pose.orientation.z = error.z();
+                pose.orientation.w = error.w();
+
+                pose_publisher_->publish(pose); 
             }
-            
-            
-            tf2::Quaternion q_target;
-            q_target.setRPY(0.0, 0.0, target_yaw);
-
-            tf2::Quaternion q_error = q_target * q_current.inverse();
-            q_error.normalize();
-
-            pose.orientation.x = q_error.x();
-            pose.orientation.y = q_error.y();
-            pose.orientation.z = q_error.z();
-            pose.orientation.w = q_error.w();
-            
-            pose_publisher_->publish(pose);
         }
     }
 

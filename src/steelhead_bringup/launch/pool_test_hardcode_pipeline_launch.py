@@ -63,15 +63,6 @@ def generate_launch_description():
         remappings=[("/steelhead/controls/signals", "/motor_control")],
     )
 
-    hover = Node(
-        package="steelhead_controls",
-        executable="hover_at_depth",
-        parameters=[{"depth": 0.5, "hold_yaw": False}],
-        namespace="steelhead",
-    )
-
-    delay_hover = TimerAction(period=3.0, actions=[hover])
-
     pressure_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -82,13 +73,38 @@ def generate_launch_description():
         )
     )
 
+    hover = Node(
+        package="steelhead_controls",
+        executable="hover_at_depth",
+        parameters=[{"depth": 1.0, "hold_yaw": True}],
+        namespace="steelhead",
+    )
+
+    delay_hover = TimerAction(period=3.0, actions=[hover])
+
+    pipeline = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_pipeline"),
+                "launch",
+                "pipeline_launch.py",
+            )
+        ),
+        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
+    )
+
+    delayed_pipeline = TimerAction(period=15.0, actions=[pipeline])
+
     ld.add_action(serial)
     ld.add_action(imu)
     ld.add_action(pid_controller)
     ld.add_action(thrust_allocator)
+    ld.add_action(pressure_sensor)
     ld.add_action(
         delay_hover
     )  # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
-    ld.add_action(pressure_sensor)
+    ld.add_action(
+        delayed_pipeline
+    )  # let the hover script reach depth before starting the sequence
 
     return ld

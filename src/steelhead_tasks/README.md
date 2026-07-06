@@ -24,6 +24,11 @@ the pipeline sequence can advance.
     - `/steelhead/pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback`) :
       Pipeline feedback, published once the duration has elapsed.
 
+    ### Parameters
+    - `force_x`, `force_y`, `force_z`, `torque_x`, `torque_y`, `torque_z` (double, default 0.0) :
+      The wrench to publish.
+    - `duration` (double, default 5.0) : How long to publish the wrench for, in seconds.
+
 - `pitch_flip` : A component node which makes the robot flip once using IMU, ending on the
   same orientation it started at (for gate style points). It latches the starting
   heading on the first IMU message, commands a flip adjustment until flip is 3pi/2 beforereporting success. 
@@ -36,6 +41,11 @@ the pipeline sequence can advance.
     - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Wrench while spinning. Uses the full adjustment type until the very end, where it publishes a zero adjustment with partial typing.
     - `/steelhead/pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback`) :
       Pipeline feedback, published once spin is almost completed to allow the hover node to take over.
+
+    ### Parameters
+    - `flip_torque` (double, default 1.0) : The pitch torque to command while flipping.
+    - `flip_angle` (double, default 3pi/2) : Accumulated pitch rotation at which to stop
+      commanding the flip and hand off to the hover node.
 
 ## Contributors
 
