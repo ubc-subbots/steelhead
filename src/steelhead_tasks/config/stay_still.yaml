@@ -1,0 +1,3 @@
+hardcode_inputs:
+  ros__parameters:
+    duration: 1.0

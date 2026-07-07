@@ -2,10 +2,6 @@
 
 This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It is meant to be launched in Ubuntu 20.04 on the Radxa X4 on board the Steelhead AUV.
 
-## DISCLAIMER
-
-This repository was copied over from the Triton repository, so there still may be remnants of Triton or Triton Mini.
-
 # Contents
 
 - [Setup](#setup)
@@ -57,7 +53,7 @@ Still from the build folder, make the project using parallel jobs; this will tak
 
     make -j7 # runs 7 jobs in parallel
 
-After the make command finishes successfully, install OpenCV as such. This will also take a bit, so grab some fresh air and go for a walk
+After the make command finishes successfully, install OpenCV as such. 
 
     sudo make install
 
@@ -75,11 +71,11 @@ Next, install rosdep as such
   
 Then, from the folder `steelhead`, resolve any dependency issues using the following command
  
-        rosdep install -i --from-path src --rosdistro foxy -y -r
+    rosdep install -i --from-path src --rosdistro foxy -y -r
   
 Some packages may fail, so just manually install them with 
 
-    sudo apt install <PACKAGE_NAME>
+    pip install <PACKAGE_NAME>
 
 From the same folder, build all the packages using the following command
 
@@ -102,6 +98,8 @@ The last line is helpful in that it colorizes ROS2 logging so that info/warn/err
 If this command executes successfully, you are ready to develop!
 
 ## Development Setup
+We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question.
+
 ### C++ Tooling (clangd)
 This package uses clangd for C++ language support (i.e., go-to-definition, autocomplete, error highlighting). To set it up:
 1. Install clangd:
@@ -119,7 +117,7 @@ This package uses clangd for C++ language support (i.e., go-to-definition, autoc
 Re-run steps 3-4 after adding new packages or source files, or use the recommended build command at the bottom of this README.
 
 ### Python Tooling (Ruff)
-We use Ruff for Python linting/formatting. To get it formatting on save, simply download the Ruff vscode extension and add this to your `settings.json`:
+We recommend using Ruff for Python linting/formatting. To get it formatting on save, simply download the Ruff vscode extension and add this to your `settings.json`:
 
 ```
 "[python]": {
