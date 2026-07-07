@@ -19,13 +19,17 @@ This package is for creating launch files and utilities needed for launching the
 
         - The hardcoded instructions are defined in `steelhead_controls/steelhead_controls/predetermined_thrust.py`.
 
-    - `hardcode_pipeline`: Launches nodes that are neccessary for the hard coded hover route.
+    - `hardcode_pipeline`: Launches nodes that are neccessary for the hard coded hover route (serial, imu, depth sensor, PID, thrust allocator, hover script, and the pipeline running the competition sequence).
 
         - The hardcoded instructions are defined in `src/steelhead_pipeline/config/competition_hardcode_sequence.yaml`.
 
     - `ssh_teleop`: Launches the nodes that allow for teleoperation (keyboard control) of Steelhead. 
 
         - Because of certain limitations with SSH, the teleop can't be run in a launch file, so do `ros2 launch steelhead_bringup pool_test_ssh_teleop.py` alongside `ros2 run steelhead_teleop ssh_keyboard_teleop` in another terminal session.
+
+- `gazebo_test_x_launch.py` : Series of launch files within Gazebo.
+
+    - `hardcode_pipeline`: Runs the same hard coded competition sequence as the pool test version, but WITHIN GAZEBO (gazebo with the competition world, PID, thrust allocator, hover script, and the pipeline).
 
 ## Contributors
 

@@ -20,6 +20,8 @@ This will open up Gazebo and allow you to control the AUV with a keyboard, below
 <kbd>o</kbd>/<kbd>p</kbd> : Shoot Left/Right Torpedo (requires `steelhead_controls/actuators_command.cpp` to be running)  
 <kbd>k</kbd>/<kbd>l</kbd> : Open/Close Claw (requires `steelhead_controls/actuators_command.cpp` to be running) 
 
+These bindings are defined in one place, `steelhead_teleop/key_bindings.py`.
+
 ### Another control scheme
 
 To launch the publisher for controlling the Teensy
@@ -47,6 +49,10 @@ where 'T/B/M' stand for 'Top', 'Bottom', and 'Middle', and 'L/R' stand for 'Left
 
     ### Notes
     - This node will try to connect to the actuators service, but will not fail if it is not connected. It will instead display a warning message, but for simulation and non actuators purposes, this is fine.
+
+- `keyboard_pid_teleop` / `ssh_keyboard_pid_teleop` : Keyboard teleop through the PID: instead of raw forces, they publish partial hover adjustments that nudge the hover_at_depth setpoint, so the controller keeps stabilizing depth and attitude while you drive. 
+    ### Published Topics
+    - `/steelhead/controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment.msg`) : The adjustment applied to hover_at_depth's target pose 
 
 - `sim_thrust_mapper` : A standalone node which takes in input from the thrust allocator and multiplexes it to the gazebo driver topic for each simulated thruster
 

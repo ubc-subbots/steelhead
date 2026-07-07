@@ -50,7 +50,7 @@ def generate_launch_description():
     ta_config = os.path.join(
         get_package_share_directory("steelhead_controls"),
         "config",
-        "thruster_config_steelhead.yaml",
+        "thruster_config.yaml",
     )
 
     thrust_allocator = Node(
@@ -66,7 +66,7 @@ def generate_launch_description():
     hover = Node(
         package="steelhead_controls",
         executable="hover_at_depth",
-        parameters=[{"depth": 0.5, "hold_yaw": False}],
+        parameters=[{"depth": 0.5, "hold_yaw": True}],
         namespace="steelhead",
     )
 

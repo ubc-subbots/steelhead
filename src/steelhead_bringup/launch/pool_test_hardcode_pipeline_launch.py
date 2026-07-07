@@ -37,33 +37,6 @@ def generate_launch_description():
         )
     )
 
-    cameras = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_controls"),
-                "launch",
-                "cameras_publisher_launch.py",
-            )
-        )
-    )
-
-    gate_detector = ComposableNode(
-        name="detector",
-        namespace="/steelhead/gate",
-        package="steelhead_gate",
-        plugin="steelhead_gate::GateDetector",
-        parameters=[{"debug": False}],
-    )
-
-    gate_container = ComposableNodeContainer(
-        name="gate_container",
-        namespace="/",
-        package="rclcpp_components",
-        executable="component_container",
-        composable_node_descriptions=[gate_detector],
-        output="screen",
-    )
-
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -72,13 +45,6 @@ def generate_launch_description():
                 "steelhead_pid_controller_launch.py",
             )
         )
-    )
-
-    waypoint_marker = Node(
-        package="steelhead_controls",
-        executable="waypoint_marker",
-        output="screen",
-        # parameters=[{'use_sim_time': True}]
     )
 
     ta_config = os.path.join(
@@ -97,33 +63,24 @@ def generate_launch_description():
         remappings=[("/steelhead/controls/signals", "/motor_control")],
     )
 
-    trajectory_generator = IncludeLaunchDescription(
+    pressure_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_controls")
-            + "/launch/trajectory_generator_launch.py"
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "depth_sensor_publisher_launch.py",
+            )
         )
     )
 
-    actuators_server = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_controls")
-            + "/launch/actuators_command_server_launch.py"
-        )
+    hover = Node(
+        package="steelhead_controls",
+        executable="hover_at_depth",
+        parameters=[{"depth": 1.0, "hold_yaw": True}],
+        namespace="steelhead",
     )
 
-    depth_sensor = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_controls")
-            + "/launch/depth_sensor_publisher_launch.py"
-        )
-    )
-
-    hover_at_depth = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_controls")
-            + "/launch/hover_at_depth_launch.py"
-        )
-    )
+    delay_hover = TimerAction(period=3.0, actions=[hover])
 
     pipeline = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -136,22 +93,18 @@ def generate_launch_description():
         launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
     )
 
-    delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])
+    delayed_pipeline = TimerAction(period=15.0, actions=[pipeline])
 
     ld.add_action(serial)
-    # ld.add_action(micro_ros_agent)
-    # ld.add_action(state_estimator)
-    # ld.add_action(imu_tf)
-    # ld.add_action(transform_publisher)
+    ld.add_action(imu)
     ld.add_action(pid_controller)
-    # ld.add_action(waypoint_marker)
     ld.add_action(thrust_allocator)
-    # ld.add_action(gate_container)
-    # ld.add_action(trajectory_generator)
-    # ld.add_action(keyboard_teleop)
-    ld.add_action(actuators_server)
-    ld.add_action(depth_sensor)
-    ld.add_action(hover_at_depth)
-    # ld.add_action(delayed_pipeline)
+    ld.add_action(pressure_sensor)
+    ld.add_action(
+        delay_hover
+    )  # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
+    ld.add_action(
+        delayed_pipeline
+    )  # let the hover script reach depth before starting the sequence
 
     return ld

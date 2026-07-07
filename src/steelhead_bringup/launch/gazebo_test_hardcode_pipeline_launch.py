@@ -31,43 +31,40 @@ def generate_launch_description():
         )
     )
 
-    keyboard_teleop = Node(
-        name="keyboard_pid_teleop",
-        namespace="/steelhead/teleop",
-        package="steelhead_teleop",
-        executable="keyboard_pid_teleop",
-        output="screen",
-    )
-
-    hover = Node(
+    hover_script = Node(
         package="steelhead_controls",
         executable="hover_at_depth",
-        parameters=[{"depth": 1.3, "hold_yaw": True}],
+        parameters=[{"depth": 1.0, "hold_yaw": True}],
         namespace="steelhead",
     )
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_pid_controller"),
+                "launch",
+                "steelhead_pid_controller_launch.py",
+            )
+        )
+    )
+
+    pipeline = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_pipeline"),
+                "launch",
+                "pipeline_launch.py",
+            )
         ),
-        launch_arguments={'use_sim_time': 'true'}.items()
+        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
     )
 
-    rqt_reconfigure_node = Node(
-        name="rqt_reconfigure",
-        package="rqt_reconfigure",
-        executable="rqt_reconfigure",
-        output="screen",
-        arguments=["/steelhead/controls/steelhead_pid_controller"],
-    )
-
-    delayed_rqt = TimerAction(period=15.0, actions=[rqt_reconfigure_node])
+    delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])  # let gazebo spin up
 
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
-    ld.add_action(keyboard_teleop)
-    ld.add_action(hover)
+    ld.add_action(hover_script)
     ld.add_action(pid_controller)
-    # ld.add_action(delayed_rqt) # let gazebo spin up
+    ld.add_action(delayed_pipeline)
 
     return ld

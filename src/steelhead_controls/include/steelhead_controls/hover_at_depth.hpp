@@ -4,10 +4,10 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "geometry_msgs/msg/pose.hpp"
-#include "geometry_msgs/msg/wrench.hpp"
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
+#include "steelhead_interfaces/msg/hover_adjustment.hpp"
 #include <math.h>
-#include <chrono>
+#include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
 
 namespace steelhead_controls
 {
@@ -44,11 +44,11 @@ namespace steelhead_controls
 
         /** Wrench message callback
          * 
-         * Updates private variable containing adjustment wrench, which will adjust the error pose before being published
+         * Updates private variable containing adjustment, which will adjust the error pose before being published
          * 
-         * @param msg wrench msg that contains the desired adjustments
+         * @param msg hover adjustment msg that contains the adjustment and its type
          */
-        void wrench_callback(const geometry_msgs::msg::Wrench::SharedPtr msg);
+        void adjust_callback(const steelhead_interfaces::msg::HoverAdjustment::SharedPtr msg);
 
         /** Input pose callback
          * 
@@ -64,12 +64,12 @@ namespace steelhead_controls
 
         sensor_msgs::msg::Imu::SharedPtr imu_;
         steelhead_interfaces::msg::PressureSensor::SharedPtr pressure_sensor_;
-        geometry_msgs::msg::Wrench::SharedPtr adjustments_;
+        steelhead_interfaces::msg::HoverAdjustment::SharedPtr adjustments_;
 
         rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_publisher_;
         rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_subscription_;
         rclcpp::Subscription<steelhead_interfaces::msg::PressureSensor>::SharedPtr pressure_subscription_;
-        rclcpp::Subscription<geometry_msgs::msg::Wrench>::SharedPtr wrench_subscription_;
+        rclcpp::Subscription<steelhead_interfaces::msg::HoverAdjustment>::SharedPtr adjustment_subscription_;
     };
 
 } // namespace steelhead_controls
