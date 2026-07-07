@@ -53,7 +53,8 @@ def generate_launch_description():
                 "launch",
                 "steelhead_pid_controller_launch.py",
             )
-        )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
     )
 
     rqt_reconfigure_node = Node(
