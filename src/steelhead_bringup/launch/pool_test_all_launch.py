@@ -96,7 +96,7 @@ def generate_launch_description():
         )
     )
 
-        actuators_server = IncludeLaunchDescription(
+    actuators_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             get_package_share_directory('steelhead_controls') + '/launch/actuators_command_server_launch.py'
         )

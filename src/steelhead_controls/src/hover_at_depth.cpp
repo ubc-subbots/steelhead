@@ -19,6 +19,12 @@ namespace steelhead_controls
         this->get_parameter("hold_yaw", hold_yaw_);
         RCLCPP_INFO(this->get_logger(), hold_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
+        // Adjustments expire if the commander stops publishing, so a dropped teleop/pipeline
+        // connection can't leave a stale command driving the robot indefinitely
+        this->declare_parameter<float>("adjust_timeout", 1.0);
+        this->get_parameter("adjust_timeout", adjust_timeout_);
+        last_adjust_time_ = std::chrono::steady_clock::now() - std::chrono::hours(1);
+
         // If no adjustments are published, adjustments_ is zeroed out and nothing is applied
         adjustments_ = std::make_shared<geometry_msgs::msg::Wrench>();
 
@@ -46,17 +52,24 @@ namespace steelhead_controls
     void HoverAtDepth::wrench_callback(const geometry_msgs::msg::Wrench::SharedPtr msg)
     {
         adjustments_ = msg;
+        last_adjust_time_ = std::chrono::steady_clock::now();
     }
 
     void HoverAtDepth::publish_error_to_target()
     {
         // !TODO replace with a ros2 message filter so we don't poll on callback
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
+            geometry_msgs::msg::Wrench adjustments = *adjustments_;
+            if (adjust_timeout_ > 0.0f &&
+                std::chrono::duration<float>(std::chrono::steady_clock::now() - last_adjust_time_).count() > adjust_timeout_) {
+                adjustments = geometry_msgs::msg::Wrench();
+            }
+
             geometry_msgs::msg::Pose pose;
             if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
-            pose.position.x = adjustments_->force.x;
-            pose.position.y = adjustments_->force.y;
-            if (adjustments_->force.z) pose.position.z = adjustments_->force.z < 0 ? -0.2 : 0.2; // standardize inputs
+            pose.position.x = adjustments.force.x;
+            pose.position.y = adjustments.force.y;
+            if (adjustments.force.z) pose.position.z = adjustments.force.z < 0 ? -0.2 : 0.2; // standardize inputs
         
             tf2::Quaternion q_current(
                 imu_->orientation.x,
@@ -70,8 +83,8 @@ namespace steelhead_controls
 
             double target_yaw = 0.0;
             if (!hold_yaw_) {
-                if (adjustments_->torque.z) {
-                    target_yaw = yaw + (adjustments_->torque.z < 0 ? -0.01 : 0.01);
+                if (adjustments.torque.z) {
+                    target_yaw = yaw + (adjustments.torque.z < 0 ? -0.01 : 0.01);
                 } else {
                     target_yaw = yaw;
                 }

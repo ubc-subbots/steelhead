@@ -9,6 +9,9 @@
     force_z_p: 300.0
     force_z_i: 1.5
     force_z_d: 0.0
+    # caps |integral| so surface time / saturation can't wind up unbounded;
+    # max integral force contribution = i * i_max = 1.5 * 15 = 22.5 N (~60% of one thruster)
+    force_z_i_max: 15.0
     force_roll_p: 40.0
     force_roll_i: 0.0
     force_roll_d: 30.0

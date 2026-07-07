@@ -13,7 +13,7 @@ namespace steelhead_pid_controller
   PidController::PidController(const rclcpp::NodeOptions & options) 
   : Node("pid_controller", options)
   {
-    last_time_ = std::chrono::high_resolution_clock::now();
+    last_time_ = std::chrono::steady_clock::now();
     auto control_loop_time = 5ms;
     control_loop_timer_ = create_wall_timer(control_loop_time, 
       std::bind(&PidController::control_loop, this));
@@ -36,6 +36,8 @@ namespace steelhead_pid_controller
     float roll_p, roll_i, roll_d;
     float pitch_p, pitch_i, pitch_d;
     float yaw_p, yaw_i, yaw_d;
+    float x_i_max = 0.0f, y_i_max = 0.0f, z_i_max = 0.0f;
+    float roll_i_max = 0.0f, pitch_i_max = 0.0f, yaw_i_max = 0.0f;
     this->declare_parameter("force_x_p", x_p);
     this->declare_parameter("force_x_i", x_i);
     this->declare_parameter("force_x_d", x_d);
@@ -54,6 +56,12 @@ namespace steelhead_pid_controller
     this->declare_parameter("force_yaw_p", yaw_p);
     this->declare_parameter("force_yaw_i", yaw_i);
     this->declare_parameter("force_yaw_d", yaw_d);
+    this->declare_parameter("force_x_i_max", x_i_max);
+    this->declare_parameter("force_y_i_max", y_i_max);
+    this->declare_parameter("force_z_i_max", z_i_max);
+    this->declare_parameter("force_roll_i_max", roll_i_max);
+    this->declare_parameter("force_pitch_i_max", pitch_i_max);
+    this->declare_parameter("force_yaw_i_max", yaw_i_max);
 
     this->get_parameter("force_x_p", x_p);
     this->get_parameter("force_x_i", x_i);
@@ -73,13 +81,23 @@ namespace steelhead_pid_controller
     this->get_parameter("force_yaw_p", yaw_p);
     this->get_parameter("force_yaw_i", yaw_i);
     this->get_parameter("force_yaw_d", yaw_d);
+    this->get_parameter("force_x_i_max", x_i_max);
+    this->get_parameter("force_y_i_max", y_i_max);
+    this->get_parameter("force_z_i_max", z_i_max);
+    this->get_parameter("force_roll_i_max", roll_i_max);
+    this->get_parameter("force_pitch_i_max", pitch_i_max);
+    this->get_parameter("force_yaw_i_max", yaw_i_max);
 
-    pid_force_x.load(x_p, x_i, x_d);
-    pid_force_y.load(y_p, y_i, y_d);
-    pid_force_z.load(z_p, z_i, z_d);
-    pid_roll.load(roll_p, roll_i, roll_d);
-    pid_pitch.load(pitch_p, pitch_i, pitch_d);
-    pid_yaw.load(yaw_p, yaw_i, yaw_d);
+    pid_force_x.load(x_p, x_i, x_d, x_i_max);
+    pid_force_y.load(y_p, y_i, y_d, y_i_max);
+    pid_force_z.load(z_p, z_i, z_d, z_i_max);
+    pid_roll.load(roll_p, roll_i, roll_d, roll_i_max);
+    pid_pitch.load(pitch_p, pitch_i, pitch_d, pitch_i_max);
+    pid_yaw.load(yaw_p, yaw_i, yaw_d, yaw_i_max);
+
+    pid_roll.angular = true;
+    pid_pitch.angular = true;
+    pid_yaw.angular = true;
 
     param_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&PidController::parametersCallback, this, _1));
 
@@ -102,7 +120,7 @@ namespace steelhead_pid_controller
       return;
     }
 
-    auto now = std::chrono::high_resolution_clock::now();
+    auto now = std::chrono::steady_clock::now();
     float dt = 
       std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6;
 
@@ -129,7 +147,7 @@ namespace steelhead_pid_controller
     float torqueY = pid_pitch.update(pitch_error, dt);
     float torqueZ = pid_yaw.update(yaw_error, dt);
 
-    last_time_ = std::chrono::high_resolution_clock::now();
+    last_time_ = now;
 
     geometry_msgs::msg::Wrench wrenchOut;
     wrenchOut.force.x = forceX;
@@ -167,6 +185,12 @@ namespace steelhead_pid_controller
       else if (param.get_name() == "force_yaw_p") pid_yaw.Kp = static_cast<float>(param.as_double());
       else if (param.get_name() == "force_yaw_i") pid_yaw.Ki = static_cast<float>(param.as_double());
       else if (param.get_name() == "force_yaw_d") pid_yaw.Kd = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_x_i_max") pid_force_x.i_max = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_y_i_max") pid_force_y.i_max = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_z_i_max") pid_force_z.i_max = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_roll_i_max") pid_roll.i_max = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_pitch_i_max") pid_pitch.i_max = static_cast<float>(param.as_double());
+      else if (param.get_name() == "force_yaw_i_max") pid_yaw.i_max = static_cast<float>(param.as_double());
     }
 
     return result;

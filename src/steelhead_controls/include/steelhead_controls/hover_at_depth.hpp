@@ -7,6 +7,7 @@
 #include "geometry_msgs/msg/wrench.hpp"
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
 #include <math.h>
+#include <chrono>
 
 namespace steelhead_controls
 {
@@ -58,6 +59,8 @@ namespace steelhead_controls
 
         float hover_depth_;
         bool hold_yaw_;
+        float adjust_timeout_;  // seconds; <= 0 disables expiry (adjustments latch forever)
+        std::chrono::steady_clock::time_point last_adjust_time_;
 
         sensor_msgs::msg::Imu::SharedPtr imu_;
         steelhead_interfaces::msg::PressureSensor::SharedPtr pressure_sensor_;
