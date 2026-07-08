@@ -131,9 +131,9 @@ class YOLODetector(Node):
                     result = results[0]
                     detections = result.boxes
 
-                    self.get_logger().info(
-                        f"Frame {self.frame_count}: {len(detections)} detections"
-                    )
+                    # self.get_logger().info(
+                    #     f"Frame {self.frame_count}: {len(detections)} detections"
+                    # )
 
                     # Draw bounding boxes
                     for box in detections:

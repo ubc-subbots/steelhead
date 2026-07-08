@@ -10,6 +10,8 @@ the pipeline sequence can advance.
 
 ## Nodes
 
+- `automated_competition_gate` : A node that uses cv and a designated label to center the bounding box and drive through. 
+
 - `hardcode_inputs` : A component node which
   publishes a constant, parameter-configured HoverAdjustment to the hover_at_depth
   adjustment topic with a partial type for a parameter-configured duration, then publishes a zero
