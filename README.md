@@ -114,7 +114,7 @@ This package uses clangd for C++ language support (i.e., go-to-definition, autoc
 
         jq -s 'map(.[])' build/*/compile_commands.json > compile_commands.json
 
-Re-run steps 3-4 after adding new packages or source files, or use the recommended build command at the bottom of this README.
+Re-run steps 3-4 after adding new packages or source files, or add it to the `build` alias detailed below to have it being done automatically on build.
 
 ### Python Tooling (Ruff)
 We recommend using Ruff for Python linting/formatting. To get it formatting on save, simply download the Ruff vscode extension and add this to your `settings.json`:
@@ -147,7 +147,8 @@ If you'd like, you can add these aliases to the bottom of your `.bashrc` to make
 ```
 alias setup='nano ~/.bashrc'
 alias gzkill='killall -9 gzserver; killall -9 gzclient'
-alias build='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && jq -s "map(.[])" build/*/compile_commands.json > compile_commands.json && source install/setup.bash' # clean build that updates clang resources
+alias build='colcon build && source install/setup.bash' # clean build 
+alias clang='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && jq -s "map(.[])" build/*/compile_commands.json > compile_commands.json && source install/setup.bash'
 alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
 alias run='ros2 launch steelhead_bringup barebones_gazebo_launch.py'
 ```

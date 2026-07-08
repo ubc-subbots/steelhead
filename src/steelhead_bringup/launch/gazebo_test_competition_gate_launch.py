@@ -2,7 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -18,7 +18,7 @@ def generate_launch_description():
                 "gazebo_launch.py",
             )
         ),
-        launch_arguments={"world": "competition.world"}.items(),
+        launch_arguments={"world": "competition_task_gate.world"}.items(),
     )
 
     thrust_allocator = IncludeLaunchDescription(
@@ -49,23 +49,46 @@ def generate_launch_description():
         launch_arguments={"use_sim_time": "true"}.items(),
     )
 
-    pipeline = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_pipeline"),
-                "launch",
-                "pipeline_launch.py",
-            )
-        ),
-        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
+    rviz_config_file = os.path.join(
+        get_package_share_directory("steelhead_bringup"), "config", "gazebo_test.rviz"
     )
 
-    delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])  # let gazebo spin up
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        # Silence log spam
+        arguments=["-d", rviz_config_file, "--ros-args", "--log-level", "WARN"],
+        parameters=[{"use_sim_time": True}],
+    )
+
+    automation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_tasks"),
+                "launch",
+                "automated_competition_gate_launch.py",
+            )
+        )
+    )
+
+    yolo_detector = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_object_recognition"),
+                "launch",
+                "yolo_detector_launch.py",
+            )
+        )
+    )
 
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
-    ld.add_action(delayed_pipeline)
+    ld.add_action(rviz)
+    ld.add_action(automation)
+    ld.add_action(yolo_detector)
 
     return ld
