@@ -13,7 +13,7 @@ AutomatedCompetitionGate::AutomatedCompetitionGate(const rclcpp::NodeOptions & o
   have_seen_target_(false), finished_(false)
 {
     this->declare_parameter<std::string>("target_detection_label", "sos");
-    this->declare_parameter<double>("pass_timeout", 5.0);
+    this->declare_parameter<double>("pass_timeout", 4.0);
     this->declare_parameter<double>("center_offset", 0.1);
 
     target_detection_label_ = this->get_parameter("target_detection_label").as_string();
