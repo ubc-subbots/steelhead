@@ -74,6 +74,9 @@ namespace steelhead_tasks
         // seconds to keep driving after the target detection is lost before
         // the gate is considered passed
         double pass_timeout_;
+        // desired horizontal position of the box centre as a fraction of the
+        // distance from center of image: 0 = keep bounding box center at image centre, 1.0 = keep the center at the right edge of the image, -1.0 = left
+        double center_offset_;
 
         // most recent target box, valid only while have_gate_ is true
         steelhead_interfaces::msg::DetectionBox latest_detected_box_;
@@ -82,6 +85,8 @@ namespace steelhead_tasks
         bool have_seen_target_;
         // time the target was last detected, used for the pass timeout
         rclcpp::Time last_detection_time_;
+        
+        bool finished_;
 
         rclcpp::Subscription<steelhead_interfaces::msg::DetectionBoxArray>::SharedPtr detections_sub_;
         rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_sub_;

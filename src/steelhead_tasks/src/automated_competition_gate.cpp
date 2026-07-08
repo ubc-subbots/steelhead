@@ -10,13 +10,15 @@ namespace steelhead_tasks
 
 AutomatedCompetitionGate::AutomatedCompetitionGate(const rclcpp::NodeOptions & options)
 : Node("automated_competition_gate", options), image_width_(0.0), have_gate_(false),
-  have_seen_target_(false)
+  have_seen_target_(false), finished_(false)
 {
-    this->declare_parameter<std::string>("target_detection_label", "Marker");
-    this->declare_parameter<double>("pass_timeout", 2.0);
+    this->declare_parameter<std::string>("target_detection_label", "sos");
+    this->declare_parameter<double>("pass_timeout", 5.0);
+    this->declare_parameter<double>("center_offset", 0.1);
 
     target_detection_label_ = this->get_parameter("target_detection_label").as_string();
     pass_timeout_ = this->get_parameter("pass_timeout").as_double();
+    center_offset_ = this->get_parameter("center_offset").as_double();
 
     detections_sub_ = this->create_subscription<steelhead_interfaces::msg::DetectionBoxArray>(
         "yolo_detector/detections", 10,
@@ -74,6 +76,8 @@ void AutomatedCompetitionGate::camera_info_callback(
 
 void AutomatedCompetitionGate::control_loop()
 {
+    if (finished_) return; 
+
     if (image_width_ <= 0.0)
     {
         RCLCPP_INFO(this->get_logger(), "Waiting for CameraInfo, holding.");
@@ -90,9 +94,9 @@ void AutomatedCompetitionGate::control_loop()
         {
             auto search = steelhead_interfaces::msg::HoverAdjustment();
             search.type = steelhead_interfaces::msg::HoverAdjustment::PARTIAL;
-            search.input.force.y = -7.50;
+            search.input.force.x = 5.0;
             hover_adjust_pub_->publish(search);
-            RCLCPP_INFO(this->get_logger(), "Detection box not in sight, doing slight yaw to find it...");
+            RCLCPP_INFO(this->get_logger(), "Detection box not in sight, going slowly slower to detect it...");
             return;
         }
 
@@ -106,8 +110,14 @@ void AutomatedCompetitionGate::control_loop()
             feedback_msg.success = true;
             feedback_msg.message = "Passed through the competition gate";
             feedback_pub_->publish(feedback_msg);
-            have_seen_target_ = false;  // don't report the pass more than once
-            RCLCPP_INFO(this->get_logger(), "Passed through gate with timeout!");
+            finished_ = true;
+            RCLCPP_INFO(this->get_logger(), "Passed through gate and a bit further!");
+
+            // publish the stop command for the hover node
+            auto stop = steelhead_interfaces::msg::HoverAdjustment();
+            stop.type = steelhead_interfaces::msg::HoverAdjustment::PARTIAL;
+            hover_adjust_pub_->publish(stop);
+
             return;
         }
 
@@ -128,16 +138,17 @@ void AutomatedCompetitionGate::control_loop()
     double box_center_x = latest_detected_box_.x + latest_detected_box_.width / 2.0;
     double horizontal_error = box_center_x - image_width_ / 2.0;
     double normalized_error = horizontal_error / (image_width_ / 2.0);
+    double offset_error = normalized_error - center_offset_;
 
     auto adjust = steelhead_interfaces::msg::HoverAdjustment();
     adjust.type = steelhead_interfaces::msg::HoverAdjustment::PARTIAL;
-    adjust.input.force.x = 15.0;                       // approach the gate
-    adjust.input.force.y = -15.0 * normalized_error;  // sway toward the gate centre
+    adjust.input.force.x = 5.0;                     // approach the gate
+    adjust.input.force.y = -15.0 * offset_error;    // sway toward the offset target
 
     RCLCPP_INFO(
         this->get_logger(),
-        "Gate at center_x=%.1f (normalized error=%.2f), swaying to centre and driving forward.",
-        box_center_x, normalized_error
+        "Gate at center_x=%.1f (offset error=%.2f, target offset=%.2f), swaying and driving forward.",
+        box_center_x, offset_error, center_offset_
     );
 
     hover_adjust_pub_->publish(adjust);
