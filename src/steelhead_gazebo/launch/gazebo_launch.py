@@ -24,6 +24,12 @@ def generate_launch_description():
             default_value='false',
             description="Set to 'true' to run gazebo headless"
     )
+    
+    verbose_arg = DeclareLaunchArgument(
+        'verbose',
+        default_value='false',
+        description="Set to 'true' for verbose gzserver debug output"
+    )
 
     # We need to add the models and worlds directories to env so gazebo can find them
     steelhead_gazebo_dir = get_package_share_directory('steelhead_gazebo')
@@ -53,7 +59,8 @@ def generate_launch_description():
         ),
         launch_arguments={
             'world': ['worlds/', LaunchConfiguration('world')],
-            'verbose': 'true'
+            'verbose': LaunchConfiguration('verbose')
+            # 'verbose': 'true'
             }.items()
     )
 
@@ -67,6 +74,7 @@ def generate_launch_description():
 
     ld.add_action(world_arg)
     ld.add_action(headless_arg)
+    ld.add_action(verbose_arg)
     ld.add_action(add_model_path)
     ld.add_action(add_resource_path)
     ld.add_action(gazebo_server)
