@@ -120,7 +120,7 @@ To run the Trajectory Generator node, run
 
   - `drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
   - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth is the only value used.
-  - `controls/hover_adjust` (`geometry_msgs/msg/Wrench`) : Optionally uses input forces for navigating while hovering and keeping upright. Only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script.
+  - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Optionally uses input forces for navigating while hovering and keeping upright. If partial adjustment is configured, only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script. Otherwise, full overrides essentially shut down the hover functionality.
 
   ### Published Topics
 
@@ -130,7 +130,7 @@ To run the Trajectory Generator node, run
 
   - A target depth to maintain is expected as input to the node via the `depth` parameter, but a default value of 0.5m will be assigned if not specified. If a negative value or zero is provided, it's assumed that depth should not be considered and the script will only adjust for orientation.
   - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
-  - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward.
+  - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward. The final message should also be a partial adjustment.
 
 ## Services
 
@@ -146,6 +146,12 @@ To run the Trajectory Generator node, run
   - This system relies on an arduino connected to `/dev/arduino` with a baud rate of 115200.
   - The service will respond with the status of whether or not writing the serial communication was successful or not.
   - There are preset commands that the Ardunio board expects set as enumerations in `src/steelhead_interfaces/srv/ActuatorsCommand.srv`. These are defined in the `ardunio` repository in `ubc-subbots`.
+
+## Launch Files
+
+- `cameras_publisher_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
+
+    - The cameras are configured with the config files `cameraX.yaml`.
 
 ## Contributors
 

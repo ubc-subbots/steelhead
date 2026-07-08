@@ -16,6 +16,7 @@ This package provides no executables. See ROS2 tutorials (such as [this](https:/
 - `Waypoint` Message used to represent a waypoint
 - `ObjectOffset` Message used to represent an object's position relative to the AUV
 - `PressureSensor` Message that holds pressure, depth and temperature, most likely implemented by the MS5837 pressure sensor
+- `HoverAdjustment` Message used for the hover_at_depth node that dictates the force override and type.
 ### Services
 - `ConfigurePipeline` Service used to configure the pipeline with a certain pipeline type
 - `ObjectDetection` Service used to detect objects in a given image

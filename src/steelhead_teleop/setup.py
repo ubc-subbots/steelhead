@@ -26,7 +26,9 @@ setup(
         'console_scripts': [
             'key_publisher = steelhead_teleop.key_publisher:main',
             'keyboard_teleop = steelhead_teleop.keyboard_teleop:main',
+            'keyboard_pid_teleop = steelhead_teleop.keyboard_pid_teleop:main',
             'ssh_keyboard_teleop = steelhead_teleop.ssh_keyboard_teleop:main',
+            'ssh_keyboard_pid_teleop = steelhead_teleop.ssh_keyboard_pid_teleop:main',
             'sim_thrust_mapper = steelhead_teleop.sim_thrust_mapper:main',
             'controller_teleop = steelhead_teleop.controller_teleop:main'
         ],
