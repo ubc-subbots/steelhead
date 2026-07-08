@@ -14,13 +14,8 @@ namespace steelhead_tasks
     /** Automated task node for passing through the competition gate.
      *
      * This node subscribes to the bounding boxes published by the object
-     * recognizer, and on a fixed timer decides how the AUV should move to line
-     * up with and drive through the gate. Movement commands are published as a
-     * partial HoverAdjustment on the hover_at_depth adjustment topic (the
-     * wrapped Wrench's force.x/y nudge position, force.z sign nudges depth,
-     * torque.z sign nudges yaw). When the gate has
-     * been passed the node notifies the pipeline manager via a PipelineFeedback
-     * message so the pipeline sequence can advance.
+     * recognizer, and centers the box with the designated marker. Afterwards, it drifts forward 
+     * until the bounding box is out of sight, and then drifts a bit more aftwards.
      *
      * It is a component node registered as a plugin so it can be composed into
      * the steelhead_pipeline container. Use this as the reference example for

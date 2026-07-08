@@ -66,7 +66,6 @@ void AutomatedCompetitionGate::detections_callback(
 void AutomatedCompetitionGate::camera_info_callback(
     const sensor_msgs::msg::CameraInfo::SharedPtr msg)
 {
-    // Resolution is fixed, so grab the width once and stop listening.
     image_width_ = static_cast<double>(msg->width);
     RCLCPP_INFO(this->get_logger(), "Got image width from CameraInfo: %.0f px", image_width_);
     camera_info_sub_.reset();
@@ -75,7 +74,6 @@ void AutomatedCompetitionGate::camera_info_callback(
 
 void AutomatedCompetitionGate::control_loop()
 {
-    // Wait until we know the image width before trying to centre on the gate.
     if (image_width_ <= 0.0)
     {
         RCLCPP_INFO(this->get_logger(), "Waiting for CameraInfo, holding.");
@@ -88,10 +86,6 @@ void AutomatedCompetitionGate::control_loop()
     // Target not currently in view.
     if (!have_gate_)
     {
-        // Never seen it yet: spin in place to search for the gate. Only yaw is
-        // commanded (no forward drive) so the AUV rotates without leaving its
-        // position until the gate comes into view. hover_at_depth uses only the
-        // sign of torque.z, so search_yaw_ just sets the turn direction.
         if (!have_seen_target_)
         {
             auto search = steelhead_interfaces::msg::HoverAdjustment();
@@ -131,14 +125,6 @@ void AutomatedCompetitionGate::control_loop()
     have_seen_target_ = true;
     last_detection_time_ = this->now();
 
-    // Centre the gate horizontally by swaying, and drive forward. The box x is
-    // the top-left corner, so the box centre is x + width/2. horizontal_error > 0
-    // means the gate is right of image centre; normalise it to [-1, 1] across the
-    // image half-width so the command is resolution-independent. hover_at_depth
-    // passes force.y straight through as a lateral position error, so this is a
-    // proportional sway toward the gate centre. +y is left (REP-103), so a gate
-    // right of centre needs a negative y command (flip the sign if the pool shows
-    // it swaying the wrong way).
     double box_center_x = latest_detected_box_.x + latest_detected_box_.width / 2.0;
     double horizontal_error = box_center_x - image_width_ / 2.0;
     double normalized_error = horizontal_error / (image_width_ / 2.0);
