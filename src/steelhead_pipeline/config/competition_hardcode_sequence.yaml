@@ -18,11 +18,11 @@
     - task_navigate_forward
     - task_stay_still
 
-    - task_pitch_flip
-    - task_stay_still
+    # - task_pitch_flip
+    # - task_stay_still
 
-    - task_pitch_flip
-    - task_stay_still
+    # - task_pitch_flip
+    # - task_stay_still
 
     - task_navigate_forward
     - task_navigate_forward
