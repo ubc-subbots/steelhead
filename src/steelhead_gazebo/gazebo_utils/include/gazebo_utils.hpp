@@ -31,7 +31,6 @@ namespace steelhead_gazebo
             value = _sdf->Get<parameter>(param);
             *status = true;
         }
-        // gzdbg << param << ": " << value << std::endl;
         gzlog << param << ": " << value << std::endl;
         return value;
     }
