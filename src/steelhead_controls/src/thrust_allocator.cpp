@@ -1,4 +1,5 @@
 #include "steelhead_controls/thrust_allocator.hpp"
+#include <algorithm>
 #include <unistd.h>
 using std::placeholders::_1;
 
@@ -31,8 +32,8 @@ namespace steelhead_controls
       this->get_parameter("max_fwd", max_fwd_);
       max_fwd_ *= 9.807; // kgf to N
       this->declare_parameter<double>("max_rev", max_rev_);
-      max_rev_ *= 9.807; // kgf to N
       this->get_parameter("max_rev", max_rev_);
+      max_rev_ *= 9.807; // kgf to N
 
       encode_levels_ = pow(2,bits_per_thruster_);
 
@@ -112,6 +113,7 @@ namespace steelhead_controls
       for (int i = 0; i < num_thrusters_ ; i++)
       {
         double thruster_thrust = thrust_mat.at<double>(i,0);
+        thruster_thrust = std::max(-max_rev_, std::min(thruster_thrust, max_fwd_));
         thrust.push_back(thruster_thrust);
 
         uint32_t t_level = forceToLevel(thruster_thrust);
