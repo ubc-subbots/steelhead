@@ -114,7 +114,7 @@ This package uses clangd for C++ language support (i.e., go-to-definition, autoc
 
         jq -s 'map(.[])' build/*/compile_commands.json > compile_commands.json
 
-Re-run steps 3-4 after adding new packages or source files, or add it to the `build` alias detailed below.
+Re-run steps 3-4 after adding new packages or source files, or add it to the `build` alias detailed below to have it being done automatically on build.
 
 ### Python Tooling (Ruff)
 We recommend using Ruff for Python linting/formatting. To get it formatting on save, simply download the Ruff vscode extension and add this to your `settings.json`:
