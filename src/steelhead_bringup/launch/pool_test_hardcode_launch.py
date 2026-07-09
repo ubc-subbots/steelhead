@@ -51,6 +51,17 @@ def generate_launch_description():
         executable='predetermined_thrust.py'
     )
 
+    bag_record = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('steelhead_bringup'),
+                'launch',
+                'bag_record_launch.py',
+            )
+        )
+    )
+
+    ld.add_action(bag_record)
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
     ld.add_action(hardcoded_thrusters)

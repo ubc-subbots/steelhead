@@ -43,6 +43,17 @@ def generate_launch_description():
         )
     )
 
+    bag_record = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_bringup"),
+                "launch",
+                "bag_record_launch.py",
+            )
+        )
+    )
+
+    ld.add_action(bag_record)
     ld.add_action(imu)
     ld.add_action(cameras)
     ld.add_action(actuators_server)

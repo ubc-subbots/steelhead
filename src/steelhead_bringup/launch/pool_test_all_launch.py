@@ -138,6 +138,17 @@ def generate_launch_description():
 
     delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])
 
+    bag_record = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_bringup"),
+                "launch",
+                "bag_record_launch.py",
+            )
+        )
+    )
+
+    ld.add_action(bag_record)
     ld.add_action(serial)
     # ld.add_action(micro_ros_agent)
     # ld.add_action(state_estimator)
