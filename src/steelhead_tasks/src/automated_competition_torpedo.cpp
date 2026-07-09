@@ -14,7 +14,6 @@ AutomatedCompetitionTorpedo::AutomatedCompetitionTorpedo(const rclcpp::NodeOptio
   left_torpedo_fired_(false), finished_(false)
 {
     this->declare_parameter<std::string>("target_detection_label", "circle");
-    this->declare_parameter<double>("pass_timeout", 4.0);
     this->declare_parameter<double>("center_offset", 0.0);
     this->declare_parameter<double>("fire_alignment_threshold", 0.1);
 
