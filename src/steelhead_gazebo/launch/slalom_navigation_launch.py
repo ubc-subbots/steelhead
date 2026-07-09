@@ -27,17 +27,7 @@ def generate_launch_description():
         executable='nav.py',
         name='nav',
         output='screen',
-        parameters=[
-            {'topic': '/steelhead/controls/hover_adjust'},
-            {'rate': 10.0},
-            {'force_x': 15.0},
-            {'force_y': 0.0},
-            {'force_z': 0.0},
-            {'torque_x': 0.0},
-            {'torque_y': 0.0},
-            {'torque_z': 0.0},
-            {'use_sim_time': True},
-        ],
+        parameters=[{'use_sim_time': True}],
     )
 
     keyboard_teleop = Node(
@@ -74,45 +64,11 @@ def generate_launch_description():
         actions=[rqt_reconfigure_node]
     )
 
-    # slalom_navigator = Node(
-    #     package='steelhead_gazebo',
-    #     executable='slalom_navigator.py',
-    #     name='slalom_navigator',
-    #     output='screen',
-    #     parameters=[
-    #         {'image_topic': '/steelhead/drivers/front_camera/image_raw'},
-    #         {'wrench_topic': '/steelhead/controls/hover_adjust'},
-    #         {'forward_force': 15.0},
-    #         {'num_gates': 3},
-    #         {'auto_lock_side': True},
-    #         {'enable_depth_correction': True},
-    #         {'target_pole_y_fraction': 0.45},
-    #         {'depth_gain': 8.0},
-    #         {'approach_area': 2500},
-    #         {'clear_frames': 15},
-    #         {'use_sim_time': True},
-    #     ],
-    # )
-
-    # rviz_node = Node(
-    #     package='rviz2',
-    #     executable='rviz2',
-    #     name='rviz2',
-    #     output='screen',
-    # )
-
-    # delayed_rviz = TimerAction(
-    #     period=10.0,
-    #     actions=[rviz_node]
-    # )
-
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(nav_node)
     ld.add_action(keyboard_teleop)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
-    # ld.add_action(delayed_rviz)
-    # ld.add_action(delayed_rqt) # let gazebo spin up
 
     return ld

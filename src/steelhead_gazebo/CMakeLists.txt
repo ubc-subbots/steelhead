@@ -323,7 +323,6 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   steelhead_gazebo/bounding_box_image_saver.py
   steelhead_gazebo/train_yolo.py
-  steelhead_gazebo/slalom_navigator.py
   steelhead_gazebo/nav.py
   DESTINATION lib/${PROJECT_NAME}
 )
