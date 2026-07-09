@@ -50,9 +50,23 @@ class YOLODetector(Node):
         self.declare_parameter("confidence_threshold", 0.1)
         self.declare_parameter("inference_interval", 1.0)
 
+        self.declare_parameter(
+            "input_image_topic", "/steelhead/drivers/front_camera/image_raw"
+        )
+        self.declare_parameter(
+            "annotated_image_topic", "/steelhead/yolo_detector/front/annotated_image"
+        )
+        self.declare_parameter(
+            "detections_topic", "/steelhead/yolo_detector/front/detections"
+        )
+
         weights_path = self.get_parameter("weights_path").value
         self.confidence_threshold = self.get_parameter("confidence_threshold").value
         self.inference_interval = self.get_parameter("inference_interval").value
+
+        input_image_topic = self.get_parameter("input_image_topic").value
+        annotated_image_topic = self.get_parameter("annotated_image_topic").value
+        detections_topic = self.get_parameter("detections_topic").value
 
         # Load YOLO model
         self.model = None
@@ -74,18 +88,21 @@ class YOLODetector(Node):
         # Subscribers and publishers - create these AFTER model loading attempt
         # so the node doesn't crash even if model loading fails
         self.image_subscriber = self.create_subscription(
-            Image, "/steelhead/drivers/front_camera/image_raw", self.image_callback, 10
+            Image, input_image_topic, self.image_callback, 10
         )
 
         self.annotated_publisher = self.create_publisher(
-            Image, "/steelhead/yolo_detector/annotated_image", 10
+            Image, annotated_image_topic, 10
         )
 
         self.detections_publisher = self.create_publisher(
-            DetectionBoxArray, "/steelhead/yolo_detector/detections", 10
+            DetectionBoxArray, detections_topic, 10
         )
 
-        self.get_logger().info("YOLO Detector node initialized")
+        self.get_logger().info(
+            f"YOLO Detector node initialized (input: {input_image_topic}, "
+            f"annotated: {annotated_image_topic}, detections: {detections_topic})"
+        )
         self.frame_count = 0
 
     def image_callback(self, msg: Image):

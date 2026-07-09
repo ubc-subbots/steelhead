@@ -23,7 +23,7 @@ AutomatedCompetitionTorpedo::AutomatedCompetitionTorpedo(const rclcpp::NodeOptio
     fire_alignment_threshold_ = this->get_parameter("fire_alignment_threshold").as_double();
 
     detections_sub_ = this->create_subscription<steelhead_interfaces::msg::DetectionBoxArray>(
-        "yolo_detector/detections", 10,
+        "yolo_detector/front/detections", 10,
         std::bind(&AutomatedCompetitionTorpedo::detections_callback, this, _1)
     );
 
