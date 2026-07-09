@@ -1,17 +1,22 @@
-"""Path follower: WAIT -> ORIENT -> FOLLOW -> COAST -> DONE."""
+#!/usr/bin/env python3
+"""Path follower: WAIT -> ORIENT -> FOLLOW -> COAST -> DONE.
+
+Publishes geometry_msgs/Wrench to controls/hover_adjust:
+  force.x  : body-frame forward displacement command (m)
+  force.y  : body-frame lateral displacement command (m)
+  force.z  : 0 (let hover_at_depth's depth-hold run)
+  torque.z : current_yaw - target_yaw  (so hover sets target = desired yaw)
+"""
 import math
 
 import rclpy
 from rclpy.node import Node
-from steelhead_interfaces.msg import Waypoint
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Wrench
 from std_msgs.msg import Bool
 from nav_msgs.msg import Odometry
 
 
-PASSTHROUGH = 1
-
-FORWARD_DISTANCE = 0.5
+FORWARD_PUSH = 0.15
 LATERAL_GAIN = 0.3
 MAX_STRAFE = 0.02
 
@@ -28,21 +33,6 @@ YAW_TOLERANCE = math.radians(8)
 ORIENT_SAMPLES = 5
 
 ROT_SIGN = -1
-
-
-def quaternion_from_euler(roll, pitch, yaw):
-    cy = math.cos(yaw * 0.5)
-    sy = math.sin(yaw * 0.5)
-    cp = math.cos(pitch * 0.5)
-    sp = math.sin(pitch * 0.5)
-    cr = math.cos(roll * 0.5)
-    sr = math.sin(roll * 0.5)
-    return [
-        cy * cp * cr + sy * sp * sr,
-        cy * cp * sr - sy * sp * cr,
-        sy * cp * sr + cy * sp * cr,
-        sy * cp * cr - cy * sp * sr,
-    ]
 
 
 def yaw_from_quaternion(q):
@@ -78,7 +68,6 @@ class PathFollowRoute(Node):
 
         self.current_x = 0.0
         self.current_y = 0.0
-        self.current_z = 0.0
         self.current_yaw = 0.0
         self.have_state = False
 
@@ -92,13 +81,12 @@ class PathFollowRoute(Node):
         self.initial_yaw = 0.0
         self.target_yaw = 0.0
         self.target_locked = False
-        self.locked_z = 0.0
         self.orient_samples = []
         self.coast_start_x = 0.0
         self.coast_start_y = 0.0
 
-        self.waypoint_pub = self.create_publisher(
-            Waypoint, '/steelhead/controls/waypoint_marker/set', 10)
+        self.adjust_pub = self.create_publisher(
+            Wrench, '/steelhead/controls/hover_adjust', 10)
         self.task_complete_pub = self.create_publisher(
             Bool, '/steelhead/path_follow/task_complete', 10)
 
@@ -113,7 +101,7 @@ class PathFollowRoute(Node):
             self.state_callback, 10)
 
         self.create_timer(CONTROL_PERIOD, self.control_loop)
-        self.get_logger().info('Path Follow Route started')
+        self.get_logger().info('Path Follow Route started (via hover_at_depth)')
 
     def pathmarker_callback(self, msg):
         if msg.linear.x > 0.5:
@@ -137,7 +125,6 @@ class PathFollowRoute(Node):
     def state_callback(self, msg):
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
-        self.current_z = msg.pose.pose.position.z
         self.current_yaw = yaw_from_quaternion(msg.pose.pose.orientation)
         self.have_state = True
 
@@ -149,13 +136,11 @@ class PathFollowRoute(Node):
             if self.path_detected:
                 self.orient_samples = []
                 self.initial_yaw = self.current_yaw
-                self.locked_z = self.current_z
                 self.target_locked = False
                 self.phase = PHASE_ORIENT
                 self.get_logger().info(
                     f'PATH DETECTED - entering ORIENT '
-                    f'(initial_yaw={math.degrees(self.initial_yaw):.1f} deg, '
-                    f'depth_locked={self.locked_z:.2f} m)')
+                    f'(initial_yaw={math.degrees(self.initial_yaw):.1f} deg)')
             return
 
         if self.phase == PHASE_ORIENT:
@@ -176,7 +161,7 @@ class PathFollowRoute(Node):
         if not self.target_locked:
             if self.path_detected:
                 self.orient_samples.append(self.path_image_angle)
-            self._publish_hold_with_yaw(self.initial_yaw)
+            self._publish_hold_yaw(self.initial_yaw)
 
             if len(self.orient_samples) >= ORIENT_SAMPLES:
                 mean_angle = sum(self.orient_samples) / len(self.orient_samples)
@@ -195,20 +180,15 @@ class PathFollowRoute(Node):
             self.get_logger().info(
                 f'ALIGNED - entering FOLLOW (image_angle now={math.degrees(self.path_image_angle):.1f} deg)')
             return
-        self._publish_hold_with_yaw(self.target_yaw)
+        self._publish_hold_yaw(self.target_yaw)
 
-    def _publish_hold_with_yaw(self, yaw):
-        wp = self.make_waypoint(self.current_x, self.current_y, self.locked_z, yaw)
-        self.waypoint_pub.publish(wp)
+    def _publish_hold_yaw(self, target_yaw):
+        self._publish_wrench(0.0, 0.0, target_yaw)
 
     def _run_follow(self):
         if not self.path_detected:
-            self._publish_hold_with_yaw(self.target_yaw)
+            self._publish_hold_yaw(self.target_yaw)
             return
-
-        heading = self.target_yaw
-        target_x = self.current_x + FORWARD_DISTANCE * math.cos(heading)
-        target_y = self.current_y + FORWARD_DISTANCE * math.sin(heading)
 
         # Fade strafe when only the rounded cap is visible: minAreaRect's
         # lateral estimate is biased for asymmetric shapes and chasing it drifts.
@@ -229,14 +209,10 @@ class PathFollowRoute(Node):
 
         gain_scale = min(area_scale, fwd_scale)
 
-        perp = heading + math.pi / 2.0
-        offset = self.path_offset_x * LATERAL_GAIN * gain_scale
-        offset = max(-MAX_STRAFE, min(MAX_STRAFE, offset))
-        target_x += offset * math.cos(perp)
-        target_y += offset * math.sin(perp)
+        strafe = self.path_offset_x * LATERAL_GAIN * gain_scale
+        strafe = max(-MAX_STRAFE, min(MAX_STRAFE, strafe))
 
-        wp = self.make_waypoint(target_x, target_y, self.locked_z, heading)
-        self.waypoint_pub.publish(wp)
+        self._publish_wrench(FORWARD_PUSH, strafe, self.target_yaw)
 
         if abs(self.path_offset_x) > 0.1 and gain_scale > 0.0:
             direction = 'RIGHT' if self.path_offset_x > 0 else 'LEFT'
@@ -256,46 +232,25 @@ class PathFollowRoute(Node):
             self.phase = PHASE_DONE
             self.get_logger().info(
                 f'COAST complete ({traveled:.2f} m traveled) - PATH FOLLOWING COMPLETE')
+            self._publish_wrench(0.0, 0.0, self.target_yaw)
             done = Bool()
             done.data = True
             self.task_complete_pub.publish(done)
             return
 
-        heading = self.target_yaw
-        target_x = self.current_x + FORWARD_DISTANCE * math.cos(heading)
-        target_y = self.current_y + FORWARD_DISTANCE * math.sin(heading)
-        wp = self.make_waypoint(target_x, target_y, self.locked_z, heading)
-        self.waypoint_pub.publish(wp)
+        self._publish_wrench(FORWARD_PUSH, 0.0, self.target_yaw)
 
-    def make_waypoint(self, x, y, z, yaw):
-        wp = Waypoint()
-        wp.pose.position.x = x
-        wp.pose.position.y = y
-        wp.pose.position.z = z
-
-        q = quaternion_from_euler(0.0, 0.0, yaw)
-        wp.pose.orientation.w = q[0]
-        wp.pose.orientation.x = q[1]
-        wp.pose.orientation.y = q[2]
-        wp.pose.orientation.z = q[3]
-
-        wp.distance.position.x = 0.2
-        wp.distance.position.y = 0.2
-        wp.distance.position.z = 0.3
-
-        # waypoint_marker decomposes this via tf2 getRPY; a quat at gimbal lock
-        # (e.g. RPY 1.57,1.57,1.57) silently produces ~pi/2 yaw tolerance and
-        # waypoints are marked achieved instantly, zeroing the PID error.
-        dist_q = quaternion_from_euler(math.radians(30), math.radians(30), math.radians(5))
-        wp.distance.orientation.w = dist_q[0]
-        wp.distance.orientation.x = dist_q[1]
-        wp.distance.orientation.y = dist_q[2]
-        wp.distance.orientation.z = dist_q[3]
-
-        wp.success = False
-        wp.type = PASSTHROUGH
-        wp.duration = 0.0
-        return wp
+    def _publish_wrench(self, fwd_body, strafe_body, target_yaw):
+        # hover_at_depth interprets force.x/y as the desired body-frame
+        # displacement error and computes target_yaw = current_yaw - torque.z.
+        msg = Wrench()
+        msg.force.x = fwd_body
+        msg.force.y = strafe_body
+        msg.force.z = 0.0
+        msg.torque.x = 0.0
+        msg.torque.y = 0.0
+        msg.torque.z = wrap_angle(self.current_yaw - target_yaw)
+        self.adjust_pub.publish(msg)
 
 
 def main(args=None):

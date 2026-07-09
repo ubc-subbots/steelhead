@@ -31,11 +31,16 @@ def generate_launch_description():
         )
     )
 
-    waypoint_marker = Node(
+    hover_at_depth = Node(
         package='steelhead_controls',
-        executable='waypoint_marker',
+        executable='hover_at_depth',
+        namespace='/steelhead',
         output='screen',
-        parameters=[{'use_sim_time': True}]
+        parameters=[
+            {'use_sim_time': True},
+            {'depth': -1.2},
+            {'adjust_yaw': False},
+        ],
     )
 
     path_follow_route = Node(
@@ -113,7 +118,7 @@ def generate_launch_description():
     ld.add_action(state_publisher)
     ld.add_action(underwater_camera)
     ld.add_action(state_estimator)
-    ld.add_action(waypoint_marker)
+    ld.add_action(hover_at_depth)
     ld.add_action(pathmarker_detector)
     ld.add_action(path_follow_route)
     ld.add_action(pid_controller)

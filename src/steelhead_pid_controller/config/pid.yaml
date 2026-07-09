@@ -8,7 +8,7 @@
     force_y_d: 0.0
     force_z_p: 300.0
     force_z_i: 1.5
-    force_z_d: 0.0
+    force_z_d: 50.0
     force_roll_p: 60.0
     force_roll_i: 0.0
     force_roll_d: 0.0

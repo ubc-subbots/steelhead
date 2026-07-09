@@ -12,14 +12,12 @@ namespace steelhead_controls
     {
         this->declare_parameter<float>("depth", 0.5);
         this->get_parameter("depth", hover_depth_);
-        if (hover_depth_ < 0.0) hover_depth_ = 0.0;
-        RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at %fm below surface." : "Negative or 0.0 depth provided, only adjusting orientation.", hover_depth_);
+        RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at depth=%fm (pressure - depth = z error)." : "depth=0.0; only adjusting orientation.", hover_depth_);
 
         this->declare_parameter<bool>("adjust_yaw", false);
         this->get_parameter("adjust_yaw", adjust_yaw_);
         RCLCPP_INFO(this->get_logger(), adjust_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
-        // If no adjustments are published, adjustments_ is zeroed out and nothing is applied
         adjustments_ = std::make_shared<geometry_msgs::msg::Wrench>();
 
         pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("controls/input_pose", 10);
@@ -47,7 +45,6 @@ namespace steelhead_controls
 
     void HoverAtDepth::publish_error_to_target()
     {
-        // !TODO replace with a ros2 message filter so we don't poll on callback
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
             geometry_msgs::msg::Pose pose;
             if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
@@ -67,10 +64,8 @@ namespace steelhead_controls
 
             double target_yaw = adjust_yaw_ ? 0.0 : current_yaw - adjustments_->torque.z;
 
-            tf2::Quaternion q_target;
-            q_target.setRPY(0.0, 0.0, target_yaw);
-
-            tf2::Quaternion q_error = q_target * q_current.inverse();
+            tf2::Quaternion q_error;
+            q_error.setRPY(0.0, 0.0, current_yaw - target_yaw);
             q_error.normalize();
 
             pose.orientation.x = q_error.x();
@@ -82,7 +77,7 @@ namespace steelhead_controls
         }
     }
 
-} // namespace steelhead_controls
+}
 
 int main(int argc, char *argv[])
 {
@@ -95,7 +90,6 @@ int main(int argc, char *argv[])
     }
     catch (rclcpp::exceptions::RCLError const &)
     {
-        // RCLCPP_INFO(this->get_logger(), "Error thrown in main");
-    } // during testing sometimes throws error
+    }
     return 0;
 }
