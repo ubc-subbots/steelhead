@@ -30,22 +30,32 @@ class NavNode(Node):
         self.declare_parameter('image_topic', '/steelhead/drivers/front_camera/image_raw')
         self.declare_parameter('rate', 10.0)
         self.declare_parameter('force_x', 15.0)
-        self.declare_parameter('gap_steer_gain', 2.0)
+        self.declare_parameter('gap_steer_gain', 10.0)
         self.declare_parameter('pass_lane_bias', 0.5)
         self.declare_parameter('preferred_side', 'left')
         self.declare_parameter('min_pole_area', 500.0)
         self.declare_parameter('num_gates', 3)
-        self.declare_parameter('search_forward_scale', 0.01)
+        self.declare_parameter('search_forward_scale', 0.03)
+        self.declare_parameter('search_white_forward_scale', 0.12)
+        self.declare_parameter('search_lateral_forward_coupling', 0.03)
+        self.declare_parameter('search_ramp_seconds', 2.0)
         self.declare_parameter('search_sweep_force', 30.0)
         self.declare_parameter('search_sweep_step', 0.2)
-        self.declare_parameter('search_sweep_initial_amplitude', 1.0)
+        self.declare_parameter('search_sweep_initial_amplitude', 200.0)
         self.declare_parameter('search_sweep_amplitude_growth', 5.0)
-        self.declare_parameter('search_sweep_max_amplitude', 20.0)
+        self.declare_parameter('search_sweep_max_amplitude', 200.0)
         self.declare_parameter('search_sweep_min', 0.4)
-        self.declare_parameter('approach_min_height', 120.0)
-        self.declare_parameter('pass_confirm_frames', 5)
+        self.declare_parameter('approach_min_height', 140.0)
+        self.declare_parameter('pass_confirm_frames', 8)
+        self.declare_parameter('pass_min_seconds', 1.5)
+        self.declare_parameter('pass_coast_seconds', 3.0)
         self.declare_parameter('post_pass_seconds', 3.0)
         self.declare_parameter('clear_frames', 5)
+        self.declare_parameter('white_lost_recovery_frames', 6)
+        self.declare_parameter('fallback_gap_offset_px', 110.0)
+        self.declare_parameter('nav_entry_seconds', 0.7)
+        self.declare_parameter('nav_entry_forward_scale', 0.45)
+        self.declare_parameter('nav_entry_steer_boost', 2.5)
 
         self.bridge = CvBridge()
         self.state = State.INITIAL_APPROACH
@@ -54,9 +64,14 @@ class NavNode(Node):
         self.gap_center_error = 0.0
         self.clear_count = 0
         self.lost_red_count = 0
+        self.lost_white_count = 0
         self.post_pass_ticks = 0
+        self.pass_min_remaining = 0
         self.initial_approach_ticks = 0
         self.tracked_white_cx = None
+        self.search_ramp_remaining = 0
+        self.search_ramp_total = 0
+        self.nav_entry_ticks = 0
         self._reset_sweep()
 
         topic = self.get_parameter('topic').value
@@ -119,6 +134,11 @@ class NavNode(Node):
 
             partner_white = self._find_white_for_red(cv_image, closest_red)
             if partner_white is not None:
+                self.lost_white_count = 0
+                self._update_navigation_error(cv_image, closest_red, partner_white)
+                rate = self.get_parameter('rate').value
+                nav_entry_seconds = self.get_parameter('nav_entry_seconds').value
+                self.nav_entry_ticks = max(0, int(rate * nav_entry_seconds))
                 self.get_logger().info(
                     f'Gate {self.gates_passed + 1}: white pole found; navigating through'
                 )
@@ -138,6 +158,9 @@ class NavNode(Node):
             if closest_red['height'] >= approach_min_height:
                 self.state = State.PASSING
                 self.lost_red_count = 0
+                rate = self.get_parameter('rate').value
+                pass_min_seconds = self.get_parameter('pass_min_seconds').value
+                self.pass_min_remaining = int(pass_min_seconds * rate)
                 self.get_logger().info(
                     f'Gate {self.gates_passed + 1}: close enough; passing through'
                 )
@@ -153,6 +176,9 @@ class NavNode(Node):
                     return
                 return
 
+            if self.pass_min_remaining > 0:
+                return
+
             self.lost_red_count += 1
             confirm_frames = int(self.get_parameter('pass_confirm_frames').value)
             if self.lost_red_count < confirm_frames:
@@ -160,12 +186,12 @@ class NavNode(Node):
 
             self.lost_red_count = 0
             rate = self.get_parameter('rate').value
-            post_pass_seconds = self.get_parameter('post_pass_seconds').value
-            self.post_pass_ticks = int(post_pass_seconds * rate)
+            pass_coast_seconds = self.get_parameter('pass_coast_seconds').value
+            self.post_pass_ticks = int(pass_coast_seconds * rate)
             self.state = State.POST_PASSING
             self.get_logger().info(
-                f'Gate {self.gates_passed + 1}: passed; driving forward '
-                f'{post_pass_seconds:.1f}s before stopping'
+                f'Gate {self.gates_passed + 1}: passed; coasting forward '
+                f'{pass_coast_seconds:.1f}s before stopping'
             )
             return
 
@@ -200,6 +226,30 @@ class NavNode(Node):
             self.sweep_amplitude = min(self.sweep_amplitude + amp_growth, max_amp)
             self.sweep_position = 1.0
             self.sweep_direction = -1
+
+    def _start_search_ramp(self):
+        rate = self.get_parameter('rate').value
+        ramp_seconds = self.get_parameter('search_ramp_seconds').value
+        self.search_ramp_total = max(1, int(rate * ramp_seconds))
+        self.search_ramp_remaining = self.search_ramp_total
+
+    def _search_forward_force(self, state, lateral_force):
+        force_x = self.get_parameter('force_x').value
+        if state == State.SEARCHING_WHITE:
+            target_scale = self.get_parameter('search_white_forward_scale').value
+        else:
+            target_scale = self.get_parameter('search_forward_scale').value
+
+        target_forward = force_x * target_scale
+        coupling = self.get_parameter('search_lateral_forward_coupling').value
+        forward = target_forward + abs(lateral_force) * coupling
+
+        if self.search_ramp_remaining > 0:
+            ramp_fraction = self.search_ramp_remaining / self.search_ramp_total
+            forward += (force_x - target_forward) * ramp_fraction
+            self.search_ramp_remaining -= 1
+
+        return forward
 
     def _search_lateral_force(self):
         sweep_force = self.get_parameter('search_sweep_force').value
@@ -261,9 +311,24 @@ class NavNode(Node):
     def _track_gate(self, image, red_pole):
         partner_white = self._find_white_for_red(image, red_pole)
         if partner_white is None:
-            return False
+            self.lost_white_count += 1
+            self._update_navigation_error_with_red_fallback(image, red_pole)
+            return self.lost_white_count < int(self.get_parameter('white_lost_recovery_frames').value)
+        self.lost_white_count = 0
         self._update_navigation_error(image, red_pole, partner_white)
         return True
+
+    def _update_navigation_error_with_red_fallback(self, image, red_pole):
+        """Keep steering through expected gap even if white briefly disappears."""
+        red_cx = self._pole_center_x(red_pole)
+        offset = self.get_parameter('fallback_gap_offset_px').value
+        if self.lock_side == 'right':
+            target_x = red_cx - offset
+        else:
+            target_x = red_cx + offset
+        frame_center = image.shape[1] / 2.0
+        normalized = (target_x - frame_center) / frame_center
+        self.gap_center_error = np.clip(normalized, -1.0, 1.0)
 
     def _update_navigation_error(self, image, red_pole, white_pole):
         target_x = self._compute_target(red_pole, white_pole)
@@ -334,20 +399,32 @@ class NavNode(Node):
             wrench.force.x = 0.0
             wrench.force.y = 0.0
             wrench.force.z = 0.0
-        elif self.state in (State.NAVIGATING, State.PASSING, State.POST_PASSING):
-            wrench.force.x = self.get_parameter('force_x').value
+        elif self.state in (State.NAVIGATING, State.PASSING):
             steer_gain = self.get_parameter('gap_steer_gain').value
+            if self.state == State.NAVIGATING and self.nav_entry_ticks > 0:
+                entry_forward_scale = self.get_parameter('nav_entry_forward_scale').value
+                entry_steer_boost = self.get_parameter('nav_entry_steer_boost').value
+                wrench.force.x = self.get_parameter('force_x').value * entry_forward_scale
+                steer_gain *= entry_steer_boost
+                self.nav_entry_ticks -= 1
+            else:
+                wrench.force.x = self.get_parameter('force_x').value
             wrench.force.y = -self.gap_center_error * steer_gain
             wrench.force.z = 0.0
-            if self.state == State.POST_PASSING:
-                self.post_pass_ticks -= 1
-                if self.post_pass_ticks <= 0:
-                    self.gap_center_error = 0.0
-                    self.clear_count = int(self.get_parameter('clear_frames').value)
-                    self.state = State.CLEARING
-                    self.get_logger().info(
-                        f'Gate {self.gates_passed + 1}: post-pass complete; stopping'
-                    )
+            if self.state == State.PASSING and self.pass_min_remaining > 0:
+                self.pass_min_remaining -= 1
+        elif self.state == State.POST_PASSING:
+            wrench.force.x = self.get_parameter('force_x').value
+            wrench.force.y = 0.0
+            wrench.force.z = 0.0
+            self.post_pass_ticks -= 1
+            if self.post_pass_ticks <= 0:
+                self.gap_center_error = 0.0
+                self.clear_count = int(self.get_parameter('clear_frames').value)
+                self.state = State.CLEARING
+                self.get_logger().info(
+                    f'Gate {self.gates_passed + 1}: post-pass complete; stopping'
+                )
         elif self.state == State.INITIAL_APPROACH:
             wrench.force.x = self.get_parameter('force_x').value
             wrench.force.y = 0.0
@@ -355,6 +432,7 @@ class NavNode(Node):
             self.initial_approach_ticks -= 1
             if self.initial_approach_ticks <= 0:
                 self._reset_sweep()
+                self._start_search_ramp()
                 self.state = State.SEARCHING_RED
                 post_pass_seconds = self.get_parameter('post_pass_seconds').value
                 self.get_logger().info(
@@ -376,18 +454,16 @@ class NavNode(Node):
                     )
                 else:
                     self._reset_sweep()
+                    self.lock_side = None
                     self.state = State.SEARCHING_RED
                     self.get_logger().info(
                         f'Gate {self.gates_passed}/{num_gates} cleared; '
                         f'searching for next red pole'
                     )
         elif self.state in (State.SEARCHING_RED, State.SEARCHING_WHITE):
-            if self.state == State.SEARCHING_RED:
-                forward_scale = self.get_parameter('search_forward_scale').value
-                wrench.force.x = self.get_parameter('force_x').value * forward_scale
-            else:
-                wrench.force.x = 0.0
-            wrench.force.y = self._search_lateral_force()
+            lateral = self._search_lateral_force()
+            wrench.force.x = self._search_forward_force(self.state, lateral)
+            wrench.force.y = lateral
             wrench.force.z = 0.0
             self._update_sweep()
 
