@@ -18,7 +18,7 @@ def generate_launch_description():
                 "gazebo_launch.py",
             )
         ),
-        launch_arguments={"world": "competition_task_gate.world"}.items(),
+        launch_arguments={"world": "competition_task_torpedo.world"}.items(),
     )
 
     thrust_allocator = IncludeLaunchDescription(
@@ -70,7 +70,7 @@ def generate_launch_description():
             os.path.join(
                 get_package_share_directory("steelhead_tasks"),
                 "launch",
-                "automated_competition_gate_launch.py",
+                "automated_competition_torpedo_launch.py",
             )
         )
     )
@@ -85,6 +85,16 @@ def generate_launch_description():
         )
     )
 
+    actuators_simulation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_gazebo"),
+                "launch",
+                "actuators_simulation_launch.py",
+            )
+        )
+    )
+
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(hover_script)
@@ -92,5 +102,6 @@ def generate_launch_description():
     ld.add_action(rviz)
     ld.add_action(automation)
     ld.add_action(yolo_detector)
+    ld.add_action(actuators_simulation)
 
     return ld
