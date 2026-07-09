@@ -94,7 +94,7 @@
 
     <include>
       <uri>model://competition_tagging</uri>
-      <pose>1.7 0 -1.13067 0 0 1.54</pose>
+      <pose>1.7 0.1 -1.13067 0 0 1.54</pose>
     </include>
   </world>
 </sdf>

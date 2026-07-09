@@ -123,11 +123,11 @@
           </ros>
         </plugin>
       </sensor>
-      <sensor type="camera" name="down_camera">
+      <sensor type="camera" name="bottom_camera">
         <pose>0.05 -0.17 0 0 1.57 0</pose>
         <update_rate>60</update_rate>
         <visualize>true</visualize>
-        <camera name="down">
+        <camera name="bottom">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
             <width>640</width>

@@ -20,10 +20,10 @@ namespace steelhead_gazebo
 
       RCLCPP_INFO(this->get_logger(), "Actuators simulation server successfully started!");
 
-      // map actions defined in actuators_config.yaml to their functions TODO define custom functions in config rather than hardcoding
       action_map_[ActuatorCommand::FIRE_LEFT_TORPEDO] = std::bind(&ActuatorsCommandSimulation::handleTorpedo, this, std::placeholders::_1);
       action_map_[ActuatorCommand::FIRE_RIGHT_TORPEDO] = std::bind(&ActuatorsCommandSimulation::handleTorpedo, this, std::placeholders::_1);
       action_map_[ActuatorCommand::OPEN_CLAW] = std::bind(&ActuatorsCommandSimulation::handleClaw, this, std::placeholders::_1);
+      action_map_[ActuatorCommand::CLOSE_CLAW] = std::bind([](auto response){response->succeeded = true;}, std::placeholders::_1);
 
       // connect to gazebo spawning service
       spawner_client_ = this->create_client<gazebo_msgs::srv::SpawnEntity>("/spawn_entity");
@@ -82,7 +82,7 @@ namespace steelhead_gazebo
       request->xml = sdf_content;
       request->robot_namespace = "steelhead_gazebo"; 
       request->reference_frame = "steelhead_auv";
-      request->initial_pose.position.x = 0.0;
+      request->initial_pose.position.x = 0.3;
       request->initial_pose.position.y = 0.0;
       request->initial_pose.position.z = -0.2;
 

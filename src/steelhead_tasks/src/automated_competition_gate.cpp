@@ -21,7 +21,7 @@ AutomatedCompetitionGate::AutomatedCompetitionGate(const rclcpp::NodeOptions & o
     center_offset_ = this->get_parameter("center_offset").as_double();
 
     detections_sub_ = this->create_subscription<steelhead_interfaces::msg::DetectionBoxArray>(
-        "yolo_detector/detections", 10,
+        "yolo_detector/front/detections", 10,
         std::bind(&AutomatedCompetitionGate::detections_callback, this, _1)
     );
 

@@ -30,12 +30,18 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(steelhead_tasks SHARED
   src/automated_competition_gate.cpp
+  src/automated_competition_torpedo.cpp
+  src/automated_competition_dropper.cpp
+  src/automated_competition_octagon.cpp
   src/hardcode_inputs.cpp
   src/pitch_flip.cpp
 )
 
 rclcpp_components_register_nodes(steelhead_tasks
   "steelhead_tasks::AutomatedCompetitionGate"
+  "steelhead_tasks::AutomatedCompetitionTorpedo"
+  "steelhead_tasks::AutomatedCompetitionDropper"
+  "steelhead_tasks::AutomatedCompetitionOctagon"
   "steelhead_tasks::HardcodeInputs"
   "steelhead_tasks::PitchFlip"
 )
