@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <world name="default">
+    <scene>
+      <shadows>0</shadows>
+    </scene>
     <gravity>0 0 -9.81</gravity>
     <fluid_density>1000.00</fluid_density>
     <physics name="fast_simulation" type="ode">
@@ -106,7 +109,7 @@
 
     <include>
       <uri>model://competition_dropper</uri>
-      <pose>12.7869 -1.3222 -1.867534 0 0 2.10738</pose>
+      <pose>12.7869 -1.3222 -2.0 0 0 2.10738</pose>
     </include>
 
     <include>

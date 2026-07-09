@@ -4,6 +4,8 @@ from geometry_msgs.msg import Wrench
 from steelhead_interfaces.srv import ActuatorsCommand
 from pynput import keyboard
 
+from steelhead_teleop.key_bindings import ACTUATOR_BINDINGS, wrench_for_key
+
 
 class KeyboardTeleop(Node):
     """
@@ -14,15 +16,12 @@ class KeyboardTeleop(Node):
     def __init__(self):
         super().__init__('keyboard_teleop')
 
-        self.declare_parameter('publish_topic', '/steelhead/controls/input_forces')
-        publish_topic = self.get_parameter('publish_topic').get_parameter_value().string_value
-
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
         self.torque_mags = [15.0, 15.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
             Wrench,
-            publish_topic,
+            '/steelhead/controls/input_forces',
             10
         )
 
@@ -54,74 +53,40 @@ class KeyboardTeleop(Node):
         self.listener.start()
 
 
+    def _key_name(self, key):
+        """
+        Normalizes a pynput key event to the canonical name used in key_bindings.py
+
+        @param key: The pynput key event
+        """
+        if isinstance(key, keyboard.Key):
+            return key.name  # e.g. keyboard.Key.up -> 'up'
+        return key.char
+
+
     def _on_press(self, key):
         """
         Handles key presses
 
         @param key: They character of the key pressed
         """
-        msg = Wrench()
-        if key == keyboard.Key.up:
-            msg.torque.x = -self.torque_mags[0]
-        elif key == keyboard.Key.down:
-            msg.torque.x = self.torque_mags[0]
-        elif key == keyboard.Key.left:
-            msg.torque.z = self.torque_mags[2]
-        elif key == keyboard.Key.right:
-            msg.torque.z = -self.torque_mags[2]
-        elif 'char' in dir(key):
-            if key.char == 'w':
-                msg.force.x = self.force_mags[0]
-            elif key.char == 's':
-                msg.force.x = -self.force_mags[0]
-            elif key.char == 'a':
-                msg.force.y = self.force_mags[1]
-            elif key.char == 'd':
-                msg.force.y = -self.force_mags[1]
-            elif key.char == 'q':
-                msg.force.z = self.force_mags[2]
-            elif key.char == 'z':
-                msg.force.z = -self.force_mags[2]
-            elif key.char == 'e':
-                msg.torque.y = -self.torque_mags[1]
-            elif key.char == 'c':
-                msg.torque.y = self.torque_mags[1]
-            elif key.char == 'o':
-                self.send_request("claw")
-            elif key.char == 'p':
-                self.send_request("torpedo")
-        self.force_pub.publish(msg)
+        key_name = self._key_name(key)
+
+        actuator_input = ACTUATOR_BINDINGS.get(key_name)
+        if actuator_input is not None:
+            self.send_request(actuator_input)
+
+        msg = wrench_for_key(key_name, self.force_mags, self.torque_mags)
+        self.force_pub.publish(msg if msg is not None else Wrench())
 
 
     def _on_release(self, key):
         """
-        Handles key releases
+        Handles key releases: releasing any key publishes a zero wrench
 
         @param key: They character of the key released
         """
-        msg = Wrench()
-        if key == keyboard.Key.up:
-            msg.torque.x = 0.0
-        elif key == keyboard.Key.down:
-            msg.torque.x = 0.0
-        elif key == keyboard.Key.left:
-            msg.torque.z = 0.0
-        elif key == keyboard.Key.right:
-            msg.torque.z = 0.0
-        elif 'char' in dir(key):
-            if key.char == 'w':
-                msg.force.x = 0.0
-            elif key.char == 's':
-                msg.force.x = 0.0
-            elif key.char == 'a':
-                msg.force.y = 0.0
-            elif key.char == 'd':
-                msg.force.y = 0.0
-            elif key.char == 'q':
-                msg.force.z = 0.0
-            elif key.char == 'z':
-                msg.force.z = 0.0
-        self.force_pub.publish(msg)
+        self.force_pub.publish(Wrench())
 
 
 def main(args=None):

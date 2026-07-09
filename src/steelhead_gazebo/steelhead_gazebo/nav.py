@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Wrench
+from steelhead_interfaces.msg import HoverAdjustment
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
@@ -59,7 +60,7 @@ class NavNode(Node):
         self._reset_sweep()
 
         topic = self.get_parameter('topic').value
-        self.publisher_ = self.create_publisher(Wrench, topic, 10)
+        self.publisher_ = self.create_publisher(HoverAdjustment, topic, 10)
 
         image_topic = self.get_parameter('image_topic').value
         self.subscription_ = self.create_subscription(
@@ -324,20 +325,20 @@ class NavNode(Node):
         return self._poles_from_mask(self._morph_mask(mask))
 
     def publish_wrench(self):
-        msg = Wrench()
-        msg.torque.x = 0.0
-        msg.torque.y = 0.0
-        msg.torque.z = 0.0
+        wrench = Wrench()
+        wrench.torque.x = 0.0
+        wrench.torque.y = 0.0
+        wrench.torque.z = 0.0
 
         if self.state == State.COMPLETED:
-            msg.force.x = 0.0
-            msg.force.y = 0.0
-            msg.force.z = 0.0
+            wrench.force.x = 0.0
+            wrench.force.y = 0.0
+            wrench.force.z = 0.0
         elif self.state in (State.NAVIGATING, State.PASSING, State.POST_PASSING):
-            msg.force.x = self.get_parameter('force_x').value
+            wrench.force.x = self.get_parameter('force_x').value
             steer_gain = self.get_parameter('gap_steer_gain').value
-            msg.force.y = -self.gap_center_error * steer_gain
-            msg.force.z = 0.0
+            wrench.force.y = -self.gap_center_error * steer_gain
+            wrench.force.z = 0.0
             if self.state == State.POST_PASSING:
                 self.post_pass_ticks -= 1
                 if self.post_pass_ticks <= 0:
@@ -348,9 +349,9 @@ class NavNode(Node):
                         f'Gate {self.gates_passed + 1}: post-pass complete; stopping'
                     )
         elif self.state == State.INITIAL_APPROACH:
-            msg.force.x = self.get_parameter('force_x').value
-            msg.force.y = 0.0
-            msg.force.z = 0.0
+            wrench.force.x = self.get_parameter('force_x').value
+            wrench.force.y = 0.0
+            wrench.force.z = 0.0
             self.initial_approach_ticks -= 1
             if self.initial_approach_ticks <= 0:
                 self._reset_sweep()
@@ -361,9 +362,9 @@ class NavNode(Node):
                     f'searching for first red pole'
                 )
         elif self.state == State.CLEARING:
-            msg.force.x = 0.0
-            msg.force.y = 0.0
-            msg.force.z = 0.0
+            wrench.force.x = 0.0
+            wrench.force.y = 0.0
+            wrench.force.z = 0.0
             self.clear_count -= 1
             if self.clear_count <= 0:
                 self.gates_passed += 1
@@ -383,13 +384,16 @@ class NavNode(Node):
         elif self.state in (State.SEARCHING_RED, State.SEARCHING_WHITE):
             if self.state == State.SEARCHING_RED:
                 forward_scale = self.get_parameter('search_forward_scale').value
-                msg.force.x = self.get_parameter('force_x').value * forward_scale
+                wrench.force.x = self.get_parameter('force_x').value * forward_scale
             else:
-                msg.force.x = 0.0
-            msg.force.y = self._search_lateral_force()
-            msg.force.z = 0.0
+                wrench.force.x = 0.0
+            wrench.force.y = self._search_lateral_force()
+            wrench.force.z = 0.0
             self._update_sweep()
 
+        msg = HoverAdjustment()
+        msg.type = HoverAdjustment.PARTIAL
+        msg.input = wrench
         self.publisher_.publish(msg)
 
 

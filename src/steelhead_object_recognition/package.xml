@@ -8,21 +8,17 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
 
-  <depend>rclcpp</depend>
-  <depend>rclcpp_components</depend>
-  <depend>std_msgs</depend>
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
   <depend>steelhead_interfaces</depend>
   <depend>cv_bridge</depend>
-  <depend>sensor_msgs</depend>
-  <depend>image_transport</depend>
-  <depend>realsense2_camera</depend>
+  <depend>python3-opencv</depend>
+  <depend>python3-numpy</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
-  <test_depend>launch</test_depend>
-  <test_depend>launch_testing</test_depend>
-  <test_depend>python3-pytest</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

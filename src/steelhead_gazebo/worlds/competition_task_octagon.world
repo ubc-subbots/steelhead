@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <world name="default">
+    <scene>
+      <shadows>0</shadows>
+    </scene>
     <gravity>0 0 -9.81</gravity>
     <fluid_density>1000.00</fluid_density>
     <physics name="fast_simulation" type="ode">
@@ -81,7 +84,7 @@
 
     <include>
       <uri>model://steelhead_auv_real</uri>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0.2 0 0 0 0</pose>
     </include>
 
     <include>

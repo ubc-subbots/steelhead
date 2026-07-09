@@ -7,3 +7,7 @@ darknet
 __pycache__
 .vscode
 rosbag2*
+compile_commands.json
+.clangd
+
+.DS_Store

@@ -1,28 +1,35 @@
 # steelhead_object_recognition
 ## Description
 
-This package contains a ROS2 node that can use a YOLOv3 or YOLOv4 network to detect and classify objects within an image. Note that based on the config file passed to the object recognition node, it might take a while for the node to start for the first time because it will download the appropriate config and weight files to the path `<PATH_TO_STEELHEAD>/steelhead/install/steelhead_object_recognition/share/steelhead_object_recognition`. These files tend to be quite large but they should only have to be downloaded once provided you do not delete the `install` folder.
+This package contains a ROS2 node that runs a custom-trained YOLO model
+(Ultralytics) on incoming camera images, annotates detections, and republishes
+the annotated image for RViz visualization. The model weights ship with the
+package at `config/competition.pt`.
+
+Inference runs on CPU and is throttled (default once per second) to keep it
+lightweight. If the `ultralytics` package or the weights file are unavailable,
+the node falls back to republishing the raw image so the pipeline keeps running.
 
 ## Usage
 
-You can use the following command to run the `object_recognizer` node using the yolov4-tiny model:
-
-    ros2 launch steelhead_object_recognition tiny_yolov4_launch.py
-
-You should see `Object Recognizer successfully started!` if successful.
+    ros2 launch steelhead_object_recognition yolo_detector_launch.py
 
 ## Nodes
 
-- `object_recognizer` : A component node (`steelhead_object_recognition::ObjectRecognizer`) which recognizes objects in a received image.
+- `yolo_detector` : Runs YOLO inference and publishes an annotated image.
+
+    ### Parameters
+    - `weights_path` (string) : Path to the YOLO `.pt` weights. Defaults to the
+      packaged `config/competition.pt` resolved from the install share dir.
+    - `confidence_threshold` (double) : Minimum detection confidence.
+    - `inference_interval` (double) : Seconds between inference runs.
 
     ### Subscribed Topics
-    - `object_recognizer/in` (`sensor_msgs/msg/Image.msg`) : Input image.
-    
+    - `/steelhead/drivers/front_camera/image_raw` (`sensor_msgs/msg/Image`) : Input image.
+
     ### Published Topics
-    - `object_recognizer/out` (`steelhead_interfaces/msg/DetectionBoxArray.msg`) : Output detection boxes.
-    
-    ### Services
-    - `object_recognizer/recognize` (`steelhead_interfaces/srv/ObjectDetection.srv`): Takes in an image message and produces the detection boxes from that image.
+    - `/steelhead/yolo_detector/annotated_image` (`sensor_msgs/msg/Image`) : Annotated output image.
+    - `/steelhead/yolo_detector/detections` (`steelhead_interfaces/msg/DetectionBoxArray`) : Pixel coordinates for each detected object. 
 
 ## Contributors
 

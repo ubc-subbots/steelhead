@@ -1,0 +1,4 @@
+hardcode_inputs:
+  ros__parameters:
+    force_y: -15.0
+    duration: 1.0
