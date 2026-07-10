@@ -106,21 +106,31 @@ namespace steelhead_pid_controller
     float dt = 
       std::chrono::duration_cast<std::chrono::microseconds>(now - last_time_).count() / 1e6;
 
-    tf2::Quaternion current_pose_q(
+    tf2::Quaternion error_q(
       cur_pose->orientation.x,
       cur_pose->orientation.y,
       cur_pose->orientation.z,
       cur_pose->orientation.w);
-    tf2::Matrix3x3 current_pose_q_m(current_pose_q);
-    double current_pose_roll, current_pose_pitch, current_pose_yaw;
-    current_pose_q_m.getRPY(current_pose_roll, current_pose_pitch, current_pose_yaw);
+
+    // The orientation error is split into per-axis terms as a rotation
+    // vector (axis * angle) rather than RPY: identical for small errors,
+    // but stays defined at +-90 deg pitch where getRPY gimbal locks (e.g.
+    // levelling out after a pitch flip)
+    tf2::Vector3 rot_error(0.0, 0.0, 0.0);
+    if (error_q.length2() > 1e-12) {
+      error_q.normalize();
+      // q and -q encode the same rotation; keep w >= 0 to correct along
+      // the short way around
+      if (error_q.w() < 0.0) error_q = tf2::Quaternion(-error_q.x(), -error_q.y(), -error_q.z(), -error_q.w());
+      rot_error = error_q.getAxis() * error_q.getAngle();
+    }
 
     float pos_x_error = cur_pose->position.x;
     float pos_y_error = cur_pose->position.y;
     float pos_z_error = cur_pose->position.z;
-    float roll_error = !std::isnan(current_pose_roll) ? current_pose_roll : 0;
-    float pitch_error = !std::isnan(current_pose_pitch) ? current_pose_pitch : 0;
-    float yaw_error = !std::isnan(current_pose_yaw) ? current_pose_yaw : 0;
+    float roll_error = !std::isnan(rot_error.x()) ? rot_error.x() : 0;
+    float pitch_error = !std::isnan(rot_error.y()) ? rot_error.y() : 0;
+    float yaw_error = !std::isnan(rot_error.z()) ? rot_error.z() : 0;
 
     float forceX = pid_force_x.update(pos_x_error, dt);
     float forceY = pid_force_y.update(pos_y_error, dt);

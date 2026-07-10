@@ -6,12 +6,18 @@ make sure .ino file is uploaded / serial monitor is showing imu is giving that o
 joel@joel-B450-AORUS-ELITE:~/Documents/code/steelhead/src/steelhead_controls/steelhead_controls$ python3 bno085_imu_publisher.py
 */
 
-// This file has been modified from the official adafruit demo files and simply publishes yaw, pitch, roll, and acceleration in x, y, z direction to serial output
+// This file has been modified from the official adafruit demo files and publishes the raw
+// orientation quaternion and acceleration in x, y, z direction to serial output.
+//
+// Line format (must match bno085_imu_publisher.py):
+//   status,qx,qy,qz,qw,ax,ay,az
+// The quaternion is sent in the BNO085's native i,j,k,real order, which maps
+// directly onto the x,y,z,w fields of a ROS geometry_msgs/Quaternion.
 
 #include <Arduino.h>
 
-// This demo explores two reports (SH2_ARVR_STABILIZED_RV and SH2_GYRO_INTEGRATED_RV) both can be used to give 
-// quartenion and euler (yaw, pitch roll) angles.  Toggle the FAST_MODE define to see other report.  
+// This demo explores two reports (SH2_ARVR_STABILIZED_RV and SH2_GYRO_INTEGRATED_RV) both can be used to give
+// quartenion and euler (yaw, pitch roll) angles.  Toggle the FAST_MODE define to see other report.
 // Note sensorValue.status gives calibration accuracy (which improves over time)
 
 #include <Adafruit_BNO08x.h>
@@ -20,20 +26,17 @@ joel@joel-B450-AORUS-ELITE:~/Documents/code/steelhead/src/steelhead_controls/ste
 #define BNO08X_CS 10
 #define BNO08X_INT 9
 
-//if fastmode is on, uses SH2_GYRO_INTEGRATED_RV at 1000 Hz 
+//if fastmode is on, uses SH2_GYRO_INTEGRATED_RV at 1000 Hz
 //otherwise uses SH2_ARVR_STABILIZED_RV at 250 Hz with more accuracy
-//#define FAST_MODE // uncomment this to enable fast mode. 
+//#define FAST_MODE // uncomment this to enable fast mode.
 
-// For SPI mode, we also need a RESET 
+// For SPI mode, we also need a RESET
 //#define BNO08X_RESET 5
 // but not for I2C or UART
 #define BNO08X_RESET -1
 
-struct euler_t {
-  float yaw;
-  float pitch;
-  float roll;
-} ypr;
+// Latest orientation quaternion in i,j,k,real (= x,y,z,w) order
+float qx = 0, qy = 0, qz = 0, qw = 1;
 
 Adafruit_BNO08x  bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -78,32 +81,6 @@ void setup(void) {
   delay(100);
 }
 
-void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
-
-    float sqr = sq(qr);
-    float sqi = sq(qi);
-    float sqj = sq(qj);
-    float sqk = sq(qk);
-
-    ypr->yaw = atan2(2.0 * (qi * qj + qk * qr), (sqi - sqj - sqk + sqr));
-    ypr->pitch = asin(-2.0 * (qi * qk - qj * qr) / (sqi + sqj + sqk + sqr));
-    ypr->roll = atan2(2.0 * (qj * qk + qi * qr), (-sqi - sqj + sqk + sqr));
-
-    if (degrees) {
-      ypr->yaw *= RAD_TO_DEG;
-      ypr->pitch *= RAD_TO_DEG;
-      ypr->roll *= RAD_TO_DEG;
-    }
-}
-
-void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees = false) {
-    quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
-}
-
-void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr, bool degrees = false) {
-    quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
-}
-
 void loop() {
 
   if (bno08x.wasReset()) {
@@ -111,26 +88,30 @@ void loop() {
     setReports(reportType, reportIntervalUs);
   }
 
-  float ax = 0, ay = 0, az = 0; 
-  
+  float ax = 0, ay = 0, az = 0;
+
   if (bno08x.getSensorEvent(&sensorValue)) {
     switch (sensorValue.sensorId) {
 
       case SH2_ARVR_STABILIZED_RV:
-        quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+        qx = sensorValue.un.arvrStabilizedRV.i;
+        qy = sensorValue.un.arvrStabilizedRV.j;
+        qz = sensorValue.un.arvrStabilizedRV.k;
+        qw = sensorValue.un.arvrStabilizedRV.real;
         break;
 
       case SH2_GYRO_INTEGRATED_RV:
-        quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
+        qx = sensorValue.un.gyroIntegratedRV.i;
+        qy = sensorValue.un.gyroIntegratedRV.j;
+        qz = sensorValue.un.gyroIntegratedRV.k;
+        qw = sensorValue.un.gyroIntegratedRV.real;
         break;
 
       case SH2_GAME_ROTATION_VECTOR:
-        quaternionToEuler(
-          sensorValue.un.gameRotationVector.real,
-          sensorValue.un.gameRotationVector.i,
-          sensorValue.un.gameRotationVector.j,
-          sensorValue.un.gameRotationVector.k,
-          &ypr, true);
+        qx = sensorValue.un.gameRotationVector.i;
+        qy = sensorValue.un.gameRotationVector.j;
+        qz = sensorValue.un.gameRotationVector.k;
+        qw = sensorValue.un.gameRotationVector.real;
         break;
 
       case SH2_LINEAR_ACCELERATION:
@@ -141,18 +122,19 @@ void loop() {
 
     }
 
-    float yaw_deg   = ypr.yaw;
-    float pitch_deg = ypr.pitch;
-    float roll_deg  = ypr.roll;
-    float status_f = (float) sensorValue.status; 
+    float status_f = (float) sensorValue.status;
 
+    // Quaternion components live in [-1, 1]; the default 2 decimal places
+    // would quantize orientation to ~1 degree, so print 6
     Serial.print(status_f);
     Serial.print(",");
-    Serial.print(yaw_deg);
+    Serial.print(qx, 6);
     Serial.print(",");
-    Serial.print(pitch_deg);
+    Serial.print(qy, 6);
     Serial.print(",");
-    Serial.print(roll_deg);
+    Serial.print(qz, 6);
+    Serial.print(",");
+    Serial.print(qw, 6);
     Serial.print(",");
     Serial.print(ax);
     Serial.print(",");

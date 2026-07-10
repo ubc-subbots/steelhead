@@ -1,6 +1,5 @@
 #include "steelhead_tasks/pitch_flip.hpp"
 
-#include <tf2/LinearMath/Matrix3x3.h>
 #include <cmath>
 using std::placeholders::_1;
 
@@ -38,6 +37,7 @@ namespace steelhead_tasks
             msg->orientation.z,
             msg->orientation.w
         );
+        q_current.normalize();
 
         if (!started_) {
             start_orientation_ = q_current;
@@ -45,13 +45,17 @@ namespace steelhead_tasks
             started_ = true;
             RCLCPP_INFO(this->get_logger(), "Start heading latched, flipping...");
         } else {
-            // Deltas between consecutive IMU messages are small, so pitch
-            // extraction is safe from gimbal lock and accumulates past 2pi
+            // Deltas between consecutive IMU messages are small, so the
+            // body-y component of the delta's rotation vector is the pitch
+            // rotated since the last message, free of gimbal lock and
+            // accumulating past 2pi
             tf2::Quaternion q_delta = prev_orientation_.inverse() * q_current;
             q_delta.normalize();
-            double roll, pitch, yaw;
-            tf2::Matrix3x3(q_delta).getRPY(roll, pitch, yaw);
-            accumulated_pitch_ += pitch;
+            // q and -q encode the same rotation; raw sensor quaternions can
+            // hop hemispheres between messages, which would otherwise read
+            // as a ~2pi delta
+            if (q_delta.w() < 0.0) q_delta = tf2::Quaternion(-q_delta.x(), -q_delta.y(), -q_delta.z(), -q_delta.w());
+            accumulated_pitch_ += q_delta.getAngle() * q_delta.getAxis().y();
             prev_orientation_ = q_current;
         }
 

@@ -2,7 +2,6 @@
 
 #include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2/LinearMath/Matrix3x3.h>
 using std::placeholders::_1;
 
 namespace steelhead_controls
@@ -67,24 +66,37 @@ namespace steelhead_controls
                     imu_->orientation.z,
                     imu_->orientation.w
                 );
+                q_current.normalize();
 
-                double roll, pitch, yaw;
-                tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
+                // The yaw target is the twist (world-z) component of the current
+                // quaternion, taken directly from the quaternion instead of getRPY
+                // so it stays defined through +-90 deg pitch (e.g. while levelling
+                // out after a pitch flip, where RPY yaw gimbal locks)
+                tf2::Quaternion q_yaw(0.0, 0.0, q_current.z(), q_current.w());
+                if (q_yaw.length2() < 1e-6) {
+                    // Pointing straight up/down: heading is undefined, level out to yaw 0
+                    q_yaw = tf2::Quaternion::getIdentity();
+                } else {
+                    q_yaw.normalize();
+                }
 
-                double target_yaw = 0.0;
+                tf2::Quaternion q_target = tf2::Quaternion::getIdentity();
                 if (!hold_yaw_) {
+                    q_target = q_yaw;
                     if (adjustments_->input.torque.z) {
-                        target_yaw = yaw + (adjustments_->input.torque.z < 0 ? -0.01 : 0.01);
-                    } else {
-                        target_yaw = yaw;
+                        tf2::Quaternion q_adjust(tf2::Vector3(0.0, 0.0, 1.0), adjustments_->input.torque.z < 0 ? -0.01 : 0.01);
+                        q_target = q_adjust * q_target;
                     }
                 }
-                
-                tf2::Quaternion q_target;
-                q_target.setRPY(0.0, 0.0, target_yaw);
 
-                tf2::Quaternion q_error = q_target * q_current.inverse();
+                // Body-frame error: the PID splits this into torques applied
+                // about the body axes, so a world-frame error would rotate out
+                // of alignment as the vehicle yaws
+                tf2::Quaternion q_error = q_current.inverse() * q_target;
                 q_error.normalize();
+                // q and -q encode the same rotation; keep w >= 0 so the PID
+                // corrects along the short way around
+                if (q_error.w() < 0.0) q_error = tf2::Quaternion(-q_error.x(), -q_error.y(), -q_error.z(), -q_error.w());
 
                 pose.orientation.x = q_error.x();
                 pose.orientation.y = q_error.y();

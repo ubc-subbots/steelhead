@@ -33,37 +33,31 @@ class Bno085ImuPublisher(Node):
             return  # no data
 
         tokens = line.split(',')
-        # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
-        if len(tokens) < 7:
+        # We expect 8 tokens: status,qx,qy,qz,qw,ax,ay,az
+        # The quaternion arrives in the BNO085's native i,j,k,real order,
+        # matching bno085_serial_output_parser.ino
+        if len(tokens) < 8:
             self.get_logger().warn(f'Not enough tokens in line: {line}')
             return
 
         try:
             # parse floats
             status = float(tokens[0])  # we might not use it, but let's parse
-            yaw_deg = float(tokens[1])
-            pitch_deg = float(tokens[2])
-            roll_deg = float(tokens[3])
-            ax = float(tokens[4])
-            ay = float(tokens[5])
-            az = float(tokens[6])
+            qx = float(tokens[1])
+            qy = float(tokens[2])
+            qz = float(tokens[3])
+            qw = float(tokens[4])
+            ax = float(tokens[5])
+            ay = float(tokens[6])
+            az = float(tokens[7])
 
-            # Convert yaw/pitch/roll in degrees to quaternion (Z->Y->X)
-            yaw_rad   = math.radians(yaw_deg)
-            pitch_rad = math.radians(pitch_deg)
-            roll_rad  = math.radians(roll_deg)
-
-            cy = math.cos(yaw_rad * 0.5)
-            sy = math.sin(yaw_rad * 0.5)
-            cp = math.cos(pitch_rad * 0.5)
-            sp = math.sin(pitch_rad * 0.5)
-            cr = math.cos(roll_rad * 0.5)
-            sr = math.sin(roll_rad * 0.5)
-
-            qw = cr * cp * cy + sr * sp * sy
-            qx = sr * cp * cy - cr * sp * sy
-            qy = cr * sp * cy + sr * cp * sy
-            qz = cr * cp * sy - sr * sp * cy
+            # Renormalize: serial ascii truncates precision, and consumers
+            # (tf2, robot_localization) expect a unit quaternion
+            norm = math.sqrt(qx * qx + qy * qy + qz * qz + qw * qw)
+            if norm < 1e-6:
+                self.get_logger().warn(f'Zero-norm quaternion in line: {line}')
+                return
+            qx, qy, qz, qw = qx / norm, qy / norm, qz / norm, qw / norm
 
             # Construct and publish IMU message
             msg = Imu()
