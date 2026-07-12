@@ -1,8 +1,10 @@
 import rclpy
-from rclpy.node import Node
 from geometry_msgs.msg import Wrench
-from steelhead_interfaces.srv import ActuatorsCommand
+from rclpy.node import Node
 from sshkeyboard import listen_keyboard
+
+from steelhead_interfaces.srv import ActuatorsCommand
+from steelhead_teleop.key_bindings import ACTUATOR_BINDINGS, wrench_for_key
 
 
 class KeyboardTeleop(Node):
@@ -11,30 +13,30 @@ class KeyboardTeleop(Node):
     """
 
     def __init__(self):
-        super().__init__('keyboard_teleop')
+        super().__init__("keyboard_teleop")
 
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
         self.torque_mags = [15.0, 0.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
-            Wrench,
-            '/steelhead/controls/input_forces',
-            10
+            Wrench, "/steelhead/controls/input_forces", 10
         )
 
-        self.cli = self.create_client(ActuatorsCommand, '/steelhead/controls/actuators_command')
+        self.cli = self.create_client(
+            ActuatorsCommand, "/steelhead/controls/actuators_command"
+        )
         if not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning('Actuators service is not running.')
+            self.get_logger().warning("Actuators service is not running.")
         self.req = ActuatorsCommand.Request()
 
-        self.get_logger().info('Keyboard teleop succesfully started!')
+        self.get_logger().info("Keyboard teleop succesfully started!")
 
         self._start()
-    
+
     def send_request(self, input):
         request = ActuatorsCommand.Request()
         request.input = input
-        
+
         self.future = self.cli.call_async(request)
 
     def _start(self):
@@ -52,36 +54,12 @@ class KeyboardTeleop(Node):
 
         @param key: They character of the key pressed
         """
-        msg = Wrench()
-        if key == "up":
-            msg.torque.x = -self.torque_mags[0]
-        elif key == "down":
-            msg.torque.x = self.torque_mags[0]
-        elif key == 'e':
-            msg.torque.y = -self.torque_mags[1]
-        elif key == 'c':
-            msg.torque.y = self.torque_mags[1]
-        elif key == "left":
-            msg.torque.z = self.torque_mags[2]
-        elif key == "right":
-            msg.torque.z = -self.torque_mags[2]
-        elif key == 'w':
-            msg.force.x = self.force_mags[0]
-        elif key == 's':
-            msg.force.x = -self.force_mags[0]
-        elif key == 'a':
-            msg.force.y = self.force_mags[1]
-        elif key == 'd':
-            msg.force.y = -self.force_mags[1]
-        elif key == 'q':
-            msg.force.z = self.force_mags[2]
-        elif key == 'z':
-            msg.force.z = -self.force_mags[2]
-        elif key == 'o':
-            self.send_request("claw")
-        elif key == 'p':
-            self.send_request("torpedo")
-        self.force_pub.publish(msg)
+        actuator_input = ACTUATOR_BINDINGS.get(key)
+        if actuator_input is not None:
+            self.send_request(actuator_input)
+
+        msg = wrench_for_key(key, self.force_mags, self.torque_mags)
+        self.force_pub.publish(msg if msg is not None else Wrench())
 
     def _on_release(self, key):
         """
@@ -99,9 +77,9 @@ def main(args=None):
     try:
         rclpy.spin(keyboard_teleop)
     except KeyboardInterrupt:
-        pass # To force exit code 0
+        pass  # To force exit code 0
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

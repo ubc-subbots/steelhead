@@ -1,5 +1,6 @@
 #include "steelhead_controls/hover_at_depth.hpp"
 
+#include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
 using std::placeholders::_1;
@@ -14,16 +15,20 @@ namespace steelhead_controls
         this->get_parameter("depth", hover_depth_);
         RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at depth=%fm (pressure - depth = z error)." : "depth=0.0; only adjusting orientation.", hover_depth_);
 
-        this->declare_parameter<bool>("adjust_yaw", false);
-        this->get_parameter("adjust_yaw", adjust_yaw_);
-        RCLCPP_INFO(this->get_logger(), adjust_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
+        this->declare_parameter<bool>("hold_yaw", false);
+        this->get_parameter("hold_yaw", hold_yaw_);
+        RCLCPP_INFO(this->get_logger(), hold_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
-        adjustments_ = std::make_shared<geometry_msgs::msg::Wrench>();
+        // If no adjustments is published, adjustment_ is zeroed out and nothing is applied
+        adjustments_ = std::make_shared<steelhead_interfaces::msg::HoverAdjustment>();
+
+        // Similarly, if we don't adjust for depth, created a default pointer with no error for callback to work
+        if (!hover_depth_) pressure_sensor_ = std::make_shared<steelhead_interfaces::msg::PressureSensor>();
 
         pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("controls/input_pose", 10);
         imu_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>("drivers/imu/out", 10, std::bind(&HoverAtDepth::imu_callback, this, _1));
         if (hover_depth_) pressure_subscription_ = this->create_subscription<steelhead_interfaces::msg::PressureSensor>("drivers/pressure_sensor", 10, std::bind(&HoverAtDepth::depth_callback, this, _1));
-        wrench_subscription_ = this->create_subscription<geometry_msgs::msg::Wrench>("controls/hover_adjust", 10, std::bind(&HoverAtDepth::wrench_callback, this, _1));
+        adjustment_subscription_ = this->create_subscription<steelhead_interfaces::msg::HoverAdjustment>("controls/hover_adjust", 10, std::bind(&HoverAtDepth::adjust_callback, this, _1));
     }
 
     void HoverAtDepth::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg)
@@ -38,7 +43,7 @@ namespace steelhead_controls
         publish_error_to_target();
     }
 
-    void HoverAtDepth::wrench_callback(const geometry_msgs::msg::Wrench::SharedPtr msg)
+    void HoverAtDepth::adjust_callback(const steelhead_interfaces::msg::HoverAdjustment::SharedPtr msg)
     {
         adjustments_ = msg;
     }
@@ -46,34 +51,59 @@ namespace steelhead_controls
     void HoverAtDepth::publish_error_to_target()
     {
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
-            geometry_msgs::msg::Pose pose;
-            if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
-            pose.position.x = adjustments_->force.x;
-            pose.position.y = adjustments_->force.y;
-            if (adjustments_->force.z) pose.position.z = adjustments_->force.z;
-        
-            tf2::Quaternion q_current(
-                imu_->orientation.x,
-                imu_->orientation.y,
-                imu_->orientation.z,
-                imu_->orientation.w
-            );
-
-            double roll, pitch, current_yaw;
-            tf2::Matrix3x3(q_current).getRPY(roll, pitch, current_yaw);
-
-            double target_yaw = adjust_yaw_ ? 0.0 : current_yaw - adjustments_->torque.z;
-
-            tf2::Quaternion q_error;
-            q_error.setRPY(0.0, 0.0, current_yaw - target_yaw);
-            q_error.normalize();
-
-            pose.orientation.x = q_error.x();
-            pose.orientation.y = q_error.y();
-            pose.orientation.z = q_error.z();
-            pose.orientation.w = q_error.w();
+            if (adjustments_->type == steelhead_interfaces::msg::HoverAdjustment::PARTIAL) {
+                geometry_msgs::msg::Pose pose;
+                if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
+                pose.position.x = adjustments_->input.force.x;
+                pose.position.y = adjustments_->input.force.y;
+                if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
+                // add a field for adjustments for full or partial
             
-            pose_publisher_->publish(pose);
+                tf2::Quaternion q_current(
+                    imu_->orientation.x,
+                    imu_->orientation.y,
+                    imu_->orientation.z,
+                    imu_->orientation.w
+                );
+
+                double roll, pitch, yaw;
+                tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
+
+                double target_yaw = 0.0;
+                if (!hold_yaw_) {
+                    if (adjustments_->input.torque.z) {
+                        target_yaw = yaw + (adjustments_->input.torque.z < 0 ? -0.01 : 0.01);
+                    } else {
+                        target_yaw = yaw;
+                    }
+                }
+                
+                tf2::Quaternion q_target;
+                q_target.setRPY(0.0, 0.0, target_yaw);
+
+                tf2::Quaternion q_error = q_target * q_current.inverse();
+                q_error.normalize();
+
+                pose.orientation.x = q_error.x();
+                pose.orientation.y = q_error.y();
+                pose.orientation.z = q_error.z();
+                pose.orientation.w = q_error.w();
+                
+                pose_publisher_->publish(pose); 
+            } else {
+                // !TODO: Update to allow the other adjustments
+                geometry_msgs::msg::Pose pose;
+
+                tf2::Quaternion error;
+                error.setRPY(0.0, adjustments_->input.torque.y, 0.0);
+
+                pose.orientation.x = error.x();
+                pose.orientation.y = error.y();
+                pose.orientation.z = error.z();
+                pose.orientation.w = error.w();
+
+                pose_publisher_->publish(pose); 
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(steelhead_controls)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -135,7 +137,6 @@ install(TARGETS hover_at_depth
 )
 
 
-
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
@@ -199,6 +200,7 @@ install(PROGRAMS
   steelhead_controls/bno085_imu_publisher.py
   steelhead_controls/path_follow_route.py
   steelhead_controls/pathmarker_detector.py
+  steelhead_controls/ms5837_depth_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

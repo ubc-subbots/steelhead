@@ -52,6 +52,17 @@ def generate_launch_description():
 
     # RUN ros2 run steelhead_teleop ssh_keyboard_teleop INSTEAD
 
+    bag_record = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('steelhead_bringup'),
+                'launch',
+                'bag_record_launch.py',
+            )
+        )
+    )
+
+    ld.add_action(bag_record)
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
     # ld.add_action(ssh_teleop)

@@ -133,11 +133,11 @@
           <max_depth>100.0</max_depth>
         </plugin>
       </sensor>
-      <sensor type="camera" name="down_camera">
+      <sensor type="camera" name="bottom_camera">
         <pose>0.4 -0.06 0 0 1.57 0</pose>
         <update_rate>60</update_rate>
         <visualize>false</visualize>
-        <camera name="down">
+        <camera name="bottom">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
             <width>640</width>

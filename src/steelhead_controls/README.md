@@ -6,6 +6,13 @@ This package contains the nodes related to the control system.
 
 ## Usage
 
+### Arduino
+
+These are sketeches to be uploaded on the board holding the sensors for communication with the main computer. For information on how the onboard computer should be configured, check the [Notion guide](https://app.notion.com/p/subbots/Hardware-Guide-connecting-to-AUV-1be8c60b4369804ba01ad3bc5f43e8bc).
+
+- `bno085_serial_output_parser`: For the BNO085 IMU. Uploaded onto the Qtpy, sends imu information over USB serial (this should be renamed as /dev/imu.)
+- `ms5837_depth_sensor`: For the MS5837 depth sensor, most likely aboard the Bar02 pressure sensor from Blue Robotics. Currently communnicates over UART on the onboard 2040 chip on the Radxa X4 (this should be renamed as /dev/depth).
+
 ### Thrust Allocation
 
 To launch the `thrust_allocator` node, use the following command
@@ -113,7 +120,7 @@ To run the Trajectory Generator node, run
 
   - `drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
   - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature. Depth is the only value used.
-  - `controls/hover_adjust` (`geometry_msgs/msg/Wrench`) : Optionally uses input forces for navigating while hovering and keeping upright. Only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script.
+  - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Optionally uses input forces for navigating while hovering and keeping upright. If partial adjustment is configured, only yaw (if toggled) and x and y force should be adjusted, as other adjustments are handled by the hover script. Otherwise, full overrides essentially shut down the hover functionality.
 
   ### Published Topics
 
@@ -122,12 +129,12 @@ To run the Trajectory Generator node, run
   ### Notes
 
   - A target depth to maintain is expected as input to the node via the `depth` parameter, but a default value of 0.5m will be assigned if not specified. If a negative value or zero is provided, it's assumed that depth should not be considered and the script will only adjust for orientation.
-  - If desired, yaw can be adjusted via the `adjust_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
-  - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward.
+  - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
+  - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward. The final message should also be a partial adjustment.
 
 ## Services
 
-- `actuators_command` : A service for communicating with the actuators enclosure. Utilizes a map configured in `actuators_config.yaml` from keyword to Arduino pin.
+- `actuators_command` : A service for communicating with the actuators enclosure. Expects certain strings defined on the arduino to operate.
 
   ### Serviced Topics
 
@@ -136,9 +143,15 @@ To run the Trajectory Generator node, run
   ### Notes
 
   - To utilize this service, remember to start it up using `actuators_command_server_launch.py`.
-  - This system relies on an arduino connected to `/dev/ttyACM0` with a baud rate of 9600.
+  - This system relies on an arduino connected to `/dev/arduino` with a baud rate of 115200.
   - The service will respond with the status of whether or not writing the serial communication was successful or not.
-  - Right now, we don't know the state of the actuators and can only send a toggle to the pin.
+  - There are preset commands that the Ardunio board expects set as enumerations in `src/steelhead_interfaces/srv/ActuatorsCommand.srv`. These are defined in the `ardunio` repository in `ubc-subbots`.
+
+## Launch Files
+
+- `cameras_publisher_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
+
+    - The cameras are configured with the config files `cameraX.yaml`.
 
 ## Contributors
 

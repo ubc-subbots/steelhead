@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(steelhead_interfaces)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -37,6 +39,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Float.msg"
   "srv/ActuatorsCommand.srv"
   "msg/PressureSensor.msg"
+  "msg/HoverAdjustment.msg"
   DEPENDENCIES builtin_interfaces std_msgs sensor_msgs geometry_msgs
 )
 

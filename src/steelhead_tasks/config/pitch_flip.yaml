@@ -1,0 +1,4 @@
+pitch_flip:
+  ros__parameters:
+    flip_torque: 1.0
+    flip_angle: 4.71238898038469 # 3pi/2
