@@ -120,8 +120,9 @@
         <plugin name="front_camera" filename="libgazebo_ros_camera.so">
           <ros>
             <namespace>/steelhead/drivers</namespace>
-            <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
+            <remapping>custom_camera/image_raw:=front_camera/image_raw_source</remapping>
             <remapping>custom_camera/depth/image_raw:=front_camera/depth/image_raw</remapping>
+            <remapping>front_camera/image_raw:=front_camera/image_raw_source</remapping>
           </ros>
 
           <publish_camera_info>true</publish_camera_info>

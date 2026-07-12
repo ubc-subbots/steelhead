@@ -263,6 +263,12 @@
       <rpy_offset>0 0 0</rpy_offset>
     </plugin>
 
+    <!-- Pressure sensor: z=0 is treated as water surface. Required by hover_at_depth. -->
+    <plugin name="pressure_sensor" filename="libpressure_sensor.so">
+      <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
+      <update_rate>50</update_rate>
+    </plugin>
+
 
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>

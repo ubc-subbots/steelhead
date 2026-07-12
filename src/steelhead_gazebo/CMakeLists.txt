@@ -135,8 +135,27 @@ ament_target_dependencies(underwater_camera
   "steelhead_interfaces"
 )
 
-install(TARGETS 
+install(TARGETS
   underwater_camera
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(underwater_camera_effects
+  src/underwater_camera_effects.cpp
+)
+target_include_directories(underwater_camera_effects PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+ament_target_dependencies(underwater_camera_effects
+  "sensor_msgs"
+  "rclcpp"
+  "OpenCV"
+  "cv_bridge"
+)
+
+install(TARGETS
+  underwater_camera_effects
   DESTINATION lib/${PROJECT_NAME}
 )
 

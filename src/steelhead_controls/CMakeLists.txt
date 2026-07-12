@@ -198,6 +198,8 @@ install(PROGRAMS
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
   steelhead_controls/bno085_imu_publisher.py
+  steelhead_controls/path_follow_route.py
+  steelhead_controls/pathmarker_detector.py
   steelhead_controls/ms5837_depth_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )

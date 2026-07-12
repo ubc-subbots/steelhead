@@ -13,8 +13,7 @@ namespace steelhead_controls
     {
         this->declare_parameter<float>("depth", 0.5);
         this->get_parameter("depth", hover_depth_);
-        if (hover_depth_ < 0.0) hover_depth_ = 0.0;
-        RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at %fm below surface." : "Negative or 0.0 depth provided, only adjusting orientation.", hover_depth_);
+        RCLCPP_INFO(this->get_logger(), hover_depth_ ? "Hovering at depth=%fm (pressure - depth = z error)." : "depth=0.0; only adjusting orientation.", hover_depth_);
 
         this->declare_parameter<bool>("hold_yaw", false);
         this->get_parameter("hold_yaw", hold_yaw_);
@@ -51,7 +50,6 @@ namespace steelhead_controls
 
     void HoverAtDepth::publish_error_to_target()
     {
-        // !TODO replace with a ros2 message filter so we don't poll on callback
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
             if (adjustments_->type == steelhead_interfaces::msg::HoverAdjustment::PARTIAL) {
                 geometry_msgs::msg::Pose pose;
@@ -109,7 +107,7 @@ namespace steelhead_controls
         }
     }
 
-} // namespace steelhead_controls
+}
 
 int main(int argc, char *argv[])
 {
@@ -122,7 +120,6 @@ int main(int argc, char *argv[])
     }
     catch (rclcpp::exceptions::RCLError const &)
     {
-        // RCLCPP_INFO(this->get_logger(), "Error thrown in main");
-    } // during testing sometimes throws error
+    }
     return 0;
 }
