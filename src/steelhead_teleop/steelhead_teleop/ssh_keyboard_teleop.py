@@ -15,8 +15,8 @@ class KeyboardTeleop(Node):
     def __init__(self):
         super().__init__("keyboard_teleop")
 
-        self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
-        self.torque_mags = [15.0, 0.0, 15.0]  # [x,y,z]
+        self.force_mags = [1.0, 1.0, 1.0]  # [x,y,z]
+        self.torque_mags = [1.0, 1.0, 1.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
             Wrench, "/steelhead/controls/input_forces", 10
