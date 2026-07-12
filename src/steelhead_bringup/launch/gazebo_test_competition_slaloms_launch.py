@@ -2,7 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -32,19 +32,11 @@ def generate_launch_description():
     )
 
     nav_node = Node(
-        package="steelhead_gazebo",
-        executable="nav.py",
-        name="nav",
+        package="steelhead_tasks",
+        executable="automated_competition_slaloms.py",
+        name="automated_competition_slaloms",
         output="screen",
         parameters=[{"use_sim_time": True}],
-    )
-
-    keyboard_teleop = Node(
-        name="keyboard_pid_teleop",
-        namespace="/steelhead/teleop",
-        package="steelhead_teleop",
-        executable="keyboard_pid_teleop",
-        output="screen",
     )
 
     hover = Node(
@@ -65,21 +57,27 @@ def generate_launch_description():
         launch_arguments={"use_sim_time": "true"}.items(),
     )
 
-    rqt_reconfigure_node = Node(
-        name="rqt_reconfigure",
-        package="rqt_reconfigure",
-        executable="rqt_reconfigure",
-        output="screen",
-        arguments=["/steelhead/controls/steelhead_pid_controller"],
+    rviz_config_file = os.path.join(
+        get_package_share_directory("steelhead_bringup"),
+        "config",
+        "gazebo_nav_test.rviz",
     )
 
-    delayed_rqt = TimerAction(period=15.0, actions=[rqt_reconfigure_node])
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        # Silence log spam
+        arguments=["-d", rviz_config_file, "--ros-args", "--log-level", "WARN"],
+        parameters=[{"use_sim_time": True}],
+    )
 
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(nav_node)
-    ld.add_action(keyboard_teleop)
     ld.add_action(hover)
     ld.add_action(pid_controller)
+    ld.add_action(rviz)
 
     return ld

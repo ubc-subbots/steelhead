@@ -119,20 +119,6 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /steelhead/drivers/front_camera/image_raw
       Value: true
-    - Class: rviz_default_plugins/Image
-      Enabled: true
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: Yolo
-      Normalize Range: true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /steelhead/yolo_detector/annotated_image
-      Value: true
     - Angle Tolerance: 0.10000000149011612
       Class: rviz_default_plugins/Odometry
       Covariance:
@@ -203,21 +189,7 @@ Visualization Manager:
         Value: /steelhead/drivers/front_camera/points
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
-    - Class: rviz_default_plugins/Image
-      Enabled: true
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: Image
-      Normalize Range: true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /steelhead/drivers/down_camera/image_raw
-      Value: true
+      Value: true 
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
