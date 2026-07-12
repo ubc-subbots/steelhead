@@ -53,7 +53,7 @@ def generate_launch_description():
         )
     )
 
-    ld.add_action(bag_record)
+    # ld.add_action(bag_record)
     ld.add_action(imu)
     ld.add_action(cameras)
     ld.add_action(actuators_server)
