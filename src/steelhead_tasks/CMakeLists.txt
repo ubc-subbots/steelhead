@@ -59,6 +59,15 @@ ament_target_dependencies(steelhead_tasks
   "steelhead_interfaces"
 )
 
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+# Install Python executables
+install(PROGRAMS
+  steelhead_tasks/automated_competition_slaloms.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+ament_export_dependencies(ament_cmake_python)
+
 install(TARGETS
   steelhead_tasks
   ARCHIVE DESTINATION lib

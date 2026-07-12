@@ -32,7 +32,9 @@ def generate_launch_description():
     )
 
     rviz_config_file = os.path.join(
-        get_package_share_directory("steelhead_bringup"), "config", "gazebo_test.rviz"
+        get_package_share_directory("steelhead_bringup"),
+        "config",
+        "gazebo_cv_test.rviz",
     )
 
     rviz = Node(
