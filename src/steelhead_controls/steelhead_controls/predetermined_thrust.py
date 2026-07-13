@@ -42,8 +42,16 @@ thrusts = [
         "duration": 3,
     },
     {
+        "direction": DOWNWARD,
+        "duration": 4,
+    },
+    {
         "direction": FORWARD,
         "duration": 7,
+    },
+    {
+        "direction": STATIONARY,
+        "duration": 3,
     },
 ]
 
