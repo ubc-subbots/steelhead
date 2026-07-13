@@ -2,6 +2,8 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
 
@@ -41,6 +43,13 @@ def generate_launch_description():
         remappings=[("/steelhead/controls/signals", "/motor_control")],
     )
 
+    actuators_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory("steelhead_controls")
+            + "/launch/actuators_command_server_launch.py"
+        )
+    )
+
     # ssh_teleop = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
     #         os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'ssh_teleop_launch.py')
@@ -51,6 +60,7 @@ def generate_launch_description():
 
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
+    ld.add_action(actuators_server)
     # ld.add_action(ssh_teleop)
 
     return ld
