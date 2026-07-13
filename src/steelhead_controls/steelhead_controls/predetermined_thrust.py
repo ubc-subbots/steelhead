@@ -3,7 +3,7 @@ import rclpy
 from geometry_msgs.msg import Vector3, Wrench
 from rclpy.node import Node
 
-DEFAULT_EFFORT = 15.0  # vroom
+DEFAULT_EFFORT = 30.0  # vroom
 
 STATIONARY = Wrench(
     force=Vector3(x=0.0, y=0.0, z=0.0), torque=Vector3(x=0.0, y=0.0, z=0.0)
@@ -39,15 +39,19 @@ thrusts = [
     # we start by waiting 5 secs for the other nodes like the serial subscriber to be started
     {
         "direction": STATIONARY,
-        "duration": 3,
+        "duration": 1,
     },
     {
         "direction": DOWNWARD,
-        "duration": 4,
+        "duration": 1,
     },
     {
         "direction": FORWARD,
-        "duration": 7,
+        "duration": 22,
+    },
+    {
+	"direction": UPWARD,
+	"duration": 15,
     },
     {
         "direction": STATIONARY,
