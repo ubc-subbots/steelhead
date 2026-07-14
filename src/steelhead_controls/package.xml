@@ -20,10 +20,6 @@
   <depend>tf2</depend>
   <depend>robot_localization</depend>
 
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>imu_filter_madgwick</exec_depend>
-  <exec_depend>realsense2_camera</exec_depend>
-
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>launch</test_depend>
