@@ -1,0 +1,24 @@
+/steelhead/controls/imu_filter:
+  ros__parameters:
+    # The D455 has no magnetometer, so there is no heading reference and yaw
+    # drifts. Roll and pitch stay gravity-referenced through the accelerometer,
+    # which is what hover_at_depth levels on; it only ever holds yaw relative
+    # to wherever the vehicle already is, so the drift shows up as the held
+    # heading slowly wandering rather than as a leveling error.
+    use_mag: false
+    world_frame: "enu"
+
+    # Matches the BNO085 publisher, which broadcast no TF of its own
+    publish_tf: false
+    fixed_frame: "odom"
+
+    # Reproduces SH2_LINEAR_ACCELERATION: the BNO085 reported linear
+    # acceleration with gravity already removed, and downstream expects that
+    remove_gravity_vector: true
+
+    stateless: false
+    constant_dt: 0.0
+    publish_debug_topics: false
+    gain: 0.1
+    zeta: 0.0
+    orientation_stddev: 0.0
