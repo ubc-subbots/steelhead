@@ -1,12 +1,5 @@
-/*
-for debugging on another laptop on saturday
-added bno publisher to CMAKELISTS.txt
-plug in imu
-make sure .ino file is uploaded / serial monitor is showing imu is giving that output
-joel@joel-B450-AORUS-ELITE:~/Documents/code/steelhead/src/steelhead_controls/steelhead_controls$ python3 bno085_imu_publisher.py
-*/
-
 // This file has been modified from the official adafruit demo files and simply publishes yaw, pitch, roll, and acceleration in x, y, z direction to serial output
+// Meant to be connected to the sbc via a teensy through serial connection.
 
 #include <Arduino.h>
 
@@ -34,6 +27,26 @@ struct euler_t {
   float pitch;
   float roll;
 } ypr;
+
+struct quat_t {
+  float w;
+  float x;
+  float y;
+  float z;
+};
+
+quat_t multiplyQuat(quat_t a, quat_t b) {
+  quat_t r;
+  r.w = a.w*b.w - a.x*b.x - a.y*b.y - a.z*b.z;
+  r.x = a.w*b.x + a.x*b.w + a.y*b.z - a.z*b.y;
+  r.y = a.w*b.y - a.x*b.z + a.y*b.w + a.z*b.x;
+  r.z = a.w*b.z + a.x*b.y - a.y*b.x + a.z*b.w;
+  return r;
+}
+
+// This is the constant rotation that is applied to calculations for if the imu is not mounted in the correct way onto the robot (based on the markings on the bno)
+// CHANGE ME AND ACCLERATION IF MOUNTED ORIENTATION CHANGES
+quat_t q_mount = {0, 1, 0, 0};
 
 Adafruit_BNO08x  bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -85,9 +98,16 @@ void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, boo
     float sqj = sq(qj);
     float sqk = sq(qk);
 
-    ypr->yaw = atan2(2.0 * (qi * qj + qk * qr), (sqi - sqj - sqk + sqr));
-    ypr->pitch = asin(-2.0 * (qi * qk - qj * qr) / (sqi + sqj + sqk + sqr));
-    ypr->roll = atan2(2.0 * (qj * qk + qi * qr), (-sqi - sqj + sqk + sqr));
+    float roll_arg = 2.0 * (qj * qk + qr * qi) / (sqi + sqj + sqk + sqr);
+    if (roll_arg > 1.0) roll_arg = 1.0;
+    if (roll_arg < -1.0) roll_arg = -1.0;
+
+    // roll is the asin (middle) axis -> clamped to +/-90 deg; this is our "axis of error"
+    // that the controller keeps near level, so it never approaches gimbal lock.
+    // yaw and pitch use atan2 -> full +/-180 deg range, so they track 360 rotation unclamped.
+    ypr->yaw   = atan2(2.0 * (qr * qk - qi * qj), sqr - sqi + sqj - sqk);
+    ypr->roll  = asin(roll_arg);
+    ypr->pitch = atan2(2.0 * (qr * qj - qi * qk), sqr - sqi - sqj + sqk);
 
     if (degrees) {
       ypr->yaw *= RAD_TO_DEG;
@@ -124,24 +144,34 @@ void loop() {
         quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
         break;
 
-      case SH2_GAME_ROTATION_VECTOR:
-        quaternionToEuler(
+      case SH2_GAME_ROTATION_VECTOR: {
+        quat_t q_sensor = {
           sensorValue.un.gameRotationVector.real,
           sensorValue.un.gameRotationVector.i,
           sensorValue.un.gameRotationVector.j,
-          sensorValue.un.gameRotationVector.k,
-          &ypr, true);
+          sensorValue.un.gameRotationVector.k
+        };
+        quat_t q_body = multiplyQuat(q_sensor, q_mount);
+        quaternionToEuler(q_body.w, q_body.x, q_body.y, q_body.z, &ypr, true);
         break;
+      }
+      case SH2_LINEAR_ACCELERATION: {
+        float sx = sensorValue.un.accelerometer.x;
+        float sy = sensorValue.un.accelerometer.y;
+        float sz = sensorValue.un.accelerometer.z;
 
-      case SH2_LINEAR_ACCELERATION:
-        ax = sensorValue.un.accelerometer.x;
-        ay = sensorValue.un.accelerometer.y;
-        az = sensorValue.un.accelerometer.z;
+        // CHANGE ME IF ORIENTATION CHANGES
+        // 180deg roll about local X: x unchanged, y and z flip sign.
+        ax = sx;
+        ay = -sy;
+        az = -sz;
         break;
-
+      }
     }
 
-    float yaw_deg   = ypr.yaw;
+    float yaw_deg = ypr.yaw - 90.0;
+    if (yaw_deg > 180.0) yaw_deg -= 360.0;
+    if (yaw_deg < -180.0) yaw_deg += 360.0;
     float pitch_deg = ypr.pitch;
     float roll_deg  = ypr.roll;
     float status_f = (float) sensorValue.status; 
