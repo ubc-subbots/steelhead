@@ -70,6 +70,46 @@ the pipeline sequence can advance.
     - `surface_alignment_threshold` (double, default 0.3) : Start surfacing once both axis errors drop below this.
     - `surface_duration` (double, default 10.0) : How long to apply the upward force before reporting success, in seconds.
 
+- `automated_competition_slalom` : A node that navigates the three-set slalom. Each
+  set is a WHITE / RED / WHITE triplet of vertical pipes, but only the red pipe is
+  detected, so the node navigates off the red pipe alone: it holds the red pipe at a
+  fixed offset to one side of the image while driving forward, which carries the AUV
+  through the gap on the other side of it. The offset keeps the same sign for every
+  set, so the AUV passes on the same side of the red pipe each time and earns the
+  bonus for it. The sets being offset laterally from each other needs no special
+  handling, since the node only servos on the pipe it can see and the hover node
+  holds yaw so the AUV strafes across rather than turning.
+
+  Several sets are in frame at once, so the node tracks the tallest red box rather
+  than the most confident one: the pipes are all the same height, so the tallest box
+  is the nearest pipe. It commits to a pipe once its box grows past
+  `commit_box_height` of the frame, and counts the set once that committed pipe
+  leaves the view and it has coasted forward for `pass_timeout`. The coast ignores
+  detections, so the next set coming into view cannot restart the timer. It then
+  hunts for the next set, reporting success after `num_sets` sets.
+
+  Depth is not commanded, so the hover node holds whatever depth the pipeline set
+  beforehand. Set that depth within the 0.9m span of the pipes to earn the depth bonus.
+
+    ### Subscribed Topics
+    - `yolo_detector/front/detections` (`steelhead_interfaces/msg/DetectionBoxArray`) : Front camera detections.
+    - `drivers/front_camera/camera_info` (`sensor_msgs/msg/CameraInfo`) : Read once for the image width.
+
+    ### Published Topics
+    - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Partial wrench to hold the pipe at the offset and drive past it.
+    - `/steelhead/pipeline_feedback` (`steelhead_interfaces/msg/PipelineFeedback`) : Reports success after the last set is passed.
+
+    ### Parameters
+    - `target_detection_label` (string, default `"slalom"`) : Detection label for the red slalom pipe.
+    - `pass_side` (string, default `"left"`) : Which side of the red pipe to pass on, `"left"` or `"right"` as seen in the image. Kept constant across all sets.
+    - `pass_offset` (double, default 0.4) : How far to hold the pipe off the image centre, as a fraction of half the image width. Larger gives the pipe a wider berth.
+    - `num_sets` (int, default 3) : How many pipe sets to pass before reporting success.
+    - `commit_box_height` (double, default 0.4) : Box height, as a fraction of the image height, at which the AUV is close enough to commit to a pipe. Only a committed pipe leaving the view counts as a passed set, so a dropout at range is not mistaken for a pass.
+    - `pass_timeout` (double, default 10.0) : Seconds to keep driving after losing the committed pipe before counting the set as passed.
+    - `approach_force` (double, default 5.0) : Forward force while searching for and approaching a set.
+    - `coast_force` (double, default 15.0) : Forward force while coasting past a pipe.
+    - `sway_gain` (double, default 15.0) : Sway force per unit of normalized horizontal error.
+
 - `hardcode_inputs` : A component node which
   publishes a constant, parameter-configured HoverAdjustment to the hover_at_depth
   adjustment topic with a partial type for a parameter-configured duration, then publishes a zero
