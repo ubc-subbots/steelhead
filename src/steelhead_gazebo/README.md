@@ -194,9 +194,31 @@ At this point your model should be ready to be added to a Gazebo world, you can 
 
 [How to import Solidworks model into Gazebo](https://docs.google.com/document/d/1LrzAUCPOdZPh-uzIDg-aMNJGaX13d3AJjA7XWy2pFQQ/edit)
 
+
+## Debugging / Verbose Logging
+By default, `gazebo_launch.py` runs gzserver with `verbose:=false` to keep the terminal
+clean. If you need to see Gazebo's internal debug output (e.g. plugin parameter loading,
+SDF parsing details), run with:
+
+    ros2 launch steelhead_gazebo gazebo_launch.py verbose:=true
+
+Even with `verbose:=true`, most of the detailed parameter dumps (added_mass matrices,
+damping vectors, etc.) are written to Gazebo's log file rather than the terminal, to
+avoid flooding the console. If you need to inspect these, check the gzserver log,
+which is written to a PID-specific folder under `~/.gazebo/`, e.g.:
+
+    ~/.gazebo/server-11345/default.log
+
+The PID changes every run, so use `ls ~/.gazebo/` to find the most recent `server-*`
+folder if you're not sure which one to check.
+
+This is the first place to look if you suspect a hydrodynamics plugin isn't picking up
+an SDF parameter correctly, but don't see anything obviously wrong in the terminal output.
+
 ## Contributors
 
 - Logan Fillo (logan.fillo@gmail.com)
 - Jake Cronin (jcronin97@live.ca)
 - Kevin Huang (kevinh42@student.ubc.ca)
 - Jared Chan (jaredchan42@gmail.com)
+- Krishna Garcha (garchakri@gmail.com)

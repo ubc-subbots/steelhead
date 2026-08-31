@@ -131,6 +131,7 @@ namespace steelhead_gazebo
                     phi = -1;
                     incr_phi = 0;
                     std::cout << "END ME PLEASE" << std::endl;
+                    // gzmsg << "SmoothCamera: completed orbit sweep across full radius range [" << radius_range_[0] << ", " << radius_range_[1] << "]. Camera will stop moving.\n";
                     return;
                 }
             }
