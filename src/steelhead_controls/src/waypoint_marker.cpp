@@ -11,9 +11,9 @@ namespace steelhead_controls
         waypoint_being_achieved_(false)
   {
 
-    publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/current_goal", 10);
+    publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/current_goal", rclcpp::QoS(10));
 
-    error_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/steelhead/controls/input_pose", 10);
+    error_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/steelhead/controls/input_pose", rclcpp::QoS(10));
 
     state_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
         "/steelhead/controls/ukf/odometry/filtered", 10, std::bind(&WaypointMarker::state_callback, this, _1));

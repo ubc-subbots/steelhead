@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -38,12 +38,7 @@ target_compile_definitions(steelhead_example
   PRIVATE "steelhead_example_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_example
-  "rclcpp"
-  "rclcpp_components"
-  "std_msgs"
-  "steelhead_interfaces"
-)
+target_link_libraries(steelhead_example PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs steelhead_interfaces::steelhead_interfaces)
 
 install(TARGETS
   steelhead_example

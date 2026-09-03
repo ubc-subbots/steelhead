@@ -117,7 +117,7 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <plugin name="front_camera" filename="libgazebo_ros_camera.so">
+        <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system">
           <ros>
             <namespace>/steelhead/drivers</namespace>
             <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
@@ -153,7 +153,7 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <plugin name="down_camera" filename="libgazebo_ros_camera.so">
+        <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system">
           <!-- <bodyName>camera_link</bodyName> -->
           <ros>
             <namespace>/steelhead/drivers</namespace>
@@ -166,7 +166,7 @@
         <visualize>true</visualize>
         <topic>imu</topic>
         <gravity>true</gravity>
-        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
+        <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
           <topicName>imu</topicName>
           <bodyName>imu_link</bodyName>
           <updateRateHZ>200</updateRateHZ>

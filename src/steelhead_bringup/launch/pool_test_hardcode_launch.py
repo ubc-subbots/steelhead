@@ -1,62 +1,61 @@
-from http.server import executable
-from launch import LaunchDescription
-from launch_ros.actions import Node, ComposableNodeContainer
-from launch.actions import IncludeLaunchDescription, TimerAction
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.actions import ExecuteProcess
-from launch_ros.descriptions import ComposableNode
-from ament_index_python.packages import get_package_share_directory
 import os
+
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import ComposableNodeContainer, Node
+from launch_ros.descriptions import ComposableNode
+
 
 def generate_launch_description():
 
     ld = LaunchDescription()
 
     serial = ComposableNodeContainer(
-            name='serial_subscriber_container',
-            namespace='',
-            package='rclcpp_components',
-            executable='component_container',
-            composable_node_descriptions=[
-                ComposableNode(
-                    package='steelhead_controls',
-                    plugin='steelhead_controls::SerialSubscriber',
-                    name='serial_subscriber'),
-            ],
-            output='both',
-    ) 
+        name="serial_subscriber_container",
+        namespace="",
+        package="rclcpp_components",
+        executable="component_container",
+        composable_node_descriptions=[
+            ComposableNode(
+                package="steelhead_controls",
+                plugin="steelhead_controls::SerialSubscriber",
+                name="serial_subscriber",
+            ),
+        ],
+        output="both",
+    )
 
     ta_config = os.path.join(
-        get_package_share_directory('steelhead_controls'),
-        'config',
-        'thruster_config.yaml'
+        get_package_share_directory("steelhead_controls"),
+        "config",
+        "thruster_config.yaml",
     )
 
     thrust_allocator = Node(
-        name='thrust_allocator',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
-        executable='thrust_allocator',
-        output='screen',
+        name="thrust_allocator",
+        namespace="/steelhead/controls",
+        package="steelhead_controls",
+        executable="thrust_allocator",
+        output="screen",
         parameters=[ta_config],
-        remappings=[
-            ('/steelhead/controls/signals', '/motor_control')
-        ]
+        remappings=[("/steelhead/controls/signals", "/motor_control")],
     )
 
     hardcoded_thrusters = Node(
-        name='predetermined_thrust',
-        namespace='/steelhead/controls',
-        package='steelhead_controls',
-        executable='predetermined_thrust.py'
+        name="predetermined_thrust",
+        namespace="/steelhead/controls",
+        package="steelhead_controls",
+        executable="predetermined_thrust.py",
     )
 
     bag_record = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory('steelhead_bringup'),
-                'launch',
-                'bag_record_launch.py',
+                get_package_share_directory("steelhead_bringup"),
+                "launch",
+                "bag_record_launch.py",
             )
         )
     )
@@ -65,5 +64,5 @@ def generate_launch_description():
     ld.add_action(serial)
     ld.add_action(thrust_allocator)
     ld.add_action(hardcoded_thrusters)
-    
+
     return ld

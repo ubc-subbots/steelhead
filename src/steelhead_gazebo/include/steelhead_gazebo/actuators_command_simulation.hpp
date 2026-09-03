@@ -1,7 +1,7 @@
 #ifndef STEELHEAD_CONTROL__ACTUATORS_COMMAND_SIMULATION
 #include "std_msgs/msg/u_int32.hpp"
 #include "steelhead_interfaces/srv/actuators_command.hpp"
-#include "gazebo_msgs/srv/spawn_entity.hpp"
+#include "ros_gz_interfaces/srv/spawn_entity.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 namespace steelhead_gazebo
@@ -24,7 +24,7 @@ namespace steelhead_gazebo
         rclcpp::Service<steelhead_interfaces::srv::ActuatorsCommand>::SharedPtr service_;
         
         rclcpp::Node::SharedPtr spawner_node_;
-        std::shared_ptr<rclcpp::Client<gazebo_msgs::srv::SpawnEntity>> spawner_client_;
+        std::shared_ptr<rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>> spawner_client_;
 
         void handleRequest(const std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Request> request,
           std::shared_ptr<steelhead_interfaces::srv::ActuatorsCommand::Response>      response);

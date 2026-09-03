@@ -1,6 +1,6 @@
 #include "steelhead_tasks/pitch_flip.hpp"
 
-#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Matrix3x3.hpp>
 #include <cmath>
 using std::placeholders::_1;
 

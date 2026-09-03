@@ -97,7 +97,7 @@
         </joint>
 
         <!-- Thrust Vectors -->
-        <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
+        <plugin name="gz::sim::systems::Thruster" filename="gz-sim-thruster-system">
             <thruster_count>6</thruster_count>
             <ros>
                 <namespace>/steelhead/controls</namespace>

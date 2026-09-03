@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -29,6 +29,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -72,66 +73,27 @@ target_include_directories(hover_at_depth PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(
-  thrust_allocator
-  "rclcpp"
-  "rclcpp_components"
-  "Eigen3"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "OpenCV"
-)
+target_link_libraries(thrust_allocator PUBLIC rclcpp::rclcpp rclcpp_components::component Eigen3::Eigen steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs ${OpenCV_LIBRARIES})
 install(TARGETS thrust_allocator
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  waypoint_marker
-  "rclcpp"
-  "rclcpp_components"
-  "tf2"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "nav_msgs"
-)
+target_link_libraries(waypoint_marker PUBLIC rclcpp::rclcpp rclcpp_components::component tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs nav_msgs::nav_msgs)
 install(TARGETS waypoint_marker
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  trajectory_generator
-  "rclcpp"
-  "rclcpp_components"
-  "tf2"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "nav_msgs"
-)
+target_link_libraries(trajectory_generator PUBLIC rclcpp::rclcpp rclcpp_components::component tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs nav_msgs::nav_msgs)
 install(TARGETS trajectory_generator
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  actuators_command
-  "rclcpp"
-  "rclcpp_components"
-  "steelhead_interfaces"
-)
+target_link_libraries(actuators_command PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces)
 install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  hover_at_depth
-  "rclcpp"
-  "rclcpp_components"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-)
+target_link_libraries(hover_at_depth PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs)
 install(TARGETS hover_at_depth
   DESTINATION lib/${PROJECT_NAME}
 )
@@ -152,17 +114,7 @@ target_compile_definitions(steelhead_controls
   PRIVATE "steelhead_controls_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_controls
-  "rclcpp"
-  "rclcpp_components"
-  "Eigen3"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "OpenCV"
-  "tf2"
-  "nav_msgs"
-)
+target_link_libraries(steelhead_controls PUBLIC rclcpp::rclcpp rclcpp_components::component Eigen3::Eigen steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs ${OpenCV_LIBRARIES} tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs nav_msgs::nav_msgs)
 
 install(TARGETS
   steelhead_controls

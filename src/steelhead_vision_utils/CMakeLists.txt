@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -22,11 +22,14 @@ find_package(ament_cmake REQUIRED)
 find_package(OpenCV 4 REQUIRED)
 
 include_directories(include)
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_library(steelhead_vision_utils SHARED
   src/object_detector.cpp
   src/contour_features.cpp
 )
+
+target_link_libraries(steelhead_vision_utils PUBLIC ${OpenCV_LIBRARIES})
 
 target_include_directories(steelhead_vision_utils
   PUBLIC
@@ -34,9 +37,6 @@ target_include_directories(steelhead_vision_utils
     $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(steelhead_vision_utils
-  "OpenCV"
-)
 
 ament_export_targets(export_steelhead_vision_utils HAS_LIBRARY_TARGET)
 ament_export_dependencies(

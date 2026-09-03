@@ -1,5 +1,5 @@
 #include "steelhead_gazebo/underwater_camera.hpp"
-#include "cv_bridge/cv_bridge.h"
+#include "cv_bridge/cv_bridge.hpp"
 #include <opencv2/opencv.hpp>
 
 using std::placeholders::_1;
@@ -45,12 +45,12 @@ namespace steelhead_gazebo
         approx_sync_->registerCallback(
             std::bind(&UnderwaterCamera::syncCallback, this, _1, _2));
 
-        this->declare_parameter("rho");
-        this->declare_parameter("irradiance_transmission");
-        this->declare_parameter("spectral_sensitivity_blue");
-        this->declare_parameter("spectral_sensitivity_red");
-        this->declare_parameter("spectral_sensitivity_green");
-        this->declare_parameter("illumination_irradiance");
+        this->declare_parameter<std::vector<double>>("rho");
+        this->declare_parameter<std::vector<double>>("irradiance_transmission");
+        this->declare_parameter<std::vector<double>>("spectral_sensitivity_blue");
+        this->declare_parameter<std::vector<double>>("spectral_sensitivity_red");
+        this->declare_parameter<std::vector<double>>("spectral_sensitivity_green");
+        this->declare_parameter<std::vector<double>>("illumination_irradiance");
 
         std::vector<double> rho_vals;
         std::vector<double> Beta_vals;
@@ -226,7 +226,7 @@ namespace steelhead_gazebo
         underwater_image_pub_.publish(message);
 
         auto runtime = this->get_clock()->now() - timer;
-        RCLCPP_INFO(this->get_logger(),"Processing took: "+ std::to_string(runtime.seconds()) + "s");
+        RCLCPP_INFO(this->get_logger(), ("Processing took: "+ std::to_string(runtime.seconds()) + "s").c_str());
     }
 
 } // namespace steelhead_gazebo

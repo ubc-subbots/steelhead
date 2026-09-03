@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -25,6 +25,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -42,7 +43,7 @@ target_include_directories(steelhead_pid_controller PUBLIC
 install(TARGETS steelhead_pid_controller
   DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(steelhead_pid_controller rclcpp rclcpp_components sensor_msgs  std_msgs steelhead_interfaces tf2)
+target_link_libraries(steelhead_pid_controller PUBLIC rclcpp::rclcpp rclcpp_components::component sensor_msgs::sensor_msgs std_msgs::std_msgs steelhead_interfaces::steelhead_interfaces tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs ament_index_cpp::ament_index_cpp)
 
 install(DIRECTORY
   launch

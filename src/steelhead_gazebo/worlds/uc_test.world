@@ -51,7 +51,7 @@
                             <stddev>0.007</stddev>
                         </noise>
                     </camera>
-                    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                    <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system">
                         <ros>
                             <namespace>steelhead/gazebo_drivers</namespace>
                         </ros>

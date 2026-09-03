@@ -1,4 +1,4 @@
-FROM ros:foxy
+FROM ros:lyrical
 
 # setup steelhead
 RUN mkdir -p /subbots
