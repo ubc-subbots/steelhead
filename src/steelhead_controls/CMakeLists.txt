@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_controls)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -102,7 +102,7 @@ install(TARGETS hover_at_depth
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
-  src/serial_subscriber
+  src/serial_subscriber.cpp
 )
 
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::ThrustAllocator")

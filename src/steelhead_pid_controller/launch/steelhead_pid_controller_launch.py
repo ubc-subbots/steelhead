@@ -12,24 +12,26 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Sim launches must pass use_sim_time:=true; defaults to false for the real vehicle
-    use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='false')
+    use_sim_time_arg = DeclareLaunchArgument("use_sim_time", default_value="false")
 
     config = os.path.join(
-        get_package_share_directory('steelhead_pid_controller'),
-        'config',
-        'pid.yaml'
+        get_package_share_directory("steelhead_pid_controller"), "config", "pid.yaml"
     )
 
     pid_controller = Node(
-        package='steelhead_pid_controller',
-        namespace='/steelhead/controls',
-        executable='steelhead_pid_controller',
-        name='steelhead_pid_controller',
-        output='screen',
+        package="steelhead_pid_controller",
+        namespace="/steelhead/controls",
+        executable="steelhead_pid_controller",
+        name="steelhead_pid_controller",
+        output="screen",
         parameters=[
             config,
-            {'use_sim_time': ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool)}
-        ]
+            {
+                "use_sim_time": ParameterValue(
+                    LaunchConfiguration("use_sim_time"), value_type=bool
+                )
+            },
+        ],
     )
 
     ld.add_action(use_sim_time_arg)

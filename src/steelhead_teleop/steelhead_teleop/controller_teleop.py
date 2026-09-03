@@ -12,17 +12,14 @@ class ControllerTeleop(Node):
     Joystick teleop controller using raw /dev/input/js0 interface
     """
 
-
     def __init__(self):
-        super().__init__('controller_teleop')
+        super().__init__("controller_teleop")
 
         self.force_mags = [15.0, 15.0, 15.0]  # [x,y,z]
         self.torque_mags = [15.0, 15.0, 15.0]  # [x,y,z]
 
         self.force_pub = self.create_publisher(
-            Wrench,
-            '/steelhead/controls/input_forces',
-            10
+            Wrench, "/steelhead/controls/input_forces", 10
         )
 
         # self._open_joystick()
@@ -48,12 +45,11 @@ class ControllerTeleop(Node):
 
         self.get_logger().info("Controller teleop successfully start!")
 
-
     def _open_joystick(self) -> bool:
         """
         Opens the raw joystick device file.
         """
-        self.js_path = '/dev/input/js0'
+        self.js_path = "/dev/input/js0"
         try:
             self.js_fd = os.open(self.js_path, os.O_RDONLY | os.O_NONBLOCK)
             self.get_logger().info(f"Opened joystick: {self.js_path}")
@@ -62,19 +58,20 @@ class ControllerTeleop(Node):
             # self.js_fd = None
             return False
         except PermissionError:
-            self.get_logger().info("Permission denied opening /dev/input/js0. Try 'sudo chmod a+rw /dev/input/js0'")
+            self.get_logger().info(
+                "Permission denied opening /dev/input/js0. Try 'sudo chmod a+rw /dev/input/js0'"
+            )
             # self.js_fd = None
             return False
 
         # Each joystick event is 8 bytes
-        self.EVENT_SIZE = struct.calcsize('IhBB')
+        self.EVENT_SIZE = struct.calcsize("IhBB")
 
         # Track current axis states
         self.axis_states = {}
         self.axis_map = {}
 
         return True
-
 
     def _joystick_loop(self):
         """
@@ -91,7 +88,7 @@ class ControllerTeleop(Node):
                 evbuf = None
 
             if evbuf:
-                time, value, type_, number = struct.unpack('IhBB', evbuf)
+                time, value, type_, number = struct.unpack("IhBB", evbuf)
 
                 # Axis event
                 if type_ & 0x02:
@@ -105,21 +102,20 @@ class ControllerTeleop(Node):
 
             lt_raw = self.axis_states.get(2, -1.0)
             rt_raw = self.axis_states.get(5, -1.0)
-            
+
             lt = (lt_raw + 1.0) / 2.0
             rt = (rt_raw + 1.0) / 2.0
 
             msg = Wrench()
-            msg.force.x = -ly * self.force_mags[0]   # Forward/backward
-            msg.force.y = -lx * self.force_mags[1]    # Left/right
+            msg.force.x = -ly * self.force_mags[0]  # Forward/backward
+            msg.force.y = -lx * self.force_mags[1]  # Left/right
             msg.torque.z = -rx * self.torque_mags[0]  # Yaw
 
-            msg.torque.y = -ry * self.torque_mags[1]   # Pitch
+            msg.torque.y = -ry * self.torque_mags[1]  # Pitch
 
             msg.force.z = (rt - lt) * self.force_mags[2]  # Up/down
 
             self.force_pub.publish(msg)
-            
 
     def destroy_node(self):
         self.running = False
@@ -139,5 +135,5 @@ def main(args=None):
         rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

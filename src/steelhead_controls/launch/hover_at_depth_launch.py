@@ -1,4 +1,3 @@
-
 import os
 
 from launch import LaunchDescription
@@ -11,10 +10,10 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     hover_at_depth = Node(
-        package='steelhead_controls', 
-        executable='hover_at_depth',
-        parameters=[{'depth': 1.0, 'hold_yaw': False}],
-        namespace="steelhead"
+        package="steelhead_controls",
+        executable="hover_at_depth",
+        parameters=[{"depth": 1.0, "hold_yaw": False}],
+        namespace="steelhead",
     )
 
     ld.add_action(hover_at_depth)

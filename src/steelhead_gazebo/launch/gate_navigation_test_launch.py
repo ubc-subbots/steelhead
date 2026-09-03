@@ -11,87 +11,106 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     log_level_arg = DeclareLaunchArgument(
-        'log_level',
-        default_value='info',
-        description='Logging level'
+        "log_level", default_value="info", description="Logging level"
     )
 
-    log_level = LaunchConfiguration('log_level')
+    log_level = LaunchConfiguration("log_level")
 
     ld = LaunchDescription([log_level_arg])
 
-
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_pid_controller"),
+                "launch",
+                "steelhead_pid_controller_launch.py",
+            )
         ),
-        launch_arguments={'use_sim_time': 'true'}.items()
+        launch_arguments={"use_sim_time": "true"}.items(),
     )
 
     waypoint_marker = Node(
-        package='steelhead_controls', 
-        executable='waypoint_marker',
-        output='screen', 
-        parameters=[{'use_sim_time': True}]
+        package="steelhead_controls",
+        executable="waypoint_marker",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
     )
 
     # waypoint_marker_tester = Node(
     #     package='steelhead_controls',
     #     executable='waypoint_marker_tester.py',
     #     name='waypoint_marker_tester',
-    #     output='screen', 
+    #     output='screen',
     #     parameters=[{'use_sim_time': True}]
     # )
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_gazebo"),
+                "launch",
+                "gazebo_launch.py",
+            )
         ),
-        launch_arguments={'world': 'gate_test.world'}.items()
+        launch_arguments={"world": "gate_test.world"}.items(),
     )
 
     config = os.path.join(
-        get_package_share_directory('steelhead_localization'),
-        'config',
-        'state_estimator_config.yaml'
+        get_package_share_directory("steelhead_localization"),
+        "config",
+        "state_estimator_config.yaml",
     )
 
     state_estimator = Node(
-        name='state_estimator',
-        namespace='/steelhead/controls/ukf',
-        package='robot_localization',
-        executable='ukf_node',
-        output='screen',
-        parameters=[config, {'use_sim_time': True}]
+        name="state_estimator",
+        namespace="/steelhead/controls/ukf",
+        package="robot_localization",
+        executable="ukf_node",
+        output="screen",
+        parameters=[config, {"use_sim_time": True}],
     )
 
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'state_publisher_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
         )
     )
 
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'thrust_allocator_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "thrust_allocator_launch.py",
+            )
         )
     )
 
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gate'), 'launch', 'gate_detector_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_gate"),
+                "launch",
+                "gate_detector_launch.py",
+            )
         )
     )
 
     underwater_camera = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
+            get_package_share_directory("steelhead_gazebo")
+            + "/launch/underwater_camera_launch.py"
         )
     )
 
     trajectory_generator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory('steelhead_controls') + '/launch/trajectory_generator_launch.py'
+            get_package_share_directory("steelhead_controls")
+            + "/launch/trajectory_generator_launch.py"
         )
     )
 
