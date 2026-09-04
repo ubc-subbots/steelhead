@@ -13,7 +13,7 @@ RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; RTI_NC_LICENSE_ACCEPTED=ye
 
 # Clone Steelhead repo
 WORKDIR /root/
-RUN git clone https://github.com/ubc-subbots/steelhead.git 
+COPY . /root/steelhead 
 
 # Realsense install. Only works on amd64! To run on Jetson we need to follow their specific guide (pain)
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
