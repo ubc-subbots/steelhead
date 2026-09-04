@@ -5,7 +5,7 @@ ARG TARGETARCH
 # IMPORTANT!!!! Before running rosdep or colcon commands, you must source the ros2 installation in the same RUN command. 
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove
-RUN apt-get install -y apt-transport-https apt-utils bash-completion python3-pip nano htop less byobu ros-perception ros-lyrical-robot-localization ros-lyrical-angles ros-lyrical-imu-tools ros-lyrical-usb-cam ros-lyrical-rosbridge-suite libboost-filesystem-dev libopencv-dev python3-opencv libceres-dev libeigen3-dev ros-lyrical-cv-bridge ros-lyrical-vision-opencv ros-lyrical-eigen3-cmake-module
+RUN apt-get install -y apt-transport-https apt-utils bash-completion python3-pip nano htop less byobu ros-lyrical-perception ros-lyrical-robot-localization ros-lyrical-angles ros-lyrical-imu-tools ros-lyrical-rosbridge-suite libboost-filesystem-dev libopencv-dev python3-opencv libceres-dev libeigen3-dev ros-lyrical-cv-bridge ros-lyrical-vision-opencv ros-lyrical-eigen3-cmake-module
 
 # Download and build ros2 packages
 WORKDIR /opt/ros/lyrical
