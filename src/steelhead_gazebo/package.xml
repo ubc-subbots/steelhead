@@ -11,8 +11,6 @@
   <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <depend>ros_gz_sim</depend>
-  <depend>gazebo</depend>
-  <depend>gz-sim</depend>
   <depend>ros_gz_bridge</depend>
   <depend>image_transport</depend>
   <depend>sensor_msgs</depend>

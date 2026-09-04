@@ -95,13 +95,13 @@ def generate_launch_description():
     )
 
     yolo_detector = Node(
-        package="steelhead_object_recognition",
+        package="steelhead_vision",
         executable="yolo_detector.py",
         name="yolo_detector",
         parameters=[
             {
                 "weights_path": os.path.join(
-                    get_package_share_directory("steelhead_object_recognition"),
+                    get_package_share_directory("steelhead_vision"),
                     "config",
                     "competition.pt",
                 )

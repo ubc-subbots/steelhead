@@ -1,6 +1,7 @@
-from setuptools import setup
-from glob import glob
 import os
+from glob import glob
+
+from setuptools import setup
 
 package_name = "steelhead_teleop"
 
@@ -14,7 +15,7 @@ setup(
         (os.path.join("share", package_name, "launch"), glob("launch/*.py")),
         (os.path.join("share", package_name, "config"), glob("config/*.yaml")),
     ],
-    install_requires=["setuptools"],
+    install_requires=["setuptools", "pynput"],
     zip_safe=True,
     maintainer="logan",
     maintainer_email="logan.fillo@gmail.com",

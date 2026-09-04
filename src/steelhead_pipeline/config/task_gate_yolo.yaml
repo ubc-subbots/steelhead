@@ -2,9 +2,9 @@
   ros__parameters:
     pipeline:
       components:
-        - steelhead_object_recognition::ObjectRecognizer
+        - steelhead_vision::ObjectRecognizer
       pkg_names: 
-        - steelhead_object_recognition
+        - steelhead_vision
       param_files:
         - tiny_yolov4_pipeline.yaml
       namespace: /steelhead

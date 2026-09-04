@@ -56,7 +56,7 @@ Next, from the folder `steelhead`, install rosdep as such
 Then, resolve any dependency issues using the following commands
  
     sudo apt install python3-pip
-    rosdep install -i --from-path src --rosdistro lyrical -y -r
+    PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -i --from-path src --rosdistro lyrical -y -r
   
 Some packages may fail, so just manually install them with 
 
@@ -133,7 +133,6 @@ If you'd like, you can add these aliases to the bottom of your `.bashrc` to make
 
 ```
 alias setup='nano ~/.bashrc'
-alias gzkill='killall -9 gzserver; killall -9 gzclient'
 alias build='colcon build && source install/setup.bash' # clean build 
 alias clang='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && jq -s "map(.[])" build/*/compile_commands.json > compile_commands.json && source install/setup.bash'
 alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)

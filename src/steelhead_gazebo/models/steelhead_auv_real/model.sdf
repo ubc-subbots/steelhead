@@ -238,39 +238,16 @@
     -->
 
     <!-- Thrust Vectors -->
-    <plugin name="gz::sim::systems::Thruster" filename="gz-sim-thruster-system">
-      <thruster_count>6</thruster_count>
-      <ros>
-        <namespace>/steelhead/controls</namespace>
-        <remapping>output_forces</remapping>
-      </ros>
-    </plugin>
+    
 
-    <plugin name="gz::sim::systems::Hydrodynamics" filename="gz-sim-hydrodynamics-system"></plugin>
+    
 
-    <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
-      <state_topic>/steelhead/state</state_topic>
-      <publish_odom_tf>false</publish_odom_tf>
-      <update_rate>50</update_rate>
-    </plugin>
+    
 
     <!-- this plugin assumes that z=0 is the surface of the water. -->
-    <plugin name="pressure_sensor" filename="libpressure_sensor.so">
-      <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
-      <update_rate>50</update_rate>
-    </plugin>
     
-    <plugin name="gz::sim::systems::PosePublisher" filename="gz-sim-pose-publisher-system">
-      <always_on>true</always_on>
-      <update_rate>50.0</update_rate>
-      <publish_odom_tf>false</publish_odom_tf>
-      <body_name>base_link::base_link</body_name>
-      <topic_name>/steelhead/state</topic_name>
-      <gaussian_noise>0.01</gaussian_noise>
-      <frame_name>odom</frame_name>
-      <xyz_offset>0 0 0</xyz_offset>
-      <rpy_offset>0 0 0</rpy_offset>
-    </plugin>
+    
+    
 
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>

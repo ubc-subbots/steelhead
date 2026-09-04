@@ -15,10 +15,7 @@
                     </box>
                 </geometry>
                 <material>
-                    <script>
-                      <uri>file://media/materials/scripts/gazebo.material</uri>
-                      <name>Gazebo/Blue</name>
-                    </script>
+                    <ambient>0.0 0.0 1.0 1</ambient><diffuse>0.0 0.0 1.0 1</diffuse>
                 </material>
             </visual>
             <collision name='cube_collision'>

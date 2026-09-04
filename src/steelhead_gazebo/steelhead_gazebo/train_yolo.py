@@ -2,9 +2,8 @@
 # Adapted from https://medium.com/@anirudh.s.chakravarthy/training-yolov3-on-your-custom-dataset-19a1abbdaf09
 import glob
 import os
-import gdown
-import requests
 
+import requests
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -91,10 +90,10 @@ backup = {backup_dir}\n"
         f"{darknet_exec} detector train {os.path.join(data_dir, 'obj.data')} {os.path.join(shared_dir, 'config', model_name + '.cfg')} {os.path.join(shared_dir, 'yolov4-tiny.conv.29')} -map"
     )
     os.system(
-        f"cp {os.path.join(backup_dir, model_name + '_final.weights')} {get_package_share_directory('steelhead_object_recognition')}"
+        f"cp {os.path.join(backup_dir, model_name + '_final.weights')} {get_package_share_directory('steelhead_vision')}"
     )
     os.system(
-        f"cp {os.path.join(shared_dir, 'config', model_name + '.cfg')} {get_package_share_directory('steelhead_object_recognition')}"
+        f"cp {os.path.join(shared_dir, 'config', model_name + '.cfg')} {get_package_share_directory('steelhead_vision')}"
     )
 
 
