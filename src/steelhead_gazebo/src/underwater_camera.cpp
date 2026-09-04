@@ -12,27 +12,27 @@ namespace steelhead_gazebo
     : Node("underwater_camera", options) 
     {
 
-        rmw_qos_profile_t subscriber_qos_profile = rmw_qos_profile_sensor_data;
-        rmw_qos_profile_t publisher_qos_profile = rmw_qos_profile_default;
+        rclcpp::QoS subscriber_qos_profile = rclcpp::SensorDataQoS();
+        rclcpp::QoS publisher_qos_profile = rclcpp::SystemDefaultsQoS();
 
-        underwater_image_pub_ = image_transport::create_publisher(this, 
+        underwater_image_pub_ = image_transport::create_publisher(*this, 
             "front_camera/underwater/image_raw", 
             publisher_qos_profile);
 
-        image_pub_ = image_transport::create_publisher(this, 
+        image_pub_ = image_transport::create_publisher(*this, 
             "repub/image_raw", 
             publisher_qos_profile);
 
-        depth_pub_ = image_transport::create_publisher(this, 
+        depth_pub_ = image_transport::create_publisher(*this, 
             "repub/depth/image_raw", 
             publisher_qos_profile);
 
-        image_sub_.subscribe(this,
+        image_sub_.subscribe(*this,
             "front_camera/image_raw", 
             "raw",
             subscriber_qos_profile);
 
-        depth_sub_.subscribe(this,
+        depth_sub_.subscribe(*this,
              "front_camera/depth/image_raw", 
              "raw",
              subscriber_qos_profile);

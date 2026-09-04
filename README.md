@@ -58,7 +58,7 @@ Then, resolve any dependency issues using the following commands
     sudo apt install python3-pip
     PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -i --from-path src --rosdistro lyrical -y -r
   
-Some packages may fail, so just manually install them with 
+If any packages fail to install, try to manually install them with 
 
     pip install <PACKAGE_NAME>
 
