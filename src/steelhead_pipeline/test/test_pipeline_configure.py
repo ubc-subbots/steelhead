@@ -1,16 +1,13 @@
 import unittest
-import pytest
 
-import launch_testing
 import launch
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.actions import Node
-
-from steelhead_interfaces.action import RunPipeline
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType, PipelineFeedback
-
+import launch_testing
+import pytest
 import rclpy
+from launch_ros.actions import ComposableNodeContainer, Node
+
+from steelhead_interfaces.msg import PipelineType
+from steelhead_interfaces.srv import ConfigurePipeline
 
 
 @pytest.mark.rostest
@@ -78,8 +75,8 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output='Configuration of pipeline type "{}"'
-                        " is not allowed, no such type".format(test_type),
+                        expected_output=f'Configuration of pipeline type "{test_type}"'
+                        " is not allowed, no such type",
                         process=pipeline_manager,
                     )
                 else:
@@ -106,7 +103,7 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output="Could not find {}.yaml".format(test_file_name)
+                        expected_output=f"Could not find {test_file_name}.yaml"
                     )
                 else:
                     self.fail(
@@ -132,7 +129,7 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output="Could not parse {}.yaml".format(test_file_name)
+                        expected_output=f"Could not parse {test_file_name}.yaml"
                     )
                 else:
                     self.fail(
@@ -187,9 +184,7 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output='Could not get the pipeline parameter "{}", does not exist'.format(
-                            param
-                        )
+                        expected_output=f'Could not get the pipeline parameter "{param}", does not exist'
                     )
                 else:
                     self.fail(
@@ -219,9 +214,7 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output="Number of components and package names do not match, {} and {} respectively".format(
-                            compnum, packnum
-                        )
+                        expected_output=f"Number of components and package names do not match, {compnum} and {packnum} respectively"
                     )
                 else:
                     self.fail(
@@ -250,9 +243,7 @@ class TestPipelineConfigure(unittest.TestCase):
                 res = future.result()
                 if res.success is False:
                     proc_output.assertWaitFor(
-                        expected_output='Could not get the pipeline parameter "{}", wrong type'.format(
-                            param
-                        )
+                        expected_output=f'Could not get the pipeline parameter "{param}", wrong type'
                     )
 
                 else:

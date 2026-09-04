@@ -1,13 +1,11 @@
-import yaml
 
 import rclpy
-from rclpy.node import Node
 from rclpy.action import ActionClient
+from rclpy.node import Node
 
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType
 from steelhead_interfaces.action import RunPipeline
-from rcl_interfaces.msg import Parameter, ParameterValue, ParameterType
+from steelhead_interfaces.msg import PipelineType
+from steelhead_interfaces.srv import ConfigurePipeline
 
 
 class PipelineSequenceManager(Node):

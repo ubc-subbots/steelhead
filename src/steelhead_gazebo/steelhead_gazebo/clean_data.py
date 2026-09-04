@@ -2,10 +2,8 @@
 # Adapted from https://medium.com/@anirudh.s.chakravarthy/training-yolov3-on-your-custom-dataset-19a1abbdaf09
 import glob
 import os
-import gdown
-import requests
-import cv2
 
+import cv2
 from ament_index_python.packages import get_package_share_directory
 
 

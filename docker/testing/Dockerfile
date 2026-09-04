@@ -29,7 +29,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | s
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list && \
     apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y ros-foxy-desktop python3-argcomplete ros-dev-tools ros-foxy-gazebo-ros-pkgs
+    apt-get install -y ros-lyrical-desktop python3-argcomplete ros-dev-tools ros-lyrical-gazebo-ros-pkgs
 
 # Gazebo environment setup
 RUN echo "export GAZEBO_IP=127.0.0.1" >> /etc/bash.bashrc && \
@@ -43,4 +43,4 @@ RUN useradd -m software && \
     echo 'software:password' | chpasswd
 
 # Source ROS2 setup.bash at the end
-ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/foxy/setup.bash && exec bash"]
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/lyrical/setup.bash && exec bash"]

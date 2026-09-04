@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_vision_utils)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -34,10 +34,9 @@ target_include_directories(steelhead_vision_utils
     $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(steelhead_vision_utils
-  "OpenCV"
+target_link_libraries(steelhead_vision_utils PUBLIC
+  ${OpenCV_LIBRARIES}
 )
-
 ament_export_targets(export_steelhead_vision_utils HAS_LIBRARY_TARGET)
 ament_export_dependencies(
   "OpenCV"

@@ -6,7 +6,7 @@ https://stackoverflow.com/questions/14878706/merge-xml-files-with-nested-element
 from xml.etree import ElementTree as et
 
 
-class XMLCombiner(object):
+class XMLCombiner:
     def __init__(self, filenames):
         assert len(filenames) > 0, "No filenames!"
         # save all the roots, in order, to be processed later

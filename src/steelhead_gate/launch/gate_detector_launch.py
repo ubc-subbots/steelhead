@@ -8,26 +8,22 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     gate_detector = ComposableNode(
-        name='detector',
-        namespace='/steelhead/gate',
-        package='steelhead_gate',
-        plugin='steelhead_gate::GateDetector',
-        parameters=[
-            {'debug': True}
-        ]
+        name="detector",
+        namespace="/steelhead/gate",
+        package="steelhead_gate",
+        plugin="steelhead_gate::GateDetector",
+        parameters=[{"debug": True}],
     )
 
     gate_container = ComposableNodeContainer(
-        name='gate_container',
-        namespace='/',
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            gate_detector
-        ],
-        output='screen'
+        name="gate_container",
+        namespace="/",
+        package="rclcpp_components",
+        executable="component_container",
+        composable_node_descriptions=[gate_detector],
+        output="screen",
     )
 
     ld.add_action(gate_container)
 
-    return ld 
+    return ld

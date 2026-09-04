@@ -1,19 +1,14 @@
 import unittest
-import time
-import pytest
-import subprocess
 
-import launch_testing
 import launch
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.actions import Node
+import launch_testing
+import pytest
+import rclpy
+from launch_ros.actions import ComposableNodeContainer, Node
+from rclpy.action import ActionClient
 
 from steelhead_interfaces.action import RunPipeline
 from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType, PipelineFeedback
-
-import rclpy
-from rclpy.action import ActionClient
 
 
 @pytest.mark.rostest

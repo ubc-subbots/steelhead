@@ -81,19 +81,19 @@ This package uses clangd for C++ language support (i.e., go-to-definition, autoc
 
         sudo apt install clangd
 2. Install the clangd VS Code extension (By LLVM). When prompted, disable the Microsoft C++ IntelliSense Engine.
-2. Install jq via:
+4. Install jq via:
 
         sudo apt install jq
 
-3. Build the workspace with compile commands export enabled:
+5. Build the workspace with compile commands export enabled:
         
         colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-4. Merge the per-package compile commands into the workspace root:
+6. Merge the per-package compile commands into the workspace root:
 
         jq -s 'map(.[])' build/*/compile_commands.json > compile_commands.json
 
-Re-run steps 3-4 after adding new packages or source files, or use the clang alias detailed below.
+Re-run steps 5-6 after adding new packages or source files, or use the clang alias detailed below.
 
 ### Python Tooling (Ruff)
 We recommend using Ruff for Python linting/formatting. To get it formatting on save, simply download the Ruff vscode extension and add this to your `settings.json`:

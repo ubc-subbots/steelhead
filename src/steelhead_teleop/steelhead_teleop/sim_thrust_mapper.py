@@ -1,6 +1,6 @@
 import rclpy
-from rclpy.node import Node
 from geometry_msgs.msg import Wrench
+from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
 
 
@@ -27,7 +27,7 @@ class SimThrustMapper(Node):
 
         self.thrust_pub_dict = {
             num: self.create_publisher(
-                Wrench, "/steelhead/gazebo_drivers/thruster_{}".format(num), 10
+                Wrench, f"/steelhead/gazebo_drivers/thruster_{num}", 10
             )
             for num in range(1, self.num_thrusters + 1)
         }
@@ -35,7 +35,7 @@ class SimThrustMapper(Node):
 
     def thrust_allocator_callback(self, msg):
         if len(msg.data) != self.num_thrusters:
-            self.get_logger.warn(
+            self.get_logger.warning(
                 "Controller output thruster count doesn't match simulation thruster count!"
             )
         else:

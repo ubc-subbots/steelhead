@@ -1,18 +1,18 @@
 import os
-import time
-import yaml
 import re
+import time
 
 import rclpy
-from rclpy.node import Node
+import yaml
+from ament_index_python.packages import get_package_share_directory
+from composition_interfaces.srv import ListNodes, LoadNode, UnloadNode
 from rclpy.action import ActionServer
 from rclpy.executors import MultiThreadedExecutor
-from ament_index_python.packages import get_package_share_directory
+from rclpy.node import Node
 
 from steelhead_interfaces.action import RunPipeline
+from steelhead_interfaces.msg import PipelineFeedback, PipelineType
 from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType, PipelineFeedback
-from composition_interfaces.srv import LoadNode, UnloadNode, ListNodes
 
 from .load_params import load_parameter_file
 
@@ -113,12 +113,10 @@ class PipelineManager(Node):
         @param response: A service response
         """
         pipeline_type = request.pipeline_type.type
-        self.get_logger().info("Configuring pipeline for {}...".format(pipeline_type))
+        self.get_logger().info(f"Configuring pipeline for {pipeline_type}...")
         if pipeline_type not in self.pipeline_types:
             self.get_logger().warn(
-                'Configuration of pipeline type "{}" is not allowed, no such type '.format(
-                    pipeline_type
-                )
+                f'Configuration of pipeline type "{pipeline_type}" is not allowed, no such type '
             )
             response.success = False
         else:
@@ -128,9 +126,9 @@ class PipelineManager(Node):
                 if not request.config_file_name
                 else request.config_file_name
             )
-            config_file = "{}.yaml".format(config_file_name)
+            config_file = f"{config_file_name}.yaml"
             self.get_logger().info(
-                'Using the configuration file "{}"'.format(config_file)
+                f'Using the configuration file "{config_file}"'
             )
             config_path = os.path.join(manager_dir, "config", config_file)
             config_yaml = None
@@ -140,7 +138,7 @@ class PipelineManager(Node):
                         config_yaml = yaml.safe_load(stream)
                     except yaml.YAMLError as e:
                         self.get_logger().warn(
-                            "Could not parse {}.yaml".format(config_file_name)
+                            f"Could not parse {config_file_name}.yaml"
                         )
                         self.get_logger().error(str(e))
                 if config_yaml is not None:
@@ -149,11 +147,11 @@ class PipelineManager(Node):
                     response.success = False
             else:
                 self.get_logger().warn(
-                    "Could not find {}.yaml".format(config_file_name)
+                    f"Could not find {config_file_name}.yaml"
                 )
                 response.success = False
         if response.success is True:
-            self.get_logger().info("Pipeline configured for {}!".format(pipeline_type))
+            self.get_logger().info(f"Pipeline configured for {pipeline_type}!")
             self.pipeline_configured = True
         return response
 
@@ -240,7 +238,7 @@ class PipelineManager(Node):
             time.sleep(0.1)
         if not res.success:
             self.get_logger().warn(
-                "The component {} was not loaded successfully".format(component)
+                f"The component {component} was not loaded successfully"
             )
             self.pipeline_abort = True
         else:
@@ -306,9 +304,9 @@ class PipelineManager(Node):
         while rclpy.ok() and res is None:
             time.sleep(0.1)
         if not res.success:
-            self.get_logger().warn("{} was not unloaded successfully".format(node_name))
+            self.get_logger().warn(f"{node_name} was not unloaded successfully")
         else:
-            self.get_logger().info("{} was unloaded successfully".format(node_name))
+            self.get_logger().info(f"{node_name} was unloaded successfully")
 
     def _load_params_from_yaml(self, config_yaml):
         """
@@ -327,17 +325,13 @@ class PipelineManager(Node):
                     params_list.append(self._create_param_object(param_name, param_val))
                 except rclpy.exceptions.ParameterException as e:
                     self.get_logger().warn(
-                        'Could not get the pipeline parameter "{}", does not exist'.format(
-                            param_name
-                        )
+                        f'Could not get the pipeline parameter "{param_name}", does not exist'
                     )
                     self.get_logger().error(str(e))
                     return False
                 except TypeError as e:
                     self.get_logger().warn(
-                        'Could not get the pipeline parameter "{}", wrong type'.format(
-                            param_name
-                        )
+                        f'Could not get the pipeline parameter "{param_name}", wrong type'
                     )
                     self.get_logger().error(str(e))
                     return False
@@ -391,9 +385,7 @@ class PipelineManager(Node):
         param_val_type = rclpy.Parameter.Type.from_parameter_value(param_val)
         if param_type is not param_val_type:
             raise TypeError(
-                "Parameter {} is of type {}, not {}".format(
-                    param_name, param_val_type, param_type
-                )
+                f"Parameter {param_name} is of type {param_val_type}, not {param_type}"
             )
         new_param = rclpy.parameter.Parameter(param_name, param_type, param_val)
         return new_param

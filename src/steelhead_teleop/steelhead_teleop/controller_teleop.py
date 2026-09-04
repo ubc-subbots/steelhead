@@ -1,10 +1,10 @@
 import os
 import struct
-import fcntl
 import threading
+
 import rclpy
-from rclpy.node import Node
 from geometry_msgs.msg import Wrench
+from rclpy.node import Node
 
 
 class ControllerTeleop(Node):
