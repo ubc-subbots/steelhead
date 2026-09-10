@@ -2,51 +2,54 @@
 #define STEELHEAD_GAZEBO__TORPEDO_PLUGIN_HPP
 
 #include <string>
-#include <chrono>
 
-#include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
+#include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo_ros/node.hpp>
 
 #include "rclcpp/rclcpp.hpp"
 
 namespace steelhead_gazebo
 {
 
-    class TorpedoPlugin : 
-        public gz::sim::System,
-        public gz::sim::ISystemConfigure,
-        public gz::sim::ISystemPreUpdate
+    class TorpedoPlugin : public gazebo::ModelPlugin
     {
 
     public:
 
         // Constructor
-        TorpedoPlugin();
+        TorpedoPlugin(void);
 
         // Destructor
-        ~TorpedoPlugin() override;
+        ~TorpedoPlugin(void);
 
-        void Configure(const gz::sim::Entity &_entity,
-                       const std::shared_ptr<const sdf::Element> &_sdf,
-                       gz::sim::EntityComponentManager &_ecm,
-                       gz::sim::EventManager &_eventMgr) override;
-
-        void PreUpdate(const gz::sim::UpdateInfo &_info,
-                       gz::sim::EntityComponentManager &_ecm) override;
+        /** Collects all neccessary parameters and initializes the plugin.
+         * * @param _model A pointer to the attached model
+         * @param _sdf   A pointer to the model's SDF description
+         */
+        virtual void Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf);
 
     private:
 
-        gz::sim::Model model_{gz::sim::kNullEntity};
-        gz::sim::Entity link_entity_{gz::sim::kNullEntity};
-        rclcpp::Node::SharedPtr ros_node_;
-        std::chrono::steady_clock::duration spawn_time_{0};
+        /** Applies the initial force and checks for lifetime expiration
+         * * Updates in sequence with gazebo's main world update function.
+         * */
+        void OnUpdate(void);
 
-        double initial_force_{500.0};
-        double force_duration_{0.5};
-        double lifetime_{5.0};
+        gazebo::physics::ModelPtr model_;
+        gazebo::physics::WorldPtr world_;
+        gazebo::physics::LinkPtr link_;
+        rclcpp::Node::SharedPtr ros_node_;
+        gazebo::common::Time spawn_time_;
+        gazebo::event::ConnectionPtr updateConnection_;
+
+        double initial_force_;
+        double force_duration_;
+        double lifetime_;
 
     };
+
+    GZ_REGISTER_MODEL_PLUGIN(TorpedoPlugin)
 
 }
 #endif // STEELHEAD_GAZEBO__TORPEDO_PLUGIN_HPP

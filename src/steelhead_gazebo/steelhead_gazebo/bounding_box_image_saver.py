@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-import os
-import random
-
-import cv_bridge
 import rclpy
-from ament_index_python.packages import get_package_share_directory
-from cv2 import cv2
 from rclpy.node import Node
+import os
+from std_msgs.msg import String
 from sensor_msgs.msg import Image
-
 from steelhead_interfaces.msg import DetectionBoxArray
+from cv2 import cv2
+import cv_bridge
+import numpy as np
+import random
+from ament_index_python.packages import get_package_share_directory
 
 class BoundingBoxImageSaver(Node):
 
@@ -87,8 +87,10 @@ class BoundingBoxImageSaver(Node):
             image_with_box = selected_im.copy()
             image_with_box = cv2.rectangle(image_with_box,(int(bbox.x),int(bbox.y)),(int(bbox.x+bbox.width),int(bbox.y+bbox.height)),(0,0,255),1)
             cv2.imwrite(os.path.join(data_dir, name + "_box" + ".png"), image_with_box)
-        except AttributeError:
+        except AttributeError as e:
             self.get_logger().info("No image yet.")
+            pass
+        
 
 def main(args=None):
     rclpy.init(args=args)

@@ -16,6 +16,14 @@
           <izz>0.166667</izz>
         </inertia>
       </inertial>
+      <collision name='base_link_collision'>
+        <pose frame=''>0 0 2 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://woollett_pool/materials/WoollettPool.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
       <visual name='base_link_visual'>
         <pose frame=''>0 0 2 0 0 0</pose>
         <geometry>

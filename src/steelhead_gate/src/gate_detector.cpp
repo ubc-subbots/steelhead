@@ -1,7 +1,7 @@
 #include <string> 
 #include "steelhead_gate/gate_detector.hpp"
 #include "steelhead_gate/pole_featurizer.hpp"
-#include "tf2/LinearMath/Quaternion.hpp"
+#include "tf2/LinearMath/Quaternion.h"
 
 using namespace std;
 using namespace cv;
@@ -25,17 +25,17 @@ GateDetector::GateDetector(const rclcpp::NodeOptions& options) : Node("gate_dete
   gate_cntr_ = {};
   featurizer_ = PoleFeaturizer();
   
-  rclcpp::QoS sensor_qos_profile = rclcpp::SensorDataQoS();
+  rmw_qos_profile_t sensor_qos_profile = rmw_qos_profile_sensor_data;
 
-  subscription_ = image_transport::create_subscription(*this,
+  subscription_ = image_transport::create_subscription(this,
       "/steelhead/drivers/front_camera/image_raw",
       bind(&GateDetector::subscriberCallback, this, _1),
       "raw",
       sensor_qos_profile
   );
 
-  debug_detection_publisher_ = image_transport::create_publisher(*this, "detector/debug/detection", rclcpp::SystemDefaultsQoS());
-  debug_segment_publisher_ = image_transport::create_publisher(*this, "detector/debug/segment", rclcpp::SystemDefaultsQoS());
+  debug_detection_publisher_ = image_transport::create_publisher(this, "detector/debug/detection");
+  debug_segment_publisher_ = image_transport::create_publisher(this, "detector/debug/segment");
 
   // gate_center_publisher_ = this->create_publisher<std_msgs::msg::Float32MultiArray>(
   //   "detector/gate_center", 10);

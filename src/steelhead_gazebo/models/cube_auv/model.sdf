@@ -15,7 +15,10 @@
                     </box>
                 </geometry>
                 <material>
-                    <ambient>0.0 0.0 1.0 1</ambient><diffuse>0.0 0.0 1.0 1</diffuse>
+                    <script>
+                      <uri>file://media/materials/scripts/gazebo.material</uri>
+                      <name>Gazebo/Blue</name>
+                    </script>
                 </material>
             </visual>
             <collision name='cube_collision'>
@@ -94,7 +97,7 @@
         </joint>
 
         <!-- Thrust Vectors -->
-        <plugin name="gz::sim::systems::Thruster" filename="gz-sim-thruster-system">
+        <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
             <thruster_count>6</thruster_count>
             <ros>
                 <namespace>/steelhead/controls</namespace>

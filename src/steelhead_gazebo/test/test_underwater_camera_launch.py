@@ -1,12 +1,13 @@
 import os
 import unittest
 
-import launch_testing
 import pytest
-from ament_index_python.packages import get_package_share_directory
+
+import launch_testing
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import get_package_share_directory
 
 
 @pytest.mark.rostest

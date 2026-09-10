@@ -21,7 +21,10 @@
                     </box>
                 </geometry>
                 <material>
-                    <ambient>1.0 0.0 0.0 1</ambient><diffuse>1.0 0.0 0.0 1</diffuse>
+                    <script>
+                      <uri>file://media/materials/scripts/gazebo.material</uri>
+                      <name>Gazebo/Red</name>
+                    </script>
                 </material>
             </visual>
         </link>

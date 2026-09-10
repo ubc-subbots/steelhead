@@ -32,7 +32,7 @@ namespace steelhead_gazebo
         }
 
         this->pressure_publisher = node->
-            create_publisher<steelhead_interfaces::msg::PressureSensor>(this->publish_topic, rclcpp::QoS(10));
+            create_publisher<steelhead_interfaces::msg::PressureSensor>(this->publish_topic, 10);
 
         this->model = _model;
     

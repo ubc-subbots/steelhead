@@ -1,6 +1,7 @@
 import os
 import sys
 
+
 import bpy
 
 def convert_stl_to_dae(file_no_extension):

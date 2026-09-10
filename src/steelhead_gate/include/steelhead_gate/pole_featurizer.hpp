@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include <opencv2/ml.hpp>
 
 #include "steelhead_vision_utils/contour_features.hpp"
 

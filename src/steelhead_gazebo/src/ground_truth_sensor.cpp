@@ -32,7 +32,7 @@ namespace steelhead_gazebo
         }
 
         this->state_publisher = node->
-            create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(this->state_topic, rclcpp::QoS(10));
+            create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(this->state_topic, 10);
 
         this->model = _model;
     

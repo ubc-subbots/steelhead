@@ -2,12 +2,11 @@
 #define STEELHEAD_GATE__GATE_DETECTOR
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/ml.hpp>
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/time.hpp"
 #include "image_transport/image_transport.hpp"
-#include "cv_bridge/cv_bridge.hpp"
+#include "cv_bridge/cv_bridge.h"
 #include "sensor_msgs/image_encodings.hpp"
 #include "std_msgs/msg/float32_multi_array.hpp"
 #include "steelhead_gate/pole_featurizer.hpp"

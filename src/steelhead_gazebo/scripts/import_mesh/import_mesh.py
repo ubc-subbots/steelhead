@@ -1,9 +1,9 @@
-import argparse
-import json
 import os
-import shutil
 import subprocess
 import sys
+import shutil
+import json
+import argparse
 
 from xml_combiner import XMLCombiner
 

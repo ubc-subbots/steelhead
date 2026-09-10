@@ -1,5 +1,5 @@
 #include "steelhead_gazebo/underwater_camera.hpp"
-#include "cv_bridge/cv_bridge.hpp"
+#include "cv_bridge/cv_bridge.h"
 #include <opencv2/opencv.hpp>
 
 using std::placeholders::_1;
@@ -12,27 +12,27 @@ namespace steelhead_gazebo
     : Node("underwater_camera", options) 
     {
 
-        rclcpp::QoS subscriber_qos_profile = rclcpp::SensorDataQoS();
-        rclcpp::QoS publisher_qos_profile = rclcpp::SystemDefaultsQoS();
+        rmw_qos_profile_t subscriber_qos_profile = rmw_qos_profile_sensor_data;
+        rmw_qos_profile_t publisher_qos_profile = rmw_qos_profile_default;
 
-        underwater_image_pub_ = image_transport::create_publisher(*this, 
+        underwater_image_pub_ = image_transport::create_publisher(this, 
             "front_camera/underwater/image_raw", 
             publisher_qos_profile);
 
-        image_pub_ = image_transport::create_publisher(*this, 
+        image_pub_ = image_transport::create_publisher(this, 
             "repub/image_raw", 
             publisher_qos_profile);
 
-        depth_pub_ = image_transport::create_publisher(*this, 
+        depth_pub_ = image_transport::create_publisher(this, 
             "repub/depth/image_raw", 
             publisher_qos_profile);
 
-        image_sub_.subscribe(*this,
+        image_sub_.subscribe(this,
             "front_camera/image_raw", 
             "raw",
             subscriber_qos_profile);
 
-        depth_sub_.subscribe(*this,
+        depth_sub_.subscribe(this,
              "front_camera/depth/image_raw", 
              "raw",
              subscriber_qos_profile);
@@ -45,12 +45,12 @@ namespace steelhead_gazebo
         approx_sync_->registerCallback(
             std::bind(&UnderwaterCamera::syncCallback, this, _1, _2));
 
-        this->declare_parameter<std::vector<double>>("rho");
-        this->declare_parameter<std::vector<double>>("irradiance_transmission");
-        this->declare_parameter<std::vector<double>>("spectral_sensitivity_blue");
-        this->declare_parameter<std::vector<double>>("spectral_sensitivity_red");
-        this->declare_parameter<std::vector<double>>("spectral_sensitivity_green");
-        this->declare_parameter<std::vector<double>>("illumination_irradiance");
+        this->declare_parameter("rho");
+        this->declare_parameter("irradiance_transmission");
+        this->declare_parameter("spectral_sensitivity_blue");
+        this->declare_parameter("spectral_sensitivity_red");
+        this->declare_parameter("spectral_sensitivity_green");
+        this->declare_parameter("illumination_irradiance");
 
         std::vector<double> rho_vals;
         std::vector<double> Beta_vals;
@@ -226,7 +226,7 @@ namespace steelhead_gazebo
         underwater_image_pub_.publish(message);
 
         auto runtime = this->get_clock()->now() - timer;
-        RCLCPP_INFO(this->get_logger(), ("Processing took: "+ std::to_string(runtime.seconds()) + "s").c_str());
+        RCLCPP_INFO(this->get_logger(),"Processing took: "+ std::to_string(runtime.seconds()) + "s");
     }
 
 } // namespace steelhead_gazebo
