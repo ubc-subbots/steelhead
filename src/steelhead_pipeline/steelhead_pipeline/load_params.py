@@ -1,12 +1,11 @@
+import sys
+import yaml
 import time
 
-import rclpy
-import yaml
 from rcl_interfaces.msg import Parameter, ParameterType, ParameterValue
-from rcl_interfaces.srv import (
-    SetParameters,
-)
+from rcl_interfaces.srv import DescribeParameters, GetParameters, ListParameters, SetParameters
 from rclpy.parameter import PARAMETER_SEPARATOR_STRING
+import rclpy
 
 """
 Helper module for loading a yaml file containing parameters for a node
@@ -31,17 +30,15 @@ def load_parameter_file(node, node_name, parameter_file):
         param_file = yaml.safe_load(f)
         success = True
         if internal_node_name not in param_file:
-            node.get_logger().warn(
-                f"Param file does not contain parameters for {internal_node_name}, "
-                f" only for namespaces: {param_file.keys()}"
-            )
+            node.get_logger().warn('Param file does not contain parameters for {}, '
+                               ' only for namespaces: {}' .format(internal_node_name,
+                                                                  param_file.keys()))
             success = False
         value = param_file[internal_node_name]
-        if type(value) != dict or "ros__parameters" not in value:
-            node.get_logger().warn(
-                f"Invalid structure of parameter file in namespace {internal_node_name}"
-                "expected same format as provided by ros2 param dump"
-            )
+        if type(value) != dict or 'ros__parameters' not in value:
+            node.get_logger().warn('Invalid structure of parameter file in namespace {}'
+                               'expected same format as provided by ros2 param dump'
+                               .format(internal_node_name))
             success = False
         parameters = _parse_parameter_dict(namespace='', parameter_dict=value['ros__parameters'])
         return  _call_set_parameters(node=node, node_name=node_name, parameters=parameters)
@@ -156,16 +153,16 @@ def _get_parameter_value(string_value):
         value.type = ParameterType.PARAMETER_DOUBLE
         value.double_value = yaml_value
     elif isinstance(yaml_value, list):
-        if all(isinstance(v, bool) for v in yaml_value):
+        if all((isinstance(v, bool) for v in yaml_value)):
             value.type = ParameterType.PARAMETER_BOOL_ARRAY
             value.bool_array_value = yaml_value
-        elif all(isinstance(v, int) for v in yaml_value):
+        elif all((isinstance(v, int) for v in yaml_value)):
             value.type = ParameterType.PARAMETER_INTEGER_ARRAY
             value.integer_array_value = yaml_value
-        elif all(isinstance(v, float) for v in yaml_value):
+        elif all((isinstance(v, float) for v in yaml_value)):
             value.type = ParameterType.PARAMETER_DOUBLE_ARRAY
             value.double_array_value = yaml_value
-        elif all(isinstance(v, str) for v in yaml_value):
+        elif all((isinstance(v, str) for v in yaml_value)):
             value.type = ParameterType.PARAMETER_STRING_ARRAY
             value.string_array_value = yaml_value
         else:

@@ -1,7 +1,6 @@
-import os
-from glob import glob
-
 from setuptools import setup
+from glob import glob
+import os
 
 package_name = 'steelhead_pipeline'
 
@@ -25,7 +24,7 @@ setup(
     maintainer_email='logan@todo.todo',
     description='TODO: Package description',
     license='TODO: License declaration',
-    extras_require={'test': ['pytest']},
+    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'pipeline_manager = steelhead_pipeline.pipeline_manager:main',

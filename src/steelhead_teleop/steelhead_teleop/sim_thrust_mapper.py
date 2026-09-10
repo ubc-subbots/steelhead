@@ -1,6 +1,6 @@
 import rclpy
-from geometry_msgs.msg import Wrench
 from rclpy.node import Node
+from geometry_msgs.msg import Wrench
 from std_msgs.msg import Float64MultiArray
 
 
@@ -10,40 +10,36 @@ class SimThrustMapper(Node):
     """
 
     def __init__(self):
-        super().__init__("sim_thrust_mapper")
+        super().__init__('sim_thrust_mapper')
 
-        self.declare_parameter("num_thrusters", 6)
+        self.declare_parameter('num_thrusters', 6)
 
-        self.num_thrusters = (
-            self.get_parameter("num_thrusters").get_parameter_value().integer_value
-        )
+        self.num_thrusters = self.get_parameter('num_thrusters').get_parameter_value().integer_value
 
         self.thrust_allocator_sub = self.create_subscription(
             Float64MultiArray,
-            "/steelhead/controls/output_forces",
+            '/steelhead/controls/output_forces',
             self.thrust_allocator_callback,
-            10,
+            10
         )
 
         self.thrust_pub_dict = {
             num: self.create_publisher(
-                Wrench, f"/steelhead/gazebo_drivers/thruster_{num}", 10
-            )
-            for num in range(1, self.num_thrusters + 1)
+                Wrench,
+                '/steelhead/gazebo_drivers/thruster_{}'.format(num),
+                10)
+            for num in range(1, self.num_thrusters+1)
         }
-        self.get_logger().info("Simulation thrust mapper succesfully started!")
-
+        self.get_logger().info('Simulation thrust mapper succesfully started!')
+    
     def thrust_allocator_callback(self, msg):
         if len(msg.data) != self.num_thrusters:
-            self.get_logger.warning(
-                "Controller output thruster count doesn't match simulation thruster count!"
-            )
+            self.get_logger.warn("Controller output thruster count doesn't match simulation thruster count!")
         else:
-            for i in range(1, self.num_thrusters + 1):
+            for i in range(1,self.num_thrusters+1):
                 wrench_msg = Wrench()
-                wrench_msg.force.z = msg.data[i - 1]
+                wrench_msg.force.z = msg.data[i-1]
                 self.thrust_pub_dict[i].publish(wrench_msg)
-
 
 def main(args=None):
     rclpy.init(args=args)
@@ -54,6 +50,5 @@ def main(args=None):
     sim_thrust_mapper.destroy_node()
     rclpy.shutdown()
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -1,7 +1,9 @@
+from codecs import EncodedFile
 import rclpy
-from pynput import keyboard
 from rclpy.node import Node
-from std_msgs.msg import UInt32
+from pynput import keyboard
+
+from std_msgs.msg import String, Int32, UInt32
 
 THRUSTER_DATA_BIT_SIZE = 5
 

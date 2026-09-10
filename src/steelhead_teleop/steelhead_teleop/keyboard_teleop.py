@@ -1,9 +1,9 @@
 import rclpy
-from geometry_msgs.msg import Wrench
-from pynput import keyboard
 from rclpy.node import Node
-
+from geometry_msgs.msg import Wrench
 from steelhead_interfaces.srv import ActuatorsCommand
+from pynput import keyboard
+
 from steelhead_teleop.key_bindings import ACTUATOR_BINDINGS, wrench_for_key
 
 
