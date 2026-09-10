@@ -6,7 +6,6 @@ from rclpy.node import Node
 
 from steelhead_interfaces.msg import Waypoint
 
-
 def quaternion_from_euler(roll, pitch, yaw):
     # https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
     """
@@ -29,40 +28,55 @@ def quaternion_from_euler(roll, pitch, yaw):
 
     return q
 
-
 STABILIZE = 0
 PASSTHROUGH = 1
 
 # Acceptable distance from the target for a STABILIZE waypoint
 # r and p aren't controlled, so they are 0 below
 # 'orientation_rpy' is used to calculate 'orientation'
-# only 'orientation_rpy' needs to be filled out manually, 'orientation' is filled out
+# only 'orientation_rpy' needs to be filled out manually, 'orientation' is filled out 
 # automatically
 # r,p,y are in radians
 # x,y,z are in meters
 DEFAULT_STABILIZE_DISTANCE = {
-    "position": {"x": 0.5, "y": 0.5, "z": 0.5},
-    "orientation_rpy": {"r": 0, "p": 0, "y": 0.1},
-    "orientation": {
-        "x": 0.1,
-        "y": 0.1,
-        "z": 0.05,
-        "w": 0.05,
+    'position': {
+        'x': 0.5,
+        'y': 0.5,
+        'z': 0.5
     },
+    'orientation_rpy': {
+        'r': 0,
+        'p':0,
+        'y': 0.1
+    },
+    'orientation': {
+        'x': 0.1,
+        'y': 0.1,
+        'z': 0.05,
+        'w': 0.05,
+    }
 }
 
 DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION = {
-    "position": {"x": 0.5, "y": 0.5, "z": 0.5},
-    "orientation_rpy": {"r": 1.57, "p": 1.57, "y": 1.57},
-    "orientation": {
-        "x": 0.1,
-        "y": 0.1,
-        "z": 0.05,
-        "w": 0.05,
+    'position': {
+        'x': 0.5,
+        'y': 0.5,
+        'z': 0.5
     },
+    'orientation_rpy': {
+        'r': 1.57,
+        'p': 1.57,
+        'y': 1.57
+    },
+    'orientation': {
+        'x': 0.1,
+        'y': 0.1,
+        'z': 0.05,
+        'w': 0.05,
+    }
 }
 
-DEFAULT_STABILIZE_DURATION = 5.0  # seconds
+DEFAULT_STABILIZE_DURATION = 5.0 # seconds
 
 # Input a series of poses here
 # Distance can be the above defined ones, or custom ones
@@ -72,47 +86,66 @@ DEFAULT_STABILIZE_DURATION = 5.0  # seconds
 target_poses = [
     # Pose 1
     {
-        "pose": {
-            "position": {"x": 0.0, "y": 0.0, "z": 3.0},
-            "orientation_rpy": {"r": 0, "p": 0, "y": -0.7},
-            "orientation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 1.0,
-                "w": -0.7,
+        'pose': {
+            'position': {
+                'x': 0.0,
+                'y': 0.0,
+                'z': 3.0
             },
+            'orientation_rpy': {
+                'r': 0,
+                'p':0,
+                'y': -0.7
+            },
+            'orientation': {
+                'x': 0.0,
+                'y': 0.0,
+                'z': 1.0,
+                'w': -0.7,
+            }
         },
-        "distance": DEFAULT_STABILIZE_DISTANCE,
-        "type": STABILIZE,
-        "duration": DEFAULT_STABILIZE_DURATION,
+        'distance': DEFAULT_STABILIZE_DISTANCE,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
     },
     # Pose 2
     {
-        "pose": {
-            "position": {"x": 5.0, "y": 0.0, "z": 5.0},
-            "orientation_rpy": {"r": 0, "p": 0, "y": 0},
-            "orientation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0,
+        'pose': {
+            'position': {
+                'x': 5.0,
+                'y': 0.0,
+                'z': 5.0
             },
+            'orientation_rpy': {
+                'r': 0,
+                'p':0,
+                'y': 0
+            },
+            'orientation': {
+                'x': 0.0,
+                'y': 0.0,
+                'z': 0.0,
+                'w': 1.0,
+            }
         },
-        "distance": DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
-        "type": STABILIZE,
-        "duration": DEFAULT_STABILIZE_DURATION,
-    },
+        'distance': DEFAULT_STABILIZE_DISTANCE_ANY_ORIENTATION,
+        'type': STABILIZE,
+        'duration': DEFAULT_STABILIZE_DURATION
+    } 
 ]
 
 
 class PredeterminedRoute(Node):
+
     def __init__(self):
-        super().__init__("predetermined_route")
+        super().__init__('predetermined_route')
 
         self.current_index = 0
 
         self.publisher = self.create_publisher(
-            Waypoint, "/steelhead/controls/waypoint_marker/set", 10
+            Waypoint,
+            '/steelhead/controls/waypoint_marker/set',
+            10
         )
 
         # publish the first target after 5 seconds
@@ -120,45 +153,36 @@ class PredeterminedRoute(Node):
 
         self.subscription = self.create_subscription(
             Waypoint,
-            "/steelhead/controls/waypoint_marker/current_goal",
+            '/steelhead/controls/waypoint_marker/current_goal',
             self.waypoint_callback,
-            10,
+            10
         )
 
         # calculate orientations in quaternion
         for tp in target_poses:
-            pose_q = quaternion_from_euler(
-                tp["pose"]["orientation_rpy"]["r"],
-                tp["pose"]["orientation_rpy"]["p"],
-                tp["pose"]["orientation_rpy"]["y"],
-            )
-            dist_q = quaternion_from_euler(
-                tp["distance"]["orientation_rpy"]["r"],
-                tp["distance"]["orientation_rpy"]["p"],
-                tp["distance"]["orientation_rpy"]["y"],
-            )
-            tp["pose"]["orientation"]["x"] = pose_q[1]
-            tp["pose"]["orientation"]["y"] = pose_q[2]
-            tp["pose"]["orientation"]["z"] = pose_q[3]
-            tp["pose"]["orientation"]["w"] = pose_q[0]
-            tp["distance"]["orientation"]["x"] = abs(dist_q[1])
-            tp["distance"]["orientation"]["y"] = abs(dist_q[2])
-            tp["distance"]["orientation"]["z"] = abs(dist_q[3])
-            tp["distance"]["orientation"]["w"] = abs(dist_q[0])
+            pose_q = quaternion_from_euler(tp['pose']['orientation_rpy']['r'], tp['pose']['orientation_rpy']['p'], tp['pose']['orientation_rpy']['y'])
+            dist_q = quaternion_from_euler(tp['distance']['orientation_rpy']['r'], tp['distance']['orientation_rpy']['p'], tp['distance']['orientation_rpy']['y'])
+            tp['pose']['orientation']['x'] = pose_q[1]
+            tp['pose']['orientation']['y'] = pose_q[2]
+            tp['pose']['orientation']['z'] = pose_q[3]
+            tp['pose']['orientation']['w'] = pose_q[0]
+            tp['distance']['orientation']['x'] = abs(dist_q[1])
+            tp['distance']['orientation']['y'] = abs(dist_q[2])
+            tp['distance']['orientation']['z'] = abs(dist_q[3])
+            tp['distance']['orientation']['w'] = abs(dist_q[0])
             self.get_logger().info(str(pose_q))
             self.get_logger().info(str(dist_q))
 
         self.get_logger().info("Predetermined route node successfully started!")
 
+
     def start_callback(self):
 
         if self.current_index != 0:
-            self.get_logger().info(
-                "Predetermined route node tried to publish a later waypoint with the timer. "
-            )
+            self.get_logger().info("Predetermined route node tried to publish a later waypoint with the timer. ")
             return
 
-        wp = self.make_waypoint(self.current_index)
+        wp = self.make_waypoint(self.current_index) 
 
         self.publisher.publish(wp)
 
@@ -167,6 +191,7 @@ class PredeterminedRoute(Node):
         self.get_logger().info("Predetermined route node published the first waypoint!")
 
         self.destroy_timer(self.start_timer)
+
 
     def waypoint_callback(self, data):
 
@@ -185,34 +210,27 @@ class PredeterminedRoute(Node):
 
     def make_waypoint(self, target_index):
         wp = Waypoint()
-        wp.pose.position.x = target_poses[target_index]["pose"]["position"]["x"]
-        wp.pose.position.y = target_poses[target_index]["pose"]["position"]["y"]
-        wp.pose.position.z = target_poses[target_index]["pose"]["position"]["z"]
-        wp.pose.orientation.x = target_poses[target_index]["pose"]["orientation"]["x"]
-        wp.pose.orientation.y = target_poses[target_index]["pose"]["orientation"]["y"]
-        wp.pose.orientation.z = target_poses[target_index]["pose"]["orientation"]["z"]
-        wp.pose.orientation.w = target_poses[target_index]["pose"]["orientation"]["w"]
-        wp.distance.position.x = target_poses[target_index]["distance"]["position"]["x"]
-        wp.distance.position.y = target_poses[target_index]["distance"]["position"]["y"]
-        wp.distance.position.z = target_poses[target_index]["distance"]["position"]["z"]
-        wp.distance.orientation.x = target_poses[target_index]["distance"][
-            "orientation"
-        ]["x"]
-        wp.distance.orientation.y = target_poses[target_index]["distance"][
-            "orientation"
-        ]["y"]
-        wp.distance.orientation.z = target_poses[target_index]["distance"][
-            "orientation"
-        ]["z"]
-        wp.distance.orientation.w = target_poses[target_index]["distance"][
-            "orientation"
-        ]["w"]
+        wp.pose.position.x = target_poses[target_index]['pose']['position']['x']
+        wp.pose.position.y = target_poses[target_index]['pose']['position']['y']
+        wp.pose.position.z = target_poses[target_index]['pose']['position']['z']
+        wp.pose.orientation.x = target_poses[target_index]['pose']['orientation']['x']
+        wp.pose.orientation.y = target_poses[target_index]['pose']['orientation']['y']
+        wp.pose.orientation.z = target_poses[target_index]['pose']['orientation']['z']
+        wp.pose.orientation.w = target_poses[target_index]['pose']['orientation']['w']
+        wp.distance.position.x = target_poses[target_index]['distance']['position']['x']
+        wp.distance.position.y = target_poses[target_index]['distance']['position']['y']
+        wp.distance.position.z = target_poses[target_index]['distance']['position']['z']
+        wp.distance.orientation.x = target_poses[target_index]['distance']['orientation']['x']
+        wp.distance.orientation.y = target_poses[target_index]['distance']['orientation']['y']
+        wp.distance.orientation.z = target_poses[target_index]['distance']['orientation']['z']
+        wp.distance.orientation.w = target_poses[target_index]['distance']['orientation']['w']
 
         wp.success = False
-        wp.type = target_poses[target_index]["type"]
-        wp.duration = target_poses[target_index]["duration"]
+        wp.type = target_poses[target_index]['type']
+        wp.duration = target_poses[target_index]['duration']
 
         return wp
+
 
 
 def main(args=None):
@@ -225,5 +243,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -12,110 +12,87 @@ def generate_launch_description():
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_pid_controller"),
-                "launch",
-                "steelhead_pid_controller_launch.py",
-            )
+            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
         ),
-        launch_arguments={"use_sim_time": "true"}.items(),
+        launch_arguments={'use_sim_time': 'true'}.items()
     )
 
     waypoint_marker = Node(
-        package="steelhead_controls",
-        executable="waypoint_marker",
-        output="screen",
-        parameters=[{"use_sim_time": True}],
+        package='steelhead_controls', 
+        executable='waypoint_marker',
+        output='screen', 
+        parameters=[{'use_sim_time': True}]
     )
 
     predetermined_route = Node(
-        package="steelhead_controls",
-        executable="predetermined_route.py",
-        name="predetermined_route",
-        output="screen",
-        parameters=[{"use_sim_time": True}],
+        package='steelhead_controls',
+        executable='predetermined_route.py',
+        name='predetermined_route',
+        output='screen', 
+        parameters=[{'use_sim_time': True}]
     )
 
-    pkg_share = get_package_share_directory("steelhead_gazebo")
-    sdf_file = os.path.join(
-        pkg_share, "gazebo", "models", "steelhead_auv_ideal", "model.sdf"
-    )
-    with open(sdf_file, "r") as infp:
+    pkg_share = get_package_share_directory('steelhead_gazebo')
+    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'steelhead_auv_ideal', 'model.sdf')
+    with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
-    rsp_params = {"robot_description": robot_desc}
+    rsp_params = {'robot_description': robot_desc}
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_gazebo"),
-                "launch",
-                "gazebo_launch.py",
-            )
+            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'gazebo_launch.py')
         ),
-        launch_arguments={"world": "competition.world"}.items(),
+        launch_arguments={'world': 'competition.world'}.items()
     )
+
 
     rviz_config_file = os.path.join(
-        pkg_share, "config", "rviz_ukf_teleop_sim_config.rviz"
-    )
+        pkg_share, 'config', 'rviz_ukf_teleop_sim_config.rviz')
 
     rviz = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="screen",
-        arguments=["-d", rviz_config_file],
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file]
     )
 
     state_estimator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_localization"),
-                "launch",
-                "state_estimator_launch.py",
-            )
+            os.path.join(get_package_share_directory('steelhead_localization'), 'launch', 'state_estimator_launch.py')
         )
     )
 
     state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[rsp_params, {"use_sim_time": True}],
+        package='robot_state_publisher', 
+        executable='robot_state_publisher',
+        output='screen', 
+        parameters=[rsp_params, {'use_sim_time': True}]
     )
 
     transform_publisher = Node(
-        package="steelhead_controls",
-        executable="auv_transform_publisher.py",
-        name="auv_transform_publisher",
-        output="screen",
-        parameters=[rsp_params, {"use_sim_time": True}],
+        package='steelhead_controls',
+        executable='auv_transform_publisher.py',
+        name='auv_transform_publisher',
+        output='screen', 
+        parameters=[rsp_params, {'use_sim_time': True}]
     )
 
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_controls"),
-                "launch",
-                "thrust_allocator_launch.py",
-            )
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'thrust_allocator_launch.py')
         )
     )
 
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_gate"),
-                "launch",
-                "gate_detector_launch.py",
-            )
+            os.path.join(get_package_share_directory('steelhead_gate'), 'launch', 'gate_detector_launch.py')
         )
     )
 
     underwater_camera = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_gazebo")
-            + "/launch/underwater_camera_launch.py"
+            get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
 

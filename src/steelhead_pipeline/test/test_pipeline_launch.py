@@ -13,8 +13,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_test_description():
     ld = LaunchDescription()
 
-    pkg_name = "steelhead_pipeline"
-    launch_file_name = "pipeline_manager_launch.py"
+    pkg_name = 'steelhead_pipeline'
+    launch_file_name = 'pipeline_manager_launch.py'
 
     launch_file = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -28,11 +28,15 @@ def generate_test_description():
 
 
 class TestPipelineLaunchInit(unittest.TestCase):
+
+
     def test_pipeline_init(self, proc_info, proc_output):
-        proc_output.assertWaitFor("Pipeline manager successfully started")
+        proc_output.assertWaitFor('Pipeline manager successfully started')
 
 
 @launch_testing.post_shutdown_test()
 class TestPipelineLaunchExit(unittest.TestCase):
+
+
     def test_exit_code(self, proc_info, proc_output):
         launch_testing.asserts.assertExitCodes(proc_info)

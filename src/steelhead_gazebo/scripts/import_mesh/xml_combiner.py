@@ -1,5 +1,5 @@
 """
-This object was borrowed for a StackOverflow solution here:
+This object was borrowed for a StackOverflow solution here: 
 https://stackoverflow.com/questions/14878706/merge-xml-files-with-nested-elements-without-external-libraries
 """
 
@@ -8,9 +8,10 @@ from xml.etree import ElementTree as et
 
 class XMLCombiner:
     def __init__(self, filenames):
-        assert len(filenames) > 0, "No filenames!"
+        assert len(filenames) > 0, 'No filenames!'
         # save all the roots, in order, to be processed later
         self.roots = [et.parse(f).getroot() for f in filenames]
+
 
     def combine(self):
         for r in self.roots[1:]:
@@ -18,6 +19,7 @@ class XMLCombiner:
             self.combine_element(self.roots[0], r)
         # return the string representation
         return et.tostring(self.roots[0])
+
 
     def combine_element(self, one, other):
         """
@@ -47,3 +49,4 @@ class XMLCombiner:
                     mapping[el.tag] = el
                     # Just add it
                     one.append(el)
+

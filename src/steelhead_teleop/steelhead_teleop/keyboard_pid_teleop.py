@@ -14,8 +14,9 @@ class KeyboardPidTeleop(Node):
     the setpoint
     """
 
+
     def __init__(self):
-        super().__init__("keyboard_pid_teleop")
+        super().__init__('keyboard_pid_teleop')
 
         # hover_at_depth reads force x/y as a position error, only the sign
         # of force z (depth nudge) and torque z (yaw step), and ignores
@@ -24,19 +25,20 @@ class KeyboardPidTeleop(Node):
         self.torque_mags = [0.0, 0.0, 15.0]  # [x,y,z]
 
         self.adjust_pub = self.create_publisher(
-            HoverAdjustment, "/steelhead/controls/hover_adjust", 10
+            HoverAdjustment,
+            '/steelhead/controls/hover_adjust',
+            10
         )
 
         self._start()
 
-        self.cli = self.create_client(
-            ActuatorsCommand, "/steelhead/controls/actuators_command"
-        )
+        self.cli = self.create_client(ActuatorsCommand, '/steelhead/controls/actuators_command')
         if not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("Actuators service is not running.")
+            self.get_logger().warning('Actuators service is not running.')
         self.req = ActuatorsCommand.Request()
 
-        self.get_logger().info("Keyboard PID teleop succesfully started!")
+        self.get_logger().info('Keyboard PID teleop succesfully started!')
+
 
     def send_request(self, input):
         request = ActuatorsCommand.Request()
@@ -44,14 +46,17 @@ class KeyboardPidTeleop(Node):
 
         self.future = self.cli.call_async(request)
 
+
     def _start(self):
         """
         Sets up the keyboard listeners
         """
         self.listener = keyboard.Listener(
-            on_press=self._on_press, on_release=self._on_release
+            on_press=self._on_press,
+            on_release=self._on_release
         )
         self.listener.start()
+
 
     def _key_name(self, key):
         """
@@ -62,6 +67,7 @@ class KeyboardPidTeleop(Node):
         if isinstance(key, keyboard.Key):
             return key.name  # e.g. keyboard.Key.up -> 'up'
         return key.char
+
 
     def _publish_adjustment(self, wrench):
         """
@@ -75,6 +81,7 @@ class KeyboardPidTeleop(Node):
             msg.input = wrench
         self.adjust_pub.publish(msg)
 
+
     def _on_press(self, key):
         """
         Handles key presses
@@ -87,9 +94,8 @@ class KeyboardPidTeleop(Node):
         if actuator_input is not None:
             self.send_request(actuator_input)
 
-        self._publish_adjustment(
-            wrench_for_key(key_name, self.force_mags, self.torque_mags)
-        )
+        self._publish_adjustment(wrench_for_key(key_name, self.force_mags, self.torque_mags))
+
 
     def _on_release(self, key):
         """
@@ -106,9 +112,9 @@ def main(args=None):
     try:
         rclpy.spin(keyboard_pid_teleop)
     except KeyboardInterrupt:
-        pass  # To force exit code 0
+        pass # To force exit code 0
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

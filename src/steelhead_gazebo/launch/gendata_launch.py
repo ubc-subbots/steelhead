@@ -6,24 +6,22 @@ from launch.actions import (
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
 
     ld = LaunchDescription()
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_gazebo") + "/launch/gazebo_launch.py"
+            get_package_share_directory('steelhead_gazebo') + '/launch/gazebo_launch.py'
         ),
-        launch_arguments={"world": "uc_gendata.world", "headless": "true"}.items(),
+        launch_arguments={'world': 'uc_gendata.world', 'headless': 'true'}.items()
     )
 
     ld.add_action(gazebo)
 
     underwater_camera = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_gazebo")
-            + "/launch/underwater_camera_launch.py"
+            get_package_share_directory('steelhead_gazebo') + '/launch/underwater_camera_launch.py'
         )
     )
 
@@ -31,8 +29,8 @@ def generate_launch_description():
 
     bounding_box_image_saver = Node(
         package="steelhead_gazebo",
-        executable="bounding_box_image_saver.py",
-        name="bounding_box_image_saver",
+        executable='bounding_box_image_saver.py',
+        name='bounding_box_image_saver'
     )
 
     ld.add_action(bounding_box_image_saver)

@@ -81,15 +81,15 @@ This package uses clangd for C++ language support (i.e., go-to-definition, autoc
 
         sudo apt install clangd
 2. Install the clangd VS Code extension (By LLVM). When prompted, disable the Microsoft C++ IntelliSense Engine.
-4. Install jq via:
+3. Install jq via:
 
         sudo apt install jq
 
-5. Build the workspace with compile commands export enabled:
+4. Build the workspace with compile commands export enabled:
         
         colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-6. Merge the per-package compile commands into the workspace root:
+5. Merge the per-package compile commands into the workspace root:
 
         jq -s 'map(.[])' build/*/compile_commands.json > compile_commands.json
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 project(steelhead_localization)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
