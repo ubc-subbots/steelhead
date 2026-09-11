@@ -116,7 +116,7 @@ To learn how to contribute to this repo, see the seperate [workflow](WORKFLOW.md
 While AI is incredibly useful for development and we do encourage the use of it, we ask you to please understand and follow the following policies:
 
 1. **Understand what you are putting out.** If you are making contributions to the codebase, make sure you understand your changes. For example, if a general question about its functionality is asked, you should be able to answer it. To a lesser extent, you'll be doing yourself a disfavor by hampering your learning.
-2. **Be responsible for your code.** Similar to the last point, you are responsible for any code that you do contribute. If something breaks, own up to it and understand what went wrong. We're not going to be mad at mistakes, but "claude did it" isn't the greatest explanation.
+2. **Be responsible for your code.** Similar to the last point, you are responsible for any code that you do contribute. If something breaks, own up to it and understand what went wrong. We're not going to be mad at mistakes, but "claude did it" isn't the greatest explanation. This is especially important because AI often gets things wrong in ROS2/Gazebo because the amount revisions it has, so it often pulls from outdated sources.
 3. **Use and add to the provided skills/agents.** We're starting to add more of them, so make sure to use them such that each agent is equipped with the same set of tools.
 4. **Be smart about it.** If you are requesting a review from a human, make sure to put actual human effort in it. For example, don't commit a comment like "// Add the following code snippet to your code!". 
     
