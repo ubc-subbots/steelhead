@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_gazebo)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -22,10 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS} -O3 -DNDEBUG")
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(gazebo REQUIRED)
-find_package(gazebo_dev REQUIRED)
-find_package(gazebo_ros REQUIRED)
-find_package(gazebo_msgs REQUIRED)
+find_package(ros_gz REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -39,11 +36,6 @@ find_package(steelhead_interfaces REQUIRED)
 
 include_directories(include)
 include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${GAZEBO_INCLUDE_DIRS})
-
-link_directories(${GAZEBO_LIBRARY_DIRS})
-
-link_directories(${gazebo_dev_LIBRARY_DIRS})
 
 add_library(ground_truth_sensor SHARED
   src/ground_truth_sensor.cpp
@@ -51,22 +43,10 @@ add_library(ground_truth_sensor SHARED
 target_include_directories(ground_truth_sensor PUBLIC
   include
 )
-ament_target_dependencies(ground_truth_sensor
-  "gazebo_dev"
-  "gazebo_ros"
-)
 ament_export_libraries(ground_truth_sensor)
 target_link_libraries(
   ground_truth_sensor
   ${geometry_msgs_LIBRARIES} 
-  ${GAZEBO_LIBRARIES}
-)
-
-install(TARGETS
-  ground_truth_sensor
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
 )
 
 add_library(pressure_sensor SHARED
@@ -75,23 +55,11 @@ add_library(pressure_sensor SHARED
 target_include_directories(pressure_sensor PUBLIC
   include
 )
-ament_target_dependencies(pressure_sensor
-  "gazebo_dev"
-  "gazebo_ros"
-  "steelhead_interfaces"
-)
-ament_export_libraries(gpressure_sensor)
+ament_export_libraries(pressure_sensor)
 target_link_libraries(
   pressure_sensor
+  "steelhead_interfaces"
   ${geometry_msgs_LIBRARIES} 
-  ${GAZEBO_LIBRARIES}
-)
-
-install(TARGETS
-  pressure_sensor
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
 )
 
 add_library(thruster_driver_plugin SHARED
@@ -100,21 +68,9 @@ add_library(thruster_driver_plugin SHARED
 target_include_directories(thruster_driver_plugin PUBLIC
   include
 )
-ament_target_dependencies(thruster_driver_plugin
-  "gazebo_dev"
-  "gazebo_ros"
-)
 ament_export_libraries(thruster_driver_plugin)
 target_link_libraries(
   thruster_driver_plugin 
-  ${GAZEBO_LIBRARIES}
-)
-
-install(TARGETS
-  thruster_driver_plugin
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
 )
 
 add_executable(underwater_camera 
@@ -124,7 +80,7 @@ target_include_directories(underwater_camera PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(underwater_camera
+target_link_libraries(underwater_camera
   "image_transport"
   "sensor_msgs"
   "message_filters"
@@ -132,11 +88,6 @@ ament_target_dependencies(underwater_camera
   "OpenCV"
   "cv_bridge"
   "steelhead_interfaces"
-)
-
-install(TARGETS 
-  underwater_camera
-  DESTINATION lib/${PROJECT_NAME}
 )
 
 add_library(steelhead_gazebo SHARED
@@ -147,55 +98,34 @@ add_library(bounding_box_plugin SHARED src/bounding_box_plugin.cpp)
 target_include_directories(bounding_box_plugin PUBLIC
   include
 )
-target_link_libraries(bounding_box_plugin ${GAZEBO_LIBRARIES})
-ament_target_dependencies(bounding_box_plugin
-  "steelhead_interfaces"
-)
+target_link_libraries(bounding_box_plugin steelhead_interfaces)
 ament_export_libraries(bounding_box_plugin)
-target_link_libraries(bounding_box_plugin ${GAZEBO_LIBRARIES})
-
 
 add_library(camera_orbit_plugin SHARED src/camera_orbit_plugin.cpp)
 target_include_directories(camera_orbit_plugin PUBLIC
   include
 )
-target_link_libraries(camera_orbit_plugin ${GAZEBO_LIBRARIES})
-ament_target_dependencies(camera_orbit_plugin
-  "steelhead_interfaces"
-)
+target_link_libraries(camera_orbit_plugin "steelhead_interfaces")
 ament_export_libraries(camera_orbit_plugin)
-target_link_libraries(camera_orbit_plugin ${GAZEBO_LIBRARIES})
 
 add_library(random_camera_plugin SHARED src/random_camera_plugin.cpp)
 target_include_directories(random_camera_plugin PUBLIC
   include
 )
-target_link_libraries(random_camera_plugin ${GAZEBO_LIBRARIES})
-ament_target_dependencies(random_camera_plugin
-  "steelhead_interfaces"
-)
+target_link_libraries(random_camera_plugin "steelhead_interfaces")
 ament_export_libraries(random_camera_plugin)
-target_link_libraries(random_camera_plugin ${GAZEBO_LIBRARIES})
 
 add_library(smooth_camera_plugin SHARED src/smooth_camera_plugin.cpp)
 target_include_directories(smooth_camera_plugin PUBLIC
   include
 )
-target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
-ament_target_dependencies(smooth_camera_plugin
-  "steelhead_interfaces"
-)
+target_link_libraries(smooth_camera_plugin "steelhead_interfaces")
 ament_export_libraries(smooth_camera_plugin)
-target_link_libraries(smooth_camera_plugin ${GAZEBO_LIBRARIES})
 
 add_library(torpedo_plugin SHARED src/torpedo_plugin.cpp)
-target_include_directories(torpedo_plugin PUBLIC
-  ${gazebo_dev_INCLUDE_DIRS}
-)
 target_link_libraries(torpedo_plugin
-  ${gazebo_dev_LIBRARIES}
+  rclcpp
 )
-ament_target_dependencies(torpedo_plugin gazebo_ros rclcpp)
 
 rclcpp_components_register_nodes(steelhead_gazebo "steelhead_gazebo::UnderwaterCamera")
 
@@ -203,7 +133,7 @@ target_compile_definitions(steelhead_gazebo
   PRIVATE "steelhead_gazebo_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_gazebo
+target_link_libraries(steelhead_gazebo
   "rclcpp"
   "rclcpp_components"
   "image_transport"
@@ -212,8 +142,6 @@ ament_target_dependencies(steelhead_gazebo
   "steelhead_interfaces"
   "geometry_msgs"
 )
-
-link_directories(${gazebo_dev_LIBRARY_DIRS})
 
 add_library(hydrodynamics_plugin SHARED
   src/hydrodynamics_plugin.cpp
@@ -225,12 +153,8 @@ target_include_directories(hydrodynamics_plugin PUBLIC
   gazebo_utils
   math_utils
 )
-ament_target_dependencies(hydrodynamics_plugin
-  "gazebo_dev"
-  "gazebo_ros"
-)
 ament_export_libraries(hydrodynamics_plugin)
-target_link_libraries(hydrodynamics_plugin ${GAZEBO_LIBRARIES})
+target_link_libraries(hydrodynamics_plugin )
 
 add_executable(actuators_command_simulation
   src/actuators_command_simulation.cpp
@@ -240,12 +164,11 @@ target_include_directories(actuators_command_simulation PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(
+target_link_libraries(
   actuators_command_simulation
   "rclcpp"
   "rclcpp_components"
   "steelhead_interfaces"
-  "gazebo_msgs"
 )
 
 install(TARGETS actuators_command_simulation
@@ -254,6 +177,13 @@ install(TARGETS actuators_command_simulation
 
 install(TARGETS
   hydrodynamics_plugin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  thruster_driver_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -273,34 +203,50 @@ install(TARGETS
   RUNTIME DESTINATION bin
 )
 
-install(TARGETS
-  camera_orbit_plugin
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-
-install(TARGETS
-  random_camera_plugin
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-
-
-install(TARGETS
-  smooth_camera_plugin
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-
 install(TARGETS torpedo_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
 
+install(TARGETS 
+  underwater_camera
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  ground_truth_sensor
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  pressure_sensor
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+# These are deprecated since Gazebo Classic
+# install(TARGETS
+#   camera_orbit_plugin
+#   ARCHIVE DESTINATION lib
+#   LIBRARY DESTINATION lib
+#   RUNTIME DESTINATION bin
+# )
+# install(TARGETS
+#   random_camera_plugin
+#   ARCHIVE DESTINATION lib
+#   LIBRARY DESTINATION lib
+#   RUNTIME DESTINATION bin
+# )
+# install(TARGETS
+#   smooth_camera_plugin
+#   ARCHIVE DESTINATION lib
+#   LIBRARY DESTINATION lib
+#   RUNTIME DESTINATION bin
+# )
 
 install(DIRECTORY
   config
