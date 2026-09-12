@@ -33,7 +33,7 @@ def generate_launch_description():
     )
 
     pkg_share = get_package_share_directory('steelhead_gazebo')
-    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'steelhead_auv_ideal', 'model.sdf')
+    sdf_file =  os.path.join(pkg_share, 'gazebo', 'models', 'steelhead_auv', 'model.sdf')
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
     rsp_params = {'robot_description': robot_desc}

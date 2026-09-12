@@ -153,11 +153,8 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 `lenabox`
 - A cube with the Lena test image as its texture.
 
-`steelhead_auv_ideal`
+`steelhead_auv`
 - Steelhead AUV with ideal hydrodynamics (neutrally buoyant and naturally upright)
-
-`steelhead_auv_real`
-- Steelhead AUV with hydrodynamics more similar to observed (negatively buoyant and naturally tilted)
 
 ##  Importing Models From SolidWorks 
 
