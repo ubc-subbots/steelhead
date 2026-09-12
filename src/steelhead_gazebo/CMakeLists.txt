@@ -22,7 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS} -O3 -DNDEBUG")
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(ros_gz REQUIRED)
+find_package(gz-sim REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -33,6 +33,7 @@ find_package(rclpy REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
+find_package(std_msgs REQUIRED)
 
 include_directories(include)
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -60,14 +61,23 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # )
 
 # thruster_driver_plugin
-# add_library(thruster_driver_plugin SHARED src/thruster_driver_plugin.cpp)
-# target_include_directories(thruster_driver_plugin PUBLIC include)
-# ament_export_libraries(thruster_driver_plugin)
-# install(TARGETS thruster_driver_plugin
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin
-# )
+add_library(thruster_driver_plugin SHARED src/thruster_driver_plugin.cpp)
+target_include_directories(thruster_driver_plugin PUBLIC 
+  include
+  ${rclcpp_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+)
+target_link_libraries(thruster_driver_plugin
+  gz-sim
+  ${rclcpp_LIBRARIES}
+  ${std_msgs_LIBRARIES}
+)
+ament_export_libraries(thruster_driver_plugin)
+install(TARGETS thruster_driver_plugin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 # # underwater_camera
 # add_executable(underwater_camera src/underwater_camera.cpp)
