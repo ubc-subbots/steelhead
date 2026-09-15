@@ -5,7 +5,7 @@ This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It i
 # Contents
 
 - [Setup](#setup)
-    - [Gazebo Installation](#gazebo-installation)
+    - [Workspace Sourcing](#workspace-sourcing)
     - [OpenCV Installation](#opencv-installation)
     - [ROS2 Dependencies](#ros2-dependencies)
 - [Development Setup](#development-setup)
@@ -70,8 +70,10 @@ The last line is helpful in that it colorizes ROS2 logging so that info/warn/err
 
     ros2 launch steelhead_bringup barebones_gazebo_launch.py
    
-If this command executes successfully, you are ready to develop!
-
+If this command executes successfully, you are ready to develop! If the simulation is incredibly laggy, check out the [optimization guide](./src/steelhead_gazebo/README.md#optimization-guide).
+    
+    
+    
 ## Development Setup
 We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question. These are technically optional but make life easier and keeps our codebase consistent.
 
