@@ -36,7 +36,6 @@ def generate_launch_description():
     # We need to add the models and worlds directories to env so gazebo can find them
     steelhead_gazebo_dir = get_package_share_directory("steelhead_gazebo")
 
-
     steelhead_gazebo_prefix = get_package_prefix("steelhead_gazebo")
     add_plugin_path = SetEnvironmentVariable(
         name="GZ_SIM_SYSTEM_PLUGIN_PATH",
@@ -58,7 +57,7 @@ def generate_launch_description():
 
     gz_args = PythonExpression(
         [
-            '"-r -v 2 "',
+            '"-r"',
             ' + ("-s " if "',
             LaunchConfiguration("headless"),
             '" == "true" else "")',

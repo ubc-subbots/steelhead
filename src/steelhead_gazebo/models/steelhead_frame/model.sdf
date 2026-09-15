@@ -48,7 +48,6 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
-        <!-- Surface Data consists of default value, we should reseach better numbers-->
         <surface>
           <friction>
             <ode>
@@ -96,7 +95,7 @@
         </surface>
       </collision>
       
-      <sensor type="depth" name="front_camera">
+      <!-- <sensor type="depth" name="front_camera">
         <pose>0.45 -0.06 0 0 0 0 </pose>
         <update_rate>60</update_rate>
         <visualize>false</visualize>
@@ -154,7 +153,6 @@
           </noise>
         </camera>
         <plugin name="down_camera" filename="libgazebo_ros_camera.so">
-          <!-- <bodyName>camera_link</bodyName> -->
           <ros>
             <namespace>/steelhead/drivers</namespace>
           </ros>
@@ -183,7 +181,7 @@
           </ros>
         </plugin>
         <pose>0 0 0 0 0 0</pose>
-      </sensor>
+      </sensor> -->
     </link>
 
     <static>0</static>
