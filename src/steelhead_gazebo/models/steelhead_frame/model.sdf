@@ -27,9 +27,17 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
-        <material>
-          <lighting>1</lighting>
-          <shader type='pixel'/>
+                        <material>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.5 0.5 0.5 1</specular>
+          <pbr>
+            <metal>
+              <albedo>0.5 0.5 0.5 1</albedo>
+              <roughness>0.6</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
