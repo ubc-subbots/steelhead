@@ -2,15 +2,14 @@ import os
 import time
 import unittest
 
-import pytest
-
-import rclpy
-from geometry_msgs.msg import Wrench
-from std_msgs.msg import Float64MultiArray
 import launch_testing
+import pytest
+import rclpy
+from ament_index_python.packages import get_package_share_directory
+from geometry_msgs.msg import Wrench
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
+from std_msgs.msg import Float64MultiArray
 
 
 @pytest.mark.rostest

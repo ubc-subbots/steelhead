@@ -1,15 +1,34 @@
 #include "steelhead_gazebo/thruster_driver_plugin.hpp"
+#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
+#include <gz/sim/components/Pose.hh>
+#include <gz/sim/components/Name.hh>
+
+GZ_ADD_PLUGIN(steelhead_gazebo::ThrusterDriver,
+              gz::sim::System,
+              steelhead_gazebo::ThrusterDriver::ISystemConfigure,
+              steelhead_gazebo::ThrusterDriver::ISystemPreUpdate)
+
+GZ_ADD_PLUGIN_ALIAS(steelhead_gazebo::ThrusterDriver, "steelhead_gazebo::ThrusterDriver")
 
 namespace steelhead_gazebo
 {
 
-    ThrusterDriver::ThrusterDriver() : node{rclcpp::Node::make_shared("thruster_driver")} {}
+    ThrusterDriver::ThrusterDriver() {
+        if (!rclcpp::ok()) {
+            rclcpp::init(0, nullptr);
+        }
+        node = rclcpp::Node::make_shared("thruster_driver");
+    }
 
+    ThrusterDriver::~ThrusterDriver() {
+        if (this->node) rclcpp::shutdown();
+        if (this->spinThread.joinable()) this->spinThread.join();
+    }
 
-    ThrusterDriver::~ThrusterDriver() {}
-
-
-    void ThrusterDriver::Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf)
+    void ThrusterDriver::Configure(const gz::sim::Entity &_entity,
+                                   const std::shared_ptr<const sdf::Element> &_sdf,
+                                   gz::sim::EntityComponentManager &_ecm,
+                                   gz::sim::EventManager &/*_eventMgr*/)
     {
         if (_sdf->HasElement("thruster_count"))
         {
@@ -21,7 +40,7 @@ namespace steelhead_gazebo
             exit(1);
         }
 
-        sdf::ElementPtr ros_namespace = _sdf->GetElement("ros");
+        std::shared_ptr<const sdf::Element> ros_namespace = _sdf->FindElement("ros");
         this->GetRosNamespace(ros_namespace);
 
         this->thrust_values = std::vector<double>(this->thruster_count, 0);
@@ -30,30 +49,42 @@ namespace steelhead_gazebo
                             10, 
                             std::bind(&ThrusterDriver::GetForceCmd, this, _1));
 
-        RCLCPP_INFO(node->get_logger(), "Listening on " + this->topic_name + "\n");
+        RCLCPP_INFO(node->get_logger(), "Listening on %s\n", this->topic_name.c_str());
 
-        std::string model_name = _model->GetName();
+        gz::sim::Model model(_entity);
+        std::string model_name = model.Name(_ecm);
 
         for (unsigned int i = 1; i <= thruster_count; i++)
         {
-            std::string thruster_name = model_name + "::thruster" + std::to_string(i) + "::thruster";
-            this->thruster.push_back(_model->GetLink(thruster_name));
+            std::string nested_model_name = "thruster" + std::to_string(i);
+            gz::sim::Entity nested_model_entity = model.ModelByName(_ecm, nested_model_name);
+            
+            if (nested_model_entity == gz::sim::kNullEntity) {
+                gzerr << "Failed to find nested model: " << nested_model_name << std::endl;
+                continue;
+            }
+            
+            gz::sim::Model nested_model(nested_model_entity);
+            gz::sim::Entity link_entity = nested_model.LinkByName(_ecm, "thruster");
+            
+            if (link_entity != gz::sim::kNullEntity) {
+                this->thruster.push_back(link_entity);
+                _ecm.CreateComponent(link_entity, gz::sim::components::WorldPose());
+                RCLCPP_INFO(node->get_logger(), "Found link for %s", nested_model_name.c_str());
+            } else {
+                gzerr << "Failed to find link 'thruster' inside nested model: " << nested_model_name << std::endl;
+            }
         }
     
-        this->updateConnection_ = gazebo::event::Events::ConnectWorldUpdateBegin(
-                                    std::bind(&ThrusterDriver::ApplyForce, this));
-
-        /// @todo feels like there should be a way to pass rclcpp::spin directly to thread, this works the way it is though 
         this->spinThread = std::thread(std::bind(&ThrusterDriver::SpinNode, this));
     }
 
-
-    void ThrusterDriver::GetRosNamespace(sdf::ElementPtr ros_sdf)
+    void ThrusterDriver::GetRosNamespace(std::shared_ptr<const sdf::Element> ros_sdf)
     {
         std::string _namespace;
         std::string topic;
     
-        if (ros_sdf->HasElement("namespace"))
+        if (ros_sdf && ros_sdf->HasElement("namespace"))
         {
             _namespace = ros_sdf->Get<std::string>("namespace");
         }
@@ -62,7 +93,7 @@ namespace steelhead_gazebo
             _namespace = "steelhead/steelhead_gazebo";
         }
 
-        if (ros_sdf->HasElement("remapping"))
+        if (ros_sdf && ros_sdf->HasElement("remapping"))
         {
             topic = ros_sdf->Get<std::string>("remapping");
         }
@@ -74,8 +105,7 @@ namespace steelhead_gazebo
         this->topic_name = _namespace + "/" + topic;
     }
 
-
-    void ThrusterDriver::GetForceCmd(const std_msgs::msg::Float64MultiArray::SharedPtr joint_cmd)
+    void ThrusterDriver::GetForceCmd(const std_msgs::msg::Float64MultiArray::ConstSharedPtr joint_cmd)
     {
         if (joint_cmd->data.size() != this->thruster_count)
         {
@@ -89,15 +119,22 @@ namespace steelhead_gazebo
         }
     }
 
-
-    void ThrusterDriver::ApplyForce()
+    void ThrusterDriver::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComponentManager &_ecm)
     {
-        for (unsigned int i = 0; i < thruster_count; i++)
+        if (_info.paused) return;
+
+        for (unsigned int i = 0; i < this->thruster.size(); i++)
         {
-            this->thruster[i]->AddLinkForce(ignition::math::Vector3d(0, 0, this->thrust_values[i]));
+            gz::sim::Link link(this->thruster[i]);
+            auto pose = link.WorldPose(_ecm);
+            if (pose)
+            {
+                gz::math::Vector3d localForce(0, 0, this->thrust_values[i]);
+                gz::math::Vector3d worldForce = pose->Rot() * localForce;
+                link.AddWorldForce(_ecm, worldForce);
+            }
         }
     }
-
 
     void ThrusterDriver::SpinNode()
     {

@@ -18,10 +18,10 @@ namespace steelhead_controls {
         { 
 
         //can remove later but this publishes the current mode
-        current_mode_publisher_ = this->create_publisher<steelhead_interfaces::msg::TrajectoryType>("/steelhead/controls/trajectory_generator/current_mode", 10);
+        current_mode_publisher_ = this->create_publisher<steelhead_interfaces::msg::TrajectoryType>("/steelhead/controls/trajectory_generator/current_mode", rclcpp::QoS(10));
 
 
-        waypoint_publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/set", 10);
+        waypoint_publisher_ = this->create_publisher<steelhead_interfaces::msg::Waypoint>("/steelhead/controls/waypoint_marker/set", rclcpp::QoS(10));
 
         state_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
             "/steelhead/controls/ukf/odometry/filtered", 10, std::bind(&TrajectoryGenerator::state_callback, this, _1));

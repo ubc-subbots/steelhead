@@ -1,9 +1,7 @@
-import os
 import unittest
 
-import pytest
-
 import launch_testing
+import pytest
 from launch import LaunchDescription
 from launch_ros.actions import ComposableNodeContainer
 from launch.actions import  ExecuteProcess, TimerAction 

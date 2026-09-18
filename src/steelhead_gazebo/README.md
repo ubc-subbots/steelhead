@@ -13,7 +13,7 @@ To run a Gazebo simulation with a world file given in the `worlds` directory, us
 Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
 
 #### Optimization Guide
-Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a graphics card lol.
+Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a better computer lol.
 
 1. In `src/steelhead_gazebo/models/steelhead_frame/model.sdf`:
     * Change the types of the cameras to `camera` rather than `depth`.
@@ -23,8 +23,13 @@ Gazebo can be quite computationally expensive, since it is calculating lots of t
     * Increase step size.
     * Real time update rate may help as well.
 3. If you are using UTM Virtual Machine, switch to a GPU Supported emulated display card (e.g. virtio-ramfb-gl).
+4. If you are using an AMD graphics card, Gazebo may not be using your graphics card. Try entering these commands before launching Gazebo:
 
-Remember to rebuild after making any changes, including model and world files.
+        export GALLIUM_DRIVER=d3d12
+        export MESA_GL_VERSION_OVERRIDE=4.5
+        export MESA_D3D12_DEFAULT_ADAPTER_NAME=AMD
+
+Remember to rebuild after making any changes, including model and world files. If you do make any performance changes, make sure to revert them before making a pull request.
 
 ### Underwater Camera
 To run the underwater camera node, use the following
@@ -153,11 +158,8 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 `lenabox`
 - A cube with the Lena test image as its texture.
 
-`steelhead_auv_ideal`
+`steelhead_auv`
 - Steelhead AUV with ideal hydrodynamics (neutrally buoyant and naturally upright)
-
-`steelhead_auv_real`
-- Steelhead AUV with hydrodynamics more similar to observed (negatively buoyant and naturally tilted)
 
 ##  Importing Models From SolidWorks 
 

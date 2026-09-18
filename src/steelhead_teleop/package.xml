@@ -7,7 +7,7 @@
   <maintainer email="logan.fillo@gmail.com">logan</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>pynput-pip</depend>
+  <exec_depend>python3-pynput</exec_depend>
   <depend>steelhead_interfaces</depend>
 
   <test_depend>ament_copyright</test_depend>

@@ -1,9 +1,11 @@
 #! /usr/bin/env python3
+import math
+
 import rclpy
 from rclpy.node import Node
-from steelhead_interfaces.msg import Waypoint
 from std_msgs.msg import String
-import math
+
+from steelhead_interfaces.msg import Waypoint
 
 def quaternion_from_euler(roll, pitch, yaw):
     # https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434

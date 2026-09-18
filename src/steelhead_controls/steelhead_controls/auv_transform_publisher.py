@@ -1,11 +1,9 @@
 #! /usr/bin/env python3
-from math import sin, cos, pi, atan, asin, atan2
-import threading
 import rclpy
+from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
+from nav_msgs.msg import Path
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
-from geometry_msgs.msg import Quaternion, PoseStamped, PoseWithCovarianceStamped
-from nav_msgs.msg import Path
 from tf2_ros import TransformBroadcaster, TransformStamped
 
 

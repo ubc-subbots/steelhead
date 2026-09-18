@@ -1,6 +1,7 @@
-from setuptools import setup
-from glob import glob
 import os
+from glob import glob
+
+from setuptools import setup
 
 package_name = 'steelhead_bringup'
 
@@ -21,7 +22,7 @@ setup(
     maintainer_email='logan.fillo@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
-    tests_require=['pytest'],
+    extras_require={'test': ['pytest']},
     entry_points={
         'console_scripts': [
         ],

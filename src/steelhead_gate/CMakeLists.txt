@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_gate)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -44,16 +44,17 @@ target_compile_options(steelhead_gate
   PRIVATE -Wno-vla
 )
 
-ament_target_dependencies(steelhead_gate
-  "rclcpp"
-  "rclcpp_components"
-  "cv_bridge"
-  "OpenCV"
-  "steelhead_vision_utils"
-  "sensor_msgs"
-  "image_transport"
-  "tf2"
-  "steelhead_interfaces"
+target_include_directories(steelhead_gate PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(steelhead_gate PUBLIC
+  ${rclcpp_TARGETS}
+  ${rclcpp_components_TARGETS}
+  ${cv_bridge_TARGETS}
+  ${OpenCV_LIBRARIES}
+  ${steelhead_vision_utils_TARGETS}
+  ${sensor_msgs_TARGETS}
+  ${image_transport_TARGETS}
+  ${tf2_TARGETS}
+  ${steelhead_interfaces_TARGETS}
 )
 
 install(TARGETS

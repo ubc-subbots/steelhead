@@ -8,11 +8,10 @@
 # This mirrors bno085_imu_publisher.py (same serial-over-USB pattern).
 
 import rclpy
+import serial
 from rclpy.node import Node
 
 from steelhead_interfaces.msg import PressureSensor
-
-import serial
 
 
 class Ms5837DepthPublisher(Node):

@@ -1,0 +1,5 @@
+scipy
+trimesh
+vtk
+capytaine
+xarray

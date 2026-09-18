@@ -1,10 +1,7 @@
 #! /usr/bin/env python3
 import rclpy
+from geometry_msgs.msg import Vector3, Wrench
 from rclpy.node import Node
-from steelhead_interfaces.msg import Waypoint
-from std_msgs.msg import String
-from std_msgs.msg import String, Int32, UInt32
-from geometry_msgs.msg import Wrench, Vector3
 
 DEFAULT_EFFORT = 15.0 #vroom
 

@@ -60,7 +60,7 @@ namespace steelhead_controls
                 response->succeeded = true;
                 returnMessage+="successful";
               }
-              RCLCPP_INFO(this->get_logger(), returnMessage);
+              RCLCPP_INFO(this->get_logger(), "%s", returnMessage.c_str());
             }
 
 } // namespace steelhead_controls

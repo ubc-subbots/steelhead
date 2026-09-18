@@ -3,10 +3,33 @@
   <model name='steelhead_frame'>
     <link name='base_link'>
 
-      <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
-      <!-- Edited for Steelhead Aug 9 2024-->
+      <!-- pose relative to STL file origin, was moved to AUV center using Blender -->
+      <!-- Edited for Steelhead Sept 17 2026-->
       <inertial>
-        <mass>13.7</mass>
+        <mass>12.5</mass>
+        <fluid_added_mass>
+          <xx>6.02798389</xx>
+          <xy>0.13736651</xy>
+          <xz>0.27883243</xz>
+          <xp>-0.00237503</xp>
+          <xq>0.63381341</xq>
+          <xr>-0.51807331</xr>
+          <yy>19.30705001</yy>
+          <yz>0.93844264</yz>
+          <yp>-0.20047217</yp>
+          <yq>-0.00867775</yq>
+          <yr>0.03516972</yr>
+          <zz>31.68082819</zz>
+          <zp>1.81271015</zp>
+          <zq>-0.09747623</zq>
+          <zr>-0.09271855</zr>
+          <pp>0.52934941</pp>
+          <pq>-0.00173925</pq>
+          <pr>-0.00807993</pr>
+          <qq>0.29447564</qq>
+          <qr>-0.04688184</qr>
+          <rr>0.40257545</rr>
+        </fluid_added_mass>
         <inertia>
           <ixx> 0.548853532</ixx>
           <ixy> 0.000990367</ixy>
@@ -15,8 +38,33 @@
           <iyz> 0.045963196</iyz>
           <izz> 1.077000000</izz>
         </inertia>
-         <pose>0.1 -0.062 -0.00878 0 0 0</pose>
+         <pose>0 0 0 0 0 0</pose>
       </inertial>
+
+      <plugin
+        filename="gz-sim-hydrodynamics-system"
+        name="gz::sim::systems::Hydrodynamics">
+        <link_name>base_link</link_name>
+        <disable_added_mass>true</disable_added_mass>
+        <xDotU>-0.04876161</xDotU>
+        <yDotV>-1.26324739</yDotV>
+        <zDotW>-1.26324739</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>-0.3346</mDotQ>
+        <nDotR>-0.3346</nDotR>
+        <xUabsU>-0.62282</xUabsU>
+        <xU>-5</xU>
+        <yVabsV>-60.127</yVabsV>
+        <yV>-5</yV>
+        <zWabsW>-6.0127</zWabsW>
+        <zW>-100</zW>
+        <kPabsP>-0.001916</kPabsP>
+        <kP>-1</kP>
+        <mQabsQ>-6.32698957</mQabsQ>
+        <mQ>-1</mQ>
+        <nRabsR>-6.32698957</nRabsR>
+        <nR>-1</nR>
+      </plugin>
 
       <!-- Visual Data -->
       <visual name='visual'>
@@ -28,8 +76,16 @@
           </mesh>
         </geometry>
         <material>
-          <lighting>1</lighting>
-          <shader type='pixel'/>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.5 0.5 0.5 1</specular>
+          <pbr>
+            <metal>
+              <albedo>0.5 0.5 0.5 1</albedo>
+              <roughness>0.6</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
@@ -48,7 +104,6 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
-        <!-- Surface Data consists of default value, we should reseach better numbers-->
         <surface>
           <friction>
             <ode>
@@ -95,8 +150,22 @@
           </contact>
         </surface>
       </collision>
+
+      <collision name='buoyancy_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 0.3 0.089105</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_without_contact>1</collide_without_contact>
+          </contact>
+        </surface>
+      </collision>
       
-      <sensor type="depth" name="front_camera">
+      <!-- <sensor type="depth" name="front_camera">
         <pose>0.45 -0.06 0 0 0 0 </pose>
         <update_rate>60</update_rate>
         <visualize>false</visualize>
@@ -154,7 +223,6 @@
           </noise>
         </camera>
         <plugin name="down_camera" filename="libgazebo_ros_camera.so">
-          <!-- <bodyName>camera_link</bodyName> -->
           <ros>
             <namespace>/steelhead/drivers</namespace>
           </ros>
@@ -183,7 +251,7 @@
           </ros>
         </plugin>
         <pose>0 0 0 0 0 0</pose>
-      </sensor>
+      </sensor> -->
     </link>
 
     <static>0</static>

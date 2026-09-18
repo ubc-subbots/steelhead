@@ -4,11 +4,10 @@
 #include <memory>
 #include <eigen3/Eigen/Core>
 
-#include "message_filters/sync_policies/approximate_time.h"
-#include "message_filters/synchronizer.h"
+#include "message_filters/sync_policies/approximate_time.hpp"
+#include "message_filters/synchronizer.hpp"
 #include "image_transport/image_transport.hpp"
 #include "image_transport/subscriber_filter.hpp"
-#include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "steelhead_interfaces/msg/detection_box_array.hpp"
 
@@ -116,8 +115,5 @@ namespace steelhead_gazebo
     };
     
 } // namespace steelhead_gazebo
-
-#include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(steelhead_gazebo::UnderwaterCamera)
 
 #endif  //STEELHEAD_GAZEBO__UNDERWATER_CAMERA

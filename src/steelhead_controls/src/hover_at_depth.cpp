@@ -1,8 +1,8 @@
 #include "steelhead_controls/hover_at_depth.hpp"
 
 #include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Quaternion.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
 using std::placeholders::_1;
 
 namespace steelhead_controls
@@ -26,10 +26,10 @@ namespace steelhead_controls
         // Similarly, if we don't adjust for depth, created a default pointer with no error for callback to work
         if (!hover_depth_) pressure_sensor_ = std::make_shared<steelhead_interfaces::msg::PressureSensor>();
 
-        pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("controls/input_pose", 10);
-        imu_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>("drivers/imu/out", 10, std::bind(&HoverAtDepth::imu_callback, this, _1));
-        if (hover_depth_) pressure_subscription_ = this->create_subscription<steelhead_interfaces::msg::PressureSensor>("drivers/pressure_sensor", 10, std::bind(&HoverAtDepth::depth_callback, this, _1));
-        adjustment_subscription_ = this->create_subscription<steelhead_interfaces::msg::HoverAdjustment>("controls/hover_adjust", 10, std::bind(&HoverAtDepth::adjust_callback, this, _1));
+        pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("controls/input_pose", rclcpp::QoS(10));
+        imu_subscription_ = this->create_subscription<sensor_msgs::msg::Imu>("drivers/imu/out", rclcpp::QoS(10), std::bind(&HoverAtDepth::imu_callback, this, _1));
+        if (hover_depth_) pressure_subscription_ = this->create_subscription<steelhead_interfaces::msg::PressureSensor>("drivers/pressure_sensor", rclcpp::QoS(10), std::bind(&HoverAtDepth::depth_callback, this, _1));
+        adjustment_subscription_ = this->create_subscription<steelhead_interfaces::msg::HoverAdjustment>("controls/hover_adjust", rclcpp::QoS(10), std::bind(&HoverAtDepth::adjust_callback, this, _1));
     }
 
     void HoverAtDepth::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg)

@@ -238,7 +238,7 @@
     -->
 
     <!-- Thrust Vectors -->
-    <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
+    <plugin name="gz::sim::systems::Thruster" filename="gz-sim-thruster-system">
       <thruster_count>6</thruster_count>
       <ros>
         <namespace>/steelhead/controls</namespace>
@@ -246,13 +246,13 @@
       </ros>
     </plugin>
 
-    <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
+    <plugin name="gz::sim::systems::Hydrodynamics" filename="gz-sim-hydrodynamics-system"></plugin>
 
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
       <state_topic>/steelhead/state</state_topic>
       <update_rate>50</update_rate>
     </plugin>
-    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+    <plugin name="gz::sim::systems::PosePublisher" filename="gz-sim-pose-publisher-system">
       <always_on>true</always_on>
       <update_rate>50.0</update_rate>
       <body_name>frame::frame</body_name>

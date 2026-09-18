@@ -75,14 +75,14 @@
         <parent>base_link</parent>
         <child>thruster6::thruster</child>
     </joint>
-    <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
+    <plugin name="steelhead_gazebo::ThrusterDriver" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
       <ros>
           <namespace>/steelhead/controls</namespace>
           <remapping>output_forces</remapping>
       </ros>
     </plugin>
-    <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
+    <!-- <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
       <state_topic>/steelhead/state</state_topic>
       <update_rate>50</update_rate>
     </plugin>
@@ -95,14 +95,14 @@
       <frame_name>map</frame_name>
       <xyz_offset>0 0 0</xyz_offset>
       <rpy_offset>0 0 0</rpy_offset>
-    </plugin>
+    </plugin> -->
   </gazebo>
   <gazebo>
 </gazebo>
   <gazebo reference="base_link">
     <material>Gazebo/Yellow</material>
     <turnGravityOff>1</turnGravityOff>
-    <sensor type="camera" name="front_camera">
+    <!-- <sensor type="camera" name="front_camera">
       <pose>0.5 0 0 0 0 0</pose>
       <update_rate>60</update_rate>
       <visualize>true</visualize>
@@ -175,6 +175,6 @@
         </ros>
       </plugin>
       <pose>0 0 0 0 0 0</pose>
-    </sensor>
+    </sensor> -->
   </gazebo> 
 </robot>

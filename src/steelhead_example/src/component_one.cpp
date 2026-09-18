@@ -10,7 +10,7 @@ ComponentOne::ComponentOne(const rclcpp::NodeOptions & options)
 {
     this->declare_parameter<int>("example_param", 0);
     
-    publisher_ = this->create_publisher<std_msgs::msg::String>("example/component_one/out", 10);
+    publisher_ = this->create_publisher<std_msgs::msg::String>("example/component_one/out", rclcpp::QoS(10));
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "example/component_one/in", 10, std::bind(&ComponentOne::callback, this, _1));
