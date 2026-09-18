@@ -57,7 +57,7 @@ def generate_launch_description():
 
     gz_args = PythonExpression(
         [
-            '"-r"',
+            '"-r "',
             ' + ("-s " if "',
             LaunchConfiguration("headless"),
             '" == "true" else "")',

@@ -3,7 +3,7 @@ import xarray as xr
 import capytaine as cpt
 import trimesh
 
-simple_model = "models/complex_steelhead.stl"
+simple_model = "models/simple_steelhead.stl"
 complex_model = 'models/complex_steelhead.stl'
 
 body_1 = cpt.FloatingBody(
