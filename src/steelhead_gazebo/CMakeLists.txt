@@ -111,20 +111,6 @@ install(TARGETS steelhead_gazebo
 #   RUNTIME DESTINATION bin
 # )
 
-# # hydrodynamics_plugin
-# add_library(hydrodynamics_plugin SHARED
-#   src/hydrodynamics_plugin.cpp
-#   gazebo_utils/src/gazebo_utils.cpp
-#   math_utils/src/math_utils.cpp
-# )
-# target_include_directories(hydrodynamics_plugin PUBLIC include gazebo_utils math_utils)
-# ament_export_libraries(hydrodynamics_plugin)
-# install(TARGETS hydrodynamics_plugin
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin
-# )
-
 # # actuators_command_simulation
 # add_executable(actuators_command_simulation src/actuators_command_simulation.cpp)
 # target_include_directories(actuators_command_simulation PUBLIC

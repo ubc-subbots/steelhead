@@ -1,6 +1,6 @@
 # Model Analysis for Simulation
 
-This repository was design to analyze the Steelhead robot and extract certain parameters required for simulation, mostly related to the hydrodynamics model. These parameters can be set in the models `.sdf` file under the hydrodynamics tag.
+This repository was design to analyze the Steelhead robot and extract certain parameters required for simulation, mostly related to the hydrodynamics model. These parameters can be set in the models `.sdf` file.
 
 These instructions were made on Ubuntu 26.04 since that is what Steelhead runs, and may change throughout versions.
 

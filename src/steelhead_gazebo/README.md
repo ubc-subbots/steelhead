@@ -159,7 +159,7 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 - A cube with the Lena test image as its texture.
 
 `steelhead_auv`
-- Steelhead AUV with ideal hydrodynamics (neutrally buoyant and naturally upright)
+- Steelhead AUV with frame and thrusters
 
 ##  Importing Models From SolidWorks 
 
@@ -168,7 +168,7 @@ This guide explains how we import mesh files and kinematic information from Soli
 ### Required Software
 
 1. Solidworks (Windows)
-2. Blender 2.80 or higher(Ubuntu)
+2. Blender 2.80 or higher (Ubuntu)
 
 ### Process
 

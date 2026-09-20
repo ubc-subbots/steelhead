@@ -212,9 +212,7 @@
       </ros>
     </plugin>
 
-    <!-- <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
-
-    <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
+    <!-- <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
       <state_topic>/steelhead/state</state_topic>
       <publish_odom_tf>false</publish_odom_tf>
       <update_rate>50</update_rate>
@@ -223,18 +221,6 @@
     <plugin name="pressure_sensor" filename="libpressure_sensor.so">
       <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
       <update_rate>50</update_rate>
-    </plugin>
-    
-    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-      <always_on>true</always_on>
-      <update_rate>50.0</update_rate>
-      <publish_odom_tf>false</publish_odom_tf>
-      <body_name>base_link::base_link</body_name>
-      <topic_name>/steelhead/state</topic_name>
-      <gaussian_noise>0.01</gaussian_noise>
-      <frame_name>odom</frame_name>
-      <xyz_offset>0 0 0</xyz_offset>
-      <rpy_offset>0 0 0</rpy_offset>
     </plugin> -->
 
     <static>0</static>
