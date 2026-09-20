@@ -204,7 +204,7 @@
     -->
 
     <!-- Thrust Vectors -->
-    <!-- <plugin name="thruster_array" filename="libthruster_driver_plugin.so">
+    <plugin name="steelhead_gazebo::ThrusterDriver" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
       <ros>
         <namespace>/steelhead/controls</namespace>
@@ -212,7 +212,7 @@
       </ros>
     </plugin>
 
-    <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
+    <!-- <plugin name="hydrodynamics" filename="libhydrodynamics_plugin.so"></plugin>
 
     <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
       <state_topic>/steelhead/state</state_topic>

@@ -3,7 +3,6 @@
   <model name='steelhead_frame'>
     <link name='base_link'>
 
-      <!-- pose relative to STL file origin, was moved to AUV center using Blender -->
       <!-- Edited for Steelhead Sept 17 2026-->
       <inertial>
         <mass>12.5</mass>
@@ -41,30 +40,6 @@
          <pose>0 0 0 0 0 0</pose>
       </inertial>
 
-      <plugin
-        filename="gz-sim-hydrodynamics-system"
-        name="gz::sim::systems::Hydrodynamics">
-        <link_name>base_link</link_name>
-        <disable_added_mass>true</disable_added_mass>
-        <xDotU>-0.04876161</xDotU>
-        <yDotV>-1.26324739</yDotV>
-        <zDotW>-1.26324739</zDotW>
-        <kDotP>0</kDotP>
-        <mDotQ>-0.3346</mDotQ>
-        <nDotR>-0.3346</nDotR>
-        <xUabsU>-0.62282</xUabsU>
-        <xU>-5</xU>
-        <yVabsV>-60.127</yVabsV>
-        <yV>-5</yV>
-        <zWabsW>-6.0127</zWabsW>
-        <zW>-100</zW>
-        <kPabsP>-0.001916</kPabsP>
-        <kP>-1</kP>
-        <mQabsQ>-6.32698957</mQabsQ>
-        <mQ>-1</mQ>
-        <nRabsR>-6.32698957</nRabsR>
-        <nR>-1</nR>
-      </plugin>
 
       <!-- Visual Data -->
       <visual name='visual'>
@@ -256,5 +231,23 @@
 
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
+      <plugin
+        filename="gz-sim-hydrodynamics-system"
+        name="gz::sim::systems::Hydrodynamics">
+        <link_name>base_link</link_name>
+        <disable_added_mass>true</disable_added_mass>
+        <xUabsU>-59.75066625</xUabsU>
+        <xU>-0.2229119791</xU>
+        <yVabsV>-71.13459739</yVabsV>
+        <yV>-1.105547605</yV>
+        <zWabsW>-67.099009</zWabsW>
+        <zW>-0.2472084207</zW>
+        <kPabsP>-5.975066625</kPabsP>
+        <kP>-0.02229119791</kP>
+        <mQabsQ>-7.113459739</mQabsQ>
+        <mQ>-0.1105547605</mQ>
+        <nRabsR>-6.7099009</nRabsR>
+        <nR>-0.02472084207</nR>
+      </plugin>
   </model>
 </sdf>
