@@ -49,16 +49,24 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 #   RUNTIME DESTINATION bin
 # )
 
-# # pressure_sensor
-# add_library(pressure_sensor SHARED src/pressure_sensor.cpp)
-# target_include_directories(pressure_sensor PUBLIC include)
-# target_link_libraries(pressure_sensor steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs)
-# ament_export_libraries(pressure_sensor)
-# install(TARGETS pressure_sensor
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin
-# )
+# pressure_sensor
+add_library(pressure_sensor SHARED src/pressure_sensor.cpp)
+target_include_directories(pressure_sensor PUBLIC 
+  include
+  ${rclcpp_INCLUDE_DIRS}
+)
+target_link_libraries(pressure_sensor 
+  gz-sim
+  ${rclcpp_LIBRARIES}
+  steelhead_interfaces::steelhead_interfaces 
+  geometry_msgs::geometry_msgs
+)
+ament_export_libraries(pressure_sensor)
+install(TARGETS pressure_sensor
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 # thruster_driver_plugin
 add_library(thruster_driver_plugin SHARED src/thruster_driver_plugin.cpp)

@@ -1,16 +1,36 @@
 #include "steelhead_gazebo/pressure_sensor.hpp"
-#include <ignition/math/Pose3.hh>
+#include <gz/sim/Link.hh>
+#include <gz/sim/components/Pose.hh>
+#include <gz/plugin/Register.hh>
+
+GZ_ADD_PLUGIN(steelhead_gazebo::PressureSensor,
+              gz::sim::System,
+              steelhead_gazebo::PressureSensor::ISystemConfigure,
+              steelhead_gazebo::PressureSensor::ISystemPostUpdate)
+
+GZ_ADD_PLUGIN_ALIAS(steelhead_gazebo::PressureSensor, "steelhead_gazebo::PressureSensor")
 
 namespace steelhead_gazebo
 {
 
-    PressureSensor::PressureSensor() : node{rclcpp::Node::make_shared("pressure_sensor")} {}
+    PressureSensor::PressureSensor()
+    {
+        if (!rclcpp::ok()) {
+            rclcpp::init(0, nullptr);
+        }
+        node = rclcpp::Node::make_shared("pressure_sensor");
+    }
 
+    PressureSensor::~PressureSensor()
+    {
+        if (this->node) rclcpp::shutdown();
+        if (this->spinThread.joinable()) this->spinThread.join();
+    }
 
-    PressureSensor::~PressureSensor() {}
-
-
-    void PressureSensor::Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf)
+    void PressureSensor::Configure(const gz::sim::Entity &_entity,
+                                   const std::shared_ptr<const sdf::Element> &_sdf,
+                                   gz::sim::EntityComponentManager &_ecm,
+                                   gz::sim::EventManager &/*_eventMgr*/)
     {
         if (_sdf->HasElement("publish_topic"))
         {
@@ -31,33 +51,55 @@ namespace steelhead_gazebo
             this->update_rate = 1;
         }
 
-        this->pressure_publisher = node->
-            create_publisher<steelhead_interfaces::msg::PressureSensor>(this->publish_topic, 10);
+        this->pressure_publisher = node->create_publisher<steelhead_interfaces::msg::PressureSensor>(this->publish_topic, 10);
 
-        this->model = _model;
-    
-        this->updateConnection_ = gazebo::event::Events::ConnectWorldUpdateBegin(
-                                    std::bind(&PressureSensor::OnUpdate, this));
+        this->model = gz::sim::Model(_entity);
+
+        // CREATE COMPONENT FOR BASE LINK IN CONFIGURE
+        gz::sim::Entity linkEntity = this->model.LinkByName(_ecm, "base_link");
+        if (linkEntity != gz::sim::kNullEntity) {
+            _ecm.CreateComponent(linkEntity, gz::sim::components::WorldPose());
+        } else {
+            gzerr << "[Pressure Sensor] Could not find base_link inside model!" << std::endl;
+        }
 
         this->spinThread = std::thread(std::bind(&PressureSensor::SpinNode, this));
 
-        this->prev_time = node->now();
+        this->prev_time = std::chrono::steady_clock::duration::zero();
 
         gzmsg << "Pressure sensor successfully started!\n";
     }
 
-    void PressureSensor::OnUpdate()
+    void PressureSensor::PostUpdate(const gz::sim::UpdateInfo &_info,
+                                    const gz::sim::EntityComponentManager &_ecm)
     {
-        ignition::math::Pose3d pose = model->WorldPose();
-        auto msg = steelhead_interfaces::msg::PressureSensor();
-        msg.depth = -pose.Pos()[2];
-        msg.temperature = 20; // just mock out some value since depth is the only one of real value as of now
-        msg.pressure = 1.0; // see above
-        rclcpp::Time now = node->now();
-        if ((now- this->prev_time).seconds() >= (1.0/this->update_rate))
+        if (_info.paused) return;
+
+        auto current_time = _info.simTime;
+        double dt = std::chrono::duration_cast<std::chrono::duration<double>>(current_time - this->prev_time).count();
+        
+        if (dt >= (1.0 / this->update_rate))
         {
-            this->prev_time = now;
-            this->pressure_publisher->publish(msg);
+            this->prev_time = current_time;
+
+            gz::sim::Entity linkEntity = this->model.LinkByName(_ecm, "base_link");
+            if (linkEntity != gz::sim::kNullEntity)
+            {
+                gz::sim::Link link(linkEntity);
+                auto pose = link.WorldPose(_ecm);
+                if (pose)
+                {
+                    auto msg = steelhead_interfaces::msg::PressureSensor();
+                    msg.depth = -pose->Pos().Z();
+                    // mock out the other values because depth is all we are realistically using for now
+                    msg.temperature = 20.0; 
+                    msg.pressure = 0.0;
+                    
+                    this->pressure_publisher->publish(msg);
+                } else {
+                    gzerr << "[Pressure Sensor] WorldPose component is missing!" << std::endl;
+                }
+            }
         }
     }
 

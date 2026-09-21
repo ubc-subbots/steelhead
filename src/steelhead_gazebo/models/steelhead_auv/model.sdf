@@ -72,15 +72,6 @@
       <name>thruster6</name>
     </include>
 
-    <!--
-
-      Hydrodynamic model used to calculate restoring forces.
-
-      In the future this description should be specified in each link 
-      for a better approximation.
-
-    -->
-
     <base_link>base_link::base_link</base_link>
 
     <!--
@@ -211,11 +202,6 @@
         <remapping>output_forces</remapping>
       </ros>
     </plugin>
-
-    <!-- <plugin name="pressure_sensor" filename="libpressure_sensor.so">
-      <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
-      <update_rate>50</update_rate>
-    </plugin>  -->
 
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
