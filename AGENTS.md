@@ -7,7 +7,8 @@ This file contains critical context, rules, and learnings for AI agents working 
 ## 1. Core Rules & AI Policy
 * **ROS 2 Version:** We are using **ROS 2 Lyrical** on Ubuntu 26.04.
 * **Clean Artifacts:** Never leave behind temporary scratch scripts (like `fix_plugin.py`), dummy comments, or conversational AI placeholders in the codebase (e.g., `// Add your code here`). If you create scratch scripts, delete them before finishing your turn.
-* **Accountability:** AI is infamous for hallucinating outdated ROS 2 or Gazebo Classic code. Always double-check API versions and documentation before applying fixes. Do not introduce breaking changes to APIs without verifying they exist in ROS 2 Lyrical.
+* **Documentation:** If you are changing functionality of a package, make sure to check its README.md to see if the documentation needs to be updated. Similarly, creating a new package requires a README.md to be created describing its functionality. Use steelhead_controls README.md as a basis.
+* **Accountability:** AI is infamous for hallucinating outdated ROS 2 or Gazebo Classic code. Always double-check API versions and documentation before applying fixes. Do not introduce breaking changes to APIs without verifying they exist in ROS 2 Lyrical or Gazebo Harmonic.
 
 ## 2. Gazebo Harmonic & ROS 2 Migration Gotchas
 The physics engine has undergone two major rebrandings (Gazebo Classic -> Ignition -> Gazebo Sim/Harmonic). 

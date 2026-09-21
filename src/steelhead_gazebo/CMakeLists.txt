@@ -33,21 +33,14 @@ find_package(rclpy REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
+find_package(ros_gz_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 include_directories(include)
 include_directories(${OpenCV_INCLUDE_DIRS})
-
-# ground_truth_sensor
-# add_library(ground_truth_sensor SHARED src/ground_truth_sensor.cpp)
-# target_include_directories(ground_truth_sensor PUBLIC include)
-# target_link_libraries(ground_truth_sensor geometry_msgs::geometry_msgs)
-# ament_export_libraries(ground_truth_sensor)
-# install(TARGETS ground_truth_sensor
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin
-# )
 
 # pressure_sensor
 add_library(pressure_sensor SHARED src/pressure_sensor.cpp)
@@ -74,11 +67,17 @@ target_include_directories(thruster_driver_plugin PUBLIC
   include
   ${rclcpp_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
+  ${nav_msgs_INCLUDE_DIRS}
+  ${tf2_INCLUDE_DIRS}
+  ${ament_index_cpp_INCLUDE_DIRS}
 )
 target_link_libraries(thruster_driver_plugin
   gz-sim
   ${rclcpp_LIBRARIES}
   ${std_msgs_LIBRARIES}
+  nav_msgs::nav_msgs
+  tf2::tf2
+  ament_index_cpp::ament_index_cpp
 )
 ament_export_libraries(thruster_driver_plugin)
 install(TARGETS thruster_driver_plugin
@@ -86,18 +85,6 @@ install(TARGETS thruster_driver_plugin
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
-
-# # underwater_camera
-# add_executable(underwater_camera src/underwater_camera.cpp)
-# target_include_directories(underwater_camera PUBLIC
-#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#   $<INSTALL_INTERFACE:include>
-# )
-# target_link_libraries(underwater_camera
-#   "image_transport" "sensor_msgs" "message_filters" "rclcpp"
-#   "OpenCV" "cv_bridge" "steelhead_interfaces"
-# )
-# install(TARGETS underwater_camera DESTINATION lib/${PROJECT_NAME})
 
 # steelhead_gazebo
 add_library(steelhead_gazebo SHARED src/underwater_camera.cpp)
@@ -110,25 +97,40 @@ install(TARGETS steelhead_gazebo
   RUNTIME DESTINATION bin
 )
 
-# # torpedo_plugin
-# add_library(torpedo_plugin SHARED src/torpedo_plugin.cpp)
-# target_link_libraries(torpedo_plugin rclcpp::rclcpp)
-# install(TARGETS torpedo_plugin
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin
-# )
+# torpedo_plugin
+add_library(torpedo_plugin SHARED src/torpedo_plugin.cpp)
+target_include_directories(torpedo_plugin PUBLIC include)
+target_link_libraries(torpedo_plugin gz-sim)
+install(TARGETS torpedo_plugin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
-# # actuators_command_simulation
-# add_executable(actuators_command_simulation src/actuators_command_simulation.cpp)
-# target_include_directories(actuators_command_simulation PUBLIC
-#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#   $<INSTALL_INTERFACE:include>
-# )
-# target_link_libraries(actuators_command_simulation
-#   "rclcpp" "rclcpp_components" "steelhead_interfaces"
-# )
-# install(TARGETS actuators_command_simulation DESTINATION lib/${PROJECT_NAME})
+# actuators_command_simulation
+add_executable(actuators_command_simulation src/actuators_command_simulation.cpp)
+target_include_directories(actuators_command_simulation PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_include_directories(actuators_command_simulation PUBLIC
+  ${std_msgs_INCLUDE_DIRS}
+  ${nav_msgs_INCLUDE_DIRS}
+  ${tf2_INCLUDE_DIRS}
+  ${ament_index_cpp_INCLUDE_DIRS}
+  ${ros_gz_interfaces_INCLUDE_DIRS}
+)
+target_link_libraries(actuators_command_simulation
+  rclcpp::rclcpp
+  rclcpp_components::component
+  steelhead_interfaces::steelhead_interfaces
+  ros_gz_interfaces::ros_gz_interfaces
+  ${std_msgs_LIBRARIES}
+  nav_msgs::nav_msgs
+  tf2::tf2
+  ament_index_cpp::ament_index_cpp
+)
+install(TARGETS actuators_command_simulation DESTINATION lib/${PROJECT_NAME})
 
 # smooth_camera_plugin - deprecated since classic
 # add_library(smooth_camera_plugin SHARED src/smooth_camera_plugin.cpp)
@@ -173,6 +175,19 @@ install(TARGETS steelhead_gazebo
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION bin
 # )
+
+#  underwater_camera - deprecated since classic
+# add_executable(underwater_camera src/underwater_camera.cpp)
+# target_include_directories(underwater_camera PUBLIC
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#   $<INSTALL_INTERFACE:include>
+# )
+# target_link_libraries(underwater_camera
+#   "image_transport" "sensor_msgs" "message_filters" "rclcpp"
+#   "OpenCV" "cv_bridge" "steelhead_interfaces"
+# )
+# install(TARGETS underwater_camera DESTINATION lib/${PROJECT_NAME})
+
 
 install(DIRECTORY
   config

@@ -88,7 +88,8 @@ def generate_launch_description():
             "/front_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
             "/front_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             "/bottom_camera/image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/bottom_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
+            "/bottom_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/world/competition/create@ros_gz_interfaces/srv/SpawnEntity"
         ],
         remappings=[
             ('/model/base_link/odometry', '/steelhead/state'),

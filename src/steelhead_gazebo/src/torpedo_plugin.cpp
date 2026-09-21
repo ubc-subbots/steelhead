@@ -1,76 +1,79 @@
 #include "steelhead_gazebo/torpedo_plugin.hpp"
+#include <gz/sim/components/Pose.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/math/Vector3.hh>
+
+GZ_ADD_PLUGIN(
+    steelhead_gazebo::TorpedoPlugin,
+    gz::sim::System,
+    steelhead_gazebo::TorpedoPlugin::ISystemConfigure,
+    steelhead_gazebo::TorpedoPlugin::ISystemPreUpdate)
+GZ_ADD_PLUGIN_ALIAS(steelhead_gazebo::TorpedoPlugin, "steelhead_gazebo::TorpedoPlugin")
 
 namespace steelhead_gazebo
 {
-
-    TorpedoPlugin::TorpedoPlugin() {}
-
-
-    TorpedoPlugin::~TorpedoPlugin() {}
-
-
-    void TorpedoPlugin::Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf)
+    void TorpedoPlugin::Configure(const gz::sim::Entity &_entity,
+                                  const std::shared_ptr<const sdf::Element> &_sdf,
+                                  gz::sim::EntityComponentManager &_ecm,
+                                  gz::sim::EventManager &/*_eventMgr*/)
     {
-        this->model_ = _model;
-        this->world_ = this->model_->GetWorld();
+        this->model_ = gz::sim::Model(_entity);
         
-        std::string node_name = "torpedo_plugin_" + this->model_->GetName();
-        this->ros_node_ = rclcpp::Node::make_shared(node_name);
-
-        std::string link_name = "base_link";
+        std::string link_name = "torpedo";
         if (_sdf->HasElement("link_name"))
         {
             link_name = _sdf->Get<std::string>("link_name");
         }
         
-        this->link_ = this->model_->GetLink(link_name);
-        if (!this->link_)
-        {
-            RCLCPP_ERROR(this->ros_node_->get_logger(), "Link '%s' not found!\n", link_name.c_str());
-            return;
+        gz::sim::Entity linkEntity = this->model_.LinkByName(_ecm, link_name);
+        if (linkEntity != gz::sim::kNullEntity) {
+            this->link_ = gz::sim::Link(linkEntity);
+            this->link_.EnableVelocityChecks(_ecm, true);
         }
 
-        this->initial_force_ = 500.0;
         if (_sdf->HasElement("initial_force"))
         {
             this->initial_force_ = _sdf->Get<double>("initial_force");
         }
-
-        this->force_duration_ = 0.5;
         if (_sdf->HasElement("force_duration"))
         {
             this->force_duration_ = _sdf->Get<double>("force_duration");
         }
-
-        this->lifetime_ = 5.0;
         if (_sdf->HasElement("lifetime"))
         {
             this->lifetime_ = _sdf->Get<double>("lifetime");
         }
         
-        this->spawn_time_ = this->world_->SimTime();
-        
-        this->updateConnection_ = gazebo::event::Events::ConnectWorldUpdateBegin(
-                                    std::bind(&TorpedoPlugin::OnUpdate, this));
-        
-        // RCLCPP_INFO(this->ros_node_->get_logger(), "Torpedo plugin loaded. Force: %.2f, Lifetime: %.2f\n", this->initial_force_, this->lifetime_);
+        // Ensure WorldPose component is created
+        _ecm.CreateComponent(this->model_.Entity(), gz::sim::components::Pose());
     }
 
-
-    void TorpedoPlugin::OnUpdate()
+    void TorpedoPlugin::PreUpdate(const gz::sim::UpdateInfo &_info,
+                                  gz::sim::EntityComponentManager &_ecm)
     {
-        gazebo::common::Time current_time = this->world_->SimTime();
-        double elapsed = (current_time - this->spawn_time_).Double();
+        if (_info.paused) return;
 
-        if (elapsed < this->force_duration_)
-        {
-            this->link_->AddRelativeForce(ignition::math::Vector3d(this->initial_force_, 0.0, 0.0));
+        if (this->spawn_time_.count() == 0) {
+            this->spawn_time_ = _info.simTime;
         }
 
-        if (elapsed >= this->lifetime_)
+        std::chrono::duration<double> elapsed = _info.simTime - this->spawn_time_;
+
+        if (elapsed.count() < this->force_duration_)
         {
-            this->world_->RemoveModel(this->model_->GetName());
+            if (this->link_.Entity() != gz::sim::kNullEntity) {
+                auto poseComp = _ecm.Component<gz::sim::components::Pose>(this->model_.Entity());
+                if (poseComp) {
+                    gz::math::Vector3d force_local(this->initial_force_, 0.0, 0.0);
+                    gz::math::Vector3d force_world = poseComp->Data().Rot() * force_local;
+                    this->link_.AddWorldWrench(_ecm, force_world, gz::math::Vector3d::Zero);
+                }
+            }
+        }
+
+        if (elapsed.count() >= this->lifetime_)
+        {
+            _ecm.RequestRemoveEntity(this->model_.Entity());
         }
     }
-
 }
