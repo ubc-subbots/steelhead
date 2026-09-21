@@ -55,12 +55,11 @@ namespace steelhead_gazebo
 
         this->model = gz::sim::Model(_entity);
 
-        // CREATE COMPONENT FOR BASE LINK IN CONFIGURE
         gz::sim::Entity linkEntity = this->model.LinkByName(_ecm, "base_link");
         if (linkEntity != gz::sim::kNullEntity) {
             _ecm.CreateComponent(linkEntity, gz::sim::components::WorldPose());
         } else {
-            gzerr << "[Pressure Sensor] Could not find base_link inside model!" << std::endl;
+            gzerr << "Could not find base_link inside model!" << std::endl;
         }
 
         this->spinThread = std::thread(std::bind(&PressureSensor::SpinNode, this));
