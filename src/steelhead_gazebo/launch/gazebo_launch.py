@@ -79,7 +79,13 @@ def generate_launch_description():
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            "/model/base_link/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry"
+        ],
+        remappings=[
+            ('/model/base_link/odometry', '/steelhead/state')
+        ],
         output="screen",
     )
 
