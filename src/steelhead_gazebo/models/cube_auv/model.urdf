@@ -150,7 +150,7 @@
           <stddev>0.007</stddev>
         </noise>
       </camera>
-      <plugin name="down_camera" filename="libgazebo_ros_camera.so">
+      <plugin name="bottom_camera" filename="libgazebo_ros_camera.so">
         <ros>
           <namespace>/steelhead/drivers</namespace>
         </ros>

@@ -157,7 +157,7 @@ class YOLODetector(Node):
                         x1, y1, x2, y2 = map(int, box.xyxy[0])
                         conf = float(box.conf[0])
                         cls_id = int(box.cls[0])
-                        cls_name = result.names[cls_id]
+                        cls_name = result.names.get(cls_id, f"Unknown_{cls_id}")
 
                         # Record machine-readable detection (xy = top-left corner, pixels)
                         detection_box = DetectionBox()
@@ -200,13 +200,24 @@ class YOLODetector(Node):
             # Publish machine-readable detections (empty array when nothing detected)
             self.detections_publisher.publish(detection_array)
 
-            # Convert back to ROS image and publish
-            annotated_msg = self.bridge.cv2_to_imgmsg(annotated_image, encoding="bgr8")
+            # Convert back to ROS image and publish (manual bypass for cv_bridge bug)
+            annotated_msg = Image()
             annotated_msg.header = msg.header
+            annotated_msg.height = annotated_image.shape[0]
+            annotated_msg.width = annotated_image.shape[1]
+            annotated_msg.encoding = "bgr8"
+            annotated_msg.is_bigendian = 1 if annotated_image.dtype.byteorder == '>' else 0
+            annotated_msg.step = int(annotated_image.strides[0])
+            
+            if not annotated_image.flags.c_contiguous:
+                import numpy as np
+                annotated_image = np.ascontiguousarray(annotated_image)
+                
+            annotated_msg.data = annotated_image.tobytes()
             self.annotated_publisher.publish(annotated_msg)
 
         except Exception as e:
-            self.get_logger().error(f"Error in image callback: {e}")
+            import traceback; self.get_logger().error(f"Error in image callback: {traceback.format_exc()}")
 
 
 def main(args=None):

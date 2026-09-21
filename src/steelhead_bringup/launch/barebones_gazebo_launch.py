@@ -44,6 +44,6 @@ def generate_launch_description():
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
     # ld.add_action(controller_teleop)
-    # ld.add_action(actuators_simulation)
+    ld.add_action(actuators_simulation)
 
     return ld

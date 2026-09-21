@@ -140,10 +140,12 @@
         </surface>
       </collision>
       
-      <!-- <sensor type="depth" name="front_camera">
-        <pose>0.45 -0.06 0 0 0 0 </pose>
+      <sensor type="rgbd_camera" name="front_camera">
+        <pose>0.45 -0.06 0 0 0 0</pose>
         <update_rate>60</update_rate>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
+        <topic>/front_camera</topic>
+        <gz:frame_id>camera_link_optical</gz:frame_id>
         <camera name="front">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
@@ -161,25 +163,14 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <plugin name="front_camera" filename="libgazebo_ros_camera.so">
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-            <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
-            <remapping>custom_camera/depth/image_raw:=front_camera/depth/image_raw</remapping>
-          </ros>
-
-          <publish_camera_info>true</publish_camera_info>
-
-          <frame_name>camera_link_optical</frame_name>
-
-          <min_depth>0.1</min_depth>
-          <max_depth>100.0</max_depth>
-        </plugin>
       </sensor>
+
       <sensor type="camera" name="bottom_camera">
         <pose>0.4 -0.06 0 0 1.57 0</pose>
         <update_rate>60</update_rate>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
+        <topic>/bottom_camera/image</topic>
+        <gz:frame_id>bottom_camera_link</gz:frame_id>
         <camera name="bottom">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
@@ -197,36 +188,28 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <plugin name="down_camera" filename="libgazebo_ros_camera.so">
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-          </ros>
-        </plugin>
       </sensor>
+
       <sensor name="imu_sensor" type="imu">
         <always_on>true</always_on>
-        <update_rate>300</update_rate>
+        <update_rate>200</update_rate>
         <visualize>true</visualize>
-        <topic>imu</topic>
-        <gravity>true</gravity>
-        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
-          <topicName>imu</topicName>
-          <bodyName>imu_link</bodyName>
-          <updateRateHZ>200</updateRateHZ>
-          <gaussianNoise>0.001</gaussianNoise>
-          <xyzOffset>0 0 0</xyzOffset>
-          <rpyOffset>0 0 0</rpyOffset>
-          <frameName>base_link</frameName>
-          <linear_acceleration_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</linear_acceleration_covariance>
-          <angular_velocity_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</angular_velocity_covariance>
-          <orientation_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</orientation_covariance>
-          <initialOrientationAsReference>false</initialOrientationAsReference>
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-          </ros>
-        </plugin>
+        <topic>/imu</topic>
+        <gz:frame_id>base_link</gz:frame_id>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
         <pose>0 0 0 0 0 0</pose>
-      </sensor> -->
+      </sensor>
     </link>
 
     <static>0</static>

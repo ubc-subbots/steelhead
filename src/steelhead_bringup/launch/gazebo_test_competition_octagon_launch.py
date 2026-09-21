@@ -78,7 +78,7 @@ def generate_launch_description():
     yolo_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_vision"),
+                get_package_share_directory("steelhead_object_recognition"),
                 "launch",
                 "yolo_detector_launch.py",
             )

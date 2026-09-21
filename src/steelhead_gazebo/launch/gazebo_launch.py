@@ -81,10 +81,24 @@ def generate_launch_description():
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            "/model/base_link/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry"
+            "/model/base_link/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            "/front_camera/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/front_camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/front_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/front_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+            "/bottom_camera/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/bottom_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
         ],
         remappings=[
-            ('/model/base_link/odometry', '/steelhead/state')
+            ('/model/base_link/odometry', '/steelhead/state'),
+            ('/imu', '/steelhead/drivers/imu/out'),
+            ('/front_camera/image', '/steelhead/drivers/front_camera/image_raw'),
+            ('/front_camera/depth_image', '/steelhead/drivers/front_camera/depth/image_raw'),
+            ('/front_camera/camera_info', '/steelhead/drivers/front_camera/camera_info'),
+            ('/front_camera/points', '/steelhead/drivers/front_camera/points'),
+            ('/bottom_camera/image', '/steelhead/drivers/bottom_camera/image_raw'),
+            ('/bottom_camera/camera_info', '/steelhead/drivers/bottom_camera/camera_info')
         ],
         output="screen",
     )

@@ -60,7 +60,6 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="screen",
-        # Silence log spam
         arguments=["-d", rviz_config_file, "--ros-args", "--log-level", "WARN"],
         parameters=[{"use_sim_time": True}],
     )
@@ -78,7 +77,7 @@ def generate_launch_description():
     yolo_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_vision"),
+                get_package_share_directory("steelhead_object_recognition"),
                 "launch",
                 "yolo_detector_launch.py",
             )

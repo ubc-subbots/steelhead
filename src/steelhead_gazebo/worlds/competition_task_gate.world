@@ -1,15 +1,50 @@
 <?xml version="1.0"?>
-<sdf version="1.6">
+<sdf version="1.8">
   <world name="default">
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
+      <graded_buoyancy>
+        <default_density>1025</default_density>
+        <density_change>
+          <above_depth>0</above_depth>
+          <density>1.125</density>
+        </density_change>
+      </graded_buoyancy>
+    </plugin>
+
+    <physics name="1ms" type="dart">
+      <max_step_size>0.02</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+
     <scene>
       <shadows>0</shadows>
     </scene>
     <gravity>0 0 -9.81</gravity>
-    <fluid_density>1000.00</fluid_density>
-    <physics name="fast_simulation" type="ode">
-      <max_step_size>0.01</max_step_size>
-      <real_time_update_rate>100</real_time_update_rate>
-    </physics>
+    
+    
 
     <light name="sun_z" type="directional">
       <cast_shadows>1</cast_shadows>
