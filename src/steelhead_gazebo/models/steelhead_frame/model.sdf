@@ -244,7 +244,7 @@
       <plugin
         filename="libpressure_sensor.so"
         name="steelhead_gazebo::PressureSensor">
-        <publish_topic>/steelhead/sensors/pressure</publish_topic>
+        <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
         <update_rate>50</update_rate>
       </plugin>
   </model>
