@@ -57,7 +57,7 @@ def generate_launch_description():
 
     gz_args = PythonExpression(
         [
-            '"-r "',
+            '" -r -v 1 "',
             ' + ("-s " if "',
             LaunchConfiguration("headless"),
             '" == "true" else "")',
@@ -102,6 +102,7 @@ def generate_launch_description():
             ('/bottom_camera/camera_info', '/steelhead/drivers/bottom_camera/camera_info')
         ],
         output="screen",
+        # ros_arguments=["--log-level", "WARN"],
     )
 
     ld.add_action(world_arg)

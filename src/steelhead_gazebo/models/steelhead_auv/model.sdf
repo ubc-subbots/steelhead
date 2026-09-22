@@ -72,7 +72,6 @@
       <name>thruster6</name>
     </include>
 
-    <base_link>base_link::base_link</base_link>
 
     <!--
 

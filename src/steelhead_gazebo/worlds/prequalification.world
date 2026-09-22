@@ -81,6 +81,5 @@
         <uri>model://woollett_pool</uri>
     </include>
 
-    <grid>0</grid>
   </world>
 </sdf>
