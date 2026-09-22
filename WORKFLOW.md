@@ -10,9 +10,9 @@ This document outlines the workflow that one should follow when developing on th
     cd <PATH_TO_STEELHEAD>/steelhead
     git checkout main
     git pull
-    git checkout -b <YOUR_FIRST_NAME>/<APPROPRIATE_LABEL>
+    git checkout -b <ISSUE_NUMBER>/<APPROPRIATE_LABEL>
 
-Note that `<PATH_TO_STEELHEAD>` should be substituted to what it is on your machine,  `<YOUR_FIRST_NAME>` should be substituted as your first name, and `<APPROPRIATE_LABEL>` should be some short label that describes the changes you made.
+Note that `<PATH_TO_STEELHEAD>` should be substituted to what it is on your machine,  `<ISSUE_NUMBER>` should be substituted as the issue that the branch seeks to resolve, and `<APPROPRIATE_LABEL>` should be some short label that describes the changes you made (e.g. `12_update_simulation_images`). `<ISSUE_NUMBER>` can be "fix" or "chore" if they are not tied to an issue.
 
 To update the state of your branch, follow the basic add, commit, and push workflow in git. [Here](https://www.atlassian.com/git/glossary) is a tutorial on that if you are new to git. Once you are have completed the tasks given in the issue, and are sure that it follows the [conventions](CONVENTIONS.md) (make sure you add/edit any package documentation as stated [here](CONVENTIONS.md#github)) you are asked to follow, it is time to make a pull request. Go to the `steelhead` repo on GitHub, make sure you are viewing the branch which you are trying to make a pull request for, and you should see a button which says "Contribute", which leads to a "Open pull request" button (GitHub also prompts you to compare and make pull request on branches that had recent pushes, as seen highlighted below):
 

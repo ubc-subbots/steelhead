@@ -63,7 +63,7 @@ class TestPipelineConfigure(unittest.TestCase):
             '/steelhead/configure_pipeline'
         )
         while not self.configure_client.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().warn('Configure pipeline service not available, waiting again...')
+            self.node.get_logger().warning('Configure pipeline service not available, waiting again...')
 
 
     def tearDown(self):

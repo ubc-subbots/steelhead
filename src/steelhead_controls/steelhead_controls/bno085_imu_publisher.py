@@ -41,7 +41,7 @@ class Bno085ImuPublisher(Node):
             return True
         except (serial.SerialException, OSError) as e:
             self.ser = None
-            self.get_logger().warn(
+            self.get_logger().warning(
                 f"Failed to open {self.port}: {e} "
                 f"(retrying every {self.RECONNECT_PERIOD}s)"
             )
@@ -82,7 +82,7 @@ class Bno085ImuPublisher(Node):
         tokens = line.split(",")
         # We expect 7 tokens: status,yaw,pitch,roll,ax,ay,az
         if len(tokens) < 7:
-            self.get_logger().warn(f"Not enough tokens in line: {line}")
+            self.get_logger().warning(f"Not enough tokens in line: {line}")
             return
 
         try:
@@ -131,7 +131,7 @@ class Bno085ImuPublisher(Node):
             self.publisher_.publish(msg)
 
         except ValueError:
-            self.get_logger().warn(f"Failed to parse float from line: {line}")
+            self.get_logger().warning(f"Failed to parse float from line: {line}")
 
 
 def main(args=None):

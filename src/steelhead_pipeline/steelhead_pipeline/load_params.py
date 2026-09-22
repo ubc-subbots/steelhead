@@ -30,13 +30,13 @@ def load_parameter_file(node, node_name, parameter_file):
         param_file = yaml.safe_load(f)
         success = True
         if internal_node_name not in param_file:
-            node.get_logger().warn('Param file does not contain parameters for {}, '
+            node.get_logger().warning('Param file does not contain parameters for {}, '
                                ' only for namespaces: {}' .format(internal_node_name,
                                                                   param_file.keys()))
             success = False
         value = param_file[internal_node_name]
         if type(value) != dict or 'ros__parameters' not in value:
-            node.get_logger().warn('Invalid structure of parameter file in namespace {}'
+            node.get_logger().warning('Invalid structure of parameter file in namespace {}'
                                'expected same format as provided by ros2 param dump'
                                .format(internal_node_name))
             success = False
@@ -80,7 +80,7 @@ def _call_set_parameters(node, node_name, parameters):
     client = node.create_client(SetParameters, f'{node_name}/set_parameters')
 
     while not client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Parameter setting service not available, waiting again...')
+            self.get_logger().warning('Parameter setting service not available, waiting again...')
 
     req = SetParameters.Request()
     req.parameters = parameters
@@ -95,7 +95,7 @@ def _call_set_parameters(node, node_name, parameters):
         time.sleep(0.1)
     if len(res.results) != len(parameters):
         e = future.exception()
-        node.get_logger().warn("Exception while calling set param service of node '{node_name}': {e}")
+        node.get_logger().warning("Exception while calling set param service of node '{node_name}': {e}")
         success = False
     node.destroy_client(client)
     return success

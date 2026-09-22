@@ -14,3 +14,10 @@ This file contains critical context, rules, and learnings for AI agents working 
 The physics engine has undergone two major rebrandings (Gazebo Classic -> Ignition -> Gazebo Sim/Harmonic). 
 
 **Rule of Thumb:** Always verify that code snippets, XML tags, or API calls you find online are for **Gazebo Sim/Harmonic** (headers like `<gz/sim/...>`), and NOT Gazebo Classic (headers like `<gazebo/gazebo.hh>`).
+
+## 3. Workflow & Conventions
+Before making any codebase modifications, you MUST read and understand the following documents:
+- `WORKFLOW.md`: Contains the standard git/branching workflow and PR requirements.
+- `CONVENTIONS.md`: Contains strict Python (Ruff), C++, and ROS 2 styling conventions.
+
+DO NOT skip this step. You must read these files to ensure your code aligns with the repository standards.

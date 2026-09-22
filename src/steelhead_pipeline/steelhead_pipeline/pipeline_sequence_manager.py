@@ -7,18 +7,18 @@ from rclpy.action import ActionClient
 from steelhead_interfaces.srv import ConfigurePipeline
 from steelhead_interfaces.msg import PipelineType
 from steelhead_interfaces.action import RunPipeline
-from rcl_interfaces.msg import Parameter, ParameterValue, ParameterType
+from rcl_interfaces.msg import ParameterDescriptor, Parameter, ParameterValue, ParameterType
 
 class PipelineSequenceManager(Node):
 
     def __init__(self):
         super().__init__('pipeline_sequence_manager')
 
-        self.declare_parameters(
-            namespace='',
-            parameters=[
-                ('pipeline_sequence', []),
-        ])
+        self.declare_parameter(
+            'pipeline_sequence',
+            [],
+            ParameterDescriptor(dynamic_typing=True)
+        )
 
         self.pipelines = self.get_parameter('pipeline_sequence').get_parameter_value().string_array_value
 
@@ -31,11 +31,11 @@ class PipelineSequenceManager(Node):
             self, RunPipeline, '/steelhead/run_pipeline')
 
         while not self.run_client.wait_for_server(timeout_sec=1.0):
-            self.get_logger().warn(
+            self.get_logger().warning(
                 'Run action not available, make sure you have launched the pipeline...')
 
         while not self.configure_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn(
+            self.get_logger().warning(
                 'Configure service not available, make sure you have launched the pipeline...')
 
         self.get_logger().info('Pipeline Sequence Manager successfully started!')

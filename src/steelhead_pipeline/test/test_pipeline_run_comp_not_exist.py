@@ -66,7 +66,7 @@ class TestPipelineRun(unittest.TestCase):
             '/steelhead/configure_pipeline'
         )
         while not self.configure_client.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().warn('Configure pipeline service not available, waiting again...')
+            self.node.get_logger().warning('Configure pipeline service not available, waiting again...')
 
         self.run_client = ActionClient(
             self.node,
@@ -74,7 +74,7 @@ class TestPipelineRun(unittest.TestCase):
             '/steelhead/run_pipeline'
         )
         while not self.run_client.wait_for_server(timeout_sec=1.0):
-            self.node.get_logger().warn('Run pipeline service not available, waiting again...')
+            self.node.get_logger().warning('Run pipeline service not available, waiting again...')
 
 
     def tearDown(self):

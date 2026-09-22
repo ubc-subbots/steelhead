@@ -64,21 +64,21 @@ class PipelineManager(Node):
                 'pipeline/_container/load_node'
         )
         while not self.pipeline_loading_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Pipeline loading service not available, waiting again...')
+            self.get_logger().warning('Pipeline loading service not available, waiting again...')
 
         self.pipeline_unloading_client = self.create_client(
                 UnloadNode, 
                 'pipeline/_container/unload_node'
         )
         while not self.pipeline_unloading_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Pipeline unloading service not available, waiting again...')
+            self.get_logger().warning('Pipeline unloading service not available, waiting again...')
 
         self.pipeline_listing_client = self.create_client(
                 ListNodes, 
                 'pipeline/_container/list_nodes'
         )
         while not self.pipeline_listing_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Pipeline listing service not available, waiting again...')
+            self.get_logger().warning('Pipeline listing service not available, waiting again...')
 
         self.pipeline_running_server = ActionServer(
             self, 
@@ -120,7 +120,7 @@ class PipelineManager(Node):
         pipeline_type = request.pipeline_type.type
         self.get_logger().info('Configuring pipeline for {}...'.format(pipeline_type))
         if pipeline_type not in self.pipeline_types:
-            self.get_logger().warn(
+            self.get_logger().warning(
                 'Configuration of pipeline type "{}" is not allowed, no such type '.format(pipeline_type)
             )
             response.success = False
@@ -136,14 +136,14 @@ class PipelineManager(Node):
                     try:
                         config_yaml = yaml.safe_load(stream)
                     except yaml.YAMLError as e:
-                        self.get_logger().warn('Could not parse {}.yaml'.format(config_file_name))
+                        self.get_logger().warning('Could not parse {}.yaml'.format(config_file_name))
                         self.get_logger().error(str(e))
                 if config_yaml is not None:
                     response.success = self._load_params_from_yaml(config_yaml)
                 else:
                     response.success = False
             else:
-                self.get_logger().warn('Could not find {}.yaml'.format(config_file_name))
+                self.get_logger().warning('Could not find {}.yaml'.format(config_file_name))
                 response.success = False
         if response.success is True:
             self.get_logger().info('Pipeline configured for {}!'.format(pipeline_type))
@@ -178,7 +178,7 @@ class PipelineManager(Node):
             for component, pkg_name, param_file in zip(pipeline_components, pipeline_pkg_names, param_files):
                 self._load_component(component, pkg_name, param_file)
         else:
-            self.get_logger().warn('Pipeline is not configured')
+            self.get_logger().warning('Pipeline is not configured')
 
         while not self.pipeline_success and not self.pipeline_abort:
             time.sleep(1)
@@ -191,7 +191,7 @@ class PipelineManager(Node):
         if self.pipeline_abort:
             goal_handle.abort()
             output = 1 # Show pipeline has aborted
-            self.get_logger().warn('Aborting the pipeline')
+            self.get_logger().warning('Aborting the pipeline')
         else:
             goal_handle.succeed()
         self._unload_components()
@@ -225,7 +225,7 @@ class PipelineManager(Node):
         while rclpy.ok() and res is None:
             time.sleep(0.1)
         if not res.success:
-            self.get_logger().warn('The component {} was not loaded successfully'
+            self.get_logger().warning('The component {} was not loaded successfully'
                                     .format(component))
             self.pipeline_abort = True
         else:
@@ -288,7 +288,7 @@ class PipelineManager(Node):
         while rclpy.ok() and res is None:
             time.sleep(0.1)
         if not res.success:
-            self.get_logger().warn('{} was not unloaded successfully'.format(node_name))
+            self.get_logger().warning('{} was not unloaded successfully'.format(node_name))
         else:
             self.get_logger().info('{} was unloaded successfully'.format(node_name))
 
@@ -309,12 +309,12 @@ class PipelineManager(Node):
                 try:
                     params_list.append(self._create_param_object(param_name, param_val))
                 except rclpy.exceptions.ParameterException as e:
-                    self.get_logger().warn('Could not get the pipeline parameter "{}", does not exist'
+                    self.get_logger().warning('Could not get the pipeline parameter "{}", does not exist'
                                             .format(param_name))
                     self.get_logger().error(str(e))
                     return False
                 except TypeError as e:
-                    self.get_logger().warn('Could not get the pipeline parameter "{}", wrong type'
+                    self.get_logger().warning('Could not get the pipeline parameter "{}", wrong type'
                                             .format(param_name))
                     self.get_logger().error(str(e))
                     return False
@@ -322,7 +322,7 @@ class PipelineManager(Node):
                 self.set_parameters(params_list)
                 if (len(self.get_parameter('pipeline.components').value) !=
                       len(self.get_parameter('pipeline.pkg_names').value)):
-                    self.get_logger().warn('Number of components and package names do not match, {} and {} respectively'
+                    self.get_logger().warning('Number of components and package names do not match, {} and {} respectively'
                                             .format(len(self.get_parameter('pipeline.components').value),
                                             len(self.get_parameter('pipeline.pkg_names').value)))
                     return False
@@ -330,11 +330,11 @@ class PipelineManager(Node):
                 else:
                     return True
             except rclpy.exceptions.ParameterException as e:
-                self.get_logger().warn('Could not set pipeline parameters')
+                self.get_logger().warning('Could not set pipeline parameters')
                 self.get_logger().error(str(e))
                 return False
         else:
-            self.get_logger().warn('Pipeline config YAML needs pipeline namespace')
+            self.get_logger().warning('Pipeline config YAML needs pipeline namespace')
             return False
 
 
