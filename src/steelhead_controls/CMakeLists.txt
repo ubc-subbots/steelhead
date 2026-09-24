@@ -102,12 +102,12 @@ install(TARGETS hover_at_depth
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
-  src/serial_subscriber.cpp
+  
 )
 
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::ThrustAllocator")
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::WaypointMarker")
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::SerialSubscriber")
+
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::TrajectoryGenerator")
 
 target_compile_definitions(steelhead_controls
@@ -146,8 +146,8 @@ install(PROGRAMS
   steelhead_controls/waypoint_marker_tester.py
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
-  steelhead_controls/bno085_imu_publisher.py
-  steelhead_controls/ms5837_depth_publisher.py
+  
+  
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -157,5 +157,22 @@ if(BUILD_TESTING)
     test/test_thrust_allocator_launch.py
   )
 endif()
+
+
+add_executable(pid_controller src/pid_controller.cpp)
+target_include_directories(pid_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(pid_controller PUBLIC 
+  rclcpp::rclcpp 
+  rclcpp_components::component 
+  sensor_msgs::sensor_msgs 
+  std_msgs::std_msgs 
+  steelhead_interfaces::steelhead_interfaces 
+  tf2::tf2 
+  tf2_geometry_msgs::tf2_geometry_msgs 
+  ament_index_cpp::ament_index_cpp)
+install(TARGETS pid_controller DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

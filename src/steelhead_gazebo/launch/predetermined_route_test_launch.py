@@ -12,7 +12,7 @@ def generate_launch_description():
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_pid_controller'), 'launch', 'steelhead_pid_controller_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'pid_controller_launch.py')
         ),
         launch_arguments={'use_sim_time': 'true'}.items()
     )
@@ -86,7 +86,7 @@ def generate_launch_description():
 
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gate'), 'launch', 'gate_detector_launch.py')
+            os.path.join(get_package_share_directory('steelhead_vision'), 'launch', 'gate_detector_launch.py')
         )
     )
 

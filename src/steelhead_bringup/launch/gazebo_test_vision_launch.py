@@ -72,7 +72,7 @@ def generate_launch_description():
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_gate"),
+                get_package_share_directory("steelhead_vision"),
                 "launch",
                 "gate_detector_launch.py",
             )
@@ -87,13 +87,13 @@ def generate_launch_description():
     )
 
     yolo_detector = Node(
-        package="steelhead_object_recognition",
+        package="steelhead_vision",
         executable="yolo_detector.py",
         name="yolo_detector",
         parameters=[
             {
                 "weights_path": os.path.join(
-                    get_package_share_directory("steelhead_object_recognition"),
+                    get_package_share_directory("steelhead_vision"),
                     "config",
                     "competition.pt",
                 )
@@ -107,9 +107,9 @@ def generate_launch_description():
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pid_controller"),
+                get_package_share_directory("steelhead_controls"),
                 "launch",
-                "steelhead_pid_controller_launch.py",
+                "pid_controller_launch.py",
             )
         ),
         launch_arguments={"use_sim_time": "true"}.items(),

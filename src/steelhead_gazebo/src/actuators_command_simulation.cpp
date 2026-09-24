@@ -1,6 +1,6 @@
 #include "steelhead_gazebo/actuators_command_simulation.hpp"
 #include "ros_gz_interfaces/srv/spawn_entity.hpp"
-#include <ament_index_cpp/get_package_share_directory.hpp>
+#include <ament_index_cpp/get_package_share_path.hpp>
 #include <fstream>
 #include <cstdlib>
 #include <tf2/LinearMath/Quaternion.hpp>
@@ -60,7 +60,7 @@ namespace steelhead_gazebo
       
       // load SDF content from a file
       auto request = std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
-      std::ifstream sdf_file(ament_index_cpp::get_package_share_directory("steelhead_gazebo") + "/gazebo/models/steelhead_torpedo/model.sdf");
+      std::ifstream sdf_file(ament_index_cpp::get_package_share_path("steelhead_gazebo") / "gazebo" / "models" / "steelhead_torpedo" / "model.sdf");
       std::string sdf_content((std::istreambuf_iterator<char>(sdf_file)), std::istreambuf_iterator<char>());
       request->entity_factory.name = "torpedo_" + std::to_string(this->now().nanoseconds());
       request->entity_factory.sdf = sdf_content;
@@ -102,7 +102,7 @@ namespace steelhead_gazebo
 
       // load SDF content from a file
       auto request = std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
-      std::ifstream sdf_file(ament_index_cpp::get_package_share_directory("steelhead_gazebo") + "/gazebo/models/steelhead_dropper_marker/model.sdf");
+      std::ifstream sdf_file(ament_index_cpp::get_package_share_path("steelhead_gazebo") / "gazebo" / "models" / "steelhead_dropper_marker" / "model.sdf");
       std::string sdf_content((std::istreambuf_iterator<char>(sdf_file)), std::istreambuf_iterator<char>());
       request->entity_factory.name = "dropper_" + std::to_string(this->now().nanoseconds());
       request->entity_factory.sdf = sdf_content;
