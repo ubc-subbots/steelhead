@@ -1,4 +1,5 @@
-# Steelhead on Ubuntu 20.04 is no longer supported
+> [!WARNING]
+> Steelhead on Ubuntu 20.04 is no longer supported as we've migrated to Ubuntu 26.04
 
 # Steelhead AUV
 
