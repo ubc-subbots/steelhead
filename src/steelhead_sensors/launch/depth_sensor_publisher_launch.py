@@ -9,7 +9,7 @@ def generate_launch_description():
     depth_publisher = Node(
         name='ms5837_depth_publisher',
         namespace='steelhead',
-        package='steelhead_controls',
+        package='steelhead_sensors',
         executable='ms5837_depth_publisher.py',
         output='screen',
         parameters=[{

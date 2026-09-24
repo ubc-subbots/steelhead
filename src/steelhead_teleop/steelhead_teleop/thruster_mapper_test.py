@@ -39,7 +39,6 @@ class ThrusterTest(Node):
         )
         self._print_state()
         self._stop()
-        self._start()
 
     def _print_state(self):
         self.get_logger().info(
@@ -72,12 +71,6 @@ class ThrusterTest(Node):
     def _stop(self):
         self._publish(-1)
 
-    def _start(self):
-        listen_keyboard(
-            on_press=self._on_press,
-            on_release=self._on_release,
-        )
-
     def _on_press(self, key):
         if key in ("1", "2", "3", "4", "5", "6"):
             index = int(key) - 1
@@ -107,7 +100,10 @@ def main(args=None):
     rclpy.init(args=args)
     try:
         node = ThrusterTest()
-        rclpy.spin(node)
+        listen_keyboard(
+            on_press=node._on_press,
+            on_release=node._on_release,
+        )
     except KeyboardInterrupt:
         pass  # To force exit code 0
     finally:

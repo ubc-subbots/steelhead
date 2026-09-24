@@ -14,9 +14,15 @@ To launch the depth sensor publisher, run:
 
 ### IMU Sensor
 
-To launch the IMU publisher and serial subscriber, run:
+To launch the IMU publisher, run:
 
     ros2 launch steelhead_sensors imu_publisher_launch.py
+
+### Serial Subscriber
+
+To launch the serial subscriber standalone, run:
+
+    ros2 run steelhead_sensors serial_subscriber_node
 
 ### Cameras
 

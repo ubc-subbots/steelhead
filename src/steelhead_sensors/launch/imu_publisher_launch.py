@@ -10,7 +10,7 @@ def generate_launch_description():
     bno085_imu_publisher = Node(
         name='bno085_imu_publisher',
         namespace='/steelhead/controls',
-        package='steelhead_controls',
+        package='steelhead_sensors',
         executable='bno085_imu_publisher.py',
         output='screen',
     )

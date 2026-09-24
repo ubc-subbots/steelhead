@@ -5,7 +5,7 @@
 
       <!-- Edited for Steelhead Sept 17 2026-->
       <inertial>
-        <mass>12.5</mass>
+        <mass>12.499</mass>
         <fluid_added_mass>
           <xx>6.02798389</xx>
           <xy>0</xy>
@@ -189,6 +189,17 @@
       </plugin>
   
     <link name='physical_collision_link'>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <iyy>0.000001</iyy>
+          <izz>0.000001</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
 
       <collision name='collision'>
         <laser_retro>0</laser_retro>
