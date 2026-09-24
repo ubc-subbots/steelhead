@@ -30,12 +30,12 @@ namespace steelhead_controls
 
     RCLCPP_INFO(this->get_logger(), "PID Controller starting!");
 
-    float x_p, x_i, x_d;
-    float y_p, y_i, y_d;
-    float z_p, z_i, z_d;
-    float roll_p, roll_i, roll_d;
-    float pitch_p, pitch_i, pitch_d;
-    float yaw_p, yaw_i, yaw_d;
+    float x_p = 0.0f, x_i = 0.0f, x_d = 0.0f;
+    float y_p = 0.0f, y_i = 0.0f, y_d = 0.0f;
+    float z_p = 0.0f, z_i = 0.0f, z_d = 0.0f;
+    float roll_p = 0.0f, roll_i = 0.0f, roll_d = 0.0f;
+    float pitch_p = 0.0f, pitch_i = 0.0f, pitch_d = 0.0f;
+    float yaw_p = 0.0f, yaw_i = 0.0f, yaw_d = 0.0f;
     this->declare_parameter("force_x_p", x_p);
     this->declare_parameter("force_x_i", x_i);
     this->declare_parameter("force_x_d", x_d);

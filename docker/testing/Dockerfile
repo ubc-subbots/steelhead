@@ -29,11 +29,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | s
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list && \
     apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y ros-lyrical-desktop python3-argcomplete ros-dev-tools ros-lyrical-gazebo-ros-pkgs
+    apt-get install -y ros-lyrical-desktop python3-argcomplete ros-dev-tools ros-lyrical-ros-gz
 
 # Gazebo environment setup
-RUN echo "export GAZEBO_IP=127.0.0.1" >> /etc/bash.bashrc && \
-    echo "export DISPLAY=\$(cat /etc/resolv.conf | grep nameserver | awk '{print \$2}'):0" >> /etc/bash.bashrc && \
+RUN echo "export DISPLAY=\$(cat /etc/resolv.conf | grep nameserver | awk '{print \$2}'):0" >> /etc/bash.bashrc && \
     echo "export LIBGL_ALWAYS_INDIRECT=0" >> /etc/bash.bashrc
 
 # Creating a user

@@ -12,7 +12,7 @@ def generate_launch_description():
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_controls"),
+                get_package_share_directory("steelhead_sensors"),
                 "launch",
                 "imu_publisher_launch.py",
             )
@@ -22,7 +22,7 @@ def generate_launch_description():
     cameras = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_controls"),
+                get_package_share_directory("steelhead_sensors"),
                 "launch",
                 "cameras_publisher_launch.py",
             )
@@ -38,7 +38,7 @@ def generate_launch_description():
 
     depth_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            get_package_share_directory("steelhead_controls")
+            get_package_share_directory("steelhead_sensors")
             + "/launch/depth_sensor_publisher_launch.py"
         )
     )

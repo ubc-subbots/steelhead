@@ -44,7 +44,6 @@ class ExampleClass(ExtendedClass):
     Optional class description
     """
 
-
     def __init__(self, arg_one, arg_two):
         """
         Short Explanation
@@ -52,13 +51,12 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @param arg_two: A description of arg_two
+        :param arg_one: A description of arg_one
+        :param arg_two: A description of arg_two
 
         """
         self._helper_function(arg_one)
         self.member_var = arg_two
-
 
     def member_function(self, arg_one):
         """
@@ -67,9 +65,9 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @type: An optional description of arg_one's type
-        @return: Description of return value
+        :param arg_one: A description of arg_one
+        :type: An optional description of arg_one's type
+        :return: Description of return value
 
         """
         local_var = 1
@@ -83,16 +81,15 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @type: An optional description of arg_one's type
-        @return: Description of return value
+        :param arg_one: A description of arg_one
+        :type: An optional description of arg_one's type
+        :return: Description of return value
         """
         arg_one += 5
         return arg_one
 
 
 class AnotherExampleClass:
-
 
     def __init__(self, arg_one):
         """
@@ -101,7 +98,7 @@ class AnotherExampleClass:
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
+        :param arg_one: A description of arg_one
         """
         self.member_var = arg_one
 
@@ -251,8 +248,7 @@ ROS2 has it's own set of conventions which we will follow. The following list gi
 - Launch files should end in `_launch.py` (e.g `example_node_launch.py`)
 
 # GitHub
-There are a few conventions we have in place to keep our version control system cohesive. The following list gives the conventions that should be followed
-- When naming a branch to work on a given issue, name the branch **<YOUR_NAME>/issueN**  where `<YOUR_NAME>` is your name and `N` is the issue number (e.g `logan/issue19`)
+There are a few conventions we have in place to keep our version control system cohesive. Most of them exist in WORKFLOW.md:
 - Each package should have documentation in a `README.md` file. When documenting a package, you need at least 3 sections; Description, Usage, and Contributors, as shown below 
 
 ![Package Documentation](assets/package_doc_conventions.png) 

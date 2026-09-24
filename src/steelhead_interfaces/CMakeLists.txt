@@ -54,4 +54,11 @@ if(BUILD_TESTING)
   #ament_lint_auto_find_test_dependencies()
 endif()
 
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+add_library(${PROJECT_NAME}_target INTERFACE)
+target_link_libraries(${PROJECT_NAME}_target INTERFACE "${cpp_typesupport_target}")
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME}_target)
+install(TARGETS ${PROJECT_NAME}_target EXPORT ${PROJECT_NAME}Targets)
+ament_export_targets(${PROJECT_NAME}Targets)
+
 ament_package()

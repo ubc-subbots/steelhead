@@ -18,12 +18,13 @@ namespace steelhead_gazebo
         if (!rclcpp::ok()) {
             rclcpp::init(0, nullptr);
         }
+        executor = std::make_unique<rclcpp::executors::SingleThreadedExecutor>();
         node = rclcpp::Node::make_shared("pressure_sensor");
     }
 
     PressureSensor::~PressureSensor()
     {
-        if (this->node) rclcpp::shutdown();
+        if (executor) executor->cancel();
         if (this->spinThread.joinable()) this->spinThread.join();
     }
 
@@ -104,7 +105,9 @@ namespace steelhead_gazebo
 
     void PressureSensor::SpinNode()
     {
-        rclcpp::spin(node);
+        executor->add_node(node);
+        executor->spin();
+        executor->remove_node(node);
     }
 
 }

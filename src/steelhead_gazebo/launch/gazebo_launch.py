@@ -24,7 +24,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     world_arg = DeclareLaunchArgument(
-        "world", default_value="empty.world", description="Gazebo world file"
+        "world", default_value="cube.world", description="Gazebo world file"
     )
 
     headless_arg = DeclareLaunchArgument(

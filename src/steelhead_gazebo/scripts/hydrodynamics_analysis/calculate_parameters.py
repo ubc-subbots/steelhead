@@ -6,9 +6,11 @@ import trimesh
 simple_model = "models/simple_steelhead.stl"
 complex_model = 'models/complex_steelhead.stl'
 
+depth_shift = -5.0
+mesh = cpt.load_mesh(simple_model).translated_z(depth_shift)
 body_1 = cpt.FloatingBody(
-            mesh=cpt.load_mesh(simple_model),
-            dofs=cpt.rigid_body_dofs(rotation_center=(0, 0, 0)),
+            mesh=mesh,
+            dofs=cpt.rigid_body_dofs(rotation_center=(0, 0, depth_shift)),
         )
 # If you have several rigid bodies, copy the code above to define "body_2", "body_3", etc.
 

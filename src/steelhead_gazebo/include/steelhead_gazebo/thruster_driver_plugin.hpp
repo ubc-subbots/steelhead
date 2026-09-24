@@ -52,6 +52,7 @@ namespace steelhead_gazebo
 
         std::vector<gz::sim::Entity> thruster;
         std::vector<double> thrust_values;
+        std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> executor;
         std::thread spinThread;
         std::string topic_name;
 

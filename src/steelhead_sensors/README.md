@@ -29,17 +29,20 @@ To launch the camera publishers, run:
 - `bno085_imu_publisher` : A node that publishes orientation data from the BNO085 IMU.
 
   ### Published Topics
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/msg/Imu`) : Orientation of the IMU.
+  - `/steelhead/drivers/imu/out` (`sensor_msgs/msg/Imu`) : Orientation of the IMU (and by extension Steelhead.)
+
+  ### Notes
+  - !TODO The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
 
 - `ms5837_depth_publisher` : A node that publishes depth data from the MS5837 sensor.
 
   ### Published Topics
   - `drivers/depth_sensor` (`steelhead_interfaces/msg/DepthSensor`) : Contains depth, pressure and temperature.
 
-- `serial_subscriber` : A component node that reads serial communication from the Arduino.
+- `serial_subscriber` : A component node that writes thruster commands to the Teensy over serial.
 
-  ### Published Topics
-  - `sensors/arduino/serial` (`std_msgs/msg/String`) : Raw string data from the Arduino.
+  ### Subscribed Topics
+  - `motor_control` (`std_msgs/msg/UInt32`) : Control commands to forward to the thrusters.
 
 ## Launch Files
 

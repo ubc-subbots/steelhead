@@ -35,6 +35,7 @@ namespace steelhead_gazebo
         gz::sim::Model model{gz::sim::kNullEntity};
         std::string publish_topic;
 
+        std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> executor;
         std::thread spinThread;
         int update_rate;
         std::chrono::steady_clock::duration prev_time{0};

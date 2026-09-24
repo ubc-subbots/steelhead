@@ -12,5 +12,8 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>steelhead_interfaces</depend>
+  <exec_depend>python3-serial</exec_depend>
   <export><build_type>ament_cmake</build_type></export>
 </package>

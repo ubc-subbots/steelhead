@@ -115,16 +115,25 @@ def generate_launch_description():
         launch_arguments={"use_sim_time": "true"}.items(),
     )
 
-    keyboard_teleop = IncludeLaunchDescription(
+    keyboard_pid_teleop = Node(
+        name='keyboard_pid_teleop',
+        namespace='/steelhead/teleop',
+        package='steelhead_teleop',
+        executable='keyboard_pid_teleop',
+        output='screen',
+    )
+
+    hover_at_depth = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_teleop'), 'launch', 'keyboard_teleop_launch.py')
+            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'hover_at_depth_launch.py')
         )
     )
 
     ld.add_action(gazebo)
     ld.add_action(rviz)
     ld.add_action(thrust_allocator)
-    ld.add_action(keyboard_teleop)
+    ld.add_action(keyboard_pid_teleop)
+    ld.add_action(hover_at_depth)
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)
     # ld.add_action(underwater_camera) # the underwater camera simulator isn't that accurate and is very taxing on performance, so i'm disabling it for now

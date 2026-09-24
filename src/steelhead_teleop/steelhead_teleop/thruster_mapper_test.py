@@ -105,14 +105,15 @@ class ThrusterTest(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = ThrusterTest()
     try:
+        node = ThrusterTest()
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass  # To force exit code 0
     finally:
-        node._stop()
-        node.destroy_node()
+        if 'node' in locals():
+            node._stop()
+            node.destroy_node()
         rclpy.shutdown()
 
 

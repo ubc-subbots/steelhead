@@ -102,13 +102,6 @@ To run the Trajectory Generator node, run
     - More specifically, it gets the AUV to turn towards the gate and move forward, as well as manage the depth
     - TODO: make an actual trajectory
 
-  ### Published Topics
-
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
-
-  ### Notes
-
-  - !TODO The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
 
 - `hover_at_depth` : A node that keeps the robot upright at a certain depth from the surface of the water.
 
@@ -131,14 +124,13 @@ To run the Trajectory Generator node, run
 - `pid_controller` : A standalone node that provides PID control for the AUV.
 
   ### Subscribed Topics
-  - `controls/ukf/odometry/filtered` (`nav_msgs/msg/Odometry`) : AUV state
-  - `controls/input_pose` (`geometry_msgs/msg/Pose`) : Target pose
+  - `/steelhead/controls/input_pose` (`geometry_msgs/msg/Pose`) : Pose error to be driven to zero by the PID controller.
 
   ### Published Topics
-  - `controls/input_forces` (`geometry_msgs/msg/Wrench`) : Output forces and torques
+  - `/steelhead/controls/input_forces` (`geometry_msgs/msg/Wrench`) : Output forces and torques.
 
   ### Parameters
-  - PID gains (loaded from config/pid.yaml)
+  - `force_{x,y,z,roll,pitch,yaw}_{p,i,d}` : PID gains for each respective axis.
 
 ## Services
 
@@ -157,9 +149,7 @@ To run the Trajectory Generator node, run
 
 ## Launch Files
 
-- `cameras_publisher_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
 
-    - The cameras are configured with the config files `cameraX.yaml`.
 
 ## Contributors
 
