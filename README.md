@@ -1,4 +1,4 @@
-# This branch exists for archival purposes
+# Steelhead on Ubuntu 20.04 is no longer supported
 
 # Steelhead AUV
 
