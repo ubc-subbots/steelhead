@@ -67,7 +67,7 @@ From the same folder, build all the packages using the following command
 
     colcon build
     
-The last line is helpful in that it colorizes ROS2 logging so that info/warn/error messages are easier to differentiate. Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the Gazebo sim by launching
+Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the Gazebo sim by launching
 
     ros2 launch steelhead_bringup barebones_gazebo_launch.py
    
