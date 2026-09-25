@@ -35,10 +35,11 @@ Append the following lines to the bottom of the file
 Now your workspace is sourced on every terminal.
 
 ### OpenCV Installation
-OpenCV is available in the Ubuntu package manager. It may be already installed, but you can install it along with its Python bindings simply by running:
+OpenCV is available in the Ubuntu package manager. It may be already installed, but you can install it along with its Python bindings and Ultralytics by running:
 
     sudo apt-get update
     sudo apt-get install -y libopencv-dev python3-opencv
+    pip install ultralytics --break-system-packages
 
 OpenCV is now successfully installed!
 
@@ -49,7 +50,7 @@ Source the global ROS2 setup script in the terminal (or just start a new termina
   
 Next, from the folder `steelhead`, install rosdep as such
  
-    cd <PATH_TO_STEELHEAD>
+    cd steelhead/<PATH_TO_STEELHEAD>
     sudo apt install python3-rosdep
     sudo rosdep init
     rosdep update

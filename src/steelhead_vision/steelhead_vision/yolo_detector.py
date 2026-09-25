@@ -22,7 +22,7 @@ try:
 except ImportError as e:
     ULTRALYTICS_AVAILABLE = False
     print(
-        f"DEBUG: ultralytics import failed with error: {e}. Try 'pip install ultralytics'"
+        f"DEBUG: ultralytics import failed with error: {e}. Try 'pip install ultralytics --break-system-packages'"
     )
 
 
