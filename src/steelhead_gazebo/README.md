@@ -17,7 +17,6 @@ Gazebo can be quite computationally expensive, since it is calculating lots of t
 
 1. In `src/steelhead_gazebo/models/steelhead_frame/model.sdf`:
     * Change the types of the cameras to `camera` rather than `depth`.
-    * Set visualize to `false` for the cameras if not already done.
     * Reduce the update rates of the sensors (IMU, camera) or down right comment out some of them.
 2. In the world file, most likely `src/steelhead_gazebo/worlds/competition.world`:
     * Increase step size.
@@ -28,6 +27,16 @@ Gazebo can be quite computationally expensive, since it is calculating lots of t
         export GALLIUM_DRIVER=d3d12
         export MESA_GL_VERSION_OVERRIDE=4.5
         export MESA_D3D12_DEFAULT_ADAPTER_NAME=AMD
+
+5. If you are using an NVIDIA graphics card, Gazebo may not be using your graphics card. Try running this:
+
+        __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia ros2 launch steelhead_gazebo gazebo_launch.py
+
+    If that works, you can add it to your `.bashrc` so you don't have to keep writing that command:
+
+        echo 'export __NV_PRIME_RENDER_OFFLOAD=1' >> ~/.bashrc
+        echo 'export __GLX_VENDOR_LIBRARY_NAME=nvidia' >> ~/.bashrc
+        source ~/.bashrc
 
 Remember to rebuild after making any changes, including model and world files. If you do make any performance changes, make sure to revert them before making a pull request.
 
