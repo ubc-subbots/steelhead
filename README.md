@@ -50,7 +50,7 @@ Source the global ROS2 setup script in the terminal (or just start a new termina
   
 Next, from the folder `steelhead`, install rosdep as such
  
-    cd steelhead/<PATH_TO_STEELHEAD>
+    cd <PATH_TO_STEELHEAD>/steelhead
     sudo apt install python3-rosdep
     sudo rosdep init
     rosdep update
