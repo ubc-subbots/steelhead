@@ -77,8 +77,6 @@ Once this is done, open a new terminal for the `.bashrc` to be executed and the 
     ros2 launch steelhead_bringup barebones_gazebo_launch.py
    
 If this command executes successfully, you are ready to develop! If the simulation is incredibly laggy, check out the [optimization guide](./src/steelhead_gazebo/README.md#optimization-guide). 
-
-Now that you're set up, check out [The Challenge](https://github.com/ubc-subbots/steelhead/wiki/The-Challenge) page for your first task!
     
 ## Development Setup
 We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question. These are technically optional but make life easier and keeps our codebase consistent.
@@ -128,14 +126,6 @@ While AI is incredibly useful for development and we do encourage the use of it,
 3. **Use and add to the provided skills/agents.** We're starting to add more of them, so make sure to use them such that each agent is equipped with the same set of tools.
 4. **Be smart about it.** If you are requesting a review from a human, make sure to put actual human effort in it. For example, don't commit a comment like "// Add the following code snippet to your code!". 
     
-## Tips
-Here are some tips to be aware of when developing on this repository and when developing in ROS2 in general
-- Make sure when you run any `colcon` command such as `colcon build` or `colcon test` that you do so in the root folder of this directory (i.e `steelhead`)
-- After creating any new component nodes, you must either source the local setup script or simply open up a new terminal for them to show up under the command `ros2 component types` and be usable by the pipeline.
-- Make sure you spell topics/services/actions correctly, be sure to debug by using `ros2 topic|service|action list`and `rqt_graph` to see that you are using the desired communication channels.
-- If you have added a dependency to a package by modifying the appropriate files (`CMakeLists.txt`, `package.xml`) and the build of that package is failing because it says it can't find the package, make sure you have it installed by running `rosdep install -i --from-path src --rosdistro lyrical -y` in the `steelhead` folder, and also that a release for the distro we are using (`lyrical`) exists on the ROS2 package index.
-- For non-ROS2 dependencies, check [here](https://github.com/ros/rosdistro/tree/master/rosdep) to see the available system dependencies that can be used with `rosdep`.
-
 ## Useful Shortcuts
 If you'd like, you can add these aliases to the bottom of your `.bashrc` to make common commands just a bit easier to remember:
 
@@ -146,3 +136,5 @@ alias clang='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_
 alias clean='rm -r build install log' # cleans the workspace (MAKE SURE THAT YOU ONLY USE THIS IN THE BASE OF STEELHEAD)
 alias run='ros2 launch steelhead_bringup barebones_gazebo_launch.py'
 ```
+
+Now that you're set up, check out [The Challenge](https://github.com/ubc-subbots/steelhead/wiki/The-Challenge) page for your first task!
