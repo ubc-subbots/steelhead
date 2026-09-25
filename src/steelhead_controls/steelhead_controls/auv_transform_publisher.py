@@ -8,23 +8,19 @@ from tf2_ros import TransformBroadcaster, TransformStamped
 
 
 class AUVTransformPublisher(Node):
-
     def __init__(self):
-        super().__init__('auv_transform_publisher')
+        super().__init__("auv_transform_publisher")
 
         qos_profile = QoSProfile(depth=10)
         self.state_subscriber = self.create_subscription(
-            #PoseStamped,
+            # PoseStamped,
             PoseWithCovarianceStamped,
-            '/steelhead/state',
+            "/steelhead/state",
             self.state_callback,
-            10
-
+            10,
         )
         self.path_publisher = self.create_publisher(
-            Path,
-            '/steelhead/path',
-            qos_profile
+            Path, "/steelhead/path", qos_profile
         )
         self.pose_array = []
         self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
@@ -40,7 +36,7 @@ class AUVTransformPublisher(Node):
         q = msg.pose.pose.orientation
         odom_trans = TransformStamped()
         odom_trans.header.frame_id = msg.header.frame_id
-        odom_trans.child_frame_id = 'base_link'
+        odom_trans.child_frame_id = "base_link"
         odom_trans.header.stamp = now.to_msg()
         odom_trans.transform.translation.x = p.x
         odom_trans.transform.translation.y = p.y
@@ -53,6 +49,7 @@ class AUVTransformPublisher(Node):
         path_msg.poses = self.pose_array
         self.path_publisher.publish(path_msg)
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = AUVTransformPublisher()
@@ -63,5 +60,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

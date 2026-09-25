@@ -4,13 +4,13 @@ from sshkeyboard import listen_keyboard
 from std_msgs.msg import UInt32
 
 THRUSTER_DATA_BIT_SIZE = 5
-NEUTRAL_LEVEL = 16  
+NEUTRAL_LEVEL = 16
 VALID_MARKER = 0b10000000000000000000000000000000  # bit 31
 NUM_THRUSTERS = 6
 
 MIN_POWER = 1
 MAX_POWER = 15
-DEFAULT_POWER = 15  
+DEFAULT_POWER = 15
 
 
 class ThrusterTest(Node):
@@ -107,7 +107,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass  # To force exit code 0
     finally:
-        if 'node' in locals():
+        if "node" in locals():
             node._stop()
             node.destroy_node()
         rclpy.shutdown()

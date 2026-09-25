@@ -1,22 +1,19 @@
 import os
 
-from ament_index_python.packages import get_package_share_directory, get_package_prefix
-
+from ament_index_python.packages import get_package_prefix, get_package_share_directory
 from launch import LaunchDescription
-from launch_ros.actions import Node
 from launch.actions import (
-    ExecuteProcess,
     DeclareLaunchArgument,
-    SetEnvironmentVariable,
     IncludeLaunchDescription,
-)
-from launch.substitutions import (
-    LaunchConfiguration,
-    EnvironmentVariable,
-    PythonExpression,
+    SetEnvironmentVariable,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.conditions import UnlessCondition
+from launch.substitutions import (
+    EnvironmentVariable,
+    LaunchConfiguration,
+    PythonExpression,
+)
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -89,17 +86,26 @@ def generate_launch_description():
             "/front_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             "/bottom_camera/image@sensor_msgs/msg/Image[gz.msgs.Image",
             "/bottom_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/competition/create@ros_gz_interfaces/srv/SpawnEntity"
+            "/world/competition/create@ros_gz_interfaces/srv/SpawnEntity",
         ],
         remappings=[
-            ('/model/base_link/odometry', '/steelhead/state'),
-            ('/imu', '/steelhead/drivers/imu/out'),
-            ('/front_camera/image', '/steelhead/drivers/front_camera/image_raw'),
-            ('/front_camera/depth_image', '/steelhead/drivers/front_camera/depth/image_raw'),
-            ('/front_camera/camera_info', '/steelhead/drivers/front_camera/camera_info'),
-            ('/front_camera/points', '/steelhead/drivers/front_camera/points'),
-            ('/bottom_camera/image', '/steelhead/drivers/bottom_camera/image_raw'),
-            ('/bottom_camera/camera_info', '/steelhead/drivers/bottom_camera/camera_info')
+            ("/model/base_link/odometry", "/steelhead/state"),
+            ("/imu", "/steelhead/drivers/imu/out"),
+            ("/front_camera/image", "/steelhead/drivers/front_camera/image_raw"),
+            (
+                "/front_camera/depth_image",
+                "/steelhead/drivers/front_camera/depth/image_raw",
+            ),
+            (
+                "/front_camera/camera_info",
+                "/steelhead/drivers/front_camera/camera_info",
+            ),
+            ("/front_camera/points", "/steelhead/drivers/front_camera/points"),
+            ("/bottom_camera/image", "/steelhead/drivers/bottom_camera/image_raw"),
+            (
+                "/bottom_camera/camera_info",
+                "/steelhead/drivers/bottom_camera/camera_info",
+            ),
         ],
         output="screen",
         # ros_arguments=["--log-level", "WARN"],

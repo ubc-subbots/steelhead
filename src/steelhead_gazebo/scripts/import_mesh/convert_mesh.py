@@ -1,8 +1,8 @@
 import os
 import sys
 
-
 import bpy
+
 
 def convert_stl_to_dae(file_no_extension):
     """
@@ -12,9 +12,9 @@ def convert_stl_to_dae(file_no_extension):
     dae_file = file_no_extension + ".dae"
 
     # Select all objects in Blender scene
-    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.select_all(action="SELECT")
     # Delete all objects in scene
-    bpy.ops.object.delete() 
+    bpy.ops.object.delete()
     # Import .STL file
     bpy.ops.import_mesh.stl(filepath=stl_file)
     # Export .STL file as .dae
@@ -23,7 +23,7 @@ def convert_stl_to_dae(file_no_extension):
 
 def main():
     argv = sys.argv
-    argv = argv[argv.index("--") + 1:] # get all args after "--"
+    argv = argv[argv.index("--") + 1 :]  # get all args after "--"
 
     filepath = argv[0]
     name = argv[1]

@@ -206,18 +206,25 @@ class YOLODetector(Node):
             annotated_msg.height = annotated_image.shape[0]
             annotated_msg.width = annotated_image.shape[1]
             annotated_msg.encoding = "bgr8"
-            annotated_msg.is_bigendian = 1 if annotated_image.dtype.byteorder == '>' else 0
+            annotated_msg.is_bigendian = (
+                1 if annotated_image.dtype.byteorder == ">" else 0
+            )
             annotated_msg.step = int(annotated_image.strides[0])
-            
+
             if not annotated_image.flags.c_contiguous:
                 import numpy as np
+
                 annotated_image = np.ascontiguousarray(annotated_image)
-                
+
             annotated_msg.data = annotated_image.tobytes()
             self.annotated_publisher.publish(annotated_msg)
 
-        except Exception as e:
-            import traceback; self.get_logger().error(f"Error in image callback: {traceback.format_exc()}")
+        except Exception:
+            import traceback
+
+            self.get_logger().error(
+                f"Error in image callback: {traceback.format_exc()}"
+            )
 
 
 def main(args=None):

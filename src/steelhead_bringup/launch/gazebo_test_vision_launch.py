@@ -116,16 +116,20 @@ def generate_launch_description():
     )
 
     keyboard_pid_teleop = Node(
-        name='keyboard_pid_teleop',
-        namespace='/steelhead/teleop',
-        package='steelhead_teleop',
-        executable='keyboard_pid_teleop',
-        output='screen',
+        name="keyboard_pid_teleop",
+        namespace="/steelhead/teleop",
+        package="steelhead_teleop",
+        executable="keyboard_pid_teleop",
+        output="screen",
     )
 
     hover_at_depth = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_controls'), 'launch', 'hover_at_depth_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "hover_at_depth_launch.py",
+            )
         )
     )
 
