@@ -79,7 +79,9 @@ Once this is done, open a new terminal for the `.bashrc` to be executed and the 
 If this command executes successfully, you are ready to develop! If the simulation is incredibly laggy, check out the [optimization guide](./src/steelhead_gazebo/README.md#optimization-guide). 
     
 ## Development Setup
-We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question. These are technically optional but make life easier and keeps our codebase consistent. You can download VSCode for Ubuntu [here](https://code.visualstudio.com/download?_exp_download=fb315fc982) (download the `.deb` file).
+We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question. You can download VSCode for Ubuntu [here](https://code.visualstudio.com/download?_exp_download=fb315fc982) (download the `.deb` file). 
+
+The following are technically optional but make life easier and keeps our codebase consistent. 
 
 ### C++ Tooling (clangd)
 This package uses clangd for C++ language support (i.e., go-to-definition, autocomplete, error highlighting). To set it up:
