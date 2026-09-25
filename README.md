@@ -63,9 +63,13 @@ If any packages fail to install, try to manually install them with
 
     pip install <PACKAGE_NAME>
 
-From the same folder, build all the packages using the following command
+From the same folder, build all the packages using the following command. This will need to be done everytime you make a change to a file
 
     colcon build
+
+Since you built new packages, you'll need to source them for your bash to be able to recognize them. This only needs to be done for new nodes
+
+    source install/setup.bash
     
 Once this is done, open a new terminal for the `.bashrc` to be executed and the required scripts be sourced. To perform a sanity check that everything is working, launch the Gazebo sim by launching
 
