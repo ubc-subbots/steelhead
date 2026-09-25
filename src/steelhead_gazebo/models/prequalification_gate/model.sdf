@@ -611,8 +611,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <radius>0</radius>
-            <length>0</length>
+            <radius>0.001</radius>
+            <length>0.001</length>
           </cylinder>
         </geometry>
         <surface>
@@ -706,8 +706,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <radius>0</radius>
-            <length>0</length>
+            <radius>0.001</radius>
+            <length>0.001</length>
           </cylinder>
         </geometry>
         <surface>
@@ -784,7 +784,6 @@
           </cylinder>
         </geometry>
         <material>
-        <material>
           <lighting>1</lighting>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
@@ -792,7 +791,6 @@
           </script>
           <shader type='pixel'/>
           <emissive>0 0 0 1</emissive>
-        </material>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>

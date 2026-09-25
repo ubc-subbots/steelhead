@@ -13,18 +13,32 @@ To run a Gazebo simulation with a world file given in the `worlds` directory, us
 Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
 
 #### Optimization Guide
-Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a graphics card lol.
+Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a better computer lol.
 
 1. In `src/steelhead_gazebo/models/steelhead_frame/model.sdf`:
     * Change the types of the cameras to `camera` rather than `depth`.
-    * Set visualize to `false` for the cameras if not already done.
     * Reduce the update rates of the sensors (IMU, camera) or down right comment out some of them.
 2. In the world file, most likely `src/steelhead_gazebo/worlds/competition.world`:
     * Increase step size.
     * Real time update rate may help as well.
 3. If you are using UTM Virtual Machine, switch to a GPU Supported emulated display card (e.g. virtio-ramfb-gl).
+4. If you are using an AMD graphics card in WSL2, Gazebo may not be using your graphics card. Try entering these commands before launching Gazebo:
 
-Remember to rebuild after making any changes, including model and world files.
+        export GALLIUM_DRIVER=d3d12
+        export MESA_GL_VERSION_OVERRIDE=4.5
+        export MESA_D3D12_DEFAULT_ADAPTER_NAME=AMD
+
+5. If you are using an NVIDIA graphics card, Gazebo may not be using your graphics card. Try running this:
+
+        __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia ros2 launch steelhead_gazebo gazebo_launch.py
+
+    If that works, you can add it to your `.bashrc` so you don't have to keep writing that command:
+
+        echo 'export __NV_PRIME_RENDER_OFFLOAD=1' >> ~/.bashrc
+        echo 'export __GLX_VENDOR_LIBRARY_NAME=nvidia' >> ~/.bashrc
+        source ~/.bashrc
+
+Remember to rebuild after making any changes, including model and world files. If you do make any performance changes, make sure to revert them before making a pull request.
 
 ### Underwater Camera
 To run the underwater camera node, use the following
@@ -153,11 +167,8 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 `lenabox`
 - A cube with the Lena test image as its texture.
 
-`steelhead_auv_ideal`
-- Steelhead AUV with ideal hydrodynamics (neutrally buoyant and naturally upright)
-
-`steelhead_auv_real`
-- Steelhead AUV with hydrodynamics more similar to observed (negatively buoyant and naturally tilted)
+`steelhead_auv`
+- Steelhead AUV with frame and thrusters
 
 ##  Importing Models From SolidWorks 
 
@@ -166,7 +177,7 @@ This guide explains how we import mesh files and kinematic information from Soli
 ### Required Software
 
 1. Solidworks (Windows)
-2. Blender 2.80 or higher(Ubuntu)
+2. Blender 2.80 or higher (Ubuntu)
 
 ### Process
 

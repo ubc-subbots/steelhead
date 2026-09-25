@@ -78,7 +78,7 @@ namespace steelhead_controls
         pinv_alloc_.at<double>(i,2) += z_help_[i];
       }
 
-      RCLCPP_INFO(this->get_logger(), "Allocation Matrix:");
+      // RCLCPP_INFO(this->get_logger(), "Allocation Matrix:");
       // std::cout << pinv_alloc_ << std::endl;
 
       forces_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(

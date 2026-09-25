@@ -23,10 +23,16 @@ def generate_launch_description():
 
     bag_record = ExecuteProcess(
         cmd=[
-            "ros2", "bag", "record", "-a",
-            "-o", bag_dir,
-            "--compression-mode", "file",
-            "--compression-format", "zstd",
+            "ros2",
+            "bag",
+            "record",
+            "-a",
+            "-o",
+            bag_dir,
+            "--compression-mode",
+            "file",
+            "--compression-format",
+            "zstd",
         ],
         output="screen",
     )

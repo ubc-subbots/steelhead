@@ -1,29 +1,28 @@
-from setuptools import setup
-from glob import glob
 import os
+from glob import glob
 
-package_name = 'steelhead_bringup'
+from setuptools import setup
+
+package_name = "steelhead_bringup"
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version="0.0.0",
     packages=[package_name],
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
-        (os.path.join('share', package_name, 'config'), glob('config/*')),
+        ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
+        ("share/" + package_name, ["package.xml"]),
+        (os.path.join("share", package_name, "launch"), glob("launch/*.py")),
+        (os.path.join("share", package_name, "config"), glob("config/*")),
     ],
-    install_requires=['setuptools'],
+    install_requires=["setuptools"],
     zip_safe=True,
-    maintainer='logan',
-    maintainer_email='logan.fillo@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    tests_require=['pytest'],
+    maintainer="logan",
+    maintainer_email="logan.fillo@gmail.com",
+    description="TODO: Package description",
+    license="TODO: License declaration",
+    extras_require={"test": ["pytest"]},
     entry_points={
-        'console_scripts': [
-        ],
+        "console_scripts": [],
     },
 )

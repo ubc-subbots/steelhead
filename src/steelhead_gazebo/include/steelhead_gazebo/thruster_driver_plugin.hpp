@@ -2,9 +2,13 @@
 #define STEELHEAD_GAZEBO__THRUSTER_DRIVER_PLUGIN
 
 #include <vector>
-
-#include <gazebo/gazebo.hh>
-#include <gazebo/physics/physics.hh>
+#include <thread>
+#include <string>
+#include <gz/sim/System.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/Link.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/math/Vector3.hh>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
@@ -14,68 +18,47 @@ namespace steelhead_gazebo
 
     using std::placeholders::_1;
 
-    class ThrusterDriver : public gazebo::ModelPlugin
+    class ThrusterDriver : public gz::sim::System,
+                           public gz::sim::ISystemConfigure,
+                           public gz::sim::ISystemPreUpdate
     {
 
     public:
 
         // Constructor
-        ThrusterDriver(void);
+        ThrusterDriver();
 
         // Destructor
-        ~ThrusterDriver(void);
+        ~ThrusterDriver() override;
 
-        /** Collects all neccessary parameters and initializes the ROS 2 node.
-         * 
-         * @param _model A pointer to the attached mdoel
-         * @param _sdf   A pointer to the robot's SDF description
-         */
-        virtual void Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf);
+        void Configure(const gz::sim::Entity &_entity,
+                       const std::shared_ptr<const sdf::Element> &_sdf,
+                       gz::sim::EntityComponentManager &_ecm,
+                       gz::sim::EventManager &_eventMgr) override;
+
+        void PreUpdate(const gz::sim::UpdateInfo &_info,
+                       gz::sim::EntityComponentManager &_ecm) override;
 
     private:
 
-        /** Get information about topic publishing thrust values
-         * 
-         * @param ros_sdf SDF pointer to ros namespace params
-         * 
-         */
-        void GetRosNamespace(sdf::ElementPtr ros_sdf);
+        void GetRosNamespace(std::shared_ptr<const sdf::Element> ros_sdf);
 
-        /** Receives the force values as a vector from the thrust allocation node
-         * 
-         * Called continuously and pass each force value to the correct thruster.
-         * 
-         * @param joint_cmd command from gazebo containing the thruster forces
-         */
-        void GetForceCmd(const std_msgs::msg::Float64MultiArray::SharedPtr joint_cmd);
+        void GetForceCmd(const std_msgs::msg::Float64MultiArray::ConstSharedPtr joint_cmd);
 
-        /** Publishes a fixed force value to each thruster in gazebo
-         * 
-         * Updates in sequence with gazebo's main world update function.
-         * 
-         */
-        void ApplyForce(void);
-
-        /** Spins ROS2 node on a dedicated thread to remain non-blocking
-         * 
-         */
-        void SpinNode(void);
+        void SpinNode();
 
         rclcpp::Node::SharedPtr node;
         rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr force_cmd;
-        gazebo::event::ConnectionPtr updateConnection_;
 
-        std::vector<gazebo::physics::LinkPtr> thruster;
+        std::vector<gz::sim::Entity> thruster;
         std::vector<double> thrust_values;
+        std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> executor;
         std::thread spinThread;
         std::string topic_name;
 
-        // Number of thrusters attached to model, by convention they must be named thruster<num> in SDF description 
         unsigned int thruster_count;
         
     };
-
-    GZ_REGISTER_MODEL_PLUGIN(ThrusterDriver)
 
 }
 #endif // STEELHEAD_GAZEBO__THRUSTER_DRIVER_PLUGIN

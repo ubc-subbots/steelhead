@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
 
       - name: Check out ubc-subbots/steelhead
@@ -21,6 +21,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./docker
+          context: .
+          file: ./docker/Dockerfile
           push: true
           tags: ubcsubbots/steelhead:latest

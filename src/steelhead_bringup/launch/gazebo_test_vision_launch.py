@@ -69,18 +69,10 @@ def generate_launch_description():
         )
     )
 
-    keyboard_teleop = Node(
-        name="keyboard_pid_teleop",
-        namespace="/steelhead/teleop",
-        package="steelhead_teleop",
-        executable="keyboard_pid_teleop",
-        output="screen",
-    )
-
     gate_detector = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_gate"),
+                get_package_share_directory("steelhead_vision"),
                 "launch",
                 "gate_detector_launch.py",
             )
@@ -95,13 +87,13 @@ def generate_launch_description():
     )
 
     yolo_detector = Node(
-        package="steelhead_object_recognition",
+        package="steelhead_vision",
         executable="yolo_detector.py",
         name="yolo_detector",
         parameters=[
             {
                 "weights_path": os.path.join(
-                    get_package_share_directory("steelhead_object_recognition"),
+                    get_package_share_directory("steelhead_vision"),
                     "config",
                     "competition.pt",
                 )
@@ -112,7 +104,26 @@ def generate_launch_description():
         output="screen",
     )
 
-    hover_script = IncludeLaunchDescription(
+    pid_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "pid_controller_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
+    )
+
+    keyboard_pid_teleop = Node(
+        name="keyboard_pid_teleop",
+        namespace="/steelhead/teleop",
+        package="steelhead_teleop",
+        executable="keyboard_pid_teleop",
+        output="screen",
+    )
+
+    hover_at_depth = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
                 get_package_share_directory("steelhead_controls"),
@@ -122,39 +133,16 @@ def generate_launch_description():
         )
     )
 
-    pid_controller = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("steelhead_pid_controller"),
-                "launch",
-                "steelhead_pid_controller_launch.py",
-            )
-        ),
-        launch_arguments={"use_sim_time": "true"}.items(),
-    )
-
-    # there's some small mis matches with our physical model and simulation which results in a bunch of errors
-    # in the terminal despite it working as expected. this a bandaid fix that does nothing but stops the false errors
-    base_link_tf_publisher = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="base_link_tf_publisher",
-        output="screen",
-        arguments=["0", "0", "0", "0", "0", "0", "base_link", "base_link::base_link"],
-        parameters=[{"use_sim_time": True}],
-    )
-
     ld.add_action(gazebo)
     ld.add_action(rviz)
     ld.add_action(thrust_allocator)
-    ld.add_action(keyboard_teleop)
+    ld.add_action(keyboard_pid_teleop)
+    ld.add_action(hover_at_depth)
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)
-    # ld.add_action(underwater_camera) # the underwater camera simulator isn't that good and is very taxing on performance, so i'm disabling it for now
+    # ld.add_action(underwater_camera) # the underwater camera simulator isn't that accurate and is very taxing on performance, so i'm disabling it for now
     ld.add_action(state_estimator)
     ld.add_action(yolo_detector)
-    ld.add_action(hover_script)
     ld.add_action(pid_controller)
-    ld.add_action(base_link_tf_publisher)
 
     return ld

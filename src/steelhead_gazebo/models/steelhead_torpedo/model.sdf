@@ -4,18 +4,18 @@
     <link name='torpedo'>
       <pose>-0 0 0 0 -0 0</pose>
       <inertial>
-        <mass>0.1</mass>
-        <inertia>
-          <ixx>0.00030988</ixx>
-          <ixy>5.5564e-08</ixy>
-          <ixz>3.9324e-07</ixz>
-          <iyy>0.0003498</iyy>
-          <iyz>1.7659e-06</iyz>
-          <izz>0.00030001</izz>
+        <mass>0.15</mass>
+        <inertia> 
+          <ixx>0.01</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01</iyy>
+          <iyz>0</iyz>
+          <izz>0.01</izz>
         </inertia>
       </inertial>
 
-      <gravity>0</gravity>
+      <gravity>1</gravity>
 
       <!-- Visual Data -->
       <visual name='visual'>
@@ -27,8 +27,15 @@
           </mesh>
         </geometry>
         <material>
-          <lighting>1</lighting>
-          <shader type='pixel'/>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.5 0.5 0.5 1</specular>
+          <pbr>
+            <metal>
+              <roughness>0.6</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
@@ -44,6 +51,7 @@
         </geometry>
         <surface>
           <contact>
+            <collide_bitmask>2</collide_bitmask>
             <ode>
               <min_depth>0.001</min_depth>
               <max_vel>0.1</max_vel>
@@ -56,14 +64,29 @@
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
 
-    <plugin name="torpedo_plugin" filename="libtorpedo_plugin.so">
+    <plugin name="steelhead_gazebo::TorpedoPlugin" filename="torpedo_plugin">
       <ros>
         <namespace>/torpedo</namespace>
       </ros>
       <link_name>torpedo</link_name>
-      <initial_force>50</initial_force>
-      <force_duration>0.05</force_duration>
+      <initial_force>5</initial_force>
+      <force_duration>0.5</force_duration>
       <lifetime>15.0</lifetime>
+    </plugin>
+  
+    <plugin
+      filename="gz-sim-hydrodynamics-system"
+      name="gz::sim::systems::Hydrodynamics">
+      <link_name>torpedo</link_name>
+      <xUabsU>-0.05</xUabsU>
+      <xU>-0.25</xU>
+      <yVabsV>-5.0</yVabsV>
+      <yV>-0.1</yV>
+      <zWabsW>-5.0</zWabsW>
+      <zW>-0.1</zW>
+      <kPabsP>-0.01</kPabsP>
+      <mQabsQ>-0.1</mQabsQ>
+      <nRabsR>-0.1</nRabsR>
     </plugin>
   </model>
 </sdf>

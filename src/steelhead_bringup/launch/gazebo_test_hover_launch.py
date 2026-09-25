@@ -42,16 +42,16 @@ def generate_launch_description():
     hover = Node(
         package="steelhead_controls",
         executable="hover_at_depth",
-        parameters=[{"depth": 1.3, "hold_yaw": True}],
+        parameters=[{"depth": 0.75, "hold_yaw": True}],
         namespace="steelhead",
     )
 
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pid_controller"),
+                get_package_share_directory("steelhead_controls"),
                 "launch",
-                "steelhead_pid_controller_launch.py",
+                "pid_controller_launch.py",
             )
         ),
         launch_arguments={"use_sim_time": "true"}.items(),
@@ -62,7 +62,7 @@ def generate_launch_description():
         package="rqt_reconfigure",
         executable="rqt_reconfigure",
         output="screen",
-        arguments=["/steelhead/controls/steelhead_pid_controller"],
+        arguments=["/steelhead/controls/pid_controller"],
     )
 
     delayed_rqt = TimerAction(period=15.0, actions=[rqt_reconfigure_node])

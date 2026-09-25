@@ -12,8 +12,10 @@ To make it easier for the members of the team to understand each other's contrib
 
 ## Python Conventions
 
-For the python programming conventions we use, they loosely follow the [PEP](https://www.python.org/dev/peps/pep-0008/) guidelines. The following list gives the conventions that should be followed
+For the python programming conventions we use, they loosely follow the [PEP](https://www.python.org/dev/peps/pep-0008/) guidelines. If you want this automated on save, check the Ruff linting guide in the main README.md, but the following list gives the conventions that should be followed
 
+- Maximum of 88 characters on a line.
+- Use double quotes `"` for strings (Ruff/Black default).
 - Module names are **under_scored**
 - Class names are **CamelCase**
 - Constant names are **UPPER_UNDER_SCORED**
@@ -21,9 +23,9 @@ For the python programming conventions we use, they loosely follow the [PEP](htt
 - Functions that are "helper" or "private" should be **_prefix_under_scored**
 - All "helper" or "private" functions should be put below regular functions
 - Arguments and variables are **under_scored**
-- Leave **2** lines between functions and classes
-- Imports should be organized **Standard, Third-Party, Application**
-- Functions should be documented as per [**Epytext**](http://epydoc.sourceforge.net/epytext.html)
+- Leave **2** lines between top-level functions and classes, and **1** line between methods (Ruff default).
+- Imports should be organized by Ruff's `isort` module (**Standard, Third-Party, Application**).
+- Functions should be documented using standard PEP 257 docstrings.
 
 Here is an example python module displaying these conventions
 ```
@@ -42,7 +44,6 @@ class ExampleClass(ExtendedClass):
     Optional class description
     """
 
-
     def __init__(self, arg_one, arg_two):
         """
         Short Explanation
@@ -50,13 +51,12 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @param arg_two: A description of arg_two
+        :param arg_one: A description of arg_one
+        :param arg_two: A description of arg_two
 
         """
         self._helper_function(arg_one)
         self.member_var = arg_two
-
 
     def member_function(self, arg_one):
         """
@@ -65,9 +65,9 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @type: An optional description of arg_one's type
-        @return: Description of return value
+        :param arg_one: A description of arg_one
+        :type: An optional description of arg_one's type
+        :return: Description of return value
 
         """
         local_var = 1
@@ -81,16 +81,15 @@ class ExampleClass(ExtendedClass):
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
-        @type: An optional description of arg_one's type
-        @return: Description of return value
+        :param arg_one: A description of arg_one
+        :type: An optional description of arg_one's type
+        :return: Description of return value
         """
         arg_one += 5
         return arg_one
 
 
 class AnotherExampleClass:
-
 
     def __init__(self, arg_one):
         """
@@ -99,7 +98,7 @@ class AnotherExampleClass:
         Longer explanation where you describe more in depth
         the purpose that this function has
 
-        @param arg_one: A description of arg_one
+        :param arg_one: A description of arg_one
         """
         self.member_var = arg_one
 
@@ -249,8 +248,7 @@ ROS2 has it's own set of conventions which we will follow. The following list gi
 - Launch files should end in `_launch.py` (e.g `example_node_launch.py`)
 
 # GitHub
-There are a few conventions we have in place to keep our version control system cohesive. The following list gives the conventions that should be followed
-- When naming a branch to work on a given issue, name the branch **<YOUR_NAME>/issueN**  where `<YOUR_NAME>` is your name and `N` is the issue number (e.g `logan/issue19`)
+There are a few conventions we have in place to keep our version control system cohesive. Most of them exist in WORKFLOW.md:
 - Each package should have documentation in a `README.md` file. When documenting a package, you need at least 3 sections; Description, Usage, and Contributors, as shown below 
 
 ![Package Documentation](assets/package_doc_conventions.png) 

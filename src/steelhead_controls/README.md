@@ -10,8 +10,6 @@ This package contains the nodes related to the control system.
 
 These are sketeches to be uploaded on the board holding the sensors for communication with the main computer. For information on how the onboard computer should be configured, check the [Notion guide](https://app.notion.com/p/subbots/Hardware-Guide-connecting-to-AUV-1be8c60b4369804ba01ad3bc5f43e8bc).
 
-- `bno085_serial_output_parser`: For the BNO085 IMU. Uploaded onto the Qtpy, sends imu information over USB serial (this should be renamed as /dev/imu.)
-- `ms5837_depth_sensor`: For the MS5837 depth sensor, most likely aboard the Bar02 pressure sensor from Blue Robotics. Currently communnicates over UART on the onboard 2040 chip on the Radxa X4 (this should be renamed as /dev/depth).
 
 ### Thrust Allocation
 
@@ -104,15 +102,6 @@ To run the Trajectory Generator node, run
     - More specifically, it gets the AUV to turn towards the gate and move forward, as well as manage the depth
     - TODO: make an actual trajectory
 
-- `bno085_imu_publisher` : A Python node for launching the BNO085 IMU on Steelhead
-
-  ### Published Topics
-
-  - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : Orientation of the IMU (and by extension Steelhead.)
-
-  ### Notes
-
-  - !TODO The publish topic is temporary, and should not have the steelhead/drivers namespace, which should be assigned in the launch file instead.
 
 - `hover_at_depth` : A node that keeps the robot upright at a certain depth from the surface of the water.
 
@@ -132,6 +121,17 @@ To run the Trajectory Generator node, run
   - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
   - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward. The final message should also be a partial adjustment.
 
+- `pid_controller` : A standalone node that provides PID control for the AUV.
+
+  ### Subscribed Topics
+  - `/steelhead/controls/input_pose` (`geometry_msgs/msg/Pose`) : Pose error to be driven to zero by the PID controller.
+
+  ### Published Topics
+  - `/steelhead/controls/input_forces` (`geometry_msgs/msg/Wrench`) : Output forces and torques.
+
+  ### Parameters
+  - `force_{x,y,z,roll,pitch,yaw}_{p,i,d}` : PID gains for each respective axis.
+
 ## Services
 
 - `actuators_command` : A service for communicating with the actuators enclosure. Expects certain strings defined on the arduino to operate.
@@ -146,12 +146,6 @@ To run the Trajectory Generator node, run
   - This system relies on an arduino connected to `/dev/arduino` with a baud rate of 115200.
   - The service will respond with the status of whether or not writing the serial communication was successful or not.
   - There are preset commands that the Ardunio board expects set as enumerations in `src/steelhead_interfaces/srv/ActuatorsCommand.srv`. These are defined in the `ardunio` repository in `ubc-subbots`.
-
-## Launch Files
-
-- `cameras_publisher_launch.py`: Starts the nodes neccessary to utilize the usb cameras onboard Steelhead.
-
-    - The cameras are configured with the config files `cameraX.yaml`.
 
 ## Contributors
 

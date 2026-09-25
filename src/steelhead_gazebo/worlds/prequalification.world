@@ -1,19 +1,65 @@
 <?xml version="1.0"?>
-<sdf version="1.6">
-  <world name="default">
+<sdf version="1.8">
+  <world name="competition">
     <scene>
-      <shadows>0</shadows>
+      <ambient>0.4 0.4 0.4 1.0</ambient>
+      <background>0.0 0.4 0.7 1.0</background>
+      <shadows>true</shadows>
     </scene>
-    <gravity>0 0 -9.81</gravity>
-    <fluid_density>1000.00</fluid_density>
-    <physics name="fast_simulation" type="ode">
-      <max_step_size>0.01</max_step_size> <!-- Larger step size for faster simulation -->
-      <real_time_update_rate>100</real_time_update_rate> <!-- 0 = as fast as possible, 100 = norma, 200= 2 times speed -->
-    </physics>
 
-    <include>
-      <uri>model://sun</uri>
-    </include>
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+    </light>
+    
+
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
+      <graded_buoyancy>
+        <default_density>1025</default_density>
+        <density_change>
+          <above_depth>0</above_depth>
+          <density>1.125</density>
+        </density_change>
+      </graded_buoyancy>
+    </plugin>
+
+    <physics name="1ms" type="dart">
+      <max_step_size>0.02</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
 
     <include>
         <pose>3 -1 -0.25 0 0 0</pose>
@@ -26,7 +72,7 @@
     </include>
 
     <include>
-      <uri>model://steelhead_auv_ideal</uri>
+      <uri>model://steelhead_auv</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
 
@@ -35,6 +81,5 @@
         <uri>model://woollett_pool</uri>
     </include>
 
-    <grid>0</grid>
   </world>
 </sdf>

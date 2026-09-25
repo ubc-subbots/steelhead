@@ -1,44 +1,49 @@
-import yaml
 
 import rclpy
-from rclpy.node import Node
+from rcl_interfaces.msg import (
+    ParameterDescriptor,
+)
 from rclpy.action import ActionClient
+from rclpy.node import Node
 
-from steelhead_interfaces.srv import ConfigurePipeline
-from steelhead_interfaces.msg import PipelineType
 from steelhead_interfaces.action import RunPipeline
-from rcl_interfaces.msg import Parameter, ParameterValue, ParameterType
+from steelhead_interfaces.msg import PipelineType
+from steelhead_interfaces.srv import ConfigurePipeline
+
 
 class PipelineSequenceManager(Node):
-
     def __init__(self):
-        super().__init__('pipeline_sequence_manager')
+        super().__init__("pipeline_sequence_manager")
 
-        self.declare_parameters(
-            namespace='',
-            parameters=[
-                ('pipeline_sequence', []),
-        ])
+        self.declare_parameter(
+            "pipeline_sequence", [], ParameterDescriptor(dynamic_typing=True)
+        )
 
-        self.pipelines = self.get_parameter('pipeline_sequence').get_parameter_value().string_array_value
+        self.pipelines = (
+            self.get_parameter("pipeline_sequence")
+            .get_parameter_value()
+            .string_array_value
+        )
 
-        self.get_logger().info('Pipeline Sequence ' + str(self.pipelines))
+        self.get_logger().info("Pipeline Sequence " + str(self.pipelines))
 
         self.configure_client = self.create_client(
-            ConfigurePipeline, '/steelhead/configure_pipeline')
+            ConfigurePipeline, "/steelhead/configure_pipeline"
+        )
 
-        self.run_client = ActionClient(
-            self, RunPipeline, '/steelhead/run_pipeline')
+        self.run_client = ActionClient(self, RunPipeline, "/steelhead/run_pipeline")
 
         while not self.run_client.wait_for_server(timeout_sec=1.0):
-            self.get_logger().warn(
-                'Run action not available, make sure you have launched the pipeline...')
+            self.get_logger().warning(
+                "Run action not available, make sure you have launched the pipeline..."
+            )
 
         while not self.configure_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn(
-                'Configure service not available, make sure you have launched the pipeline...')
+            self.get_logger().warning(
+                "Configure service not available, make sure you have launched the pipeline..."
+            )
 
-        self.get_logger().info('Pipeline Sequence Manager successfully started!')
+        self.get_logger().info("Pipeline Sequence Manager successfully started!")
 
     def run(self):
         """
@@ -51,7 +56,7 @@ class PipelineSequenceManager(Node):
             pipeline = self.pipelines[i]
             future = self._send_configure_request(pipeline)
             success = False
-            # Configure pipeline 
+            # Configure pipeline
             while rclpy.ok():
                 rclpy.spin_once(self)
                 if future.done():
@@ -94,11 +99,13 @@ class PipelineSequenceManager(Node):
         goal_msg.input = 0
         return self.run_client.send_goal_async(goal_msg)
 
+
 def main():
     rclpy.init()
     state_manager = PipelineSequenceManager()
     state_manager.run()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

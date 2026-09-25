@@ -1,0 +1,209 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='steelhead_auv'>
+    <!-- 
+
+      Steelhead AUV components
+
+      Thrusters will follow the following naming convention: 
+                            __
+                           |  |Thruster 4 ___
+                       ____|__|__________|___| Thruster 3 (angled)
+                       |                 |
+                  _____|       +y        |
+              ___|╭───╮       |          |_
+ Thruster 6  |___|│ 5 │       |___+x     |_) AUV front 
+                 |╰───╯       +z         |
+                  ‾‾‾‾‾|  (pointing up)  |
+                       |_________________|___
+                           |  |          |___| Thruster 2 (angled)
+                           |__|Thruster 1
+ 
+    -->
+
+    <!-- Frame -->
+    <include>
+      <uri>model://steelhead_frame</uri>
+      <pose>0 0 0 0 0 0</pose>
+      <name>base_link</name>
+    </include>
+
+    <!-- Thrusters -->
+
+    <!-- Right Midsection -->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>-0.075 -0.3275 0 -1.57 -1.57 1.57</pose>
+      <name>thruster1</name>
+    </include>
+
+    <!-- Angled Front Right-->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>0.33 -0.216 -0.0085 0 -2.355 1.57</pose>
+      <name>thruster2</name>
+    </include>
+
+    <!-- Angled Front Left-->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>0.33 0.216 -0.0085 0 2.355 1.57</pose>
+      <name>thruster3</name>
+    </include>
+
+    <!-- Left Midsection -->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>-0.075 0.3275 0 -1.57 1.57 1.57</pose>
+      <name>thruster4</name>
+    </include>
+    
+    <!-- Vertical -->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>-0.219431 0 0.08 0 3.14 1.57</pose>
+      <name>thruster5</name>
+    </include>
+
+    <!-- Back Horizontal-->
+    <include>
+      <uri>model://steelhead_thruster</uri>
+      <pose>-0.355 0 0 1.57 1.57 0</pose>
+      <name>thruster6</name>
+    </include>
+
+
+    <!--
+
+      Fixed Joints within AUV
+
+    -->
+
+    <joint name='frame_thruster1' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster1::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='frame_thruster2' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster2::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='frame_thruster3' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster3::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='frame_thruster4' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster4::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='frame_thruster5' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster5::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='frame_thruster6' type='fixed'>
+      <parent>base_link::base_link</parent>
+      <child>thruster6::thruster</child>
+      <pose>0 0 0 0 0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <!-- 
+
+      Plugins
+
+    -->
+
+    <!-- Thrust Vectors -->
+    <plugin name="steelhead_gazebo::ThrusterDriver" filename="libthruster_driver_plugin.so">
+      <thruster_count>6</thruster_count>
+      <ros>
+        <namespace>/steelhead/controls</namespace>
+        <remapping>output_forces</remapping>
+      </ros>
+    </plugin>
+
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+
+  </model>
+</sdf>

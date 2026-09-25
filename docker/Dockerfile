@@ -1,17 +1,16 @@
-FROM ros:foxy
+FROM ros:lyrical
 
 # setup steelhead
 RUN mkdir -p /subbots
-COPY build.sh /subbots
-WORKDIR /subbots
+COPY . /subbots/steelhead
+WORKDIR /subbots/steelhead/docker
 RUN chmod +x build.sh
 RUN /bin/bash build.sh
 
 # setup entrypoint
-COPY entrypoint.sh /subbots
-WORKDIR /subbots
-RUN chmod +x entrypoint.sh
+WORKDIR /subbots/steelhead
+RUN chmod +x docker/entrypoint.sh
 
 # Use entrypoint (which sources local install) to run cmd 
-ENTRYPOINT ["/subbots/entrypoint.sh"]
+ENTRYPOINT ["/subbots/steelhead/docker/entrypoint.sh"]
 CMD ["/bin/bash"]

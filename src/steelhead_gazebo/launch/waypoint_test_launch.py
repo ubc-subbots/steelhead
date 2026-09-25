@@ -1,10 +1,10 @@
 import os
 
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription, TimerAction
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -12,23 +12,27 @@ def generate_launch_description():
 
     ukf_teleop_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('steelhead_gazebo'), 'launch', 'ukf_teleop_sim_launch.py')
+            os.path.join(
+                get_package_share_directory("steelhead_gazebo"),
+                "launch",
+                "ukf_teleop_sim_launch.py",
+            )
         )
     )
 
     waypoint_marker = Node(
-        package='steelhead_controls', 
-        executable='waypoint_marker',
-        output='screen', 
-        parameters=[{'use_sim_time': True}]
+        package="steelhead_controls",
+        executable="waypoint_marker",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
     )
 
     waypoint_marker_tester = Node(
-        package='steelhead_controls',
-        executable='waypoint_marker_tester.py',
-        name='waypoint_marker_tester',
-        output='screen', 
-        parameters=[{'use_sim_time': True}]
+        package="steelhead_controls",
+        executable="waypoint_marker_tester.py",
+        name="waypoint_marker_tester",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
     )
 
     ld.add_action(ukf_teleop_sim)

@@ -52,7 +52,7 @@ namespace steelhead_example
          * @note something of particular note about this function
          * 
          */
-        void callback(const std_msgs::msg::String::SharedPtr msg) const;
+        void callback(const std_msgs::msg::String::SharedPtr msg);
 
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;  
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_; 

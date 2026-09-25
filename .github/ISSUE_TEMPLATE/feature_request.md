@@ -10,7 +10,7 @@ assignees: ''
 This is a high level overview of what needs to be done and what needs to be implemented
 
 **Resources**
-[ROS2 Foxy Index](https://docs.ros.org/en/foxy/index.html)
+[ROS2 Lyrical Index](https://docs.ros.org/en/lyrical/index.html)
 
 **Notes**
 - This might be something to note about the implementation

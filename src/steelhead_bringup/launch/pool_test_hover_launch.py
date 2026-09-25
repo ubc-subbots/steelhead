@@ -19,8 +19,8 @@ def generate_launch_description():
         executable="component_container",
         composable_node_descriptions=[
             ComposableNode(
-                package="steelhead_controls",
-                plugin="steelhead_controls::SerialSubscriber",
+                package="steelhead_sensors",
+                plugin="steelhead_sensors::SerialSubscriber",
                 name="serial_subscriber",
             ),
         ],
@@ -30,7 +30,7 @@ def generate_launch_description():
     imu = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_controls"),
+                get_package_share_directory("steelhead_sensors"),
                 "launch",
                 "imu_publisher_launch.py",
             )
@@ -40,9 +40,9 @@ def generate_launch_description():
     pid_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pid_controller"),
+                get_package_share_directory("steelhead_controls"),
                 "launch",
-                "steelhead_pid_controller_launch.py",
+                "pid_controller_launch.py",
             )
         )
     )
@@ -75,7 +75,7 @@ def generate_launch_description():
     pressure_sensor = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_controls"),
+                get_package_share_directory("steelhead_sensors"),
                 "launch",
                 "depth_sensor_publisher_launch.py",
             )

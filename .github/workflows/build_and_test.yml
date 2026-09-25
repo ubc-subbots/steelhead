@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_and_test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: hashaam1217/subbots_steelhead_testing:1.0.1
     steps:
@@ -35,11 +35,10 @@ jobs:
 
       - name: Install CUDA
         run: |
-          sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
-          sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
-          sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2604/x86_64/cuda-keyring_1.1-1_all.deb
+          sudo dpkg -i cuda-keyring_1.1-1_all.deb
           sudo apt-get update
-          sudo apt-get -y install cuda libcudnn8 libcudnn8-dev
+          sudo apt-get -y install cuda libcudnn9-cuda-13 libcudnn9-dev-cuda-13
 
       - name: Set CUDA paths
         run: |
@@ -52,38 +51,17 @@ jobs:
       - name: Install deps with rosdep
         run: |
           rosdep init
-          rosdep update --include-eol
-          rosdep install -i --from-path src --rosdistro foxy -y
+          rosdep update
+          PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -i --from-path src --rosdistro lyrical -y
 
-      - name: Cache OpenCV
-        id: opencv-cache
-        uses: actions/cache@v3  # Update to the latest version
-        with:
-          path: ./opencv-install
-          key: ${{ runner.os }}-opencv-cache
-
-      - name: Install OpenCV
-        uses: rayandrews/with-opencv-action@v1
-        with:
-          dir: ./opencv-install
-          cached: ${{ steps.opencv-cache.outputs.cache-hit }}
-          opencv-version: '4.5.3'
-          CMAKE_BUILD_TYPE: RELEASE
-          ENABLE_PRECOMPILED_HEADERS: OFF
-
-      - name: Ignore with colcon build
-        run: |
-          touch ./opencv-install/COLCON_IGNORE
 
       - name: Source setup and build then test using colcon
         shell: bash
         env:
-          LD_LIBRARY_PATH: /usr/local/lib/
           Torch_DIR: ${{ github.workspace }}/libtorch/libtorch/share/cmake/Torch
         run: |
-          source /opt/ros/foxy/setup.bash
-          source /usr/share/gazebo/setup.sh
-          colcon build --cmake-args -DCMAKE_CXX_STANDARD=14 -DTorch_DIR=$Torch_DIR
+          source /opt/ros/lyrical/setup.bash
+          colcon build --cmake-args -DCMAKE_CXX_STANDARD=20 -DTorch_DIR=$Torch_DIR
           source ./install/setup.bash
           colcon test
           colcon test-result --verbose

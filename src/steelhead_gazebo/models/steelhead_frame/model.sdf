@@ -3,10 +3,32 @@
   <model name='steelhead_frame'>
     <link name='base_link'>
 
-      <!-- pose relaive to STL file origin, was moved to AUV center using Blender -->
-      <!-- Edited for Steelhead Aug 9 2024-->
+      <!-- Edited for Steelhead Sept 17 2026-->
       <inertial>
-        <mass>13.7</mass>
+        <mass>12.499</mass>
+        <fluid_added_mass>
+          <xx>6.02798389</xx>
+          <xy>0</xy>
+          <xz>0</xz>
+          <xp>0</xp>
+          <xq>0</xq>
+          <xr>0</xr>
+          <yy>19.30705001</yy>
+          <yz>0</yz>
+          <yp>0</yp>
+          <yq>0</yq>
+          <yr>0</yr>
+          <zz>31.68082819</zz>
+          <zp>0</zp>
+          <zq>0</zq>
+          <zr>0</zr>
+          <pp>0.52934941</pp>
+          <pq>0</pq>
+          <pr>0</pr>
+          <qq>0.29447564</qq>
+          <qr>0</qr>
+          <rr>0.40257545</rr>
+        </fluid_added_mass>
         <inertia>
           <ixx> 0.548853532</ixx>
           <ixy> 0.000990367</ixy>
@@ -15,8 +37,9 @@
           <iyz> 0.045963196</iyz>
           <izz> 1.077000000</izz>
         </inertia>
-         <pose>0.1 -0.062 -0.00878 0 0 0</pose>
+         <pose>0.003 0 -0.02 0 0 0</pose>
       </inertial>
+
 
       <!-- Visual Data -->
       <visual name='visual'>
@@ -28,8 +51,15 @@
           </mesh>
         </geometry>
         <material>
-          <lighting>1</lighting>
-          <shader type='pixel'/>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.5 0.5 0.5 1</specular>
+          <pbr>
+            <metal>
+              <roughness>0.6</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
@@ -38,6 +68,139 @@
       <gravity>1</gravity>
 
       <!-- Collision Data-->
+
+      <collision name='buoyancy_collision'>
+        <pose>0 0 0.04 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 0.3 0.09512</size>
+          </box>
+        </geometry>
+        
+      </collision>
+      
+      <sensor type="rgbd_camera" name="front_camera">
+        <pose>0.45 -0.06 0 0 0 0</pose>
+        <update_rate>60</update_rate>
+        <visualize>true</visualize>
+        <topic>/front_camera</topic>
+        <gz:frame_id>camera_link_optical</gz:frame_id>
+        <camera name="front">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+
+      <sensor type="camera" name="bottom_camera">
+        <pose>0.4 -0.06 0 0 1.57 0</pose>
+        <update_rate>60</update_rate>
+        <visualize>true</visualize>
+        <topic>/bottom_camera/image</topic>
+        <gz:frame_id>bottom_camera_link</gz:frame_id>
+        <camera name="bottom">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>200</update_rate>
+        <visualize>true</visualize>
+        <topic>/imu</topic>
+        <gz:frame_id>base_link</gz:frame_id>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>
+    </link>
+
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+      <plugin
+        filename="gz-sim-hydrodynamics-system"
+        name="gz::sim::systems::Hydrodynamics">
+        <link_name>base_link</link_name>
+        <disable_added_mass>true</disable_added_mass>
+        <xUabsU>-59.75066625</xUabsU>
+        <xU>-0.2229119791</xU>
+        <yVabsV>-71.13459739</yVabsV>
+        <yV>-1.105547605</yV>
+        <zWabsW>-67.099009</zWabsW>
+        <zW>-0.2472084207</zW>
+        <kPabsP>-5.975066625</kPabsP>
+        <kP>-0.02229119791</kP>
+        <mQabsQ>-7.113459739</mQabsQ>
+        <mQ>-0.1105547605</mQ>
+        <nRabsR>-6.7099009</nRabsR>
+        <nR>-0.02472084207</nR>
+      </plugin>
+
+      <plugin
+        filename="gz-sim-odometry-publisher-system"
+        name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_link</robot_base_frame>
+        <odom_publish_frequency>50</odom_publish_frequency>
+        <dimensions>3</dimensions>
+      </plugin>
+
+      <plugin
+        filename="libpressure_sensor.so"
+        name="steelhead_gazebo::PressureSensor">
+        <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
+        <update_rate>50</update_rate>
+      </plugin>
+  
+    <link name='physical_collision_link'>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <iyy>0.000001</iyy>
+          <izz>0.000001</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+
       <collision name='collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>2</max_contacts>
@@ -48,7 +211,6 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
-        <!-- Surface Data consists of default value, we should reseach better numbers-->
         <surface>
           <friction>
             <ode>
@@ -95,98 +257,17 @@
           </contact>
         </surface>
       </collision>
-      
-      <sensor type="depth" name="front_camera">
-        <pose>0.45 -0.06 0 0 0 0 </pose>
-        <update_rate>60</update_rate>
-        <visualize>false</visualize>
-        <camera name="front">
-          <horizontal_fov>1.3962634</horizontal_fov>
-          <image>
-            <width>640</width>
-            <height>480</height>
-            <format>R8G8B8</format>
-          </image>
-          <clip>
-            <near>0.02</near>
-            <far>300</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.007</stddev>
-          </noise>
-        </camera>
-        <plugin name="front_camera" filename="libgazebo_ros_camera.so">
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-            <remapping>custom_camera/image_raw:=front_camera/image_raw</remapping>
-            <remapping>custom_camera/depth/image_raw:=front_camera/depth/image_raw</remapping>
-          </ros>
-
-          <publish_camera_info>true</publish_camera_info>
-
-          <frame_name>camera_link_optical</frame_name>
-
-          <min_depth>0.1</min_depth>
-          <max_depth>100.0</max_depth>
-        </plugin>
-      </sensor>
-      <sensor type="camera" name="bottom_camera">
-        <pose>0.4 -0.06 0 0 1.57 0</pose>
-        <update_rate>60</update_rate>
-        <visualize>false</visualize>
-        <camera name="bottom">
-          <horizontal_fov>1.3962634</horizontal_fov>
-          <image>
-            <width>640</width>
-            <height>480</height>
-            <format>R8G8B8</format>
-          </image>
-          <clip>
-            <near>0.02</near>
-            <far>300</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.007</stddev>
-          </noise>
-        </camera>
-        <plugin name="down_camera" filename="libgazebo_ros_camera.so">
-          <!-- <bodyName>camera_link</bodyName> -->
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-          </ros>
-        </plugin>
-      </sensor>
-      <sensor name="imu_sensor" type="imu">
-        <always_on>true</always_on>
-        <update_rate>300</update_rate>
-        <visualize>true</visualize>
-        <topic>imu</topic>
-        <gravity>true</gravity>
-        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
-          <topicName>imu</topicName>
-          <bodyName>imu_link</bodyName>
-          <updateRateHZ>200</updateRateHZ>
-          <gaussianNoise>0.001</gaussianNoise>
-          <xyzOffset>0 0 0</xyzOffset>
-          <rpyOffset>0 0 0</rpyOffset>
-          <frameName>base_link</frameName>
-          <linear_acceleration_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</linear_acceleration_covariance>
-          <angular_velocity_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</angular_velocity_covariance>
-          <orientation_covariance>0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005 0.005</orientation_covariance>
-          <initialOrientationAsReference>false</initialOrientationAsReference>
-          <ros>
-            <namespace>/steelhead/drivers</namespace>
-          </ros>
-        </plugin>
-        <pose>0 0 0 0 0 0</pose>
-      </sensor>
     </link>
-
-    <static>0</static>
-    <allow_auto_disable>1</allow_auto_disable>
-  </model>
+    <joint name='physical_collision_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>physical_collision_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+      </axis>
+    </joint>
+</model>
 </sdf>

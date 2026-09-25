@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_tasks)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -50,14 +50,7 @@ target_compile_definitions(steelhead_tasks
   PRIVATE "steelhead_tasks_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_tasks
-  "rclcpp"
-  "rclcpp_components"
-  "sensor_msgs"
-  "geometry_msgs"
-  "tf2"
-  "steelhead_interfaces"
-)
+target_link_libraries(steelhead_tasks PUBLIC rclcpp::rclcpp rclcpp_components::component sensor_msgs::sensor_msgs geometry_msgs::geometry_msgs tf2::tf2 steelhead_interfaces::steelhead_interfaces)
 
 install(TARGETS
   steelhead_tasks

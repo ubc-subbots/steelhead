@@ -1,56 +1,44 @@
 #ifndef STEELHEAD_GAZEBO__PRESSURE_SENSOR
 #define STEELHEAD_GAZEBO__PRESSURE_SENSOR
 
-#include <gazebo/gazebo.hh>
-#include <gazebo/physics/physics.hh>
-
-#include "rclcpp/rclcpp.hpp"
+#include <gz/sim/System.hh>
+#include <gz/sim/Model.hh>
+#include <rclcpp/rclcpp.hpp>
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
+#include <thread>
+#include <chrono>
 
 namespace steelhead_gazebo
 {
-
-    using std::placeholders::_1;
-
-    class PressureSensor : public gazebo::ModelPlugin
+    class PressureSensor : public gz::sim::System,
+                           public gz::sim::ISystemConfigure,
+                           public gz::sim::ISystemPostUpdate
     {
-
     public:
-        PressureSensor(void);
-        ~PressureSensor(void);
+        PressureSensor();
+        ~PressureSensor() override;
 
-        /** Collects all neccessary parameters and initializes the ROS 2 node.
-         * 
-         * @param _model A pointer to the attached mdoel
-         * @param _sdf   A pointer to the robot's SDF description
-         */
-        virtual void Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf);
+        void Configure(const gz::sim::Entity &_entity,
+                       const std::shared_ptr<const sdf::Element> &_sdf,
+                       gz::sim::EntityComponentManager &_ecm,
+                       gz::sim::EventManager &_eventMgr) override;
 
-        /** Publishes the PressureSensor message on loop. Assumes that z=0 is the surface of the water.
-         * 
-         */
-        virtual void OnUpdate();
+        void PostUpdate(const gz::sim::UpdateInfo &_info,
+                        const gz::sim::EntityComponentManager &_ecm) override;
 
     private:
-
-        /** Spins ROS2 node on a dedicated thread to remain non-blocking
-         * 
-         */
-        void SpinNode(void);
+        void SpinNode();
 
         rclcpp::Node::SharedPtr node;
         rclcpp::Publisher<steelhead_interfaces::msg::PressureSensor>::SharedPtr pressure_publisher;
-        gazebo::event::ConnectionPtr updateConnection_;
-        gazebo::physics::ModelPtr model;
+
+        gz::sim::Model model{gz::sim::kNullEntity};
         std::string publish_topic;
 
+        std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> executor;
         std::thread spinThread;
-        std::string topic_name;
         int update_rate;
-        rclcpp::Time prev_time;
+        std::chrono::steady_clock::duration prev_time{0};
     };
-
-    GZ_REGISTER_MODEL_PLUGIN(PressureSensor)
-
 }
 #endif // STEELHEAD_GAZEBO__PRESSURE_SENSOR

@@ -5,7 +5,7 @@
 #include "sensor_msgs/msg/imu.hpp"
 #include "steelhead_interfaces/msg/hover_adjustment.hpp"
 #include "steelhead_interfaces/msg/pipeline_feedback.hpp"
-#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Quaternion.hpp>
 
 namespace steelhead_tasks
 {

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(steelhead_controls)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -10,7 +10,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -29,6 +29,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -72,66 +73,27 @@ target_include_directories(hover_at_depth PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(
-  thrust_allocator
-  "rclcpp"
-  "rclcpp_components"
-  "Eigen3"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "OpenCV"
-)
+target_link_libraries(thrust_allocator PUBLIC rclcpp::rclcpp rclcpp_components::component Eigen3::Eigen steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs ${OpenCV_LIBRARIES})
 install(TARGETS thrust_allocator
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  waypoint_marker
-  "rclcpp"
-  "rclcpp_components"
-  "tf2"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "nav_msgs"
-)
+target_link_libraries(waypoint_marker PUBLIC rclcpp::rclcpp rclcpp_components::component tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs nav_msgs::nav_msgs)
 install(TARGETS waypoint_marker
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  trajectory_generator
-  "rclcpp"
-  "rclcpp_components"
-  "tf2"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "nav_msgs"
-)
+target_link_libraries(trajectory_generator PUBLIC rclcpp::rclcpp rclcpp_components::component tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs nav_msgs::nav_msgs)
 install(TARGETS trajectory_generator
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  actuators_command
-  "rclcpp"
-  "rclcpp_components"
-  "steelhead_interfaces"
-)
+target_link_libraries(actuators_command PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces)
 install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_target_dependencies(
-  hover_at_depth
-  "rclcpp"
-  "rclcpp_components"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-)
+target_link_libraries(hover_at_depth PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs)
 install(TARGETS hover_at_depth
   DESTINATION lib/${PROJECT_NAME}
 )
@@ -140,29 +102,19 @@ install(TARGETS hover_at_depth
 add_library(steelhead_controls SHARED
   src/thrust_allocator.cpp
   # src/waypoint_marker.cpp
-  src/serial_subscriber
+  
 )
 
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::ThrustAllocator")
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::WaypointMarker")
-rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::SerialSubscriber")
+
 rclcpp_components_register_nodes(steelhead_controls "steelhead_controls::TrajectoryGenerator")
 
 target_compile_definitions(steelhead_controls
   PRIVATE "steelhead_controls_CPP_BUILDING_DLL"
 )
 
-ament_target_dependencies(steelhead_controls
-  "rclcpp"
-  "rclcpp_components"
-  "Eigen3"
-  "steelhead_interfaces"
-  "geometry_msgs"
-  "sensor_msgs"
-  "OpenCV"
-  "tf2"
-  "nav_msgs"
-)
+target_link_libraries(steelhead_controls PUBLIC rclcpp::rclcpp rclcpp_components::component Eigen3::Eigen steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs ${OpenCV_LIBRARIES} tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs nav_msgs::nav_msgs)
 
 install(TARGETS
   steelhead_controls
@@ -183,10 +135,7 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/test
 )
 
-install(DIRECTORY
-  models
-  DESTINATION share/${PROJECT_NAME}
-)
+
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
@@ -197,8 +146,8 @@ install(PROGRAMS
   steelhead_controls/waypoint_marker_tester.py
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py
-  steelhead_controls/bno085_imu_publisher.py
-  steelhead_controls/ms5837_depth_publisher.py
+  
+  
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -208,5 +157,22 @@ if(BUILD_TESTING)
     test/test_thrust_allocator_launch.py
   )
 endif()
+
+
+add_executable(pid_controller src/pid_controller.cpp)
+target_include_directories(pid_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(pid_controller PUBLIC 
+  rclcpp::rclcpp 
+  rclcpp_components::component 
+  sensor_msgs::sensor_msgs 
+  std_msgs::std_msgs 
+  steelhead_interfaces::steelhead_interfaces 
+  tf2::tf2 
+  tf2_geometry_msgs::tf2_geometry_msgs 
+  ament_index_cpp::ament_index_cpp)
+install(TARGETS pid_controller DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
