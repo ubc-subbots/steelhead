@@ -73,7 +73,7 @@ The last line is helpful in that it colorizes ROS2 logging so that info/warn/err
    
 If this command executes successfully, you are ready to develop! If the simulation is incredibly laggy, check out the [optimization guide](./src/steelhead_gazebo/README.md#optimization-guide). 
 
-Now that you're setup, check out [The Challenge](https://github.com/ubc-subbots/steelhead/wiki/The-Challenge) page for your first task!
+Now that you're set up, check out [The Challenge](https://github.com/ubc-subbots/steelhead/wiki/The-Challenge) page for your first task!
     
 ## Development Setup
 We officially support VSCode-like IDEs (VSCode, Cursor), so if you're really cool and use Neovim, keep in mind that we may not be able to help with every question. These are technically optional but make life easier and keeps our codebase consistent.
