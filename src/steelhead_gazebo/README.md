@@ -47,11 +47,22 @@ Remember to rebuild after making any changes, including model and world files. I
 
 **Cause:** Gazebo's default renderer (`ogre2`) needs OpenGL features that aren't fully supported through UTM's virtualized GPU on Apple Silicon (Gazebo → GLX/EGL → virgl → ANGLE → Metal). Not a bug in our models — native Linux and properly GPU-accelerated VMs aren't affected.
 
-**Fix:** Pass `render_engine:=ogre` to use Gazebo's older renderer, which avoids the crash. Default stays `ogre2` for everyone else.
+**Fix:** Use Gazebo's older `ogre` renderer instead. Default stays `ogre2` for everyone else.
+
+**Option A — set once (recommended for Mac + UTM):**
+
+    echo 'export STEELHEAD_GZ_RENDER_ENGINE=ogre' >> ~/.bashrc
+    source ~/.bashrc
+
+Then launch as normal — no flag needed:
+
+    ros2 launch steelhead_bringup barebones_gazebo_launch.py world:=prequalification.world headless:=true
+
+**Option B — per-launch flag (overrides the env var):**
 
     ros2 launch steelhead_bringup barebones_gazebo_launch.py world:=prequalification.world headless:=true render_engine:=ogre
 
-If you're on Mac + UTM, always add `render_engine:=ogre`.
+If you're on Mac + UTM, use one of the two — always defaulting to `ogre`.
 
 ### Underwater Camera
 To run the underwater camera node, use the following
