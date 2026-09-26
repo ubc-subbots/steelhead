@@ -37,8 +37,21 @@ Gazebo can be quite computationally expensive, since it is calculating lots of t
         echo 'export __NV_PRIME_RENDER_OFFLOAD=1' >> ~/.bashrc
         echo 'export __GLX_VENDOR_LIBRARY_NAME=nvidia' >> ~/.bashrc
         source ~/.bashrc
-
+6. If you are on a Mac with an ARM chip (M-series), your Gazebo simulation instances may crash. Please refer to the next section in this README to view the fix for this problem.
+ 
 Remember to rebuild after making any changes, including model and world files. If you do make any performance changes, make sure to revert them before making a pull request.
+
+#### Gazebo crash on Mac + UTM
+
+**Symptom:** `gz sim` segfaults in `Ogre::Hlms::createDatablock` (sometimes preceded by `GLXBadFBConfig`) when loading worlds with real models. `cube.world` may work; `prequalification.world` crashes once the AUV loads.
+
+**Cause:** Gazebo's default renderer (`ogre2`) needs OpenGL features that aren't fully supported through UTM's virtualized GPU on Apple Silicon (Gazebo → GLX/EGL → virgl → ANGLE → Metal). Not a bug in our models — native Linux and properly GPU-accelerated VMs aren't affected.
+
+**Fix:** Pass `render_engine:=ogre` to use Gazebo's older renderer, which avoids the crash. Default stays `ogre2` for everyone else.
+
+    ros2 launch steelhead_bringup barebones_gazebo_launch.py world:=prequalification.world headless:=true render_engine:=ogre
+
+If you're on Mac + UTM, always add `render_engine:=ogre`.
 
 ### Underwater Camera
 To run the underwater camera node, use the following
