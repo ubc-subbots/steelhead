@@ -32,10 +32,9 @@ def generate_launch_description():
 
     render_engine_arg = DeclareLaunchArgument(
     	"render_engine",
-    	default_value="ogre2",
-	choices=["ogre", "ogre2"],
-    	description="Rendering engine to use with gz sim (ogre2 or ogre). Use 'ogre' as a workaround for GPU/virtualization rendering crashes.",
-   )
+    	default_value=EnvironmentVariable("STEELHEAD_GZ_RENDER_ENGINE", default_value="ogre2"),
+        description="Rendering engine for gz sim (ogre2 or ogre). Set STEELHEAD_GZ_RENDER_ENGINE env var, or use 'ogre' as a workaround for GPU/virtualization rendering crashes.",
+        )
 
     # We need to add the models and worlds directories to env so gazebo can find them
     steelhead_gazebo_dir = get_package_share_directory("steelhead_gazebo")
