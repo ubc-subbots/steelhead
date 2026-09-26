@@ -33,6 +33,7 @@ def generate_launch_description():
     render_engine_arg = DeclareLaunchArgument(
     	"render_engine",
     	default_value="ogre2",
+	choices=["ogre", "ogre2"],
     	description="Rendering engine to use with gz sim (ogre2 or ogre). Use 'ogre' as a workaround for GPU/virtualization rendering crashes.",
    )
 
