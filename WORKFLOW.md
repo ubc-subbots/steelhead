@@ -26,4 +26,4 @@ Once filling out this pull request, you will then wait for it to be approved. Th
 
 ![Success Checks](assets/workflow_merge_block.png)
 
-Once all checks are passing and the pull request is accepted, it will be merged into the `main` branch. After it has been merged and you are assigned a new issue, proceed with the same process as given above. Make sure that you **DON'T** branch off of your last issue's branch and that you checkout and pull from main before branching off for your next issue. 
+Once all checks are passing and the pull request is accepted, you have to merge into the `main` branch. After it has been merged and you are assigned a new issue, proceed with the same process as given above. Make sure that you **DON'T** branch off of your last issue's branch and that you checkout and pull from main before branching off for your next issue. 
