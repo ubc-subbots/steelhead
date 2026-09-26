@@ -30,6 +30,13 @@ def generate_launch_description():
         description="Set to 'true' to run gazebo headless",
     )
 
+    render_engine_arg = DeclareLaunchArgument(
+    	"render_engine",
+    	default_value=EnvironmentVariable("STEELHEAD_GZ_RENDER_ENGINE", default_value="ogre2"),
+        choices=["ogre2", "ogre"],
+        description="Rendering engine for gz sim (ogre2 or ogre). Set STEELHEAD_GZ_RENDER_ENGINE env var, or use 'ogre' as a workaround for GPU/virtualization rendering crashes.",
+        )
+
     # We need to add the models and worlds directories to env so gazebo can find them
     steelhead_gazebo_dir = get_package_share_directory("steelhead_gazebo")
 
@@ -54,7 +61,11 @@ def generate_launch_description():
 
     gz_args = PythonExpression(
         [
-            '" -r -v 1 "',
+            '" -r -v 1 --render-engine "',
+            ' + "',
+            LaunchConfiguration("render_engine"),
+            '"',
+            ' + " "',
             ' + ("-s " if "',
             LaunchConfiguration("headless"),
             '" == "true" else "")',
@@ -113,6 +124,7 @@ def generate_launch_description():
 
     ld.add_action(world_arg)
     ld.add_action(headless_arg)
+    ld.add_action(render_engine_arg)
     ld.add_action(add_resource_path)
     ld.add_action(add_plugin_path)
     ld.add_action(gazebo_sim)
