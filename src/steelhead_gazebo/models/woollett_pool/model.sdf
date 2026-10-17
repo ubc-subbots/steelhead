@@ -36,7 +36,7 @@
         <!-- Pool worlds place this model at z=-2.25, making the waterline z=0. -->
         <pose>0 0 2.25 0 0 0</pose>
         <cast_shadows>false</cast_shadows>
-	<transparency>0.5</transparency>
+	<transparency>0.6</transparency>
         <geometry>
           <plane>
             <normal>0 0 1</normal>
