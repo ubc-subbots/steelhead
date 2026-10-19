@@ -15,7 +15,7 @@ This repository contains the ROS2 system for the UBC SubBots Steelhead AUV. It i
 - [Useful Shortcuts](#useful-shortcuts)
 
 ## Setup
-This guide assumes you have already followed the guide for installing Ubuntu, ROS2, and Gazebo found in the [wiki](https://github.com/ubc-subbots/steelhead/wiki/Installation-Guide).
+This guide assumes you have already followed the guide for installing Ubuntu, ROS2, and Gazebo found in the [wiki](https://github.com/ubc-subbots/steelhead/wiki/Software-Start-Here).
 
 To get started, first clone this repo to your computer running Ubuntu 26.04 into whatever directory you choose by running
 
