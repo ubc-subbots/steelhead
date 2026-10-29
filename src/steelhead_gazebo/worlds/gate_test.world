@@ -2,6 +2,7 @@
 <sdf version="1.7">
   <world name="competition">
     <scene>
+      <grid>false</grid>
       <ambient>0.4 0.4 0.4 1.0</ambient>
       <background>0.0 0.4 0.7 1.0</background>
       <shadows>true</shadows>
@@ -38,6 +39,5 @@
       <uri>model://steelhead_auv</uri>
       <pose>0 0 1 0 0 0</pose>
     </include>
-    <grid>0</grid>
   </world>
 </sdf>
