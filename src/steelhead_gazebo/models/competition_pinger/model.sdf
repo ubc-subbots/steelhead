@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="pinger">
+    <static>true</static>
+
+    <link name="pinger_link">
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.01</ixx>
+          <iyy>0.01</iyy>
+          <izz>0.01</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <visual name="pinger_visual">
+        <geometry>
+          <mesh>
+            <uri>model://competition_pinger/meshes/pinger.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="pinger_collision">
+        <geometry>
+          <mesh>
+            <uri>model://competition_pinger/meshes/pinger_hitbox.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+    </link>
+  </model>
+</sdf>
