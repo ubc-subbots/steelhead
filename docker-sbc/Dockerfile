@@ -1,4 +1,5 @@
 FROM ros:lyrical-ros-base
+RUN echo "Intentional failure to test required build checks for issue 83" && exit 1
 MAINTAINER Fei Kuan for UBC Subbots - kuan@iatfei.com
 ARG TARGETARCH
 
@@ -43,7 +44,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 
 # Setup and build Steelhead
 WORKDIR /root/steelhead
-RUN /bin/bash -c 'source /opt/ros/lyrical/setup.bash; rosdep update --include-eol-distros; PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -i --from-path src --rosdistro lyrical --skip-keys "gazebo_ros gazebo_dev gazebo_ros_pkgs phidgets_spatial realsense2_camera camera_model" -y'
+RUN /bin/bash -c 'source /opt/ros/lyrical/setup.bash; rosdep update --include-eol-distros; PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -i --from-path src --rosdistro lyrical --skip-keys "gazebo_ros gazebo_dev gazebo_ros_pkgs phidgets_spatial realsense2_camera camera_model python-gdown-pip" -y'
 RUN python3 -m pip install pyserial sshkeyboard --break-system-packages
 RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --packages-skip steelhead_gazebo"
 RUN echo "source /root/steelhead/install/setup.bash" >> /root/.bashrc

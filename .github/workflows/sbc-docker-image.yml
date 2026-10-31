@@ -1,6 +1,7 @@
 name: Build SBC Docker Image
 
 on:
+  pull_request:
   push:
     branches: [main]          # just build
     paths-ignore:
