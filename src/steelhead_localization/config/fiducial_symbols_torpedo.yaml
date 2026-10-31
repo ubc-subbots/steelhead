@@ -1,0 +1,40 @@
+# Fiducial symbols on the torpedo board in competition_task_torpedo.world.
+# Same frame and units as fiducial_symbols_gate.yaml. The four circles share a
+# label, so a detection can't be tied to one of them and they are skipped.
+symbols:
+  torpedo_fire:
+    label: fire
+    x: 1.7034
+    y: 0.0482
+    z: -0.9147
+    height: 0.155
+  torpedo_blood:
+    label: blood
+    x: 1.7168
+    y: 0.4814
+    z: -1.1905
+    height: 0.150
+  torpedo_circle_upper_small:
+    label: circle
+    x: 1.7101
+    y: 0.2667
+    z: -0.9389
+    height: 0.129
+  torpedo_circle_under_fire:
+    label: circle
+    x: 1.7034
+    y: 0.0484
+    z: -1.0770
+    height: 0.155
+  torpedo_circle_lower_small:
+    label: circle
+    x: 1.7099
+    y: 0.2580
+    z: -1.3251
+    height: 0.129
+  torpedo_circle_under_blood:
+    label: circle
+    x: 1.7167
+    y: 0.4793
+    z: -1.3545
+    height: 0.155

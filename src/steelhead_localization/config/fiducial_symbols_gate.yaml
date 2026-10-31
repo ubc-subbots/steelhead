@@ -1,0 +1,29 @@
+# Fiducial symbols on the gate in competition_task_gate.world (same positions in
+# competition.world). Positions are symbol centers in metres, relative to the
+# robot's start: +x = starting heading, +y = left, +z = up (surface at z = 0).
+# height is the printed symbol's height in metres.
+symbols:
+  gate_sos:
+    label: sos
+    x: 3.4425
+    y: -1.0322
+    z: -0.6361
+    height: 0.168
+  gate_buoy:
+    label: buoy
+    x: 3.4422
+    y: -1.1731
+    z: -0.4928
+    height: 0.179
+  gate_compass:
+    label: compass
+    x: 3.4464
+    y: 0.6058
+    z: -0.4876
+    height: 0.168
+  gate_hammer_and_wrench:
+    label: hammer_and_wrench
+    x: 3.4461
+    y: 0.4724
+    z: -0.6330
+    height: 0.163
