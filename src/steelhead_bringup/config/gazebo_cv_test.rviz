@@ -110,6 +110,18 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /steelhead/yolo_detector/front/annotated_image
       Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: MissionStatus
+      Namespaces:
+        mission_status: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /steelhead/mission/status_marker
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

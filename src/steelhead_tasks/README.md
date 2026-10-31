@@ -107,6 +107,16 @@ the pipeline sequence can advance.
     - `flip_angle` (double, default 3pi/2) : Accumulated pitch rotation at which to stop
       commanding the flip and hand off to the hover node.
 
+## BehaviorTree.CPP Task Nodes (`steelhead_tasks_bt`)
+
+In addition to composable ROS 2 component nodes, `steelhead_tasks` builds `libsteelhead_tasks_bt.so` and exposes `tasks::registerTaskNodes(factory, node)` for `steelhead_mission`:
+
+- `Gate` (`tasks::GateTask`) : `BT::StatefulActionNode` that centers a front-camera detection at `center_offset` and drives through the competition gate, then coasts forward for `pass_timeout` seconds. Automatically publishes a zero wrench on completion or halt.
+  - **Input Ports:** `label` (`string`, default `"sos"`), `center_offset` (`double`, default `0.1`), `pass_timeout` (`double`, default `4.0`).
+
+- `DriveFor` (`tasks::DriveFor`) : `BT::StatefulActionNode` that publishes a constant `PARTIAL` `HoverAdjustment` wrench for `duration` seconds, then zeroes the wrench on completion or halt.
+  - **Input Ports:** `force_x`, `force_y`, `force_z`, `torque_x`, `torque_y`, `torque_z` (`double`, default `0.0`), `duration` (`double`, default `1.0`).
+
 ## Contributors
 
 - Dorson Tang (dtang08@student.ubc.ca)

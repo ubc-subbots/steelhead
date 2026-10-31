@@ -25,6 +25,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
+find_package(behaviortree_cpp REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -52,8 +53,42 @@ target_compile_definitions(steelhead_tasks
 
 target_link_libraries(steelhead_tasks PUBLIC rclcpp::rclcpp rclcpp_components::component sensor_msgs::sensor_msgs geometry_msgs::geometry_msgs tf2::tf2 steelhead_interfaces::steelhead_interfaces)
 
+add_library(steelhead_tasks_bt SHARED
+  src/bt/drive_for.cpp
+  src/bt/gate_task.cpp
+  src/bt/register_nodes.cpp
+)
+
+target_include_directories(steelhead_tasks_bt PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(steelhead_tasks_bt PUBLIC
+  rclcpp::rclcpp
+  sensor_msgs::sensor_msgs
+  geometry_msgs::geometry_msgs
+  steelhead_interfaces::steelhead_interfaces
+  behaviortree_cpp::behaviortree_cpp
+)
+
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
+ament_export_dependencies(
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  steelhead_interfaces
+  behaviortree_cpp
+)
+
+install(DIRECTORY include/
+  DESTINATION include
+)
+
 install(TARGETS
   steelhead_tasks
+  steelhead_tasks_bt
+  EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

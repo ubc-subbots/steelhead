@@ -15,6 +15,7 @@
   <depend>geometry_msgs</depend>
   <depend>tf2</depend>
   <depend>steelhead_interfaces</depend>
+  <depend>behaviortree_cpp</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

@@ -30,6 +30,7 @@ This package is for creating launch files and utilities needed for launching the
 - `gazebo_test_x_launch.py` : Series of launch files within Gazebo.
 
     - `hardcode_pipeline`: Runs the same hard coded competition sequence as the pool test version, but WITHIN GAZEBO (gazebo with the competition world, PID, thrust allocator, hover script, and the pipeline).
+    - `mission`: Runs the BehaviorTree.CPP `mission_runner` (`steelhead_mission`) inside the Gazebo competition gate world with YOLO detection, controls, and RViz visualization (`mission:=gate_only.xml` by default).
 
 ## Contributors
 

@@ -1,0 +1,20 @@
+<root BTCPP_format="4" main_tree_to_execute="GateOnlyMission">
+  <BehaviorTree ID="GateOnlyMission">
+    <Sequence name="gate_mission">
+      <Fallback name="gate_with_fallback">
+        <Timeout msec="120000">
+          <Gate name="pass_gate"
+                label="sos"
+                center_offset="0.1"
+                pass_timeout="4.0"/>
+        </Timeout>
+        <DriveFor name="fallback_dead_reckon_gate"
+                  force_x="10.0"
+                  duration="5.0"/>
+      </Fallback>
+      <DriveFor name="post_gate_hold"
+                force_x="0.0"
+                duration="2.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
