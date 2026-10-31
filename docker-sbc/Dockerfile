@@ -1,4 +1,5 @@
 FROM ros:lyrical-ros-base
+RUN echo "Intentional failure to test required build checks for issue 83" && exit 1
 MAINTAINER Fei Kuan for UBC Subbots - kuan@iatfei.com
 ARG TARGETARCH
 
