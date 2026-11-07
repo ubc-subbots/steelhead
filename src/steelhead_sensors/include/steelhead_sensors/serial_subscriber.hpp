@@ -1,5 +1,5 @@
 #ifndef STEELHEAD_CONTROL__SERIAL_SUBSCRIBER 
-#include "std_msgs/msg/u_int32.hpp"
+#include "std_msgs/msg/u_int64.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 namespace steelhead_sensors
@@ -18,8 +18,8 @@ namespace steelhead_sensors
         ~SerialSubscriber();
 
     private:
-        void controlCallback(const std_msgs::msg::UInt32::SharedPtr msg) const;
-        rclcpp::Subscription<std_msgs::msg::UInt32>::SharedPtr thruster_sub_; 
+        void controlCallback(const std_msgs::msg::UInt64::SharedPtr msg) const;
+        rclcpp::Subscription<std_msgs::msg::UInt64>::SharedPtr thruster_sub_; 
         int fd_;
     };
     
