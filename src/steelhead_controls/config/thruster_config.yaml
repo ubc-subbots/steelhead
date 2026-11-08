@@ -15,7 +15,7 @@
 #                           |  |          |___| Thruster 2 (angled)
 #                           |__|Thruster 1
 
-    num_thrusters: 8
+    num_thrusters: 6
     bits_per_thruster: 5
     max_fwd: 3.71 # kgf
     max_rev: 2.92 # kgf
@@ -61,3 +61,8 @@
       lx: -0.455 
       ly: 0.0
       lz: 0.0
+    
+
+    
+    
+    
