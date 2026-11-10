@@ -22,7 +22,6 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
-find_package(visualization_msgs REQUIRED)
 find_package(steelhead_interfaces REQUIRED)
 
 include_directories(include)
@@ -64,7 +63,6 @@ target_link_libraries(mission_runner PUBLIC
   behaviortree_cpp::behaviortree_cpp
   rclcpp::rclcpp
   std_msgs::std_msgs
-  visualization_msgs::visualization_msgs
   steelhead_interfaces::steelhead_interfaces
   steelhead_mission_tasks
 )

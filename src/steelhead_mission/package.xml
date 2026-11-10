@@ -15,7 +15,6 @@
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2</depend>
-  <depend>visualization_msgs</depend>
   <depend>steelhead_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>

@@ -9,7 +9,6 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "visualization_msgs/msg/marker.hpp"
 
 #include "steelhead_interfaces/msg/hover_adjustment.hpp"
 
@@ -22,8 +21,8 @@ namespace mission
      *
      * Loads a behavior tree XML file, registers all task nodes in steelhead_mission,
      * ticks the tree at a fixed rate, streams live status to Groot2, and publishes
-     * both a string status topic and a 3D RViz text marker. Guarantees a zero PARTIAL
-     * wrench is published when the mission completes or the node shuts down.
+     * a string status topic. Guarantees a zero PARTIAL wrench is published when
+     * the mission completes or the node shuts down.
      */
     class MissionRunner : public rclcpp::Node
     {
@@ -68,12 +67,11 @@ namespace mission
             std::string formatActiveStatus(BT::NodeStatus root_status) const;
 
 
-            /** Publish the current tree status to mission/state and mission/status_marker.
+            /** Publish the current tree status to mission/state.
              *
              * @param status_text Human-readable status string.
-             * @param root_status Root status of the behavior tree.
              */
-            void publishStatus(const std::string & status_text, BT::NodeStatus root_status);
+            void publishStatus(const std::string & status_text);
 
 
             /** Publish a zero PARTIAL HoverAdjustment wrench to stop thruster overrides.
@@ -84,7 +82,6 @@ namespace mission
             std::string mission_file_;
             double tick_rate_hz_;
             int groot_port_;
-            std::string marker_frame_;
 
             BT::BehaviorTreeFactory factory_;
             BT::Tree tree_;
@@ -92,7 +89,6 @@ namespace mission
             std::unique_ptr<BT::Groot2Publisher> groot_publisher_;
 
             rclcpp::Publisher<std_msgs::msg::String>::SharedPtr state_pub_;
-            rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
             rclcpp::Publisher<steelhead_interfaces::msg::HoverAdjustment>::SharedPtr hover_adjust_pub_;
     };
 

@@ -20,17 +20,12 @@ namespace mission
         this->declare_parameter<std::string>("mission_file", "gate_only.xml");
         this->declare_parameter<double>("tick_rate_hz", 20.0);
         this->declare_parameter<int>("groot_port", 1667);
-        this->declare_parameter<std::string>("marker_frame", "odom");
 
         mission_file_ = this->get_parameter("mission_file").as_string();
         tick_rate_hz_ = this->get_parameter("tick_rate_hz").as_double();
         groot_port_ = static_cast<int>(this->get_parameter("groot_port").as_int());
-        marker_frame_ = this->get_parameter("marker_frame").as_string();
 
         state_pub_ = this->create_publisher<std_msgs::msg::String>("mission/state", 10);
-        marker_pub_ = this->create_publisher<visualization_msgs::msg::Marker>(
-            "mission/status_marker", 10
-        );
         hover_adjust_pub_ = this->create_publisher<steelhead_interfaces::msg::HoverAdjustment>(
             "controls/hover_adjust", 10
         );
@@ -108,7 +103,7 @@ namespace mission
                 );
                 last_status_text = status_text;
             }
-            publishStatus(status_text, status);
+            publishStatus(status_text);
 
             rate.sleep();
         }
@@ -120,7 +115,7 @@ namespace mission
         publishZeroWrench();
 
         const std::string final_text = formatActiveStatus(status);
-        publishStatus(final_text, status);
+        publishStatus(final_text);
         RCLCPP_INFO(
             this->get_logger(),
             "Mission finished with status: %s",
@@ -197,47 +192,11 @@ namespace mission
     }
 
 
-    void MissionRunner::publishStatus(
-        const std::string & status_text,
-        BT::NodeStatus root_status)
+    void MissionRunner::publishStatus(const std::string & status_text)
     {
         auto msg = std_msgs::msg::String();
         msg.data = status_text;
         state_pub_->publish(msg);
-
-        auto marker = visualization_msgs::msg::Marker();
-        marker.header.stamp = this->now();
-        marker.header.frame_id = marker_frame_;
-        marker.ns = "mission_status";
-        marker.id = 0;
-        marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
-        marker.action = visualization_msgs::msg::Marker::ADD;
-        marker.pose.position.x = 0.0;
-        marker.pose.position.y = 0.0;
-        marker.pose.position.z = 1.5;
-        marker.pose.orientation.w = 1.0;
-        marker.scale.z = 0.35;
-        marker.color.a = 1.0f;
-        if (root_status == BT::NodeStatus::SUCCESS)
-        {
-            marker.color.r = 0.2f;
-            marker.color.g = 1.0f;
-            marker.color.b = 0.2f;
-        }
-        else if (root_status == BT::NodeStatus::FAILURE)
-        {
-            marker.color.r = 1.0f;
-            marker.color.g = 0.2f;
-            marker.color.b = 0.2f;
-        }
-        else
-        {
-            marker.color.r = 0.2f;
-            marker.color.g = 0.9f;
-            marker.color.b = 1.0f;
-        }
-        marker.text = status_text;
-        marker_pub_->publish(marker);
     }
 
 
