@@ -1,0 +1,17 @@
+<root BTCPP_format="4" main_tree_to_execute="DropperOnlyMission">
+  <BehaviorTree ID="DropperOnlyMission">
+    <Sequence name="dropper_mission">
+      <Timeout msec="120000">
+        <Dropper name="drop_markers"
+                 label="fire"
+                 second_label="blood"
+                 center_offset_x="0.0"
+                 center_offset_y="0.1"
+                 drop_alignment_threshold="0.1"/>
+      </Timeout>
+      <DriveFor name="post_dropper_hold"
+                force_x="0.0"
+                duration="2.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

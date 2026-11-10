@@ -1,0 +1,41 @@
+<root BTCPP_format="4" main_tree_to_execute="CompetitionHardcodeMission">
+  <BehaviorTree ID="CompetitionHardcodeMission">
+    <Sequence name="competition_hardcode">
+      <DriveFor name="initial_sway_left" force_y="15.0" duration="1.0"/>
+      <DriveFor name="hold_1" duration="1.0"/>
+
+      <DriveFor name="forward_leg_1" force_x="15.0" duration="12.0"/>
+      <DriveFor name="hold_2" duration="1.0"/>
+
+      <!-- Uncomment to perform gate style pitch flips:
+      <PitchFlip name="flip_1" flip_torque="1.0" flip_angle="4.71238898038469"/>
+      <DriveFor name="hold_flip_1" duration="1.0"/>
+      <PitchFlip name="flip_2" flip_torque="1.0" flip_angle="4.71238898038469"/>
+      <DriveFor name="hold_flip_2" duration="1.0"/>
+      -->
+
+      <DriveFor name="forward_leg_2" force_x="15.0" duration="10.0"/>
+      <DriveFor name="hold_3" duration="1.0"/>
+
+      <DriveFor name="sway_right_leg" force_y="-15.0" duration="5.0"/>
+      <DriveFor name="hold_4" duration="1.0"/>
+
+      <DriveFor name="forward_leg_3" force_x="15.0" duration="6.0"/>
+      <DriveFor name="hold_5" duration="1.0"/>
+
+      <DriveFor name="sway_left_leg_1" force_y="15.0" duration="3.0"/>
+      <DriveFor name="hold_6" duration="1.0"/>
+
+      <DriveFor name="forward_leg_4" force_x="15.0" duration="22.0"/>
+      <DriveFor name="hold_7" duration="1.0"/>
+
+      <DriveFor name="sway_left_leg_2" force_y="15.0" duration="2.0"/>
+      <DriveFor name="hold_8" duration="1.0"/>
+
+      <DriveFor name="surface_up" force_z="15.0" duration="5.0"/>
+      <DriveFor name="hold_9" duration="1.0"/>
+
+      <DriveFor name="return_backwards" force_x="-15.0" duration="35.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
