@@ -1,26 +1,23 @@
 # steelhead_interfaces
 ## Description
 
-This package is for adding custom interface functionality such as custom messages, actions, and services. Any new interface must follow the ROS2 conventions given [here](https://index.ros.org/doc/ros2/Concepts/About-ROS-Interfaces/). 
+This package is for adding custom interface functionality such as custom messages and services. Any new interface must follow the ROS2 conventions given [here](https://index.ros.org/doc/ros2/Concepts/About-ROS-Interfaces/).
 
 ## Usage
 
-This package provides no executables. See ROS2 tutorials (such as [this](https://index.ros.org/doc/ros2/Tutorials/Single-Package-Define-And-Use-Interface/#id6)) for how to use custom messages. Below provides a brief description of each interace in this package.
-### Actions
-- `RunPipeline` Action used for running the pipeline
+This package provides no executables. See ROS2 tutorials (such as [this](https://index.ros.org/doc/ros2/Tutorials/Single-Package-Define-And-Use-Interface/#id6)) for how to use custom messages. Below provides a brief description of each interface in this package.
 ### Messages
-- `Pipelineeedback` Message used for nodes within the pipline to communicate with the manager
-- `PipelineType` Message used for enumeration of pipeline types
 - `DetectionBox` Message used for a detection box in an object recognition system
 - `DetectionBoxArray` Message used to represent an array of detection boxes
 - `Waypoint` Message used to represent a waypoint
+- `TrajectoryType` Message used for trajectory generator mode selection
 - `ObjectOffset` Message used to represent an object's position relative to the AUV
+- `Float` Message wrapping a single 32-bit float value
 - `PressureSensor` Message that holds pressure, depth and temperature, most likely implemented by the MS5837 pressure sensor
 - `HoverAdjustment` Message used for the hover_at_depth node that dictates the force override and type.
 ### Services
-- `ConfigurePipeline` Service used to configure the pipeline with a certain pipeline type
 - `ObjectDetection` Service used to detect objects in a given image
-- `ActuatorsCommand` Service used to control actuators (claw, torpedo, etc.) 
+- `ActuatorsCommand` Service used to control actuators (claw, torpedo, etc.)
 
 ## Contributors
 

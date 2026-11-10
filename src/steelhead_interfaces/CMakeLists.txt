@@ -26,10 +26,6 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "action/RunPipeline.action"
-  "srv/ConfigurePipeline.srv"
-  "msg/PipelineType.msg"
-  "msg/PipelineFeedback.msg"
   "msg/DetectionBox.msg"
   "msg/DetectionBoxArray.msg"
   "msg/Waypoint.msg"

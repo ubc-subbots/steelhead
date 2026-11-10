@@ -60,19 +60,22 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="screen",
-        # Silence log spam
         arguments=["-d", rviz_config_file, "--ros-args", "--log-level", "WARN"],
         parameters=[{"use_sim_time": True}],
     )
 
-    automation = IncludeLaunchDescription(
+    mission_runner = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_tasks"),
+                get_package_share_directory("steelhead_mission"),
                 "launch",
-                "automated_competition_torpedo_launch.py",
+                "mission_runner_launch.py",
             )
-        )
+        ),
+        launch_arguments={
+            "mission": "torpedo_only.xml",
+            "use_sim_time": "true",
+        }.items(),
     )
 
     yolo_detector = IncludeLaunchDescription(
@@ -100,7 +103,7 @@ def generate_launch_description():
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
     ld.add_action(rviz)
-    ld.add_action(automation)
+    ld.add_action(mission_runner)
     ld.add_action(yolo_detector)
     ld.add_action(actuators_simulation)
 

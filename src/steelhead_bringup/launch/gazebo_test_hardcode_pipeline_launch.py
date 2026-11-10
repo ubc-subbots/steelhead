@@ -49,23 +49,26 @@ def generate_launch_description():
         launch_arguments={"use_sim_time": "true"}.items(),
     )
 
-    pipeline = IncludeLaunchDescription(
+    mission_runner = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pipeline"),
+                get_package_share_directory("steelhead_mission"),
                 "launch",
-                "pipeline_launch.py",
+                "mission_runner_launch.py",
             )
         ),
-        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
+        launch_arguments={
+            "mission": "competition_hardcode.xml",
+            "use_sim_time": "true",
+        }.items(),
     )
 
-    delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])  # let gazebo spin up
+    delayed_mission = TimerAction(period=5.0, actions=[mission_runner])
 
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)
-    ld.add_action(delayed_pipeline)
+    ld.add_action(delayed_mission)
 
     return ld

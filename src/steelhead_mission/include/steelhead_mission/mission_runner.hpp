@@ -20,7 +20,7 @@ namespace mission
 
     /** BehaviorTree.CPP v4 mission runner node for the Steelhead AUV.
      *
-     * Loads a behavior tree XML file, registers all task nodes from steelhead_tasks,
+     * Loads a behavior tree XML file, registers all task nodes in steelhead_mission,
      * ticks the tree at a fixed rate, streams live status to Groot2, and publishes
      * both a string status topic and a 3D RViz text marker. Guarantees a zero PARTIAL
      * wrench is published when the mission completes or the node shuts down.

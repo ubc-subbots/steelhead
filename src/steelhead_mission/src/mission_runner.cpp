@@ -7,7 +7,7 @@
 
 #include "ament_index_cpp/get_package_share_path.hpp"
 
-#include "steelhead_tasks/bt/register_nodes.hpp"
+#include "steelhead_mission/tasks/register_nodes.hpp"
 
 
 namespace mission
@@ -39,7 +39,7 @@ namespace mission
 
     int MissionRunner::run()
     {
-        tasks::registerTaskNodes(factory_, this->shared_from_this());
+        registerTaskNodes(factory_, this->shared_from_this());
 
         const std::string xml_path = resolveMissionPath(mission_file_);
         RCLCPP_INFO(

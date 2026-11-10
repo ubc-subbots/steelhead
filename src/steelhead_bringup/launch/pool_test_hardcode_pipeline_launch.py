@@ -9,7 +9,6 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
-
     ld = LaunchDescription()
 
     serial = ComposableNodeContainer(
@@ -82,18 +81,21 @@ def generate_launch_description():
 
     delay_hover = TimerAction(period=3.0, actions=[hover])
 
-    pipeline = IncludeLaunchDescription(
+    mission_runner = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pipeline"),
+                get_package_share_directory("steelhead_mission"),
                 "launch",
-                "pipeline_launch.py",
+                "mission_runner_launch.py",
             )
         ),
-        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
+        launch_arguments={
+            "mission": "competition_hardcode.xml",
+            "use_sim_time": "false",
+        }.items(),
     )
 
-    delayed_pipeline = TimerAction(period=15.0, actions=[pipeline])
+    delayed_mission = TimerAction(period=15.0, actions=[mission_runner])
 
     bag_record = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -111,11 +113,7 @@ def generate_launch_description():
     ld.add_action(pid_controller)
     ld.add_action(thrust_allocator)
     ld.add_action(pressure_sensor)
-    ld.add_action(
-        delay_hover
-    )  # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
-    ld.add_action(
-        delayed_pipeline
-    )  # let the hover script reach depth before starting the sequence
+    ld.add_action(delay_hover)
+    ld.add_action(delayed_mission)
 
     return ld

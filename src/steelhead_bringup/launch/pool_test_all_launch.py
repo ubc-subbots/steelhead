@@ -125,18 +125,21 @@ def generate_launch_description():
         )
     )
 
-    pipeline = IncludeLaunchDescription(
+    mission_runner = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory("steelhead_pipeline"),
+                get_package_share_directory("steelhead_mission"),
                 "launch",
-                "pipeline_launch.py",
+                "mission_runner_launch.py",
             )
         ),
-        launch_arguments={"sequence": "competition_hardcode_sequence.yaml"}.items(),
+        launch_arguments={
+            "mission": "competition_hardcode.xml",
+            "use_sim_time": "false",
+        }.items(),
     )
 
-    delayed_pipeline = TimerAction(period=5.0, actions=[pipeline])
+    delayed_mission = TimerAction(period=5.0, actions=[mission_runner])
 
     bag_record = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -163,6 +166,6 @@ def generate_launch_description():
     ld.add_action(actuators_server)
     ld.add_action(depth_sensor)
     ld.add_action(hover_at_depth)
-    # ld.add_action(delayed_pipeline)
+    # ld.add_action(delayed_mission)
 
     return ld
