@@ -27,13 +27,9 @@ find_package(steelhead_interfaces REQUIRED)
 include_directories(include)
 
 add_library(steelhead_mission_tasks SHARED
+  src/register_nodes.cpp
   src/tasks/drive_for.cpp
-  src/tasks/dropper_task.cpp
   src/tasks/gate_task.cpp
-  src/tasks/octagon_task.cpp
-  src/tasks/pitch_flip_task.cpp
-  src/tasks/register_nodes.cpp
-  src/tasks/torpedo_task.cpp
 )
 
 target_include_directories(steelhead_mission_tasks PUBLIC

@@ -13,13 +13,11 @@ def generate_launch_description():
 
     world_arg = DeclareLaunchArgument(
         "world",
-        default_value="competition_task_gate.world",
-        description="Gazebo world file name (in steelhead_gazebo/worlds) or path",
+        description="Gazebo world file name in steelhead_gazebo/worlds or absolute path",
     )
 
     mission_arg = DeclareLaunchArgument(
         "mission",
-        default_value="gate_only.xml",
         description="Behavior tree XML file in steelhead_mission/missions or absolute path",
     )
 

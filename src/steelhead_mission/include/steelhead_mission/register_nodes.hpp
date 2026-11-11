@@ -1,5 +1,5 @@
-#ifndef STEELHEAD_MISSION__TASKS__REGISTER_NODES
-#define STEELHEAD_MISSION__TASKS__REGISTER_NODES
+#ifndef STEELHEAD_MISSION__REGISTER_NODES
+#define STEELHEAD_MISSION__REGISTER_NODES
 
 #include "behaviortree_cpp/bt_factory.h"
 #include "rclcpp/rclcpp.hpp"
@@ -24,4 +24,4 @@ namespace mission
 
 } // namespace mission
 
-#endif  //STEELHEAD_MISSION__TASKS__REGISTER_NODES
+#endif  //STEELHEAD_MISSION__REGISTER_NODES

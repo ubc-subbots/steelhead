@@ -7,11 +7,6 @@
       <DriveFor name="forward_leg_1" force_x="15.0" duration="12.0"/>
       <DriveFor name="hold_2" duration="1.0"/>
 
-      <PitchFlip name="flip_1" flip_torque="1.0" flip_angle="4.71238898038469"/>
-      <DriveFor name="hold_flip_1" duration="1.0"/>
-      <PitchFlip name="flip_2" flip_torque="1.0" flip_angle="4.71238898038469"/>
-      <DriveFor name="hold_flip_2" duration="1.0"/>
-
       <DriveFor name="forward_leg_2" force_x="15.0" duration="10.0"/>
       <DriveFor name="hold_3" duration="1.0"/>
 

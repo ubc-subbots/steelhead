@@ -17,7 +17,7 @@ This skill provides step-by-step instructions to scaffold a new BehaviorTree.CPP
 
 First, ask the user:
 1. **Desired Task Name:**
-   - PascalCase class name (e.g., `TorpedoTask` or tag name `Torpedo`) and snake_case file name (e.g., `torpedo_task`).
+   - PascalCase class name (e.g., `GateTask` or tag name `Gate`) and snake_case file name (e.g., `gate_task`).
 2. **Task Functionality & Logic:**
    - What does the task do?
    - What input/output ports are required (e.g., target YOLO class `label`, alignment `threshold`, coordinates, durations)?
@@ -60,7 +60,7 @@ Create `src/steelhead_mission/src/tasks/<task_name>.cpp`:
 
 ### Step 3: Register Node and Update Build Configuration
 1. **Register in Factory:**
-   In [`src/steelhead_mission/src/tasks/register_nodes.cpp`](../../src/steelhead_mission/src/tasks/register_nodes.cpp):
+   In [`src/steelhead_mission/src/register_nodes.cpp`](../../src/steelhead_mission/src/register_nodes.cpp):
    - Include header: `#include "steelhead_mission/tasks/<task_name>.hpp"`
    - Register in `mission::registerTaskNodes`:
      ```cpp

@@ -14,9 +14,9 @@ To launch the `mission_runner` node with a specific mission XML file (defaults t
 
 ### Running in Gazebo
 
-To run the full Gazebo competition task simulations driven by `mission_runner`:
+To run the Gazebo competition task simulations driven by `mission_runner`:
 
-    ros2 launch steelhead_bringup gazebo_test_mission_launch.py mission:=gate_only.xml
+    ros2 launch steelhead_bringup gazebo_test_mission_launch.py world:=competition.world mission:=gate_only.xml
 
 ### Monitoring
 
@@ -27,10 +27,6 @@ The node automatically uploads its status to the local network when ran. Downloa
 All task nodes are compiled into `libsteelhead_mission_tasks.so` and registered in `mission::registerTaskNodes`:
 
 - `<Gate>` (`mission::GateTask`) : Front-camera YOLO alignment (`label`, `center_offset`, `pass_timeout`) and forward drive through the gate.
-- `<Torpedo>` (`mission::TorpedoTask`) : Front-camera YOLO alignment (`label`, `center_offset`, `fire_alignment_threshold`) and sequential left/right torpedo firing via `/steelhead/controls/actuators_command`.
-- `<Dropper>` (`mission::DropperTask`) : Bottom-camera 2D YOLO alignment (`label`, `second_label`, `center_offset_x`, `center_offset_y`, `drop_alignment_threshold`) and two-stage marker drop via `/steelhead/controls/actuators_command`.
-- `<Octagon>` (`mission::OctagonTask`) : Bottom-camera 2D YOLO alignment (`label`, `center_offset_x`, `center_offset_y`, `surface_alignment_threshold`, `surface_duration`) and timed upward surfacing push.
-- `<PitchFlip>` (`mission::PitchFlipTask`) : IMU quaternion-delta pitch flip (`flip_torque`, `flip_angle`) using `FULL` hover adjustment until handing back control to `hover_at_depth`.
 - `<DriveFor>` (`mission::DriveFor`) : Timed open-loop wrench command (`force_x`, `force_y`, `force_z`, `torque_x`, `torque_y`, `torque_z`, `duration`, `full_override`).
 
 ## Creating a New Mission XML
@@ -142,7 +138,7 @@ namespace mission
 ### Step 2: Register the Node in `register_nodes.cpp` and `CMakeLists.txt`
 
 1. Add `src/tasks/my_task.cpp` to `add_library(steelhead_mission_tasks SHARED ...)` in `src/steelhead_mission/CMakeLists.txt`.
-2. Add one line in `src/steelhead_mission/src/tasks/register_nodes.cpp`:
+2. Add one line in `src/steelhead_mission/src/register_nodes.cpp`:
 
 ```cpp
 #include "steelhead_mission/tasks/my_task.hpp"
@@ -152,10 +148,6 @@ void registerTaskNodes(
     const rclcpp::Node::SharedPtr & node)
 {
     factory.registerNodeType<GateTask>("Gate", node);
-    factory.registerNodeType<TorpedoTask>("Torpedo", node);
-    factory.registerNodeType<DropperTask>("Dropper", node);
-    factory.registerNodeType<OctagonTask>("Octagon", node);
-    factory.registerNodeType<PitchFlipTask>("PitchFlip", node);
     factory.registerNodeType<DriveFor>("DriveFor", node);
     factory.registerNodeType<MyTask>("MyTask", node);
 }
