@@ -56,7 +56,6 @@ Create `src/steelhead_mission/include/steelhead_mission/tasks/<task_name>.hpp`:
 Create `src/steelhead_mission/src/tasks/<task_name>.cpp`:
 - Implement constructor, `providedPorts()`, `onStart()`, `onRunning()`, and `onHalted()`.
 - Read ports with `getInput("<port_name>", var)` in `onStart()`.
-- Control wrench command published to `controls/hover_adjust` during `onRunning()`.
 
 ### Step 3: Register Node and Update Build Configuration
 1. **Register in Factory:**
