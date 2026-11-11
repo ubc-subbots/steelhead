@@ -137,8 +137,6 @@ namespace mission
 #endif  //STEELHEAD_MISSION__TASKS__MY_TASK
 ```
 
-> **Important:** Do **not** create `rclcpp::TimerBase` timers inside a BT node, and do **not** publish commands inside subscription callbacks. Subscription callbacks should only cache the latest message.
-
 ### Step 2: Register the Node in `register_nodes.cpp` and `CMakeLists.txt`
 
 1. Add `src/tasks/my_task.cpp` to `add_library(steelhead_mission_tasks SHARED ...)` in `src/steelhead_mission/CMakeLists.txt`.

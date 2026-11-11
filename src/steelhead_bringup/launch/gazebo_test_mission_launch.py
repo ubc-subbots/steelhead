@@ -11,6 +11,12 @@ from launch_ros.actions import Node
 def generate_launch_description():
     ld = LaunchDescription()
 
+    world_arg = DeclareLaunchArgument(
+        "world",
+        default_value="competition_task_gate.world",
+        description="Gazebo world file name (in steelhead_gazebo/worlds) or path",
+    )
+
     mission_arg = DeclareLaunchArgument(
         "mission",
         default_value="gate_only.xml",
@@ -25,7 +31,7 @@ def generate_launch_description():
                 "gazebo_launch.py",
             )
         ),
-        launch_arguments={"world": "competition_task_gate.world"}.items(),
+        launch_arguments={"world": LaunchConfiguration("world")}.items(),
     )
 
     thrust_allocator = IncludeLaunchDescription(
@@ -95,6 +101,17 @@ def generate_launch_description():
         )
     )
 
+    actuators_simulation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_gazebo"),
+                "launch",
+                "actuators_simulation_launch.py",
+            )
+        )
+    )
+
+    ld.add_action(world_arg)
     ld.add_action(mission_arg)
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
@@ -103,5 +120,6 @@ def generate_launch_description():
     ld.add_action(rviz)
     ld.add_action(mission_runner)
     ld.add_action(yolo_detector)
+    ld.add_action(actuators_simulation)
 
     return ld

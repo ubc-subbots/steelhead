@@ -29,11 +29,7 @@ This package is for creating launch files and utilities needed for launching the
 
 - `gazebo_test_x_launch.py` : Series of launch files within Gazebo.
 
-    - `mission`: Runs the BehaviorTree.CPP `mission_runner` (`steelhead_mission`) inside the Gazebo competition gate world with YOLO detection and controls (`mission:=gate_only.xml` by default).
-    - `competition_gate`: Launches the Gazebo gate task world with `mission_runner` (`gate_only.xml`).
-    - `competition_torpedo`: Launches the Gazebo torpedo task world with `mission_runner` (`torpedo_only.xml`).
-    - `competition_dropper`: Launches the Gazebo dropper task world with `mission_runner` (`dropper_only.xml`).
-    - `competition_octagon`: Launches the Gazebo octagon task world with `mission_runner` (`octagon_only.xml`).
+    - `mission`: Runs the BehaviorTree.CPP `mission_runner` (`steelhead_mission`) inside a Gazebo competition world with YOLO detection, controls, and actuators simulation. Accepts `world:=<world_file>` (defaults to `competition_task_gate.world`) and `mission:=<mission_file>` (defaults to `gate_only.xml`).
     - `hardcode_pipeline`: Runs the same hard coded competition mission (`competition_hardcode.xml`) as the pool test version, but WITHIN GAZEBO.
 
 ## Contributors
