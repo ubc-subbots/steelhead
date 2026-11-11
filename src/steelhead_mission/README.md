@@ -2,7 +2,7 @@
 
 ## Description
 
-This package contains the BehaviorTree.CPP v4 mission runner and all task action nodes (`Gate`, `Torpedo`, `Dropper`, `Octagon`, `PitchFlip`, and `DriveFor`) for the Steelhead AUV. It loads a behavior tree XML from `missions/`, ticks the tree at a configurable rate, and provides built-in support for task timeouts, retries, fallbacks, and Groot2 live monitoring.
+This package contains the BehaviorTree.CPP v4 mission runner and all the task action nodes. It loads a behavior tree XML from `missions/`, ticks the tree at a configurable rate, and provides built-in support for task timeouts, retries, fallbacks, and Groot2 live monitoring.
 
 ## Usage
 
@@ -17,33 +17,12 @@ To launch the `mission_runner` node with a specific mission XML file (defaults t
 To run the full Gazebo competition task simulations driven by `mission_runner`:
 
     ros2 launch steelhead_bringup gazebo_test_mission_launch.py mission:=gate_only.xml
-    ros2 launch steelhead_bringup gazebo_test_competition_gate_launch.py
-    ros2 launch steelhead_bringup gazebo_test_competition_torpedo_launch.py
-    ros2 launch steelhead_bringup gazebo_test_competition_dropper_launch.py
-    ros2 launch steelhead_bringup gazebo_test_competition_octagon_launch.py
 
 ### Monitoring
 
-1. **Console:** `mission_runner` attaches a `BT::StdCoutLogger` that logs every node transition (`IDLE` -> `RUNNING` -> `SUCCESS` / `FAILURE`).
-2. **ROS 2 Topic:** Echo the active leaf status string:
+The node automatically uploads its status to the local network when ran. Download and install [Groot2](https://www.behaviortree.dev/groot/) and connect to `localhost:1667` to visualize the behaviour tree.
 
-        ros2 topic echo /steelhead/mission/state
-
-3. **Groot2:** Connect Groot2 in Monitor mode to `localhost:1667` (configurable via `groot_port`; pass `groot_port:=0` to disable).
-
----
-
-## Available Mission XMLs (`missions/`)
-
-- `gate_only.xml` : Passes the competition gate (`<Gate>`) with a 120s timeout followed by a 2s hold (`<DriveFor>`).
-- `torpedo_only.xml` : Aligns with the torpedo target and fires both torpedoes (`<Torpedo>`) with a 120s timeout followed by a 2s hold.
-- `dropper_only.xml` : Centers over the first (`fire`) and second (`blood`) dropper bins and actuates the claw (`<Dropper>`) with a 120s timeout followed by a 2s hold.
-- `octagon_only.xml` : Centers over the octagon target and surfaces (`<Octagon>`) with a 120s timeout followed by a 2s hold.
-- `competition_hardcode.xml` : Hardcoded dead-reckoning competition route using `<DriveFor>` (and optional `<PitchFlip>`) legs.
-
----
-
-## Available Behavior Tree Task Nodes (`mission` Namespace)
+## Behavior Tree Task Nodes
 
 All task nodes are compiled into `libsteelhead_mission_tasks.so` and registered in `mission::registerTaskNodes`:
 
@@ -54,15 +33,13 @@ All task nodes are compiled into `libsteelhead_mission_tasks.so` and registered 
 - `<PitchFlip>` (`mission::PitchFlipTask`) : IMU quaternion-delta pitch flip (`flip_torque`, `flip_angle`) using `FULL` hover adjustment until handing back control to `hover_at_depth`.
 - `<DriveFor>` (`mission::DriveFor`) : Timed open-loop wrench command (`force_x`, `force_y`, `force_z`, `torque_x`, `torque_y`, `torque_z`, `duration`, `full_override`).
 
----
-
 ## Creating a New Mission XML
 
-Mission files live in `src/steelhead_mission/missions/` and use the BehaviorTree.CPP v4 XML format (`BTCPP_format="4"`).
+Mission files live in `src/steelhead_mission/missions/` and use the BehaviorTree.CPP v4 XML format. You could also visually make a mission using Groot2, but I haven't tried it yet.
 
 ### 1. Create the XML File
 
-Add a new `.xml` file in `src/steelhead_mission/missions/` (e.g., `my_mission.xml`):
+Add a new `.xml` file in `src/steelhead_mission/missions/`.
 
 ```xml
 <root BTCPP_format="4" main_tree_to_execute="MyMission">
@@ -92,7 +69,7 @@ Add a new `.xml` file in `src/steelhead_mission/missions/` (e.g., `my_mission.xm
 
 ### 2. Built-in Control and Decorator Tags
 
-BehaviorTree.CPP provides these tags out of the box (no C++ changes needed):
+BehaviorTree.CPP provides these tags out of the box:
 
 - `<Sequence>`: Ticks children in order until all return `SUCCESS` (aborts immediately if any child returns `FAILURE`).
 - `<Fallback>`: Ticks children in order until one returns `SUCCESS` (used for recovery/fallback branches when a primary task fails or times out).
@@ -100,23 +77,11 @@ BehaviorTree.CPP provides these tags out of the box (no C++ changes needed):
 - `<RetryUntilSuccessful num_attempts="N">`: Retries a child node up to `N` times if it returns `FAILURE`.
 - `<Parallel success_count="M" failure_count="K">`: Ticks multiple children concurrently on every tick.
 
-### 3. Build and Run
-
-Install the new XML into `share/steelhead_mission/missions/` and launch it:
-
-    colcon build --packages-select steelhead_mission
-    source install/setup.bash
-    ros2 launch steelhead_mission mission_runner_launch.py mission:=my_mission.xml
-
----
-
-## Creating a New Mission Task Node (C++)
-
-Adding a new task node requires **3 steps** in `steelhead_mission` (no `.msg`/`.srv`/`.action` or YAML files required):
+## Creating a New Mission Task Node 
 
 ### Step 1: Implement a `BT::StatefulActionNode` in `steelhead_mission`
 
-Create `include/steelhead_mission/tasks/my_task.hpp` and `src/tasks/my_task.cpp` (see `gate_task.hpp` / `drive_for.hpp` for full examples). Every task node receives the shared `rclcpp::Node::SharedPtr` in its constructor:
+Create `include/steelhead_mission/tasks/my_task.hpp` and `src/tasks/my_task.cpp`. 
 
 ```cpp
 // include/steelhead_mission/tasks/my_task.hpp
@@ -172,7 +137,7 @@ namespace mission
 #endif  //STEELHEAD_MISSION__TASKS__MY_TASK
 ```
 
-> **Important:** Do **not** create `rclcpp::TimerBase` timers inside a BT node, and do **not** publish commands inside subscription callbacks. Subscription callbacks should only cache the latest message; `onRunning()` is ticked by `mission_runner` at `tick_rate_hz` (20 Hz) so only the currently active task node commands the thrusters. Always zero `controls/hover_adjust` in `onHalted()` and before returning `SUCCESS`/`FAILURE`.
+> **Important:** Do **not** create `rclcpp::TimerBase` timers inside a BT node, and do **not** publish commands inside subscription callbacks. Subscription callbacks should only cache the latest message.
 
 ### Step 2: Register the Node in `register_nodes.cpp` and `CMakeLists.txt`
 
@@ -206,28 +171,9 @@ Rebuild `steelhead_mission` and reference `<MyTask>` directly in your mission XM
 </Timeout>
 ```
 
----
-
 ## Nodes
 
-- `mission_runner` : A standalone C++ node that constructs and ticks a BehaviorTree.CPP v4 tree using the task nodes in `steelhead_mission_tasks` (`mission::registerTaskNodes`).
-
-  ### Subscribed Topics
-
-  - `yolo_detector/front/detections` (`steelhead_interfaces/msg/DetectionBoxArray`) : Front camera YOLO detections (`Gate`, `Torpedo`).
-  - `drivers/front_camera/camera_info` (`sensor_msgs/msg/CameraInfo`) : Front camera dimensions (`Gate`, `Torpedo`).
-  - `yolo_detector/bottom/detections` (`steelhead_interfaces/msg/DetectionBoxArray`) : Bottom camera YOLO detections (`Dropper`, `Octagon`).
-  - `drivers/bottom_camera/camera_info` (`sensor_msgs/msg/CameraInfo`) : Bottom camera dimensions (`Dropper`, `Octagon`).
-  - `drivers/imu/out` (`sensor_msgs/msg/Imu`) : IMU orientation (`PitchFlip`).
-
-  ### Service Clients
-
-  - `/steelhead/controls/actuators_command` (`steelhead_interfaces/srv/ActuatorsCommand`) : Torpedo and claw actuator commands (`Torpedo`, `Dropper`).
-
-  ### Published Topics
-
-  - `controls/hover_adjust` (`steelhead_interfaces/msg/HoverAdjustment`) : Partial/full wrench adjustments published by active task nodes, and zeroed automatically when tasks halt or the mission terminates.
-  - `mission/state` (`std_msgs/msg/String`) : Human-readable active behavior tree leaf and status.
+- `mission_runner` : A standalone node that constructs and ticks a BehaviorTree.CPP v4 tree using the task nodes.
 
   ### Parameters
 

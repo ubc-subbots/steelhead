@@ -19,7 +19,7 @@ This package is for creating launch files and utilities needed for launching the
 
         - The hardcoded instructions are defined in `steelhead_controls/steelhead_controls/predetermined_thrust.py`.
 
-    - `hardcode_pipeline`: Launches nodes that are necessary for the hard coded hover route (serial, imu, depth sensor, PID, thrust allocator, hover script, and `steelhead_mission` running `competition_hardcode.xml`).
+    - `hardcode_pipeline`: Launches nodes that are necessary for the hard coded hover route (serial, imu, depth sensor, PID, thrust allocator, hover script, and the behaviour tree).
 
         - The hardcoded mission tree is defined in `src/steelhead_mission/missions/competition_hardcode.xml`.
 

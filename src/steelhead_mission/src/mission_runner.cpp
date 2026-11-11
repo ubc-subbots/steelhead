@@ -200,6 +200,8 @@ namespace mission
     }
 
 
+    // TODO: This is tightly coupled with the hoveradjustment node, which needs
+    // a zero publish. Remove when reworking the hoveradjument node.
     void MissionRunner::publishZeroWrench()
     {
         auto zero = steelhead_interfaces::msg::HoverAdjustment();

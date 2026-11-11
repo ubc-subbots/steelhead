@@ -113,7 +113,9 @@ def generate_launch_description():
     ld.add_action(pid_controller)
     ld.add_action(thrust_allocator)
     ld.add_action(pressure_sensor)
+    # delay starting the hoverscript to let the imu calibrate. During this time, should move around the robot in figure 8s
     ld.add_action(delay_hover)
+    # let the hover script reach depth before starting the sequence
     ld.add_action(delayed_mission)
 
     return ld
