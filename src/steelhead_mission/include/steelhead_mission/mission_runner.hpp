@@ -21,8 +21,7 @@ namespace mission
      *
      * Loads a behavior tree XML file, registers all task nodes in steelhead_mission,
      * ticks the tree at a fixed rate, streams live status to Groot2, and publishes
-     * a string status topic. Guarantees a zero PARTIAL wrench is published when
-     * the mission completes or the node shuts down.
+     * a string status topic. 
      */
     class MissionRunner : public rclcpp::Node
     {
@@ -74,8 +73,6 @@ namespace mission
             void publishStatus(const std::string & status_text);
 
 
-            /** Publish a zero PARTIAL HoverAdjustment wrench to stop thruster overrides.
-             */
             void publishZeroWrench();
 
 

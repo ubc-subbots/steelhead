@@ -30,6 +30,8 @@ This package is for creating launch files and utilities needed for launching the
 - `gazebo_test_x_launch.py` : Series of launch files within Gazebo.
 
     - `mission`: Runs the BehaviorTree.CPP `mission_runner` (`steelhead_mission`) inside a Gazebo competition world with YOLO detection, controls, and actuators simulation. Accepts `world:=<world_file>` (defaults to `competition_task_gate.world`) and `mission:=<mission_file>` (defaults to `gate_only.xml`).
+    - `vision`: Launches the basics required for computer vision within the robot, alongside a visualization of what the robot "sees".
+    - `hover`: Launches the basics required for the robot to hover in place within the pool, with support for teleoperation.
     - `hardcode_pipeline`: Runs the same hard coded competition mission (`competition_hardcode.xml`) as the pool test version, but WITHIN GAZEBO.
 
 ## Contributors

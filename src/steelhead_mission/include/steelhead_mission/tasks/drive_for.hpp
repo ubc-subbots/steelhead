@@ -16,9 +16,7 @@ namespace mission
     /** Behavior tree action node that publishes a constant HoverAdjustment wrench for a duration.
      *
      * Generalizes HardcodeInputs into a BT::StatefulActionNode whose force, torque,
-     * and duration parameters are supplied via XML input ports. On completion or
-     * preemption (onHalted), a zero PARTIAL wrench is published so hover_at_depth
-     * returns to neutral station-keeping.
+     * and duration parameters are supplied via XML input ports. 
      */
     class DriveFor : public BT::StatefulActionNode
     {

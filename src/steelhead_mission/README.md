@@ -79,6 +79,8 @@ BehaviorTree.CPP provides these tags out of the box:
 
 ## Creating a New Mission Task Node 
 
+> **Tip:** You can ask an AI agent to scaffold this automatically using the `create-task-node` skill!
+
 ### Step 1: Implement a `BT::StatefulActionNode` in `steelhead_mission`
 
 Create `include/steelhead_mission/tasks/my_task.hpp` and `src/tasks/my_task.cpp`. 
