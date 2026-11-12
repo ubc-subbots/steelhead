@@ -24,15 +24,6 @@ def generate_launch_description():
         parameters=[rsp_params, {"use_sim_time": True}],
     )
 
-    transform_publisher = Node(
-        package="steelhead_controls",
-        executable="auv_transform_publisher.py",
-        name="auv_transform_publisher",
-        output="screen",
-        parameters=[rsp_params, {"use_sim_time": True}],
-    )
-
     ld.add_action(state_publisher)
-    # ld.add_action(transform_publisher)
 
     return ld

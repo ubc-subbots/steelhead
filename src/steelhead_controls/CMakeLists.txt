@@ -142,7 +142,6 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  steelhead_controls/auv_transform_publisher.py
   steelhead_controls/waypoint_marker_tester.py
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py

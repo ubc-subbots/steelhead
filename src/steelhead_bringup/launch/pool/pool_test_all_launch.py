@@ -150,7 +150,6 @@ def generate_launch_description():
     # ld.add_action(micro_ros_agent)
     # ld.add_action(state_estimator)
     # ld.add_action(imu_tf)
-    # ld.add_action(transform_publisher)
     ld.add_action(pid_controller)
     # ld.add_action(waypoint_marker)
     ld.add_action(thrust_allocator)
