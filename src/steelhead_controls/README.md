@@ -31,6 +31,14 @@ To run the Trajectory Generator node, run
 
         ros2 launch steelhead_controls trajectory_generator_launch.py
 
+### Robot State Publisher
+
+To launch the `robot_state_publisher` node with a robot model:
+
+    ros2 launch steelhead_controls state_publisher_launch.py model:=<MODEL>
+
+Where `<MODEL>` is the model folder withing `steelhead_gazebo/models` containing `model.urdf` (defaults to `steelhead_auv`).
+
 ## Nodes
 
 - `thrust_allocator` : A standalone node which subscribes to the desired forces and torques to act upon the AUV and publishes an array which contains the allocated forces and associated PWM signals given to each thruster based on the config file passed in on launch
