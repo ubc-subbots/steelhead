@@ -27,20 +27,14 @@ def generate_launch_description():
         output="both",
     )
 
-    ta_config = os.path.join(
-        get_package_share_directory("steelhead_controls"),
-        "config",
-        "thruster_config.yaml",
-    )
-
-    thrust_allocator = Node(
-        name="thrust_allocator",
-        namespace="/steelhead/controls",
-        package="steelhead_controls",
-        executable="thrust_allocator",
-        output="screen",
-        parameters=[ta_config],
-        remappings=[("/steelhead/controls/signals", "/motor_control")],
+    thrust_allocator = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "thrust_allocator_launch.py",
+            )
+        )
     )
 
     # ssh_teleop = IncludeLaunchDescription(

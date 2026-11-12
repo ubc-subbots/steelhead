@@ -44,7 +44,7 @@ To run the Trajectory Generator node, run
   - `controls/output_forces` (`std_msgs/msg/Float64MultiArray.msg`) : Forces corresponding to each thruster
   - `controls/signals` (`std_msgs/msg/Float64MultiArray.msg`): PWM signals corresponding to each thruster
 
-  ### Parameters (defined in thruster_config.yaml)
+  ### Parameters (defined in input config)
 
   - `num_thrusters` (`int32`): The number of thrusters in the configuration
   - `ti.contrib.x/y/z` (`float32`): The x/y/z-axis contribution of thruster `i`

@@ -12,7 +12,6 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    # Sim launches must pass use_sim_time:=true; defaults to false for the real vehicle
     use_sim_time_arg = DeclareLaunchArgument("use_sim_time", default_value="false")
 
     config = os.path.join(
