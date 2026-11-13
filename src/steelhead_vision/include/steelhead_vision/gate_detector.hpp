@@ -14,6 +14,10 @@
 #include "steelhead_vision/object_detector.hpp"
 #include "steelhead_interfaces/msg/object_offset.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/transform_listener.h"
+#include <memory>
+#include <string>
 
 namespace steelhead_vision
 {
@@ -77,6 +81,10 @@ private:
   void svmHullPredict(std::vector<std::vector<Point>> hulls);
 
   bool debug_;
+  std::string camera_frame_id_;
+  std::string target_frame_id_;
+  std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
   std::vector<cv::Point> gate_cntr_;
   image_transport::Subscriber subscription_; 
   image_transport::Publisher debug_segment_publisher_;

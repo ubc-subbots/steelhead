@@ -135,6 +135,17 @@ def generate_launch_description():
 
     delayed_mission = TimerAction(period=5.0, actions=[mission_runner])
 
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "false"}.items(),
+    )
+
     bag_record = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -146,6 +157,7 @@ def generate_launch_description():
     )
 
     ld.add_action(bag_record)
+    ld.add_action(state_publisher)
     ld.add_action(serial)
     # ld.add_action(micro_ros_agent)
     # ld.add_action(state_estimator)

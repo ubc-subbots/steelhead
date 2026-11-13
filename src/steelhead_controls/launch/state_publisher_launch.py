@@ -13,7 +13,7 @@ def generate_launch_description():
     model_arg = DeclareLaunchArgument(
         "model",
         default_value="steelhead_auv",
-        description="Folder name containing model.urdf within steelhead_gazebo/models",
+        description="URDF model name (without .urdf) within steelhead_controls/models",
     )
 
     use_sim_time_arg = DeclareLaunchArgument(
@@ -24,11 +24,9 @@ def generate_launch_description():
 
     urdf_path = PathJoinSubstitution(
         [
-            FindPackageShare("steelhead_gazebo"),
-            "gazebo",
+            FindPackageShare("steelhead_controls"),
             "models",
-            LaunchConfiguration("model"),
-            "model.urdf",
+            [LaunchConfiguration("model"), ".urdf"],
         ]
     )
 

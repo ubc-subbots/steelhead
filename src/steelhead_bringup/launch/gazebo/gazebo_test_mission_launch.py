@@ -109,9 +109,21 @@ def generate_launch_description():
         )
     )
 
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
+    )
+
     ld.add_action(world_arg)
     ld.add_action(mission_arg)
     ld.add_action(gazebo)
+    ld.add_action(state_publisher)
     ld.add_action(thrust_allocator)
     ld.add_action(hover_script)
     ld.add_action(pid_controller)

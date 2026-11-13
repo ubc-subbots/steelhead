@@ -20,6 +20,12 @@ namespace steelhead_controls
         this->get_parameter("hold_yaw", hold_yaw_);
         RCLCPP_INFO(this->get_logger(), hold_yaw_ ? "Adjusting yaw" : "Not adjusting yaw");
 
+        this->declare_parameter<std::string>("base_frame", "base_link");
+        this->get_parameter("base_frame", base_frame_);
+
+        tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+        tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
         // If no adjustments is published, adjustment_ is zeroed out and nothing is applied
         adjustments_ = std::make_shared<steelhead_interfaces::msg::HoverAdjustment>();
 
@@ -55,21 +61,59 @@ namespace steelhead_controls
         if (pressure_sensor_ != nullptr && imu_ != nullptr) {
             if (adjustments_->type == steelhead_interfaces::msg::HoverAdjustment::PARTIAL) {
                 geometry_msgs::msg::Pose pose;
-                if (hover_depth_) pose.position.z = pressure_sensor_->depth - hover_depth_;
                 pose.position.x = adjustments_->input.force.x;
                 pose.position.y = adjustments_->input.force.y;
-                if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
                 // add a field for adjustments for full or partial
             
-                tf2::Quaternion q_current(
+                tf2::Quaternion q_sensor(
                     imu_->orientation.x,
                     imu_->orientation.y,
                     imu_->orientation.z,
                     imu_->orientation.w
                 );
+                tf2::Quaternion q_current = q_sensor;
+                std::string imu_tf_err;
+                if (!imu_->header.frame_id.empty() && tf_buffer_->canTransform(base_frame_, imu_->header.frame_id, tf2::TimePointZero, &imu_tf_err)) {
+                    try {
+                        auto tf = tf_buffer_->lookupTransform(base_frame_, imu_->header.frame_id, tf2::TimePointZero);
+                        tf2::Quaternion q_base_sensor(
+                            tf.transform.rotation.x,
+                            tf.transform.rotation.y,
+                            tf.transform.rotation.z,
+                            tf.transform.rotation.w
+                        );
+                        // world_R_base = world_R_sensor * (base_R_sensor)^-1
+                        q_current = (q_sensor * q_base_sensor.inverse()).normalized();
+                    } catch (const tf2::TransformException & ex) {
+                        RCLCPP_WARN_ONCE(this->get_logger(), "Could not transform IMU orientation to %s: %s", base_frame_.c_str(), ex.what());
+                    }
+                } else if (!imu_->header.frame_id.empty()) {
+                    RCLCPP_WARN_ONCE(this->get_logger(), "Waiting for transform from %s to %s: %s", imu_->header.frame_id.c_str(), base_frame_.c_str(), imu_tf_err.c_str());
+                }
 
                 double roll, pitch, yaw;
                 tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
+
+                float current_depth = pressure_sensor_->depth;
+                std::string depth_tf_err;
+                if (hover_depth_ && !pressure_sensor_->header.frame_id.empty() && tf_buffer_->canTransform(base_frame_, pressure_sensor_->header.frame_id, tf2::TimePointZero, &depth_tf_err)) {
+                    try {
+                        auto tf = tf_buffer_->lookupTransform(base_frame_, pressure_sensor_->header.frame_id, tf2::TimePointZero);
+                        tf2::Vector3 sensor_offset_base(
+                            tf.transform.translation.x,
+                            tf.transform.translation.y,
+                            tf.transform.translation.z
+                        );
+                        tf2::Vector3 sensor_offset_world = tf2::quatRotate(q_current, sensor_offset_base);
+                        current_depth = static_cast<float>(pressure_sensor_->depth + sensor_offset_world.z());
+                    } catch (const tf2::TransformException & ex) {
+                        RCLCPP_WARN_ONCE(this->get_logger(), "Could not transform depth sensor offset: %s", ex.what());
+                    }
+                } else if (hover_depth_ && !pressure_sensor_->header.frame_id.empty()) {
+                    RCLCPP_WARN_ONCE(this->get_logger(), "Waiting for transform from %s to %s: %s", pressure_sensor_->header.frame_id.c_str(), base_frame_.c_str(), depth_tf_err.c_str());
+                }
+                if (hover_depth_) pose.position.z = current_depth - hover_depth_;
+                if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
 
                 double target_yaw = 0.0;
                 if (!hold_yaw_) {

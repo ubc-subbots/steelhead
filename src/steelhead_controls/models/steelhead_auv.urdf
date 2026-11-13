@@ -388,4 +388,33 @@
     <parent link="camera_link" />
     <child link="camera_link_optical" />
   </joint>
+
+  <link name="bottom_camera_link">
+    <visual>
+      <geometry><box size="0.05 0.05 0.05"/></geometry>
+      <material name="blue"><color rgba="0 0 1 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="bottom_camera_joint" type="fixed">
+    <origin xyz="0.4 -0.06 0" rpy="0 1.5708 0" />
+    <parent link="base_link" />
+    <child link="bottom_camera_link" />
+  </joint>
+
+  <link name="bottom_camera_link_optical" />
+
+  <joint name="bottom_camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
+    <parent link="bottom_camera_link" />
+    <child link="bottom_camera_link_optical" />
+  </joint>
+
+  <link name="depth_sensor_link" />
+
+  <joint name="depth_sensor_joint" type="fixed">
+    <origin xyz="0.1 0.0 -0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="depth_sensor_link" />
+  </joint>
 </robot>

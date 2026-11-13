@@ -6,8 +6,11 @@
 #include "geometry_msgs/msg/pose.hpp"
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
 #include "steelhead_interfaces/msg/hover_adjustment.hpp"
-#include <math.h>
-#include <steelhead_interfaces/msg/detail/hover_adjustment__struct.hpp>
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/transform_listener.h"
+#include <cmath>
+#include <memory>
+#include <string>
 
 namespace steelhead_controls
 {
@@ -59,6 +62,10 @@ namespace steelhead_controls
 
         float hover_depth_;
         bool hold_yaw_;
+        std::string base_frame_;
+
+        std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+        std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
         sensor_msgs::msg::Imu::SharedPtr imu_;
         steelhead_interfaces::msg::PressureSensor::SharedPtr pressure_sensor_;

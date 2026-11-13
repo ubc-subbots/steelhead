@@ -15,14 +15,14 @@ def generate_launch_description():
         namespace="/camera1",
         parameters=[
             os.path.join(
-                get_package_share_directory("steelhead_bringup"),
+                get_package_share_directory("steelhead_sensors"),
                 "config",
                 "camera1.yaml",
             )
         ],
         remappings=[
-            ("/camera1/image_raw", "/steelhead/drivers/bottom_camera/image_raw"),
-            ("/camera1/camera_info", "/steelhead/drivers/bottom_camera/camera_info"),
+            ("/camera1/image_raw", "/steelhead/drivers/front_camera/image_raw"),
+            ("/camera1/camera_info", "/steelhead/drivers/front_camera/camera_info"),
         ],
     )
 
@@ -34,14 +34,14 @@ def generate_launch_description():
         namespace="/camera2",
         parameters=[
             os.path.join(
-                get_package_share_directory("steelhead_bringup"),
+                get_package_share_directory("steelhead_sensors"),
                 "config",
                 "camera2.yaml",
             )
         ],
         remappings=[
-            ("/camera2/image_raw", "/steelhead/drivers/front_camera/image_raw"),
-            ("/camera2/camera_info", "/steelhead/drivers/front_camera/camera_info"),
+            ("/camera2/image_raw", "/steelhead/drivers/bottom_camera/image_raw"),
+            ("/camera2/camera_info", "/steelhead/drivers/bottom_camera/camera_info"),
         ],
     )
 

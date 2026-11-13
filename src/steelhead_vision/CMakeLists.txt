@@ -13,6 +13,7 @@ find_package(steelhead_interfaces REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include)
@@ -39,6 +40,7 @@ target_link_libraries(steelhead_vision PUBLIC
   cv_bridge::cv_bridge
   image_transport::image_transport
   tf2::tf2
+  tf2_ros::tf2_ros
   tf2_geometry_msgs::tf2_geometry_msgs
   ${OpenCV_LIBRARIES}
 )

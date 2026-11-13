@@ -54,6 +54,8 @@ class Ms5837DepthPublisher(Node):
             return  # non-numeric line (startup banner), skip silently
 
         msg = PressureSensor()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "depth_sensor_link"
         msg.depth = depth  # meters
         msg.pressure = pressure  # mbar
         msg.temperature = temperature  # deg C

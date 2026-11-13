@@ -86,7 +86,19 @@ def generate_launch_description():
         )
     )
 
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "false"}.items(),
+    )
+
     ld.add_action(bag_record)
+    ld.add_action(state_publisher)
     ld.add_action(serial)
     ld.add_action(imu)
     ld.add_action(pid_controller)

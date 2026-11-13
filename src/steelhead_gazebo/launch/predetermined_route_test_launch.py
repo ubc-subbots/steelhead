@@ -36,10 +36,8 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
-    pkg_share = get_package_share_directory("steelhead_gazebo")
-    urdf_file = os.path.join(
-        pkg_share, "gazebo", "models", "steelhead_auv", "model.urdf"
-    )
+    pkg_share = get_package_share_directory("steelhead_controls")
+    urdf_file = os.path.join(pkg_share, "models", "steelhead_auv.urdf")
     with open(urdf_file, "r") as infp:
         robot_desc = infp.read()
     rsp_params = {"robot_description": robot_desc}
