@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from collections import deque
 
 import numpy as np
@@ -17,13 +18,15 @@ from steelhead_localization.fiducial_geometry import (
 )
 from steelhead_localization.symbols import load_symbols, unique_by_label
 
-
+# Very large uncertainty, used for values this node doesn't measure
 UNMEASURED_VARIANCE = 1e3
 NANOSECONDS_PER_SECOND = 1e9
 
 
+# ROS node that estimates the robot's position from symbols YOLO detects
 class FiducialLocalizer(Node):
 
+    # Loads the symbols, reads the settings, and connects to the ROS topics
     def __init__(self):
         super().__init__("fiducial_localizer")
 
@@ -91,16 +94,19 @@ class FiducialLocalizer(Node):
             f"{', '.join(sorted(self.symbols_))}"
         )
 
+    # Saves the camera's settings (focal length, image center, image size)
     def _camera_info_callback(self, msg):
         self.intrinsics_ = (msg.k[0], msg.k[4], msg.k[2], msg.k[5])
         self.image_size_ = (msg.width, msg.height) if msg.width else None
 
+    # Saves each IMU orientation with its time
     def _imu_callback(self, msg):
         q = msg.orientation
         self.imu_buffer_.append(
             (Time.from_msg(msg.header.stamp).nanoseconds, (q.x, q.y, q.z, q.w))
         )
 
+    # Turns a set of YOLO detections into one robot position and publishes it
     def _detections_callback(self, msg):
         if self.intrinsics_ is None:
             self.get_logger().warning(
@@ -150,6 +156,7 @@ class FiducialLocalizer(Node):
         depth = np.average(depths, weights=weights)
         self._publish(msg.header.stamp, position, orientation, depth)
 
+    # Finds the IMU orientation recorded closest to a given time
     def _orientation_at(self, stamp_ns):
         if not self.imu_buffer_:
             return None
@@ -160,6 +167,7 @@ class FiducialLocalizer(Node):
             return None
         return orientation
 
+    # Checks whether a new position jumped too far from the last one
     def _is_jump(self, position, stamp_ns):
         if self.last_position_ is None:
             return False
@@ -167,6 +175,7 @@ class FiducialLocalizer(Node):
             return False
         return np.linalg.norm(position - self.last_position_) > self.max_jump_
 
+    # Publishes the position with an error estimate
     def _publish(self, stamp, position, orientation, depth):
         msg = PoseWithCovarianceStamped()
         msg.header.stamp = stamp
@@ -187,13 +196,14 @@ class FiducialLocalizer(Node):
         self.pose_pub_.publish(msg)
 
 
+# Starts the node and runs it until Ctrl+C
 def main(args=None):
     rclpy.init(args=args)
     fiducial_localizer = FiducialLocalizer()
     try:
         rclpy.spin(fiducial_localizer)
     except KeyboardInterrupt:
-        pass  # To force exit code 0
+        pass
     fiducial_localizer.destroy_node()
     rclpy.try_shutdown()
 

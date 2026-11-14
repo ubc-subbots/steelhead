@@ -6,13 +6,12 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
+# Starts the fiducial localizer with the chosen symbol file
 def generate_launch_description():
 
     ld = LaunchDescription()
 
-    # Picks config/fiducial_symbols_<symbols>.yaml, e.g. symbols:=torpedo
     symbols_arg = DeclareLaunchArgument("symbols", default_value="gate")
-    # Sim launches must pass use_sim_time:=true; defaults to false for the real vehicle
     use_sim_time_arg = DeclareLaunchArgument("use_sim_time", default_value="false")
 
     symbols_file = PathJoinSubstitution(

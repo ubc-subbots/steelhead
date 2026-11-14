@@ -1,5 +1,7 @@
 import numpy as np
 
+# Converts camera directions (right, down, forward) into robot directions
+# (forward, left, up) for the front camera
 FRONT_CAMERA_ROTATION = np.array(
     [
         [0.0, 0.0, 1.0],
@@ -9,6 +11,7 @@ FRONT_CAMERA_ROTATION = np.array(
 )
 
 
+# Finds where a symbol is relative to the camera from its YOLO box
 def box_to_optical_point(
     box, intrinsics, real_height, image_size=None, edge_margin=1.0
 ):
@@ -25,6 +28,7 @@ def box_to_optical_point(
     return np.array([(u - cx) * depth / fx, (v - cy) * depth / fy, depth])
 
 
+# Converts a point from camera terms into robot terms
 def optical_to_body(
     optical_point, camera_offset, camera_rotation=FRONT_CAMERA_ROTATION
 ):
@@ -32,16 +36,19 @@ def optical_to_body(
     return camera_rotation @ optical_point + np.asarray(camera_offset, dtype=float)
 
 
+# Finds the robot's position in the pool from one symbol with a known position
 def robot_position_from_symbol(symbol_position, body_point, orientation):
     rotation = quaternion_to_matrix(orientation)
     body_point = np.asarray(body_point, dtype=float)
     return np.asarray(symbol_position, dtype=float) - rotation @ body_point
 
 
+# How much to trust one estimate (closer and more confident = more)
 def detection_weight(confidence, depth):
     return confidence / depth**2
 
 
+# Combines several position estimates into one weighted average
 def fuse_estimates(positions, weights):
     if len(positions) == 0:
         return None
@@ -53,6 +60,7 @@ def fuse_estimates(positions, weights):
     return (positions * weights[:, np.newaxis]).sum(axis=0) / total
 
 
+# Converts an IMU orientation (quaternion) into a rotation matrix
 def quaternion_to_matrix(orientation):
     x, y, z, w = orientation
     norm = x * x + y * y + z * z + w * w
@@ -68,6 +76,7 @@ def quaternion_to_matrix(orientation):
     )
 
 
+# Checks whether a box touches the edge of the image
 def _touches_edge(box, image_size, edge_margin):
     x, y, width, height = box
     image_width, image_height = image_size

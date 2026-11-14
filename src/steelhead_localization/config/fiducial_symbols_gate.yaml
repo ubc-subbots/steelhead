@@ -1,7 +1,4 @@
-# Fiducial symbols on the gate in competition_task_gate.world (same positions in
-# competition.world). Positions are symbol centers in metres, relative to the
-# robot's start: +x = starting heading, +y = left, +z = up (surface at z = 0).
-# height is the printed symbol's height in metres.
+# Gate symbols: YOLO label, center (m from the robot's start), real height (m)
 symbols:
   gate_sos:
     label: sos

@@ -8,13 +8,13 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
+# Starts the sim, controls, front YOLO, and fiducial localizer for testing
 def generate_launch_description():
     ld = LaunchDescription()
 
     world_arg = DeclareLaunchArgument(
         "world", default_value="competition_task_gate.world"
     )
-    # Must match the world, e.g. world:=competition_task_torpedo.world symbols:=torpedo
     symbols_arg = DeclareLaunchArgument("symbols", default_value="gate")
 
     gazebo = IncludeLaunchDescription(
@@ -38,7 +38,6 @@ def generate_launch_description():
         )
     )
 
-    # hold_yaw is off so the robot can be turned with ssh_keyboard_pid_teleop
     hover = Node(
         package="steelhead_controls",
         executable="hover_at_depth",
