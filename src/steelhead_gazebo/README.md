@@ -183,6 +183,9 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 - A world used for generating synthetic data for training. A depth camera is defined with additional plugins for moving the camera (`random_camera_plugin`) and generating bounding boxes (`bounding_box_controller`). 
 
 ## Models
+`woollett_pool`
+- Includes a transparent blue water surface fitted to the pool's interior. The visual follows the pool model and has no collision geometry. The graphic does not add water physics.
+
 `cube`
 - A simple cube which uses a ROS2 force plugin to accept `geometry_msgs/msg/Wrench` messages on the topic `/steelhead/gazebo_drivers/force`. Here is an example command to apply forces to the cube
 

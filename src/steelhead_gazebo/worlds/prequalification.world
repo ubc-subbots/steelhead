@@ -2,6 +2,7 @@
 <sdf version="1.8">
   <world name="competition">
     <scene>
+      <grid>false</grid>
       <ambient>0.4 0.4 0.4 1.0</ambient>
       <background>0.0 0.4 0.7 1.0</background>
       <shadows>true</shadows>
