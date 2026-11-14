@@ -84,7 +84,7 @@
         <update_rate>60</update_rate>
         <visualize>true</visualize>
         <topic>/front_camera</topic>
-        <frame_id>camera_link_optical</frame_id>
+        <frame_id>camera_link</frame_id>
         <camera name="front">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
@@ -109,7 +109,7 @@
         <update_rate>60</update_rate>
         <visualize>true</visualize>
         <topic>/bottom_camera/image</topic>
-        <frame_id>bottom_camera_link_optical</frame_id>
+        <frame_id>bottom_camera_link</frame_id>
         <camera name="bottom">
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>

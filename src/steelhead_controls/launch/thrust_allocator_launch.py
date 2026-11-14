@@ -10,14 +10,14 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     config_arg = DeclareLaunchArgument(
-        "config_file", default_value="steelhead_thruster_config.yaml"
+        "thruster_config_file", default_value="steelhead_thruster_config.yaml"
     )
 
     config = PathJoinSubstitution(
         [
             FindPackageShare("steelhead_controls"),
             "config",
-            LaunchConfiguration("config_file"),
+            LaunchConfiguration("thruster_config_file"),
         ]
     )
 

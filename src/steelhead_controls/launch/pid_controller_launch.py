@@ -16,14 +16,14 @@ def generate_launch_description():
     use_sim_time_arg = DeclareLaunchArgument("use_sim_time", default_value="false")
 
     config_arg = DeclareLaunchArgument(
-        "config_file", default_value="steelhead_pid_config.yaml"
+        "pid_config_file", default_value="steelhead_pid_config.yaml"
     )
 
     config = PathJoinSubstitution(
         [
             FindPackageShare("steelhead_controls"),
             "config",
-            LaunchConfiguration("config_file"),
+            LaunchConfiguration("pid_config_file"),
         ]
     )
 

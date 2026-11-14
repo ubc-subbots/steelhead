@@ -14,8 +14,8 @@
 #include "steelhead_vision/object_detector.hpp"
 #include "steelhead_interfaces/msg/object_offset.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
-#include "tf2_ros/buffer.h"
-#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/buffer.hpp"
+#include "tf2_ros/transform_listener.hpp"
 #include <memory>
 #include <string>
 

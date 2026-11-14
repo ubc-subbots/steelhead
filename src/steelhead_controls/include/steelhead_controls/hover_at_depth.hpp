@@ -6,8 +6,8 @@
 #include "geometry_msgs/msg/pose.hpp"
 #include "steelhead_interfaces/msg/pressure_sensor.hpp"
 #include "steelhead_interfaces/msg/hover_adjustment.hpp"
-#include "tf2_ros/buffer.h"
-#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/buffer.hpp"
+#include "tf2_ros/transform_listener.hpp"
 #include <cmath>
 #include <memory>
 #include <string>
