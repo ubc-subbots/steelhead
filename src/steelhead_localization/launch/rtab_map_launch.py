@@ -10,6 +10,7 @@ def generate_launch_description():
         ("depth/image", "/steelhead/drivers/front_camera/depth/image_raw"),
     ]
 
+    # todo, fix when state publisher is fixed. Should use urdf instead.
     camera_mount_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",

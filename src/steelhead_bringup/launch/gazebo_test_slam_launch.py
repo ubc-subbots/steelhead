@@ -67,11 +67,25 @@ def generate_launch_description():
         )
     )
 
+    rviz_config_file = os.path.join(
+        get_package_share_directory("steelhead_bringup"), "config", "slam_test.rviz"
+    )
+
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        arguments=["-d", rviz_config_file],
+        parameters=[{"use_sim_time": True}],
+    )
+
     ld.add_action(gazebo)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
     ld.add_action(hover)
     ld.add_action(pid_controller)
     ld.add_action(rtab_slam)
+    ld.add_action(rviz)
 
     return ld

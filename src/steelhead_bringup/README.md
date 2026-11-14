@@ -11,7 +11,7 @@ This package is for creating launch files and utilities needed for launching the
 
 - `localization_visualization_gazebo_launch.py` : Launches a visualization WITHIN GAZEBO of where the robot "thinks" it is, visualized in RViz.
 
-- `gazebo_test_slam_launch.py` : Launches the competition Gazebo world, hover controls, keyboard teleop, and the RTAB-Map RGB-D SLAM launch from `steelhead_localization`. RTAB-Map-specific parameters and camera transforms are kept in `steelhead_localization/launch/rtab_map_launch.py`. Start RViz separately and visualize /map to see the mapping. Use the localization_pose topic for the slam odometry. Run the slam test with:
+- `gazebo_test_slam_launch.py` : Launches the competition Gazebo world, hover controls, keyboard teleop, and the RTAB-Map RGB-D SLAM launch from `steelhead_localization`. Also launches rviz with configurations made to visualize mapping and localization. RTAB-Map-specific parameters and camera transforms are kept in `steelhead_localization/launch/rtab_map_launch.py`.
 
         ros2 launch steelhead_bringup gazebo_test_slam_launch.py
 
