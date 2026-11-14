@@ -31,6 +31,14 @@ To run the Trajectory Generator node, run
 
         ros2 launch steelhead_controls trajectory_generator_launch.py
 
+### Robot State Publisher
+
+To launch the `robot_state_publisher` node with a robot model:
+
+    ros2 launch steelhead_controls state_publisher_launch.py model:=<MODEL>
+
+Where `<MODEL>` is the URDF file name (without `.urdf`) within `steelhead_controls/models` (defaults to `steelhead_auv`).
+
 ## Nodes
 
 - `thrust_allocator` : A standalone node which subscribes to the desired forces and torques to act upon the AUV and publishes an array which contains the allocated forces and associated PWM signals given to each thruster based on the config file passed in on launch
@@ -44,7 +52,7 @@ To run the Trajectory Generator node, run
   - `controls/output_forces` (`std_msgs/msg/Float64MultiArray.msg`) : Forces corresponding to each thruster
   - `controls/signals` (`std_msgs/msg/Float64MultiArray.msg`): PWM signals corresponding to each thruster
 
-  ### Parameters (defined in thruster_config.yaml)
+  ### Parameters (defined in input config)
 
   - `num_thrusters` (`int32`): The number of thrusters in the configuration
   - `ti.contrib.x/y/z` (`float32`): The x/y/z-axis contribution of thruster `i`
@@ -119,6 +127,7 @@ To run the Trajectory Generator node, run
 
   - A target depth to maintain is expected as input to the node via the `depth` parameter, but a default value of 0.5m will be assigned if not specified. If a negative value or zero is provided, it's assumed that depth should not be considered and the script will only adjust for orientation.
   - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
+  - The vehicle base frame defaults to `base_link` via the `base_frame` parameter. The node listens to `/tf` to transform the IMU orientation and depth sensor lever-arm offsets into the vehicle's base frame.
   - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward. The final message should also be a partial adjustment.
 
 - `pid_controller` : A standalone node that provides PID control for the AUV.

@@ -2,6 +2,7 @@
 #include "steelhead_vision/gate_detector.hpp"
 #include "steelhead_vision/pole_featurizer.hpp"
 #include "tf2/LinearMath/Quaternion.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 using namespace std;
 using namespace cv;
@@ -20,6 +21,15 @@ GateDetector::GateDetector(const rclcpp::NodeOptions& options) : Node("gate_dete
     RCLCPP_INFO(this->get_logger(), "DEBUG ON");
   else
     RCLCPP_INFO(this->get_logger(), "DEBUG OFF");
+
+  this->declare_parameter("camera_frame", "camera_link_optical");
+  this->get_parameter("camera_frame", camera_frame_id_);
+
+  this->declare_parameter("target_frame", "base_link");
+  this->get_parameter("target_frame", target_frame_id_);
+
+  tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+  tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
   ObjectDetector(1.0, debug_, 400.0);
   gate_cntr_ = {};
@@ -282,29 +292,68 @@ std::vector<Point> GateDetector::createGateContour(std::vector<Point> hull_point
   tf2::Quaternion tf2_quat_gate;
   tf2_quat_gate.setRPY(0.001, 0.001, gate_yaw); // TODO: add back roll and pitch if we control them in the future
 
+  // Construct pose in camera optical frame (X right, Y down, Z forward)
+  // Rotate tf2_quat_gate from camera_link (X forward) into optical frame (Z forward)
+  tf2::Quaternion q_cam_to_opt;
+  q_cam_to_opt.setRPY(-M_PI_2, 0.0, -M_PI_2);
+  tf2::Quaternion q_gate_optical = (q_cam_to_opt.inverse() * tf2_quat_gate).normalized();
+
+  geometry_msgs::msg::PoseStamped camera_pose;
+  camera_pose.header.stamp = this->get_clock()->now();
+  camera_pose.header.frame_id = camera_frame_id_;
+  camera_pose.pose.position.x = distance_x;
+  camera_pose.pose.position.y = distance_y;
+  camera_pose.pose.position.z = distance;
+  camera_pose.pose.orientation.x = q_gate_optical.x();
+  camera_pose.pose.orientation.y = q_gate_optical.y();
+  camera_pose.pose.orientation.z = q_gate_optical.z();
+  camera_pose.pose.orientation.w = q_gate_optical.w();
+
+  geometry_msgs::msg::PoseStamped transformed_pose = camera_pose;
+  bool tf_success = false;
+  std::string tf_err;
+  if (!camera_frame_id_.empty() && tf_buffer_->canTransform(target_frame_id_, camera_frame_id_, tf2::TimePointZero, &tf_err))
+  {
+    try
+    {
+      transformed_pose = tf_buffer_->transform(camera_pose, target_frame_id_);
+      tf_success = true;
+    }
+    catch (const tf2::TransformException & ex)
+    {
+      RCLCPP_WARN_ONCE(this->get_logger(), "Could not transform gate pose to %s: %s", target_frame_id_.c_str(), ex.what());
+    }
+  }
+  else if (!camera_frame_id_.empty())
+  {
+    RCLCPP_WARN_ONCE(this->get_logger(), "Waiting for transform from %s to %s: %s", camera_frame_id_.c_str(), target_frame_id_.c_str(), tf_err.c_str());
+  }
+
   // Put values in message
-
   steelhead_interfaces::msg::ObjectOffset gate_pose_;
-
   gate_pose_.class_id = 1;
-  gate_pose_.pose.position.x = distance;
-  gate_pose_.pose.position.y = -distance_x; // ENU
-  gate_pose_.pose.position.z =  -distance_y; // ENU, y=0 on image is top
-  gate_pose_.pose.orientation.x = tf2_quat_gate.x();
-  gate_pose_.pose.orientation.y = tf2_quat_gate.y();
-  gate_pose_.pose.orientation.z = tf2_quat_gate.z();
-  gate_pose_.pose.orientation.w = tf2_quat_gate.w();
+
+  if (tf_success)
+  {
+    gate_pose_.pose = transformed_pose.pose;
+  }
+  else
+  {
+    // Fallback: manual projection assuming FLU base_link with camera at origin
+    gate_pose_.pose.position.x = distance;
+    gate_pose_.pose.position.y = -distance_x; // ENU
+    gate_pose_.pose.position.z = -distance_y; // ENU, y=0 on image is top
+    gate_pose_.pose.orientation.x = tf2_quat_gate.x();
+    gate_pose_.pose.orientation.y = tf2_quat_gate.y();
+    gate_pose_.pose.orientation.z = tf2_quat_gate.z();
+    gate_pose_.pose.orientation.w = tf2_quat_gate.w();
+  }
 
   gate_pose_publisher_->publish(gate_pose_);
 
   if (debug_)
   {
-    auto msg = geometry_msgs::msg::PoseStamped();
-    msg.pose = gate_pose_.pose;
-    rclcpp::Time now = this->get_clock()->now(); 
-    msg.header.stamp = now;
-    msg.header.frame_id = "map";
-    gate_pose_only_publisher_->publish(msg);
+    gate_pose_only_publisher_->publish(transformed_pose);
 
     circle(src, top_left, 8, Scalar(0, 255, 0), 4);
     circle(src, top_right, 8, Scalar(0, 255, 255), 4);

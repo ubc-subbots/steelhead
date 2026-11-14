@@ -19,7 +19,7 @@ To run the robot localization node, which synthesizes odometry and IMU data, run
   ### Subscribed Topics
 
   - `/steelhead/drivers/imu/out` (`sensor_msgs/Imu`) : IMU data: linear acceleration and angular velocity
-  - `/odom` (`nav_msgs/Odometry`) : Odometry: This is the absolute state of the robot, something we most likely won't have and is for simulation purposes only
+  - `/steelhead/state` (`nav_msgs/Odometry`) : Odometry: This is the absolute state of the robot, something we most likely won't have and is for simulation purposes only
 
   ### Published Topics
 

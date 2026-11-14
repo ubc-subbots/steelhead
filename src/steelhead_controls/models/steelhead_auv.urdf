@@ -88,8 +88,8 @@
     name="thruster-1_joint"
     type="fixed">
     <origin
-      xyz="0.00026684981319 -0.084748516609538 -0.219431836509984"
-      rpy="3.14159265358979 0 -0.0105672952385601" />
+      xyz="-0.075 -0.3275 0"
+      rpy="-1.57 -1.57 1.57" />
     <parent
       link="base_link" />
     <child
@@ -141,8 +141,8 @@
     name="thruster-2_joint"
     type="fixed">
     <origin
-      xyz="-0.210503109396221 0.00386607192717902 0.332368163490018"
-      rpy="3.14159265358979 0 0.785066673557305" />
+      xyz="0.33 -0.216 -0.0085"
+      rpy="0 -2.355 1.57" />
     <parent
       link="base_link" />
     <child
@@ -194,8 +194,8 @@
     name="thruster-3_joint"
     type="fixed">
     <origin
-      xyz="0.213276402010404 0.00372559331954102 0.332368163490019"
-      rpy="3.14159265358979 0 -0.785729653237593" />
+      xyz="0.33 0.216 -0.0085"
+      rpy="0 2.355 1.57" />
     <parent
       link="base_link" />
     <child
@@ -247,8 +247,8 @@
     name="thruster_4_joint"
     type="fixed">
     <origin
-      xyz="0.3284 0.00096401 -0.07017"
-      rpy="-1.5708 0 -1.5708" />
+      xyz="-0.075 0.3275 0"
+      rpy="-1.57 1.57 1.57" />
     <parent
       link="base_link" />
     <child
@@ -300,8 +300,8 @@
     name="thruster_5_joint"
     type="fixed">
     <origin
-      xyz="-0.32565 0 -0.071134"
-      rpy="1.5708 0 1.5708" />
+      xyz="-0.219431 0 0.08"
+      rpy="0 3.14 1.57" />
     <parent
       link="base_link" />
     <child
@@ -353,8 +353,8 @@
     name="thruster-6_joint"
     type="fixed">
     <origin
-      xyz="0.0063667 -0.0045 -0.35743"
-      rpy="3.1416 0 1.5708" />
+      xyz="-0.355 0 0"
+      rpy="1.57 1.57 0" />
     <parent
       link="base_link" />
     <child
@@ -387,5 +387,34 @@
     <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
     <parent link="camera_link" />
     <child link="camera_link_optical" />
+  </joint>
+
+  <link name="bottom_camera_link">
+    <visual>
+      <geometry><box size="0.05 0.05 0.05"/></geometry>
+      <material name="blue"><color rgba="0 0 1 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="bottom_camera_joint" type="fixed">
+    <origin xyz="0.4 -0.06 0" rpy="0 1.5708 0" />
+    <parent link="base_link" />
+    <child link="bottom_camera_link" />
+  </joint>
+
+  <link name="bottom_camera_link_optical" />
+
+  <joint name="bottom_camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
+    <parent link="bottom_camera_link" />
+    <child link="bottom_camera_link_optical" />
+  </joint>
+
+  <link name="depth_sensor_link" />
+
+  <joint name="depth_sensor_joint" type="fixed">
+    <origin xyz="0.1 0.0 -0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="depth_sensor_link" />
   </joint>
 </robot>

@@ -67,7 +67,19 @@ def generate_launch_description():
 
     delayed_rqt = TimerAction(period=15.0, actions=[rqt_reconfigure_node])
 
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
+    )
+
     ld.add_action(gazebo)
+    ld.add_action(state_publisher)
     ld.add_action(thrust_allocator)
     ld.add_action(keyboard_teleop)
     ld.add_action(hover)

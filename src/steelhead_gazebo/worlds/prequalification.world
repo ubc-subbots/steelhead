@@ -73,11 +73,6 @@
     </include>
 
     <include>
-      <uri>model://steelhead_auv</uri>
-      <pose>0 0 0 0 0 0</pose>
-    </include>
-
-    <include>
         <pose>5 0 -2.25 0 0 0</pose>
         <uri>model://woollett_pool</uri>
     </include>

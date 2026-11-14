@@ -1,18 +1,24 @@
-import os
-
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
 
     ld = LaunchDescription()
 
-    config = os.path.join(
-        get_package_share_directory("steelhead_controls"),
-        "config",
-        "thruster_config.yaml",
+    config_arg = DeclareLaunchArgument(
+        "thruster_config_file", default_value="steelhead_thruster_config.yaml"
+    )
+
+    config = PathJoinSubstitution(
+        [
+            FindPackageShare("steelhead_controls"),
+            "config",
+            LaunchConfiguration("thruster_config_file"),
+        ]
     )
 
     thrust_allocator = Node(
@@ -25,6 +31,7 @@ def generate_launch_description():
         remappings=[("/steelhead/controls/signals", "/motor_control")],
     )
 
+    ld.add_action(config_arg)
     ld.add_action(thrust_allocator)
 
     return ld
