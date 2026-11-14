@@ -40,6 +40,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/ActuatorsCommand.srv"
   "msg/PressureSensor.msg"
   "msg/HoverAdjustment.msg"
+  "msg/HydrophoneFeedback.msg"
+  "msg/PingerAngle.msg"
   DEPENDENCIES builtin_interfaces std_msgs sensor_msgs geometry_msgs
 )
 

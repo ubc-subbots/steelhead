@@ -102,7 +102,7 @@
     <include>
       <name>competition_pinger_1</name>
       <uri>model://competition_pinger</uri>
-      <pose>15.1911 1.614284 0.1 0 0 0</pose>
+      <pose>15.1911 1.614284 0 0 0 0</pose>
     </include>
 
     <include>
@@ -124,7 +124,13 @@
     <include>
       <name>competition_pinger_2</name>
       <uri>model://competition_pinger</uri>
-      <pose>14.9023 -0.62346 0.1 0 0 0</pose>
+      <pose>14.9023 -0.62346 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>competition_pinger_3</name>
+      <uri>model://competition_pinger</uri>
+      <pose>3.44451 -0.19134 0 0 0 0</pose>
     </include>
   </world>
 </sdf>
