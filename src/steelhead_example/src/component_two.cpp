@@ -6,13 +6,9 @@ namespace steelhead_example
 
 
 ComponentTwo::ComponentTwo(const rclcpp::NodeOptions & options)
-: Node("component_two", options) 
+: Node("component_two", options)
 {
     this->declare_parameter<int>("example_param", 0);
-    
-    feedback_pub_ = this->create_publisher<steelhead_interfaces::msg::PipelineFeedback>(
-        "/steelhead/pipeline_feedback", 10
-    );
 
     publisher_ = this->create_publisher<std_msgs::msg::String>(
         "example/component_two/out", 10
@@ -28,7 +24,7 @@ ComponentTwo::ComponentTwo(const rclcpp::NodeOptions & options)
 }
 
 
-void ComponentTwo::callback(const std_msgs::msg::String::SharedPtr msg) 
+void ComponentTwo::callback(const std_msgs::msg::String::SharedPtr msg)
 {
     RCLCPP_INFO(this->get_logger(), "In Component Two");
     auto message = std_msgs::msg::String();
@@ -38,12 +34,9 @@ void ComponentTwo::callback(const std_msgs::msg::String::SharedPtr msg)
     counter_++;
     if (counter_ == MESSAGE_THRESHOLD)
     {
-        auto feedback_msg = steelhead_interfaces::msg::PipelineFeedback();
-        feedback_msg.success = true;
-        feedback_msg.message = "Reached 25! The example pipeline has completed it's action";
-        feedback_pub_->publish(feedback_msg);
+        RCLCPP_INFO(this->get_logger(), "Reached 25 messages in ComponentTwo!");
     }
 }
 
-    
+
 } // namespace steelhead_example

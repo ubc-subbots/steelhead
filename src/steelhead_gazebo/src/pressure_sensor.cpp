@@ -90,6 +90,8 @@ namespace steelhead_gazebo
                 if (pose)
                 {
                     auto msg = steelhead_interfaces::msg::PressureSensor();
+                    msg.header.stamp = this->node->now();
+                    msg.header.frame_id = "base_link";
                     msg.depth = -pose->Pos().Z();
                     // mock out the other values because depth is all we are realistically using for now
                     msg.temperature = 20.0; 

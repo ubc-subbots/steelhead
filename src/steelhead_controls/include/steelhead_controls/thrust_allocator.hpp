@@ -9,9 +9,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/wrench.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-#include "std_msgs/msg/u_int32.hpp"
+#include "std_msgs/msg/u_int64.hpp"
 
-#define MAX_THRUSTERS 6
+#define MAX_THRUSTERS 8
 
 namespace steelhead_controls
 {      
@@ -69,7 +69,7 @@ namespace steelhead_controls
         uint32_t forceToLevel(double force) const;
 
         rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr forces_pub_;  
-        rclcpp::Publisher<std_msgs::msg::UInt32>::SharedPtr signals_pub_;  
+        rclcpp::Publisher<std_msgs::msg::UInt64>::SharedPtr signals_pub_;  
 
         rclcpp::Subscription<geometry_msgs::msg::Wrench>::SharedPtr forces_sub_; 
 

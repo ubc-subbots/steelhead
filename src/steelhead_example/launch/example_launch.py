@@ -19,6 +19,9 @@ def generate_launch_description():
         namespace="/steelhead",
         package="steelhead_example",
         plugin="steelhead_example::ComponentTwo",
+        remappings=[
+            ("example/component_two/in", "example/component_one/out"),
+        ],
     )
 
     example_container = ComposableNodeContainer(

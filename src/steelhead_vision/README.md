@@ -32,6 +32,11 @@ To launch the gate detector component, run:
 
 - `gate_detector` : A component node that detects the competition gate and publishes its relative pose.
 
+  ### Parameters
+  - `debug` (`bool`, default: `false`) : Enables debug image and pose publishers.
+  - `camera_frame` (`string`, default: `camera_link_optical`) : Camera optical frame for 3D detection.
+  - `target_frame` (`string`, default: `base_link`) : Robot reference frame to which the gate pose is transformed via TF2.
+
   ### Subscribed Topics
   - `/steelhead/drivers/front_camera/image_raw` (`sensor_msgs/msg/Image`) : Front camera image feed.
 

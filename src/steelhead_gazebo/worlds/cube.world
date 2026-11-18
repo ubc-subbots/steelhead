@@ -21,9 +21,5 @@
         <quadratic>0.001</quadratic>
       </attenuation>
     </light>
-    
-    <include>
-      <uri>model://cube_auv</uri>
-    </include>
   </world>
 </sdf>

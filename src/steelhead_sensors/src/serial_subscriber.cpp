@@ -31,7 +31,7 @@ namespace steelhead_sensors
     tty.c_cc[VMIN] = 0;
     tty.c_cc[VTIME] = 1;
 
-    thruster_sub_ = this->create_subscription<std_msgs::msg::UInt32>(
+    thruster_sub_ = this->create_subscription<std_msgs::msg::UInt64>(
       "motor_control", 10, std::bind(&SerialSubscriber::controlCallback, this, _1));
 
     RCLCPP_INFO(this->get_logger(), "Serial Subscriber succesfully started!");
@@ -41,10 +41,10 @@ namespace steelhead_sensors
     close(fd_);
   }
 
-  void SerialSubscriber::controlCallback(const std_msgs::msg::UInt32::SharedPtr msg) const
+  void SerialSubscriber::controlCallback(const std_msgs::msg::UInt64::SharedPtr msg) const
   {
     //RCLCPP_INFO(this->get_logger(), "WRITING SERIAL");
-    write(fd_, &msg->data, 4);
+    write(fd_, &msg->data, sizeof(msg->data));
   }
 
 } // namespace steelhead_sensors
