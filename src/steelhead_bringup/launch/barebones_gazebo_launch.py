@@ -17,7 +17,10 @@ def generate_launch_description():
                 "gazebo_launch.py",
             )
         ),
-        launch_arguments={"world": "prequalification.world"}.items(),
+        launch_arguments={
+            "world": "prequalification.world",
+            "model": "piranha_auv",
+        }.items(),
     )
 
     thrust_allocator = IncludeLaunchDescription(
@@ -27,7 +30,10 @@ def generate_launch_description():
                 "launch",
                 "thrust_allocator_launch.py",
             )
-        )
+        ),
+        launch_arguments={
+            "thruster_config_file": "piranha_thruster_config.yaml"
+        }.items(),
     )
 
     keyboard_teleop = IncludeLaunchDescription(

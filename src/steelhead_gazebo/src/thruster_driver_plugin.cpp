@@ -58,23 +58,38 @@ namespace steelhead_gazebo
 
         for (unsigned int i = 1; i <= thruster_count; i++)
         {
-            std::string nested_model_name = "thruster" + std::to_string(i);
+            std::string idx = std::to_string(i);
+            std::string nested_model_name = "thruster" + idx;
+            gz::sim::Entity link_entity = gz::sim::kNullEntity;
+
             gz::sim::Entity nested_model_entity = model.ModelByName(_ecm, nested_model_name);
-            
-            if (nested_model_entity == gz::sim::kNullEntity) {
-                gzerr << "Failed to find nested model: " << nested_model_name << std::endl;
-                continue;
+            if (nested_model_entity != gz::sim::kNullEntity)
+            {
+                gz::sim::Model nested_model(nested_model_entity);
+                link_entity = nested_model.LinkByName(_ecm, "thruster");
             }
-            
-            gz::sim::Model nested_model(nested_model_entity);
-            gz::sim::Entity link_entity = nested_model.LinkByName(_ecm, "thruster");
-            
+            else
+            {
+                for (const auto &candidate : {
+                    "thruster" + idx,
+                    "thruster-" + idx + "_link",
+                    "thruster_" + idx + "_link",
+                })
+                {
+                    link_entity = model.LinkByName(_ecm, candidate);
+                    if (link_entity != gz::sim::kNullEntity)
+                    {
+                        break;
+                    }
+                }
+            }
+
             if (link_entity != gz::sim::kNullEntity) {
                 this->thruster.push_back(link_entity);
                 _ecm.CreateComponent(link_entity, gz::sim::components::WorldPose());
                 RCLCPP_INFO(node->get_logger(), "Found link for %s", nested_model_name.c_str());
             } else {
-                gzerr << "Failed to find link 'thruster' inside nested model: " << nested_model_name << std::endl;
+                gzerr << "Failed to find thruster link or nested model for: " << nested_model_name << std::endl;
             }
         }
     

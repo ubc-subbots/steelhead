@@ -29,7 +29,7 @@ def generate_launch_description():
     model_arg = DeclareLaunchArgument(
         "model",
         default_value="steelhead_auv",
-        description="Model folder name within steelhead_gazebo/models to spawn at the origin",
+        description="URDF model name (without .urdf) within steelhead_controls/models to spawn at the origin",
     )
 
     headless_arg = DeclareLaunchArgument(
@@ -64,6 +64,7 @@ def generate_launch_description():
         name=grp,
         value=[
             EnvironmentVariable(grp, default_value=""),
+            os.pathsep + os.path.dirname(steelhead_gazebo_dir),
             os.pathsep + os.path.join(steelhead_gazebo_dir, "gazebo"),
             os.pathsep + os.path.join(steelhead_gazebo_dir, "gazebo", "models"),
         ],
@@ -132,13 +133,11 @@ def generate_launch_description():
         # ros_arguments=["--log-level", "WARN"],
     )
 
-    model_sdf_path = PathJoinSubstitution(
+    urdf_path = PathJoinSubstitution(
         [
-            FindPackageShare("steelhead_gazebo"),
-            "gazebo",
+            FindPackageShare("steelhead_controls"),
             "models",
-            LaunchConfiguration("model"),
-            "model.sdf",
+            [LaunchConfiguration("model"), ".urdf"],
         ]
     )
 
@@ -147,7 +146,7 @@ def generate_launch_description():
         executable="create",
         arguments=[
             "-file",
-            model_sdf_path,
+            urdf_path,
             "-x",
             "0.0",
             "-y",

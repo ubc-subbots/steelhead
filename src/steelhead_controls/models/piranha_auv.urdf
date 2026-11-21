@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="piranha_auv">
+  <link name="base_link">
+    <inertial>
+      <mass value="9.87295" />
+      <origin xyz="0.000270501 -0.00083783 -0.0625431" rpy="0 0 0" />
+      <inertia ixx="0.368743" ixy="0.000405983" ixz="1.82028e-07" iyy="0.405938" iyz="-1.86824e-07" izz="0.580513" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_36.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_13.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.917647_0.917647_0.917647_0.000000_0.000000">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_30.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_26.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_8.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_10.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.647059_0.647059_0.647059_0.000000_0.000000">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_31.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_41.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.972549_0.529412_0.003922_0.000000_0.000000">
+        <color rgba="0.972549 0.529412 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/NONE.gltf" scale="1 1 1" />
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_39.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_24.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.972549_0.529412_0.003922_0.000000_0.000000">
+        <color rgba="0.972549 0.529412 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_34.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_49.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.231373_0.380392_0.705882_0.000000_0.000000">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_44.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.615686_0.811765_0.929412_0.000000_0.000000">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_38.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_35.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_9.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.615686_0.811765_0.929412_0.000000_0.000000">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_12.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.917647_0.917647_0.917647_0.000000_0.000000">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_32.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_48.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.231373_0.380392_0.705882_0.000000_0.000000">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_15.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.917647_0.917647_0.917647_0.000000_0.000000">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/main_enclosure.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.615686_0.811765_0.929412_0.000000_0.000000">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/camera_enclosure.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.647059_0.647059_0.647059_0.000000_0.000000">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_43.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_37.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_29.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_46.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.231373_0.380392_0.705882_0.000000_0.000000">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_40.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.972549_0.529412_0.003922_0.000000_0.000000">
+        <color rgba="0.972549 0.529412 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_5.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.768627_0.886275_0.952941_0.000000_0.000000">
+        <color rgba="0.768627 0.886275 0.952941 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_25.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_14.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.917647_0.917647_0.917647_0.000000_0.000000">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_33.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_45.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.647059_0.647059_0.647059_0.000000_0.000000">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_6.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.972549_0.529412_0.003922_0.000000_0.000000">
+        <color rgba="0.972549 0.529412 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_27.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.980392_0.713725_0.003922_0.000000_0.000000">
+        <color rgba="0.980392 0.713726 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_28.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_42.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.972549_0.529412_0.003922_0.000000_0.000000">
+        <color rgba="0.972549 0.529412 0.00392157 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_47.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.231373_0.380392_0.705882_0.000000_0.000000">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_4.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.917647_0.917647_0.917647_0.000000_0.000000">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_7.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.498039_0.498039_0.498039_0.000000_0.000000">
+        <color rgba="0.498039 0.498039 0.498039 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.000112556 -0.000541105 -0.0125916" rpy="0 0 1.5707963" />
+      <geometry>
+        <mesh filename="package://piranha_auv/meshes/Part_23.gltf" scale="1 1 1" />
+      </geometry>
+      <material name="0.768627_0.886275_0.952941_0.000000_0.000000">
+        <color rgba="0.768627 0.886275 0.952941 1" />
+      </material>
+    </visual>
+    <collision name="buoyancy_collision">
+      <origin xyz="0 0 -0.02" rpy="0 0 0" />
+      <geometry>
+        <box size="0.40 0.30 0.0805" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="thruster-1_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-1_joint" type="fixed">
+    <origin xyz="0.205 -0.222 -0.051" rpy="0 1.5707963 0.785398" />
+    <parent link="base_link" />
+    <child link="thruster-1_link" />
+  </joint>
+  <gazebo reference="thruster-1_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-2_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-2_joint" type="fixed">
+    <origin xyz="0.205 0.222 -0.051" rpy="0 1.5707963 -0.785398" />
+    <parent link="base_link" />
+    <child link="thruster-2_link" />
+  </joint>
+  <gazebo reference="thruster-2_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-3_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-3_joint" type="fixed">
+    <origin xyz="-0.205 0.222 -0.051" rpy="0 1.5707963 -2.356194" />
+    <parent link="base_link" />
+    <child link="thruster-3_link" />
+  </joint>
+  <gazebo reference="thruster-3_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-4_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-4_joint" type="fixed">
+    <origin xyz="-0.205 -0.222 -0.051" rpy="0 1.5707963 2.356194" />
+    <parent link="base_link" />
+    <child link="thruster-4_link" />
+  </joint>
+  <gazebo reference="thruster-4_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-5_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-5_joint" type="fixed">
+    <origin xyz="0.075 -0.163 -0.050" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="thruster-5_link" />
+  </joint>
+  <gazebo reference="thruster-5_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-6_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-6_joint" type="fixed">
+    <origin xyz="0.075 0.163 -0.050" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="thruster-6_link" />
+  </joint>
+  <gazebo reference="thruster-6_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-7_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-7_joint" type="fixed">
+    <origin xyz="-0.075 0.163 -0.050" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="thruster-7_link" />
+  </joint>
+  <gazebo reference="thruster-7_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="thruster-8_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="thruster-8_joint" type="fixed">
+    <origin xyz="-0.075 -0.163 -0.050" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="thruster-8_link" />
+  </joint>
+  <gazebo reference="thruster-8_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <link name="imu_link" />
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0 0 -0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="imu_link" />
+  </joint>
+  <link name="camera_link" />
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.24 0 -0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="camera_link" />
+  </joint>
+  <link name="camera_link_optical" />
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
+    <parent link="camera_link" />
+    <child link="camera_link_optical" />
+  </joint>
+  <link name="bottom_camera_link" />
+  <joint name="bottom_camera_joint" type="fixed">
+    <origin xyz="0.15 0 -0.10" rpy="0 1.5708 0" />
+    <parent link="base_link" />
+    <child link="bottom_camera_link" />
+  </joint>
+  <link name="bottom_camera_link_optical" />
+  <joint name="bottom_camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
+    <parent link="bottom_camera_link" />
+    <child link="bottom_camera_link_optical" />
+  </joint>
+  <link name="depth_sensor_link" />
+  <joint name="depth_sensor_joint" type="fixed">
+    <origin xyz="-0.15 0 -0.05" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="depth_sensor_link" />
+  </joint>
+  <gazebo reference="camera_link">
+    <sensor type="rgbd_camera" name="front_camera">
+      <update_rate>60</update_rate>
+      <visualize>true</visualize>
+      <topic>/front_camera</topic>
+      <frame_id>camera_link</frame_id>
+      <camera name="front">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+    </sensor>
+  </gazebo>
+  <gazebo reference="bottom_camera_link">
+    <sensor type="camera" name="bottom_camera">
+      <update_rate>60</update_rate>
+      <visualize>true</visualize>
+      <topic>/bottom_camera/image</topic>
+      <frame_id>bottom_camera_link</frame_id>
+      <camera name="bottom">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+    </sensor>
+  </gazebo>
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <visualize>true</visualize>
+      <topic>/imu</topic>
+      <frame_id>imu_link</frame_id>
+      <imu>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.001</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.001</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.001</stddev>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.005</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.005</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.005</stddev>
+            </noise>
+          </z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+  <gazebo>
+    <plugin filename="gz-sim-hydrodynamics-system" name="gz::sim::systems::Hydrodynamics">
+      <link_name>base_link</link_name>
+      <disable_added_mass>true</disable_added_mass>
+      <xUabsU>-59.75066625</xUabsU>
+      <xU>-0.2229119791</xU>
+      <yVabsV>-71.13459739</yVabsV>
+      <yV>-1.105547605</yV>
+      <zWabsW>-67.099009</zWabsW>
+      <zW>-0.2472084207</zW>
+      <kPabsP>-5.975066625</kPabsP>
+      <kP>-0.02229119791</kP>
+      <mQabsQ>-7.113459739</mQabsQ>
+      <mQ>-0.1105547605</mQ>
+      <nRabsR>-6.7099009</nRabsR>
+      <nR>-0.02472084207</nR>
+    </plugin>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/base_link/odometry</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+    <plugin filename="libpressure_sensor.so" name="steelhead_gazebo::PressureSensor">
+      <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
+      <update_rate>50</update_rate>
+    </plugin>
+    <plugin name="steelhead_gazebo::ThrusterDriver" filename="libthruster_driver_plugin.so">
+      <thruster_count>8</thruster_count>
+      <ros>
+        <namespace>/steelhead/controls</namespace>
+        <remapping>output_forces</remapping>
+      </ros>
+    </plugin>
+  </gazebo>
+</robot>

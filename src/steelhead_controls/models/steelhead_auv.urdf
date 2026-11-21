@@ -8,17 +8,17 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0.00395046849323071 0.0499072286696635 -0.0102290259693298"
+        xyz="0.003 0 -0.02"
         rpy="0 0 0" />
       <mass
-        value="11.2703688048829" />
+        value="12.499" />
       <inertia
-        ixx="0.060252345626549"
-        ixy="2.1256907295524E-06"
-        ixz="-3.72440264216632E-06"
-        iyy="0.111348207760062"
-        iyz="0.00107999853531635"
-        izz="0.127878964636527" />
+        ixx="0.548853532"
+        ixy="0.000990367"
+        ixz="0.007434770"
+        iyy="0.725638212"
+        iyz="0.045963196"
+        izz="1.077000000" />
     </inertial>
     <visual>
       <origin
@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/base_link.STL" />
+          filename="package://steelhead_frame/meshes/steelhead_frame.stl" />
       </geometry>
       <material
         name="">
@@ -34,13 +34,12 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <collision name="buoyancy_collision">
       <origin
-        xyz="0 0 0"
+        xyz="0 0 0.04"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/base_link.STL" />
+        <box size="0.5 0.3 0.09512" />
       </geometry>
     </collision>
   </link>
@@ -48,17 +47,17 @@
     name="thruster-1_link">
     <inertial>
       <origin
-        xyz="-4.89081546103422E-07 -0.00413616182974776 0.000574355557575706"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.186902211484853" />
+        value="0.35" />
       <inertia
-        ixx="0.000162753956656037"
-        ixy="-2.92272870142361E-09"
-        ixz="-1.85814585445412E-09"
-        iyy="0.000180444513108018"
-        iyz="-6.88949524169078E-07"
-        izz="0.000158198380408318" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -66,7 +65,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster-1_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -74,15 +73,6 @@
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster-1_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster-1_joint"
@@ -101,17 +91,17 @@
     name="thruster-2_link">
     <inertial>
       <origin
-        xyz="-4.338686397376E-07 -0.0041360510074997 0.000574375711597741"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.186899504815562" />
+        value="0.35" />
       <inertia
-        ixx="0.0001627514234258"
-        ixy="-2.82568504025534E-09"
-        ixz="-1.68279041179492E-09"
-        iyy="0.00018044157763586"
-        iyz="-6.88855048599947E-07"
-        izz="0.000158196991457279" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -119,7 +109,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster-2_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -127,15 +117,6 @@
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster-2_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster-2_joint"
@@ -154,17 +135,17 @@
     name="thruster-3_link">
     <inertial>
       <origin
-        xyz="-4.33848231506939E-07 -0.00413605099529665 0.000574375715362785"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.186899504873199" />
+        value="0.35" />
       <inertia
-        ixx="0.000162751425676453"
-        ixy="-2.82797964763055E-09"
-        ixz="-1.68281476856945E-09"
-        iyy="0.000180441578299036"
-        iyz="-6.88854971106012E-07"
-        izz="0.000158196994569752" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -172,7 +153,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster-3_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -180,15 +161,6 @@
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster-3_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster-3_joint"
@@ -207,17 +179,17 @@
     name="thruster_4_link">
     <inertial>
       <origin
-        xyz="-4.8478E-07 0.0041362 -0.00057436"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.1869" />
+        value="0.35" />
       <inertia
-        ixx="0.00016275"
-        ixy="2.9228E-09"
-        ixz="1.8618E-09"
-        iyy="0.00018044"
-        iyz="-6.8894E-07"
-        izz="0.0001582" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -225,7 +197,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster_4_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -233,15 +205,6 @@
           rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster_4_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster_4_joint"
@@ -260,17 +223,17 @@
     name="thruster_5_link">
     <inertial>
       <origin
-        xyz="-4.8478E-07 -0.0041362 0.00057436"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.1869" />
+        value="0.35" />
       <inertia
-        ixx="0.00016275"
-        ixy="-2.9218E-09"
-        ixz="-1.8618E-09"
-        iyy="0.00018044"
-        iyz="-6.8894E-07"
-        izz="0.0001582" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -278,7 +241,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster_5_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -286,15 +249,6 @@
           rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster_5_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster_5_joint"
@@ -313,17 +267,17 @@
     name="thruster-6_link">
     <inertial>
       <origin
-        xyz="-4.8478E-07 0.0041362 -0.00057436"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0.1869" />
+        value="0.35" />
       <inertia
-        ixx="0.00016275"
-        ixy="2.9229E-09"
-        ixz="1.8617E-09"
-        iyy="0.00018044"
-        iyz="-6.8894E-07"
-        izz="0.0001582" />
+        ixx="0.000875"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.000875"
+        iyz="0.0"
+        izz="0.0004375" />
     </inertial>
     <visual>
       <origin
@@ -331,7 +285,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://steelhead_urdf/meshes/thruster-6_link.STL" />
+          filename="package://steelhead_thruster/meshes/steelhead_thruster.dae" />
       </geometry>
       <material
         name="">
@@ -339,15 +293,6 @@
           rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://steelhead_urdf/meshes/thruster-6_link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="thruster-6_joint"
@@ -417,4 +362,145 @@
     <parent link="base_link" />
     <child link="depth_sensor_link" />
   </joint>
+
+  <gazebo reference="thruster-1_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster-2_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster-3_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster_4_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster_5_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster-6_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <sensor type="rgbd_camera" name="front_camera">
+      <update_rate>60</update_rate>
+      <visualize>true</visualize>
+      <topic>/front_camera</topic>
+      <frame_id>camera_link</frame_id>
+      <camera name="front">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="bottom_camera_link">
+    <sensor type="camera" name="bottom_camera">
+      <update_rate>60</update_rate>
+      <visualize>true</visualize>
+      <topic>/bottom_camera/image</topic>
+      <frame_id>bottom_camera_link</frame_id>
+      <camera name="bottom">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <visualize>true</visualize>
+      <topic>/imu</topic>
+      <frame_id>imu_link</frame_id>
+      <imu>
+        <angular_velocity>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>0.005</stddev></noise></z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+
+  <gazebo>
+    <plugin
+      filename="gz-sim-hydrodynamics-system"
+      name="gz::sim::systems::Hydrodynamics">
+      <link_name>base_link</link_name>
+      <disable_added_mass>true</disable_added_mass>
+      <xUabsU>-59.75066625</xUabsU>
+      <xU>-0.2229119791</xU>
+      <yVabsV>-71.13459739</yVabsV>
+      <yV>-1.105547605</yV>
+      <zWabsW>-67.099009</zWabsW>
+      <zW>-0.2472084207</zW>
+      <kPabsP>-5.975066625</kPabsP>
+      <kP>-0.02229119791</kP>
+      <mQabsQ>-7.113459739</mQabsQ>
+      <mQ>-0.1105547605</mQ>
+      <nRabsR>-6.7099009</nRabsR>
+      <nR>-0.02472084207</nR>
+    </plugin>
+
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/base_link/odometry</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+
+    <plugin
+      filename="libpressure_sensor.so"
+      name="steelhead_gazebo::PressureSensor">
+      <publish_topic>/steelhead/drivers/pressure_sensor</publish_topic>
+      <update_rate>50</update_rate>
+    </plugin>
+
+    <plugin
+      name="steelhead_gazebo::ThrusterDriver"
+      filename="libthruster_driver_plugin.so">
+      <thruster_count>6</thruster_count>
+      <ros>
+        <namespace>/steelhead/controls</namespace>
+        <remapping>output_forces</remapping>
+      </ros>
+    </plugin>
+  </gazebo>
 </robot>

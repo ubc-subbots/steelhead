@@ -20,85 +20,178 @@
         </geometry>
     </collision>
   </link>
+  <link name="thruster1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster1_joint" type="fixed">
+    <origin xyz="-0.5 -0.5 0" rpy="0 1.5707 2.35619"/>
+    <parent link="base_link"/>
+    <child link="thruster1"/>
+  </joint>
+  <link name="thruster2">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster2_joint" type="fixed">
+    <origin xyz="-0.5 0.5 0" rpy="0 -1.5707 0.785398"/>
+    <parent link="base_link"/>
+    <child link="thruster2"/>
+  </joint>
+  <link name="thruster3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster3_joint" type="fixed">
+    <origin xyz="0.5 0.5 0" rpy="0 1.5707 -0.785398"/>
+    <parent link="base_link"/>
+    <child link="thruster3"/>
+  </joint>
+  <link name="thruster4">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster4_joint" type="fixed">
+    <origin xyz="0.5 -0.5 0" rpy="0 -1.5707 -2.35619"/>
+    <parent link="base_link"/>
+    <child link="thruster4"/>
+  </joint>
+  <link name="thruster5">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster5_joint" type="fixed">
+    <origin xyz="0 -0.5 0" rpy="3.1415 3.1415 0"/>
+    <parent link="base_link"/>
+    <child link="thruster5"/>
+  </joint>
+  <link name="thruster6">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="thruster6_joint" type="fixed">
+    <origin xyz="0 0.5 0" rpy="3.1415 3.1415 3.1415"/>
+    <parent link="base_link"/>
+    <child link="thruster6"/>
+  </joint>
+  <gazebo reference="thruster1_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster2_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster3_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster4_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster5_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster6_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo reference="thruster1">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
+  <gazebo reference="thruster2">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
+  <gazebo reference="thruster3">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
+  <gazebo reference="thruster4">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
+  <gazebo reference="thruster5">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
+  <gazebo reference="thruster6">
+    <turnGravityOff>1</turnGravityOff>
+  </gazebo>
   <gazebo>
-      <include>
-        <uri>model://cube_thruster</uri>
-        <pose>-0.5 -0.5 0 0 1.5707 2.35619</pose>
-        <name>thruster1</name>
-    </include>
-    <include>
-        <uri>model://cube_thruster</uri>
-        <pose>-0.5 0.5 0 0 -1.5707 0.785398</pose>
-        <name>thruster2</name>
-    </include>
-    <include>
-        <uri>model://cube_thruster</uri>
-        <pose>0.5 0.5 0 0 1.5707 -0.785398</pose>
-        <name>thruster3</name>
-    </include>
-    <include>
-        <uri>model://cube_thruster</uri>
-        <pose>0.5 -0.5 0 0 -1.5707 -2.35619</pose>
-        <name>thruster4</name>
-    </include>
-    <include>
-        <uri>model://cube_thruster</uri>
-        <pose>0 -0.5 0 3.1415 3.1415 0</pose>
-        <name>thruster5</name>
-    </include>
-    <include>
-        <uri>model://cube_thruster</uri>
-        <pose>0 0.5 0 3.1415 3.1415 3.1415</pose>
-        <name>thruster6</name>
-    </include>
-    <joint name="thruster1_joint" type='fixed' >
-      <parent>base_link</parent>
-      <child>thruster1::thruster</child>
-    </joint>
-    <joint name="thruster2_joint" type='fixed' >
-      <parent>base_link</parent>
-      <child>thruster2::thruster</child>
-    </joint>
-    <joint name="thruster3_joint" type='fixed' >
-        <parent>base_link</parent>
-        <child>thruster3::thruster</child>
-    </joint>
-    <joint name="thruster4_joint" type='fixed' >
-        <parent>base_link</parent>
-        <child>thruster4::thruster</child>
-    </joint>
-    <joint name="thruster5_joint" type='fixed' >
-        <parent>base_link</parent>
-        <child>thruster5::thruster</child>
-    </joint>
-    <joint name="thruster6_joint" type='fixed' >
-        <parent>base_link</parent>
-        <child>thruster6::thruster</child>
-    </joint>
     <plugin name="steelhead_gazebo::ThrusterDriver" filename="libthruster_driver_plugin.so">
       <thruster_count>6</thruster_count>
       <ros>
-          <namespace>/steelhead/controls</namespace>
-          <remapping>output_forces</remapping>
+        <namespace>/steelhead/controls</namespace>
+        <remapping>output_forces</remapping>
       </ros>
     </plugin>
-    <!-- <plugin name="ground_truth_sensor" filename="libground_truth_sensor.so">
-      <state_topic>/steelhead/state</state_topic>
-      <update_rate>50</update_rate>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/base_link/odometry</odom_topic>
+      <dimensions>3</dimensions>
     </plugin>
-    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-      <always_on>true</always_on>
-      <update_rate>50.0</update_rate>
-      <body_name>base_link</body_name>
-      <topic_name>/steelhead/state</topic_name>
-      <gaussian_noise>0.01</gaussian_noise>
-      <frame_name>map</frame_name>
-      <xyz_offset>0 0 0</xyz_offset>
-      <rpy_offset>0 0 0</rpy_offset>
-    </plugin> -->
   </gazebo>
-  <gazebo>
-</gazebo>
   <gazebo reference="base_link">
     <material>Gazebo/Yellow</material>
     <turnGravityOff>1</turnGravityOff>

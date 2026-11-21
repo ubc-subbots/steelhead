@@ -1,0 +1,61 @@
+/steelhead/controls/thrust_allocator:
+  ros__parameters:
+    # Piranha AUV 8-thruster configuration (ROS FLU: +X forward, +Y left, +Z up)
+    # t1..t4: 45-deg vectored horizontal corners (FR, FL, BL, BR)
+    # t5..t8: vertical thrusters (FR, FL, BL, BR)
+    num_thrusters: 8
+    bits_per_thruster: 5
+    max_fwd: 3.71 # kgf
+    max_rev: 2.92 # kgf
+    t1:
+      contrib:
+        x: 0.7071
+        y: 0.7071
+      lx: 0.205
+      ly: -0.222
+      lz: -0.051
+    t2:
+      contrib:
+        x: 0.7071
+        y: -0.7071
+      lx: 0.205
+      ly: 0.222
+      lz: -0.051
+    t3:
+      contrib:
+        x: -0.7071
+        y: -0.7071
+      lx: -0.205
+      ly: 0.222
+      lz: -0.051
+    t4:
+      contrib:
+        x: -0.7071
+        y: 0.7071
+      lx: -0.205
+      ly: -0.222
+      lz: -0.051
+    t5:
+      contrib:
+        z: 1.0
+      lx: 0.075
+      ly: -0.163
+      lz: -0.050
+    t6:
+      contrib:
+        z: 1.0
+      lx: 0.075
+      ly: 0.163
+      lz: -0.050
+    t7:
+      contrib:
+        z: 1.0
+      lx: -0.075
+      ly: 0.163
+      lz: -0.050
+    t8:
+      contrib:
+        z: 1.0
+      lx: -0.075
+      ly: -0.163
+      lz: -0.050

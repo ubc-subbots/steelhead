@@ -22,6 +22,9 @@ To run the Gazebo competition task simulations driven by `mission_runner`:
 
 The node automatically uploads its status to the local network when ran. Download and install [Groot2](https://www.behaviortree.dev/groot/) and connect to `localhost:1667` to visualize the behaviour tree.
 
+> [!WARNING]
+> Groot2 has a pretty strict restriction of 20 or less nodes on the free version. An open-source alternative is [BTick](https://github.com/SherifFathey/btick_app).
+
 ## Behavior Tree Task Nodes
 
 All task nodes are compiled into `libsteelhead_mission_tasks.so` and registered in `mission::registerTaskNodes`:
