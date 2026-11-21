@@ -53,6 +53,11 @@ namespace steelhead_controls
     void HoverAtDepth::adjust_callback(const steelhead_interfaces::msg::HoverAdjustment::SharedPtr msg)
     {
         adjustments_ = msg;
+
+        // Latch the new heading here, once per message; publish_error_to_target() runs at the IMU rate
+        if (hold_yaw_ && msg->change_yaw && have_yaw_) {
+            yaw_setpoint_ = std::remainder(current_yaw_ + msg->yaw_offset, 2.0 * M_PI);
+        }
     }
 
     void HoverAtDepth::publish_error_to_target()
@@ -93,6 +98,8 @@ namespace steelhead_controls
 
                 double roll, pitch, yaw;
                 tf2::Matrix3x3(q_current).getRPY(roll, pitch, yaw);
+                current_yaw_ = yaw;
+                have_yaw_ = true;
 
                 float current_depth = pressure_sensor_->depth;
                 std::string depth_tf_err;
@@ -115,7 +122,7 @@ namespace steelhead_controls
                 if (hover_depth_) pose.position.z = current_depth - hover_depth_;
                 if (adjustments_->input.force.z) pose.position.z = adjustments_->input.force.z < 0 ? -0.2 : 0.2; // standardize inputs
 
-                double target_yaw = 0.0;
+                double target_yaw = yaw_setpoint_;
                 if (!hold_yaw_) {
                     if (adjustments_->input.torque.z) {
                         target_yaw = yaw + (adjustments_->input.torque.z < 0 ? -0.01 : 0.01);

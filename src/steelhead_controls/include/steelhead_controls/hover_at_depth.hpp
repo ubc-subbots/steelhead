@@ -62,6 +62,9 @@ namespace steelhead_controls
 
         float hover_depth_;
         bool hold_yaw_;
+        double yaw_setpoint_ = 0.0;  // heading held when hold_yaw_ is true, changed by HoverAdjustment.change_yaw
+        double current_yaw_ = 0.0;   // latest measured heading
+        bool have_yaw_ = false;      // true once current_yaw_ has been measured
         std::string base_frame_;
 
         std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
