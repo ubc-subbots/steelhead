@@ -1,0 +1,16 @@
+<root BTCPP_format="4" main_tree_to_execute="PathOnlyMission">
+  <BehaviorTree ID="PathOnlyMission">
+    <Sequence name="path_mission">
+      <DriveFor name="sink_to_depth" duration="5.0"/>
+      <Fallback name="path_with_fallback">
+        <Timeout msec="90000">
+          <Path name="follow_path"/>
+        </Timeout>
+        <DriveFor name="fallback_dead_reckon"
+                  force_x="10.0"
+                  duration="5.0"/>
+      </Fallback>
+      <DriveFor name="post_path_hold" duration="2.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
