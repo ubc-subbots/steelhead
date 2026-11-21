@@ -2,6 +2,7 @@
 
 #include "steelhead_mission/tasks/drive_for.hpp"
 #include "steelhead_mission/tasks/gate_task.hpp"
+#include "steelhead_mission/tasks/path_task.hpp"
 
 namespace mission
 {
@@ -13,6 +14,7 @@ namespace mission
     {
         factory.registerNodeType<GateTask>("Gate", node);
         factory.registerNodeType<DriveFor>("DriveFor", node);
+        factory.registerNodeType<PathTask>("Path", node);
     }
 
 

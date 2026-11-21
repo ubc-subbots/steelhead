@@ -30,6 +30,7 @@ add_library(steelhead_mission_tasks SHARED
   src/register_nodes.cpp
   src/tasks/drive_for.cpp
   src/tasks/gate_task.cpp
+  src/tasks/path_task.cpp
 )
 
 target_include_directories(steelhead_mission_tasks PUBLIC
