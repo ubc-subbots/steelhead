@@ -40,6 +40,7 @@ OpenCV is available in the Ubuntu package manager. It may be already installed, 
     sudo apt-get update
     sudo apt-get install -y libopencv-dev python3-opencv
     pip install ultralytics --break-system-packages
+    pip install openvino --break-system-packages
 
 OpenCV is now successfully installed!
 

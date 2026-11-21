@@ -12,6 +12,12 @@ To launch the YOLO object detector, run:
 
     ros2 launch steelhead_vision yolo_detector_launch.py
 
+The detector runs the OpenVINO versions of the models (`config/ffc_rs_26_openvino_model/` and `config/dfc_rs_26_openvino_model/`), which run faster on the CPU than the `.pt` files. This needs `pip install openvino --break-system-packages`. If a model is retrained, re-export it from its `.pt` file:
+
+    yolo export model=src/steelhead_vision/config/ffc_rs_26.pt format=openvino half=True imgsz=640
+
+To use the original PyTorch model instead, set the node's `weights_path` parameter to the `.pt` file.
+
 ### Gate Detector
 
 To launch the gate detector component, run:

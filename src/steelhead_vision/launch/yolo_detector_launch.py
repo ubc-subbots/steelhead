@@ -12,7 +12,7 @@ def generate_launch_description():
     front_camera_weights = os.path.join(
         get_package_share_directory("steelhead_vision"),
         "config",
-        "ffc_rs_26.pt",
+        "ffc_rs_26_openvino_model",
     )
 
     yolo_detector_front = Node(
@@ -33,7 +33,7 @@ def generate_launch_description():
     bottom_camera_weights = os.path.join(
         get_package_share_directory("steelhead_vision"),
         "config",
-        "dfc_rs_26.pt",
+        "dfc_rs_26_openvino_model",
     )
 
     yolo_detector_bottom = Node(
