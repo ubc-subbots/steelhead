@@ -134,7 +134,8 @@ namespace steelhead_controls
                 tf2::Quaternion q_target;
                 q_target.setRPY(0.0, 0.0, target_yaw);
 
-                tf2::Quaternion q_error = q_target * q_current.inverse();
+                // Error expressed in the robot's own frame, since the PID applies it as body torques
+                tf2::Quaternion q_error = q_current.inverse() * q_target;
                 q_error.normalize();
 
                 pose.orientation.x = q_error.x();
