@@ -127,6 +127,8 @@ Where `<MODEL>` is the URDF file name (without `.urdf`) within `steelhead_contro
 
   - A target depth to maintain is expected as input to the node via the `depth` parameter, but a default value of 0.5m will be assigned if not specified. If a negative value or zero is provided, it's assumed that depth should not be considered and the script will only adjust for orientation.
   - If desired, yaw can be adjusted via the `hold_yaw` parameter. This is defaulted to false if not provided, since it's unusual for yaw to be controlled via pid.
+  - With `hold_yaw` enabled, the node holds a heading setpoint that starts at 0. A `HoverAdjustment` with `change_yaw` set to true moves the setpoint to the current heading plus `yaw_offset` (radians, positive turns left). The new heading is held until the next `change_yaw` request, including through zeroed wrenches from finished tasks.
+  - The orientation error sent to the PID controller is expressed in the vehicle's own frame, so roll and pitch corrections stay on the right axes whichever way the vehicle is facing.
   - The vehicle base frame defaults to `base_link` via the `base_frame` parameter. The node listens to `/tf` to transform the IMU orientation and depth sensor lever-arm offsets into the vehicle's base frame.
   - Adjustments published to hover_adjust should terminate with a zeroed wrench when finished, else it will continue onward. The final message should also be a partial adjustment.
 
@@ -161,3 +163,4 @@ Where `<MODEL>` is the URDF file name (without `.urdf`) within `steelhead_contro
 - Logan Fillo (logan.fillo@gmail.com)
 - Jared Chan (jaredchan42@gmail.com)
 - Dorson Tang (dorsontang123@gmail.com)
+- Eddie Yoshie

@@ -18,6 +18,11 @@ To run the Gazebo competition task simulations driven by `mission_runner`:
 
     ros2 launch steelhead_bringup gazebo_test_mission_launch.py world:=competition.world mission:=gate_only.xml
 
+To test path marker following on its own, in a world with a single marker or two markers in a row:
+
+    ros2 launch steelhead_bringup gazebo_test_mission_launch.py world:=path_marker_test.world mission:=path_only.xml
+    ros2 launch steelhead_bringup gazebo_test_mission_launch.py world:=path_marker_multi_test.world mission:=path_two_markers.xml
+
 ### Monitoring
 
 The node automatically uploads its status to the local network when ran. Download and install [Groot2](https://www.behaviortree.dev/groot/) and connect to `localhost:1667` to visualize the behaviour tree.
@@ -28,6 +33,7 @@ All task nodes are compiled into `libsteelhead_mission_tasks.so` and registered 
 
 - `<Gate>` (`mission::GateTask`) : Front-camera YOLO alignment (`label`, `center_offset`, `pass_timeout`) and forward drive through the gate.
 - `<DriveFor>` (`mission::DriveFor`) : Timed open-loop wrench command (`force_x`, `force_y`, `force_z`, `torque_x`, `torque_y`, `torque_z`, `duration`, `full_override`).
+- `<Path>` (`mission::PathTask`) : Follows an orange path marker using `path_marker/detection` from `path_marker_detector` (`steelhead_vision`). Drives forward until the marker is under the bottom camera, turns to line up with it while staying centred over it, drives along it, and returns `SUCCESS` once the marker passes out of view behind the robot, leaving the robot holding the marker's heading (which points to the next task). Returns `FAILURE` if the marker is lost any other way; wrap it in a `<Timeout>` and `<Fallback>` for recovery. Ports: `speed` (forward force, default `5.0`), `sway_gain` (sideways force per unit offset, default `10.0`), `align_tolerance` (heading error in rad below which it drives forward, default `0.2`), `lost_timeout` (seconds without a detection before the marker counts as gone, default `1.0`), `exit_drive_time` (seconds to keep driving past the end, default `2.0`). Requires `hover_at_depth` with `hold_yaw: true` to turn.
 
 ## Creating a New Mission XML
 
@@ -176,3 +182,4 @@ Rebuild `steelhead_mission` and reference `<MyTask>` directly in your mission XM
 ## Contributors
 
 - Dorson Tang (dtang08@student.ubc.ca)
+- Eddie Yoshie

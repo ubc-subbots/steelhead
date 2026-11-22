@@ -60,6 +60,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
   steelhead_vision/yolo_detector.py
+  steelhead_vision/path_marker_detector.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

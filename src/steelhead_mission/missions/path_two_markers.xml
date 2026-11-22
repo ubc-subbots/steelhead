@@ -1,0 +1,14 @@
+<root BTCPP_format="4" main_tree_to_execute="TwoPathsMission">
+  <BehaviorTree ID="TwoPathsMission">
+    <Sequence name="two_paths_mission">
+      <DriveFor name="sink_to_depth" duration="5.0"/>
+      <Timeout msec="90000">
+        <Path name="follow_path_1"/>
+      </Timeout>
+      <Timeout msec="90000">
+        <Path name="follow_path_2"/>
+      </Timeout>
+      <DriveFor name="post_path_hold" duration="2.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

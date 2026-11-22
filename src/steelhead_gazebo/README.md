@@ -179,6 +179,12 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 `cube.world` 
 - A simple world with the `cube` model.
 
+`path_marker_test.world`
+- The pool with a single orange path marker 2 m ahead of the robot, for testing path marker detection and following.
+
+`path_marker_multi_test.world`
+- The pool with two path markers in a row: one 2 m ahead pointing straight on, and one 5 m ahead pointing 30 degrees left, for testing that the robot can follow one marker to the next.
+
 `uc_gendata.world` 
 - A world used for generating synthetic data for training. A depth camera is defined with additional plugins for moving the camera (`random_camera_plugin`) and generating bounding boxes (`bounding_box_controller`). 
 
@@ -238,3 +244,4 @@ At this point your model should be ready to be added to a Gazebo world, you can 
 - Jake Cronin (jcronin97@live.ca)
 - Kevin Huang (kevinh42@student.ubc.ca)
 - Jared Chan (jaredchan42@gmail.com)
+- Eddie Yoshie

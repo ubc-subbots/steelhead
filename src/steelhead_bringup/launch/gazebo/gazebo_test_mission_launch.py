@@ -99,6 +99,16 @@ def generate_launch_description():
         )
     )
 
+    path_marker_detector = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_vision"),
+                "launch",
+                "path_marker_detector_launch.py",
+            )
+        )
+    )
+
     actuators_simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -130,6 +140,7 @@ def generate_launch_description():
     ld.add_action(rviz)
     ld.add_action(mission_runner)
     ld.add_action(yolo_detector)
+    ld.add_action(path_marker_detector)
     ld.add_action(actuators_simulation)
 
     return ld

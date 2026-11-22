@@ -14,7 +14,8 @@ This package provides no executables. See ROS2 tutorials (such as [this](https:/
 - `ObjectOffset` Message used to represent an object's position relative to the AUV
 - `Float` Message wrapping a single 32-bit float value
 - `PressureSensor` Message that holds pressure, depth and temperature, most likely implemented by the MS5837 pressure sensor
-- `HoverAdjustment` Message used for the hover_at_depth node that dictates the force override and type.
+- `HoverAdjustment` Message used for the hover_at_depth node that dictates the force override and type. Setting `change_yaw` to true changes the heading hover_at_depth holds (with `hold_yaw` enabled) to the current heading plus `yaw_offset` (radians, positive turns left).
+- `PathMarker` Message published by the path marker detector for each bottom camera image: whether an orange path marker is visible, the turn needed to line up with it, its sideways offset, and whether it is ahead of or behind the robot
 ### Services
 - `ObjectDetection` Service used to detect objects in a given image
 - `ActuatorsCommand` Service used to control actuators (claw, torpedo, etc.)
@@ -23,3 +24,4 @@ This package provides no executables. See ROS2 tutorials (such as [this](https:/
 
 - Logan Fillo (logan.fillo@gmail.com)
 - Jared Chan (jaredchan42@gmail.com)
+- Eddie Yoshie
