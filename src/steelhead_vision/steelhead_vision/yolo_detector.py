@@ -73,7 +73,9 @@ class YOLODetector(Node):
         if ULTRALYTICS_AVAILABLE:
             try:
                 self.get_logger().info(f"Loading YOLO model from: {weights_path}")
-                self.model = YOLO(weights_path).to("cpu")
+                self.model = YOLO(weights_path)
+                if weights_path.endswith(".pt"):
+                    self.model.to("cpu")
                 self.get_logger().info("YOLO model loaded successfully")
             except Exception as e:
                 self.get_logger().error(f"Failed to load YOLO model: {e}")
