@@ -8,9 +8,9 @@ This package contains the Gazebo models, worlds, and plugins needed to create a 
 ### Gazebo
 To run a Gazebo simulation with a world file given in the `worlds` directory, use the `gazebo_launch.py` file as follows
 
-    ros2 launch steelhead_gazebo gazebo_launch.py world:=<WORLD_FILE_NAME> headless:=<IS_HEADLESS>
+    ros2 launch steelhead_gazebo gazebo_launch.py world:=<WORLD_FILE_NAME> model:=<MODEL_NAME> headless:=<IS_HEADLESS>
 
-Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`) and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
+Where `<WORLD_FILE_NAME>` is the name of the world file you want to run in Gazebo (e.g `cube.world`), `<MODEL_NAME>` is the model folder within `steelhead_gazebo/models` to spawn at the origin (defaults to `steelhead_auv`), and `<IS_HEADLESS>` is true if you don't want to run the GUI (defaults to false). Remember to build this package (i.e `colcon build --packages-select steelhead_gazebo`) everytime you change a model or world and want that change to propogate when you relaunch Gazebo.
 
 #### Optimization Guide
 Gazebo can be quite computationally expensive, since it is calculating lots of things simualtaneously. Here are some things you can do to optimize its performance, otherwise just buy a better computer lol.
@@ -183,6 +183,9 @@ Note: For realistic simulations, its expected that the robot is placed at origin
 - A world used for generating synthetic data for training. A depth camera is defined with additional plugins for moving the camera (`random_camera_plugin`) and generating bounding boxes (`bounding_box_controller`). 
 
 ## Models
+`woollett_pool`
+- Includes a transparent blue water surface fitted to the pool's interior. The visual follows the pool model and has no collision geometry. The graphic does not add water physics.
+
 `cube`
 - A simple cube which uses a ROS2 force plugin to accept `geometry_msgs/msg/Wrench` messages on the topic `/steelhead/gazebo_drivers/force`. Here is an example command to apply forces to the cube
 

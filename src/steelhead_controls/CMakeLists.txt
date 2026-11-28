@@ -29,6 +29,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
@@ -93,7 +94,7 @@ install(TARGETS actuators_command
   DESTINATION lib/${PROJECT_NAME}
 )
 
-target_link_libraries(hover_at_depth PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs tf2::tf2 tf2_geometry_msgs::tf2_geometry_msgs)
+target_link_libraries(hover_at_depth PUBLIC rclcpp::rclcpp rclcpp_components::component steelhead_interfaces::steelhead_interfaces geometry_msgs::geometry_msgs sensor_msgs::sensor_msgs tf2::tf2 tf2_ros::tf2_ros tf2_geometry_msgs::tf2_geometry_msgs)
 install(TARGETS hover_at_depth
   DESTINATION lib/${PROJECT_NAME}
 )
@@ -126,6 +127,7 @@ install(TARGETS
 install(DIRECTORY
   launch
   config
+  models
   DESTINATION share/${PROJECT_NAME}/
 )
 
@@ -142,7 +144,6 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  steelhead_controls/auv_transform_publisher.py
   steelhead_controls/waypoint_marker_tester.py
   steelhead_controls/predetermined_route.py
   steelhead_controls/predetermined_thrust.py

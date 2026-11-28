@@ -1,0 +1,89 @@
+import os
+
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
+
+
+def generate_launch_description():
+    ld = LaunchDescription()
+
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_gazebo"),
+                "launch",
+                "gazebo_launch.py",
+            )
+        ),
+        launch_arguments={"world": "competition.world"}.items(),
+    )
+
+    thrust_allocator = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "thrust_allocator_launch.py",
+            )
+        )
+    )
+
+    keyboard_teleop = Node(
+        name="keyboard_pid_teleop",
+        namespace="/steelhead/teleop",
+        package="steelhead_teleop",
+        executable="keyboard_pid_teleop",
+        output="screen",
+    )
+
+    hover = Node(
+        package="steelhead_controls",
+        executable="hover_at_depth",
+        parameters=[{"depth": 0.75, "hold_yaw": True}],
+        namespace="steelhead",
+    )
+
+    pid_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "pid_controller_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
+    )
+
+    rqt_reconfigure_node = Node(
+        name="rqt_reconfigure",
+        package="rqt_reconfigure",
+        executable="rqt_reconfigure",
+        output="screen",
+        arguments=["/steelhead/controls/pid_controller"],
+    )
+
+    delayed_rqt = TimerAction(period=15.0, actions=[rqt_reconfigure_node])
+
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("steelhead_controls"),
+                "launch",
+                "state_publisher_launch.py",
+            )
+        ),
+        launch_arguments={"use_sim_time": "true"}.items(),
+    )
+
+    ld.add_action(gazebo)
+    ld.add_action(state_publisher)
+    ld.add_action(thrust_allocator)
+    ld.add_action(keyboard_teleop)
+    ld.add_action(hover)
+    ld.add_action(pid_controller)
+    # ld.add_action(delayed_rqt) # let gazebo spin up
+
+    return ld

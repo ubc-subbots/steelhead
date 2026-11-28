@@ -37,7 +37,7 @@ namespace steelhead_controls
 
       encode_levels_ = pow(2,bits_per_thruster_);
 
-      std::string names[MAX_THRUSTERS] = {"t1", "t2", "t3", "t4", "t5", "t6"};
+      std::string names[MAX_THRUSTERS] = {"t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8"};
     
       for (int i = 0; i < MAX_THRUSTERS; i++)
       {
@@ -60,7 +60,7 @@ namespace steelhead_controls
         this->get_parameter(names[i]+".help.x", x_help_[i]);
         this->get_parameter(names[i]+".help.y", y_help_[i]);
         this->get_parameter(names[i]+".help.z", z_help_[i]);
-      } 
+      }
 
       std::vector<std::vector<double>> alloc_vec =  createAllocMat();
 
@@ -84,7 +84,7 @@ namespace steelhead_controls
       forces_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
         "output_forces", 10);
 
-      signals_pub_ = this->create_publisher<std_msgs::msg::UInt32>(
+      signals_pub_ = this->create_publisher<std_msgs::msg::UInt64>(
         "signals", 10);
 
       forces_sub_ = this->create_subscription<geometry_msgs::msg::Wrench>(
@@ -108,7 +108,7 @@ namespace steelhead_controls
       cv::Mat thrust_mat =  pinv_alloc_*tau_mat;
 
       std::vector<double> thrust;
-      uint32_t signal = 0;
+      uint64_t signal = 0;
 
       for (int i = 0; i < num_thrusters_ ; i++)
       {
@@ -118,18 +118,20 @@ namespace steelhead_controls
 
         uint32_t t_level = forceToLevel(thruster_thrust);
         // std::cout << "thruster " << i << " " << t_level << std::endl;
-        uint32_t t_bits = t_level << (bits_per_thruster_ * i);
+
+        // widen before shifting, otherwise upper bits are lost
+        uint64_t t_bits = ((uint64_t) t_level) << (bits_per_thruster_ * i);
         // std::cout << "thruster " << i << " " << thruster_thrust << " " << t_bits  << " " << (t_bits >> bits_per_thruster_ * i) << std::endl;
         signal |= t_bits;
       }
       // TEMP FIX: PLEASE CHANGE ME LATER
       // so that the teensy can distinguish between rubbish and real data
-      signal |= 0b10000000000000000000000000000000;
+      signal |= 0x8000000000000000ULL;
 
       auto forces_msg = std_msgs::msg::Float64MultiArray();
       forces_msg.data = thrust;
       forces_pub_->publish(forces_msg);
-      auto signal_msg = std_msgs::msg::UInt32();
+      auto signal_msg = std_msgs::msg::UInt64();
       signal_msg.data = signal;
       signals_pub_->publish(signal_msg);
   }

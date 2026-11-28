@@ -48,7 +48,7 @@ To launch the camera publishers, run:
 - `serial_subscriber` : A component node that writes thruster commands to the Teensy over serial.
 
   ### Subscribed Topics
-  - `motor_control` (`std_msgs/msg/UInt32`) : Control commands to forward to the thrusters.
+  - `motor_control` (`std_msgs/msg/UInt64`) : Control commands to forward to the thrusters.
 
 ## Launch Files
 

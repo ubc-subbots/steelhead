@@ -11,9 +11,11 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     EnvironmentVariable,
     LaunchConfiguration,
+    PathJoinSubstitution,
     PythonExpression,
 )
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
@@ -24,6 +26,12 @@ def generate_launch_description():
         "world", default_value="cube.world", description="Gazebo world file"
     )
 
+    model_arg = DeclareLaunchArgument(
+        "model",
+        default_value="steelhead_auv",
+        description="Model folder name within steelhead_gazebo/models to spawn at the origin",
+    )
+
     headless_arg = DeclareLaunchArgument(
         "headless",
         default_value="false",
@@ -31,11 +39,13 @@ def generate_launch_description():
     )
 
     render_engine_arg = DeclareLaunchArgument(
-    	"render_engine",
-    	default_value=EnvironmentVariable("STEELHEAD_GZ_RENDER_ENGINE", default_value="ogre2"),
+        "render_engine",
+        default_value=EnvironmentVariable(
+            "STEELHEAD_GZ_RENDER_ENGINE", default_value="ogre2"
+        ),
         choices=["ogre2", "ogre"],
         description="Rendering engine for gz sim (ogre2 or ogre). Set STEELHEAD_GZ_RENDER_ENGINE env var, or use 'ogre' as a workaround for GPU/virtualization rendering crashes.",
-        )
+    )
 
     # We need to add the models and worlds directories to env so gazebo can find them
     steelhead_gazebo_dir = get_package_share_directory("steelhead_gazebo")
@@ -122,11 +132,39 @@ def generate_launch_description():
         # ros_arguments=["--log-level", "WARN"],
     )
 
+    model_sdf_path = PathJoinSubstitution(
+        [
+            FindPackageShare("steelhead_gazebo"),
+            "gazebo",
+            "models",
+            LaunchConfiguration("model"),
+            "model.sdf",
+        ]
+    )
+
+    spawn_model = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=[
+            "-file",
+            model_sdf_path,
+            "-x",
+            "0.0",
+            "-y",
+            "0.0",
+            "-z",
+            "0.0",
+        ],
+        output="screen",
+    )
+
     ld.add_action(world_arg)
+    ld.add_action(model_arg)
     ld.add_action(headless_arg)
     ld.add_action(render_engine_arg)
     ld.add_action(add_resource_path)
     ld.add_action(add_plugin_path)
     ld.add_action(gazebo_sim)
+    ld.add_action(spawn_model)
     ld.add_action(bridge)
     return ld

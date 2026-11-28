@@ -36,10 +36,8 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
-    pkg_share = get_package_share_directory("steelhead_gazebo")
-    urdf_file = os.path.join(
-        pkg_share, "gazebo", "models", "steelhead_auv", "model.urdf"
-    )
+    pkg_share = get_package_share_directory("steelhead_controls")
+    urdf_file = os.path.join(pkg_share, "models", "steelhead_auv.urdf")
     with open(urdf_file, "r") as infp:
         robot_desc = infp.read()
     rsp_params = {"robot_description": robot_desc}
@@ -84,14 +82,6 @@ def generate_launch_description():
         parameters=[rsp_params, {"use_sim_time": True}],
     )
 
-    transform_publisher = Node(
-        package="steelhead_controls",
-        executable="auv_transform_publisher.py",
-        name="auv_transform_publisher",
-        output="screen",
-        parameters=[rsp_params, {"use_sim_time": True}],
-    )
-
     thrust_allocator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -124,7 +114,6 @@ def generate_launch_description():
     ld.add_action(thrust_allocator)
     ld.add_action(gate_detector)
     ld.add_action(state_publisher)
-    ld.add_action(transform_publisher)
     ld.add_action(underwater_camera)
     ld.add_action(state_estimator)
     ld.add_action(waypoint_marker)
